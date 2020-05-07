@@ -48,8 +48,9 @@ var mainScene = function()
 
     this.active = true;    //暂停
 
-    /*
     this.underground = new Underground();//场景
+
+    /*
 
     this.people = new People();//人群
 
@@ -66,8 +67,6 @@ var mainScene = function()
     this.Fireman = new fireman();//消防员&灭火
 
     this.light = new light();//光照
-
-    this.HCI = new Interaction();//交互控制
 
     this.FOI = new foiControl();//视锥控制
 
@@ -137,7 +136,7 @@ mainScene.prototype.init = function()
     //endregion
 
     //region场景加载
-    //this.underground.init(this);
+    this.underground.init(this);
     //endregion
 
     //regiog消防员加载
@@ -151,13 +150,13 @@ mainScene.prototype.init = function()
     this.HCI.fuc1(this);
 
     //交互2
-    //this.HCI.fuc2(this);
+    this.HCI.fuc2(this);
 
     //交互4
-    //this.HCI.fuc4(this);
+    this.HCI.fuc4(this);
 
     //debug专用
-    //this.HCI.fuc5(this);
+    this.HCI.fuc5(this);
 };
 
 mainScene.prototype.start = function()
