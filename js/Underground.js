@@ -57,9 +57,9 @@ Underground.prototype.GlbBuilding = function (_this) {
             loadAsync('./subway/6exitance4.glb'),
             loadAsync('./subway/7exitance5.glb'),
             loadAsync('./subway/8exitance1.glb'),
-            loadAsync('./subway/9ground.glb'),
-            loadAsync('./subway/10f1buildings1.glb'),
-            loadAsync('./subway/11f1others.glb'),
+            //loadAsync('./subway/9ground.glb'),
+            //loadAsync('./subway/10f1buildings1.glb'),
+            //loadAsync('./subway/11f1others.glb'),
             loadAsync('./subway/12b2lights.glb'),
             loadAsync('./subway/13b2floor.glb'),
             loadAsync('./subway/14b2escalators.glb'),
@@ -81,9 +81,9 @@ Underground.prototype.GlbBuilding = function (_this) {
             loadAsync('./subway/30b1pillars.glb'),
             loadAsync('./subway/31automaticRightDoor.glb'),
             loadAsync('./subway/32automaticLeftDoor.glb'),
-            loadAsync('./subway/33f1buildings2.glb'),
-            loadAsync('./subway/34f1buildings3.glb'),
-            loadAsync('./subway/35f1buildings4.glb')
+            //loadAsync('./subway/33f1buildings2.glb'),
+            //loadAsync('./subway/34f1buildings3.glb'),
+            //loadAsync('./subway/35f1buildings4.glb')
         ]
     ).then(() => {
         $("#loadTime")[0].innerText = ((performance.now() - startLoadTime) / 1000).toFixed(2) + "秒";

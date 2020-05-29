@@ -6,6 +6,6 @@
     Utils.loading(1500);
     MainScene.start();
 
-    //MainScene.HCI.fuc3(MainScene);
+    MainScene.HCI.fuc3(MainScene);
 
 }).call(this)

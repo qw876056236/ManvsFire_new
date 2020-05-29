@@ -71,6 +71,8 @@ var mainScene = function()
     this.FOI = new foiControl();//视锥控制
 
      */
+    this.smoke = new Smoke();//烟
+
     this.HCI = new Interaction();//交互控制
 
     this.globalPlane = null;
@@ -128,7 +130,7 @@ mainScene.prototype.init = function()
     //endregion
 
     //region 烟雾
-    //this.smoke.init(this);
+    this.smoke.init(this);
     //endregion
 
     //region 火
@@ -177,7 +179,7 @@ mainScene.prototype.start = function()
 
             //self.fire.update(self);
 
-            //self.smoke.update(self);
+            self.smoke.update(self);
 
             //self.Fireman.update(self);
 
@@ -191,6 +193,7 @@ mainScene.prototype.start = function()
             ///self.underground.update(self,self.delta);
         }
         //self.Cameracontroller.update1(self);
+        self.pMesh.position.set(document.getElementById("x").value,document.getElementById("y").value,document.getElementById("z").value);
 
         self.cameraControl();
 
@@ -234,7 +237,7 @@ mainScene.prototype.setScene = function()
 
     var camControl = new THREE.FirstPersonControls(this.camera, this.renderer.domElement);
     camControl.lookSpeed = 1;
-    camControl.movementSpeed = 2 * 10;
+    camControl.movementSpeed = 1 * 10;
     camControl.noFly = true;
     camControl.lookVertical = true;
     camControl.constrainVertical = true;
@@ -277,12 +280,13 @@ mainScene.prototype.setScene = function()
 //endregion
 
     //region 点击坐标测试球体设置
-    var pointGeo = new THREE.SphereGeometry(1,8,8);
+    var pointGeo = new THREE.SphereGeometry(0.1,8,8);
     var pointMaterial = new THREE.MeshLambertMaterial({
         emissive: 0xff0000
     });
     this.pMesh = new THREE.Mesh(pointGeo,pointMaterial);
     this.scene.add(this.pMesh);
+    this.pMesh.position.set(0,0,0);
 //endregion
 }
 
