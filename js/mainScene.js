@@ -42,7 +42,7 @@ var mainScene = function()
 
     this.isACO = true;  //是否进行默认的蚁群算法
 
-    this.isOverView = true; //初始时观察整个地铁站时用这个
+    this.isOverView = false; //初始时观察整个地铁站时用这个
 
     this.isStartRun = false; //是否开始？
 
@@ -196,6 +196,7 @@ mainScene.prototype.start = function()
         self.pMesh.position.set(document.getElementById("x").value,document.getElementById("y").value,document.getElementById("z").value);
 
         self.cameraControl();
+        console.log(self.camera);
 
         TWEEN.update();
 
@@ -217,8 +218,8 @@ mainScene.prototype.setScene = function()
 {
     //region 基础场景
     this.camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 0.1, 2000000);
-    this.camera.position.set(639,160,106);
-    this.camera.lookAt(200,0,25);
+    this.camera.position.set(60,3,146);
+    this.camera.lookAt(new THREE.Vector3(1,1,1));
 
     this.renderer = new THREE.WebGLRenderer( { antialias: true } );
     this.renderer.autoClear = true;    //todo 不声明的话默认为true,原demo为false, 与start.animate 中renderer.clear()对应
@@ -243,12 +244,12 @@ mainScene.prototype.setScene = function()
     camControl.constrainVertical = true;
     camControl.verticalMin = 1.0;
     camControl.verticalMax = 2.0;
-    camControl.lon =-138;
+    camControl.lon =120;
     camControl.lat =-90;
     this.camControl = camControl;
 
 
-    var ambientLight = new THREE.AmbientLight(0xcccccc);
+    var ambientLight = new THREE.AmbientLight(0xcccccc,4);
     this.scene.add(ambientLight);
 
     var directionalLight_1 = new THREE.DirectionalLight(0xffffff,0.2);
