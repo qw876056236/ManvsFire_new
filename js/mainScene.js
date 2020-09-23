@@ -56,7 +56,7 @@ var mainScene = function()
 
     this.Path = new path();
 
-    this.smoke = new Smoke();//烟
+    this.smoke = new NSsmoke();//烟
 
     this.messagecontrol = new messageControl();//控制子线程传输
 

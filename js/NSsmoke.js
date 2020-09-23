@@ -1,4 +1,4 @@
-var Smoke = function()
+var NSsmoke = function()
 {
     this.unitx = 1.2;
     this.unity = 0.5;
@@ -12,7 +12,7 @@ var Smoke = function()
     this.kk = 0;
     this.offset = {x:412.3, y:45.9, z:40};
     this.initPos = {x: 415.4, y:47, z:50};
-    this.smokeTexture = new THREE.TextureLoader().load('textures/Smoke-Element.png');
+    this.smokeTexture = new THREE.TextureLoader().load('textures/NSsmoke-Element.png');
     this.grid = [];
     this.vel = [];
     this.pre = [];
@@ -24,7 +24,7 @@ var Smoke = function()
     this.state = [];
 };
 
-Smoke.prototype.init = function()
+NSsmoke.prototype.init = function()
 {
     for(let i=0; i<this.lengthx; ++i)
         for(let j=0; j<this.lengthy; ++j)
@@ -54,7 +54,7 @@ Smoke.prototype.init = function()
     //console.log(this.grid[426].x + " "+this.grid[426].y+""+this.grid[426].z);
 };
 
-Smoke.prototype.advect = function()//平流方程
+NSsmoke.prototype.advect = function()//平流方程
 {
     //console.log("tempvel");
     for(let i=0; i<this.lengthx; ++i)
@@ -73,7 +73,7 @@ Smoke.prototype.advect = function()//平流方程
             }
 };
 
-Smoke.prototype.inter = function(x,y,z,state)//插值
+NSsmoke.prototype.inter = function(x, y, z, state)//插值
 {
     var i = Math.floor(x / this.unitx + 0.5);
     var j = Math.floor(y / this.unity + 0.5);
@@ -125,12 +125,12 @@ Smoke.prototype.inter = function(x,y,z,state)//插值
 
 };
 
-Smoke.prototype.force = function()//外力项
+NSsmoke.prototype.force = function()//外力项
 {
 
 };
 
-Smoke.prototype.diffuse = function()//扩散方程
+NSsmoke.prototype.diffuse = function()//扩散方程
 {
     //console.log("diffuse");
     var dx = this.delta * this.v / this.unitx / this.unitx;
@@ -183,7 +183,7 @@ Smoke.prototype.diffuse = function()//扩散方程
     //console.log(this.den[425]);
 };
 
-Smoke.prototype.poisson = function()//泊松方程
+NSsmoke.prototype.poisson = function()//泊松方程
 {
     console.log("poision");
     var c1 = this.unity * this.unity * this.unitz * this.unitz;
@@ -229,7 +229,7 @@ Smoke.prototype.poisson = function()//泊松方程
     console.log(this.pre);
 };
 
-Smoke.prototype.correction = function()//速度修正方程
+NSsmoke.prototype.correction = function()//速度修正方程
 {
     var index =0,index1 =0,index2 =0,index3 =0,index4 =0,index5 =0,index6 =0;
     var dv = {u:0,v:0,w:0};
@@ -256,7 +256,7 @@ Smoke.prototype.correction = function()//速度修正方程
 
 };
 
-Smoke.prototype.density = function()
+NSsmoke.prototype.density = function()
 {
     //console.log("density");
     var newDen = [];
@@ -300,7 +300,7 @@ Smoke.prototype.density = function()
             //console.log(this.den[425]);
 };
 
-Smoke.prototype.render = function(_this)
+NSsmoke.prototype.render = function(_this)
 {
     for(let i=0; i<this.lengthx; ++i)
         for(let j=0; j<this.lengthy; ++j)
@@ -316,7 +316,7 @@ Smoke.prototype.render = function(_this)
             }
 };
 
-Smoke.prototype.createCloud = function (index,_this)
+NSsmoke.prototype.createCloud = function (index, _this)
 {
     var self = this;
     var geom=new THREE.Geometry();//创建烟雾团
@@ -354,7 +354,7 @@ Smoke.prototype.createCloud = function (index,_this)
     self.cloud[index] = cloud;
 };
 
-Smoke.prototype.supple = function()
+NSsmoke.prototype.supple = function()
 {
     var i = Math.floor((this.initPos.x-this.offset.x) / this.unitx);
     var j = Math.floor((this.initPos.y-this.offset.y) / this.unity);
@@ -365,7 +365,7 @@ Smoke.prototype.supple = function()
     //this.pre[index] = 10;
 };
 
-Smoke.prototype.update = function(_this)
+NSsmoke.prototype.update = function(_this)
 {
     var self = this;
     if (Math.floor(_this.clock.getElapsedTime() + 1) % (self.kk + 1) == 0)

@@ -362,6 +362,13 @@ Interaction.prototype.fuc3 = function (MainScene)
     //deregion
 
      */
+    // window.addEventListener('click', onClick, false);
+    //
+    // function onClick(event) {
+    //     console.log(MainScene.smoke.smokeUnitArr);
+    //     console.log(MainScene.smoke.time);
+    //
+    // }
 
     //编辑烟雾状态下的摄像机移动
     window.addEventListener('keydown',function(event){
