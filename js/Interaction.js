@@ -85,12 +85,15 @@ Interaction.prototype.fuc2 = function (_this)
         document.getElementById("transformSmoke").style.display = "none";
         document.getElementById("fireman").style.display = "inline-block";
 
-        _this.smoke.redBallMesh.position.x=_this.smoke.positionBallMesh.position.x+16;
-        _this.smoke.redBallMesh.position.z= _this.smoke.positionBallMesh.position.z;
+        // _this.smoke.redBallMesh.position.x=_this.smoke.positionBallMesh.position.x+16;
+        // _this.smoke.redBallMesh.position.z= _this.smoke.positionBallMesh.position.z;
+        _this.smoke.firePos = _this.smoke.positionBallMesh.position;
         _this.smoke.positionBallMesh.visible=false;
+        _this.smoke.clock.start();
         _this.isStartRun = true;
         _this.smoke.isStartSmoke = true;
-        _this.fire.fireManager.target.visible = true;
+        _this.active = true;
+        // _this.fire.fireManager.target.visible = true;
         _this.clock=new THREE.Clock();
         //_this.messagecontrol.readSmoke(_this.smoke.firePointArr[2],_this);
 
@@ -123,25 +126,25 @@ Interaction.prototype.fuc2 = function (_this)
             }
         },1000);
 
-        //开始模拟后开始行走
-        for(var i=0; i<_this.people.blendMeshArr.length;i++) {
-            var meshMixer = new THREE.AnimationMixer( _this.people.blendMeshArr[i] );
-            _this.people.walkAction = meshMixer.clipAction( 'walk' );
-            _this.people.runAction=meshMixer.clipAction('run');
-            //actions = [ walkAction, idleAction, runAction ];
-            _this.people.actions = [_this.people.walkAction, _this.people.runAction];
-            _this.people.activateAllActions1(_this.people.actions);
-            _this.people.mixerArr.push(meshMixer);
-        }
-        for(var iL=0; iL<_this.people.leaderMeshArr.length;iL++) {
-            var meshMixer = new THREE.AnimationMixer( _this.people.leaderMeshArr[iL] );
-            _this.people.walkAction = meshMixer.clipAction( 'walk' );
-            _this.people.runAction=meshMixer.clipAction('run');
-            //actions = [ walkAction, idleAction, runAction ];
-            _this.people.actions = [_this.people.walkAction, _this.people.runAction];
-            _this.people.activateAllActions1(_this.people.actions);
-            _this.people.mixerArr.push(meshMixer);
-        }
+        // //开始模拟后开始行走
+        // for(var i=0; i<_this.people.blendMeshArr.length;i++) {
+        //     var meshMixer = new THREE.AnimationMixer( _this.people.blendMeshArr[i] );
+        //     _this.people.walkAction = meshMixer.clipAction( 'walk' );
+        //     _this.people.runAction=meshMixer.clipAction('run');
+        //     //actions = [ walkAction, idleAction, runAction ];
+        //     _this.people.actions = [_this.people.walkAction, _this.people.runAction];
+        //     _this.people.activateAllActions1(_this.people.actions);
+        //     _this.people.mixerArr.push(meshMixer);
+        // }
+        // for(var iL=0; iL<_this.people.leaderMeshArr.length;iL++) {
+        //     var meshMixer = new THREE.AnimationMixer( _this.people.leaderMeshArr[iL] );
+        //     _this.people.walkAction = meshMixer.clipAction( 'walk' );
+        //     _this.people.runAction=meshMixer.clipAction('run');
+        //     //actions = [ walkAction, idleAction, runAction ];
+        //     _this.people.actions = [_this.people.walkAction, _this.people.runAction];
+        //     _this.people.activateAllActions1(_this.people.actions);
+        //     _this.people.mixerArr.push(meshMixer);
+        // }
 
     });
 
@@ -227,21 +230,23 @@ Interaction.prototype.fuc3 = function (MainScene)
             $('transformSmoke').textContent="返回";
             $('illustration-context').innerHTML = "您已进入烟雾编辑页面，请通过拖动屏幕上的坐标轴至“红色标识”下方并使其成半透明效果，以选择起火位置，或者直接点选“火灾情景”按钮进行选择。在选择完毕后，请点击“返回”以退出编辑模式，并点击“开始模拟”"
 
-            MainScene.smoke.Logo1Material.visible=true;
-            MainScene.smoke.Logo2Material.visible=true;
-            MainScene.smoke.Logo3Material.visible=true;
-            MainScene.smoke.Logo4Material.visible=true;
-            MainScene.smoke.Logo5Material.visible=true;
-            MainScene.camera.position.set(450, 300, 60);//原x为150 450
-            MainScene.camera.lookAt(450, 0, 8);
+            // MainScene.smoke.Logo1Material.visible=true;
+            // MainScene.smoke.Logo2Material.visible=true;
+            // MainScene.smoke.Logo3Material.visible=true;
+            // MainScene.smoke.Logo4Material.visible=true;
+            // MainScene.smoke.Logo5Material.visible=true;
+            // MainScene.camera.position.set(450, 300, 60);//原x为150 450
+            // MainScene.camera.lookAt(450, 0, 8);
+            MainScene.camera.position.set(50, 200, 240);//原x为150 450
+            MainScene.camera.lookAt(50, 0, 240);
             MainScene.globalPlane.constant = 17;
             MainScene.globalPlane.set(new THREE.Vector3(0, -1, 0), 17);
             MainScene.control.attach(MainScene.smoke.positionBallMesh);
             MainScene.isEdit = true;
             MainScene.control.visible = true;
-            MainScene.fire.Te1Material.visible=false;
-            MainScene.fire.Te2Material.visible=false;
-            MainScene.fire.fireManager.target.visible=true;
+            // MainScene.fire.Te1Material.visible=false;
+            // MainScene.fire.Te2Material.visible=false;
+            // MainScene.fire.fireManager.target.visible=true;
             MainScene.smoke.positionBallMesh.visible=true;
 
         } else{
@@ -253,23 +258,22 @@ Interaction.prototype.fuc3 = function (MainScene)
             $('transformSmoke').textContent="编辑烟雾";
             $('illustration-context').innerHTML = "<p>您已成功选取起火点位置</p>" + "<p>若想模拟火灾请点击“开始模拟”</p>";
 
-            MainScene.smoke.smokeStart(MainScene);
 
-            MainScene.smoke.Logo1Material.visible=false;
-            MainScene.smoke.Logo2Material.visible=false;
-            MainScene.smoke.Logo3Material.visible=false;
-            MainScene.smoke.Logo4Material.visible=false;
-            MainScene.smoke.Logo5Material.visible=false;
-            MainScene.camera.position.set(573,53,69);
-            MainScene.camControl.lon = -140;
+            // MainScene.smoke.Logo1Material.visible=false;
+            // MainScene.smoke.Logo2Material.visible=false;
+            // MainScene.smoke.Logo3Material.visible=false;
+            // MainScene.smoke.Logo4Material.visible=false;
+            // MainScene.smoke.Logo5Material.visible=false;
+            MainScene.camera.position.set(60,3,146);
+            MainScene.camControl.lon = 120;
             MainScene.camControl.lat = -90;
             MainScene.globalPlane.constant=100000;
             MainScene.control.attach();
             MainScene.isEdit = false;
             MainScene.control.visible = false;
-            MainScene.fire.Te1Material.visible=false;
-            MainScene.fire.Te2Material.visible=false;
-            MainScene.fire.fireManager.target.visible=false;
+            // MainScene.fire.Te1Material.visible=false;
+            // MainScene.fire.Te2Material.visible=false;
+            // MainScene.fire.fireManager.target.visible=false;
             MainScene.smoke.positionBallMesh.visible=false;
 
         }

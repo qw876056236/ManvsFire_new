@@ -46,7 +46,7 @@ var mainScene = function()
 
     this.isStartRun = false; //是否开始？
 
-    this.active = true;    //暂停
+    this.active = false;    //暂停
 
     this.underground = new Underground();//场景
 
