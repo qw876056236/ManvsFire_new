@@ -22,8 +22,8 @@ var num;
 People.prototype.init = function (_this) {
     let self = this;
     let multi = _this.number;
-    multi = Math.floor(multi / 109);
     var surplus = multi % 109;
+    multi = Math.floor(multi / 109);
     _this.isFinishLoadCharactor = false;
     _this.isStartRun = false;
     loadBlendMeshWithPromise();
@@ -39,25 +39,25 @@ People.prototype.init = function (_this) {
             })
         }
 
-        modelURL = "Model/avatar/female_run.glb";
-        modelURL1 = "Model/avatar/male_run.glb";
-        modelURL2 = "Model/avatar/childFemale_run.glb";
-        modelURL3 = "Model/avatar/childMale_run.glb";
-        modelURL4 = "Model/avatar/female_walk.glb";
-        modelURL5 = "Model/avatar/male_walk.glb";
-        modelURL6 = "Model/avatar/granny_walk.glb";
-        modelURL7 = "Model/avatar/female_bend.glb";
-        modelURL8 = "Model/avatar/male_bend.glb";
-        modelURL9 = "Model/avatar/granny_bend.glb";
-        modelURL10 = "Model/avatar/female_crawl.glb";
-        modelURL11 = "Model/avatar/male_crawl.glb";
-        modelURL12 = "Model/avatar/childFemale_crawl.glb";
-        modelURL13 = "Model/avatar/childMale_crawl.glb";
-        modelURL14 = "Model/avatar/granny_idle.glb";
-        modelURL15 = "Model/avatar/childFemale_idle.glb";
-        modelURL16 = "Model/avatar/childMale_idle.glb";
-        modelURL17 = "Model/avatar/female_idle.glb";
-        modelURL18 = "Model/avatar/male_idle.glb";
+        var modelURL = "./Model/avatar/female_run.glb";
+        var modelURL1 = "./Model/avatar/male_run.glb";
+        var modelURL2 = "./Model/avatar/childFemale_run.glb";
+        var modelURL3 = "./Model/avatar/childMale_run.glb";
+        var modelURL4 = "./Model/avatar/female_walk.glb";
+        var modelURL5 = "./Model/avatar/male_walk.glb";
+        var modelURL6 = "./Model/avatar/granny_walk.glb";
+        var modelURL7 = "./Model/avatar/female_bend.glb";
+        var modelURL8 = "./Model/avatar/male_bend.glb";
+        var modelURL9 = "./Model/avatar/granny_bend.glb";
+        var modelURL10 = "./Model/avatar/female_crawl.glb";
+        var modelURL11 = "./Model/avatar/male_crawl.glb";
+        var modelURL12 = "./Model/avatar/childFemale_crawl.glb";
+        var modelURL13 = "./Model/avatar/childMale_crawl.glb";
+        var modelURL14 = "./Model/avatar/granny_idle.glb";
+        var modelURL15 = "./Model/avatar/childFemale_idle.glb";
+        var modelURL16 = "./Model/avatar/childMale_idle.glb";
+        var modelURL17 = "./Model/avatar/female_idle.glb";
+        var modelURL18 = "./Model/avatar/male_idle.glb";
 
 
         var arr = new Array();
@@ -449,7 +449,7 @@ People.prototype.init = function (_this) {
             }
         });
 
-        var promiseAll = Promise.all(arr1).then((data) => {
+        var promiseAll1 = Promise.all(arr1).then((data) => {
 
             var temp, number;
             if(surplus>=10&&surplus<=20){
@@ -642,7 +642,7 @@ People.prototype.init = function (_this) {
             }
         });
 
-        var promiseAll = Promise.all(arr2).then((data) => {
+        var promiseAll2 = Promise.all(arr2).then((data) => {
 
             var temp, number;
             if(surplus>=20&&surplus<=21){
@@ -735,7 +735,7 @@ People.prototype.init = function (_this) {
             }
         });
 
-        var promiseAll = Promise.all(arr3).then((data) => {
+        var promiseAll3 = Promise.all(arr3).then((data) => {
 
             var temp, number;
             if(surplus>=21&&surplus<=22){
@@ -817,7 +817,7 @@ People.prototype.init = function (_this) {
             }
         });
 
-        var promiseAll = Promise.all(arr4).then((data) => {
+        var promiseAll4 = Promise.all(arr4).then((data) => {
 
             var temp, number;
             if(surplus>=22&&surplus<=32){
@@ -1027,7 +1027,7 @@ People.prototype.init = function (_this) {
             }
         });
 
-        var promiseAll = Promise.all(arr5).then((data) => {
+        var promiseAll5 = Promise.all(arr5).then((data) => {
 
             var temp, number;
             if(surplus>=32&&surplus<=42){
@@ -1221,7 +1221,7 @@ People.prototype.init = function (_this) {
             }
         });
 
-        var promiseAll = Promise.all(arr6).then((data) => {
+        var promiseAll6 = Promise.all(arr6).then((data) => {
 
             var temp, number;
             if(surplus>=42&&surplus<=43){
@@ -1298,7 +1298,7 @@ People.prototype.init = function (_this) {
             }
         });
 
-        var promiseAll = Promise.all(arr7).then((data) => {
+        var promiseAll7 = Promise.all(arr7).then((data) => {
 
             var temp, number;
             if(surplus>=43&&surplus<=53){
@@ -1508,7 +1508,7 @@ People.prototype.init = function (_this) {
             }
         });
 
-        var promiseAll = Promise.all(arr8).then((data) => {
+        var promiseAll8 = Promise.all(arr8).then((data) => {
 
             var temp, number;
             if(surplus>=53&&surplus<=63){
@@ -1702,7 +1702,7 @@ People.prototype.init = function (_this) {
             }
         });
 
-        var promiseAll = Promise.all(arr9).then((data) => {
+        var promiseAll9 = Promise.all(arr9).then((data) => {
 
             var temp, number;
             if(surplus>=63&&surplus<=64){
@@ -1780,7 +1780,7 @@ People.prototype.init = function (_this) {
             }
         });
 
-        var promiseAll = Promise.all(arr10).then((data) => {
+        var promiseAll10 = Promise.all(arr10).then((data) => {
 
             var temp, number;
             if(surplus>=64&&surplus<=74){
@@ -1991,7 +1991,7 @@ People.prototype.init = function (_this) {
             }
         });
 
-        var promiseAll = Promise.all(arr11).then((data) => {
+        var promiseAll11 = Promise.all(arr11).then((data) => {
 
             var temp, number;
             if(surplus>=74&&surplus<=84){
@@ -2185,7 +2185,7 @@ People.prototype.init = function (_this) {
             }
         });
 
-        var promiseAll = Promise.all(arr12).then((data) => {
+        var promiseAll12 = Promise.all(arr12).then((data) => {
 
             var temp, number;
             if(surplus>=84&&surplus<=85){
@@ -2279,7 +2279,7 @@ People.prototype.init = function (_this) {
             }
         });
 
-        var promiseAll = Promise.all(arr13).then((data) => {
+        var promiseAll13 = Promise.all(arr13).then((data) => {
 
             var temp, number;
             number = multi;
@@ -2364,7 +2364,7 @@ People.prototype.init = function (_this) {
 
             }
         });
-        var promiseAll = Promise.all(arr14).then((data) => {
+        var promiseAll14 = Promise.all(arr14).then((data) => {
 
             var temp, number;
             if(surplus>=86&&surplus<=87){
@@ -2441,7 +2441,7 @@ People.prototype.init = function (_this) {
             }
         });
 
-        var promiseAll = Promise.all(arr15).then((data) => {
+        var promiseAll15 = Promise.all(arr15).then((data) => {
 
             var temp, number;
             if(surplus>=87&&surplus<=88){
@@ -2534,7 +2534,7 @@ People.prototype.init = function (_this) {
             }
         });
 
-        var promiseAll = Promise.all(arr16).then((data) => {
+        var promiseAll16 = Promise.all(arr16).then((data) => {
 
             var temp, number;
             if(surplus>=88&&surplus<=89){
@@ -2616,7 +2616,7 @@ People.prototype.init = function (_this) {
             }
         });
 
-        var promiseAll = Promise.all(arr17).then((data) => {
+        var promiseAll17 = Promise.all(arr17).then((data) => {
 
             var temp, number;
             if(surplus>=89&&surplus<=99){
@@ -2826,8 +2826,8 @@ People.prototype.init = function (_this) {
             }
         });
 
-        var promiseAll = Promise.all(arr18).then((data) => {
-
+        var promiseAll18 = Promise.all(arr18).then((data) => {
+            
             var temp, number;
             if(surplus>=99&&surplus<=109){
                 number = multi * 10 + surplus - 99;
