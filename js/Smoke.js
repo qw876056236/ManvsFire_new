@@ -101,6 +101,11 @@ Smoke.prototype.createCloud = function(_this,smokeUnit)
     smokeUnit.cloudArr.push(cloud);
 }
 
+Smoke.prototype.setScope = function(_this)
+{
+    
+}
+
 Smoke.prototype.update = function(_this)
 {
 

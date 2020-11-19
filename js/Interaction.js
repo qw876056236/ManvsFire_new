@@ -167,10 +167,10 @@ Interaction.prototype.fuc3 = function (MainScene)
         var number=Number($('people-number').textContent);
         MainScene.number=number;
         Utils.loading(1000);
-        MainScene.Path.createNav(MainScene);
+        //MainScene.Path.createNav(MainScene);
         Utils.loading(500);
         MainScene.addPeople();
-        MainScene.smoke.smokeStart(MainScene);
+        //MainScene.smoke.smokeStart(MainScene);
     });
 
     $('fireman').addEventListener('click',function (event)
@@ -248,6 +248,10 @@ Interaction.prototype.fuc3 = function (MainScene)
             // MainScene.fire.Te2Material.visible=false;
             // MainScene.fire.fireManager.target.visible=true;
             MainScene.smoke.positionBallMesh.visible=true;
+            MainScene.smokeEditor.points.forEach(function(item){
+                item.visible = true;
+            })
+            MainScene.smokeEditor.shapeMesh.visible = true;
 
         } else{
            // userBookNumber=0;
@@ -269,12 +273,18 @@ Interaction.prototype.fuc3 = function (MainScene)
             MainScene.camControl.lat = -90;
             MainScene.globalPlane.constant=100000;
             MainScene.control.attach();
+            MainScene.smokeEditor.transformControls.detach();
             MainScene.isEdit = false;
             MainScene.control.visible = false;
             // MainScene.fire.Te1Material.visible=false;
             // MainScene.fire.Te2Material.visible=false;
             // MainScene.fire.fireManager.target.visible=false;
             MainScene.smoke.positionBallMesh.visible=false;
+            MainScene.smokeEditor.points.forEach(function(item){
+                item.visible = false;
+            })
+            MainScene.smokeEditor.shapeMesh.visible = false;
+            MainScene.smokeEditor.generateConvex(MainScene);
 
         }
     });
@@ -340,32 +350,41 @@ Interaction.prototype.fuc3 = function (MainScene)
         $('continue').style.display = "none";
         $('pause').style.display = "block";
     });
-    /*
 //region 点击坐标测试
     window.addEventListener('mousemove', onMouseMove, false);
 
     function onMouseMove(event) {
         MainScene.mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
-        MainScene.mouse.y = (event.clientY / window.innerHeight) * 2 + 1;
+        MainScene.mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
     }
 
 
     window.addEventListener('click', onClick, false);
 
     function onClick(event) {
-        MainScene.raycaster.setFromCamera(MainScene.mouse, MainScene.camera);
+        if(MainScene.isEdit)
+        {
+            MainScene.raycaster.setFromCamera(MainScene.mouse, MainScene.camera);
+            var intersects = MainScene.raycaster.intersectObjects(MainScene.smokeEditor.points, true);
+            if (intersects.length > 0) {
+                MainScene.smokeEditor.transformControls.attach(intersects[0].object);
+                console.log(MainScene.smokeEditor.transformControls);
+            }
+        }
+        //点击坐标测试
+        /*MainScene.raycaster.setFromCamera(MainScene.mouse, MainScene.camera);
         var intersects = MainScene.raycaster.intersectObjects(MainScene.Cameracontroller.collideMeshList, true);
         if (intersects.length > 0) {
 
             console.log(intersects[0].point);
             MainScene.pMesh.position.set(intersects[0].point.x, intersects[0].point.y, intersects[0].point.z);
             console.log(MainScene.pMesh.position);
-        }
+        }*/
+
 
     }
     //deregion
 
-     */
     // window.addEventListener('click', onClick, false);
     //
     // function onClick(event) {

@@ -51,9 +51,6 @@ var mainScene = function()
     this.underground = new Underground();//场景
 
     /*
-
-    this.people = new People();//人群
-
     this.Path = new path();
 
     this.smoke = new NSsmoke();//烟
@@ -73,7 +70,11 @@ var mainScene = function()
      */
     this.smoke = new Smoke();//烟
 
+    this.people = new People();//人群
+
     this.HCI = new Interaction();//交互控制
+
+    this.smokeEditor = new SmokeEditor();//烟雾编辑器
 
     this.globalPlane = null;
 
@@ -133,6 +134,10 @@ mainScene.prototype.init = function()
     this.smoke.init(this);
     //endregion
 
+    //烟雾编辑器
+    this.smokeEditor.init(this);
+    //endregion
+
     //region 火
     //this.fire.init(this);
     //endregion
@@ -173,6 +178,9 @@ mainScene.prototype.start = function()
     {
         self.delta = self.clock.getDelta();
 
+        if(self.isEdit)
+            self.smokeEditor.update(self);
+
         if(self.active)
         {
             //self.water.update();    //todo debug here
@@ -206,7 +214,7 @@ mainScene.prototype.start = function()
         self.renderer.setViewport(0, 0, window.innerWidth, window.innerHeight);
         self.renderer.render(self.scene, self.camera);
         //todo self.renderer.clear();    与renderer.autoClear = false 对应 不知道意义何在
-        //self.stats.end();
+        //self.stats.end()
 
        // self.LOD;//lod算法
     }
