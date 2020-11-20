@@ -191,7 +191,7 @@ mainScene.prototype.start = function()
 
             //self.Fireman.update(self);
 
-            //self.people.update(self);
+            self.people.update(self);
 
             //self.Test.update(self);
             //视锥剔除

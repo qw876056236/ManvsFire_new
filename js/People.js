@@ -792,7 +792,7 @@ People.prototype.init = function (_this) {
                 var distance = Math.random() * 17;
                 var distance1 = Math.random() * 26;
                 newMesh.scene.position.set(distance+43, -8.5, distance1+261);
-                
+
                 // 将模型的材质附在newMesh上
                 var loader = new THREE.TextureLoader();
                 var texture = loader.load(textureURL, function () {
@@ -2827,7 +2827,7 @@ People.prototype.init = function (_this) {
         });
 
         var promiseAll18 = Promise.all(arr18).then((data) => {
-            
+
             var temp, number;
             if(surplus>=99&&surplus<=109){
                 number = multi * 10 + surplus - 99;
@@ -3099,4 +3099,3 @@ People.prototype.update = function (_this)
 //     }
 // }
 //
-// animate();

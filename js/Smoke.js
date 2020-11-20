@@ -1,6 +1,6 @@
 var Smoke = function()
 {
-    this.smokeTexture = new THREE.TextureLoader().load('textures/smoke-Element.png');
+    this.smokeTexture = new THREE.TextureLoader().load('./textures/Smoke-Element.png');
     this.cloudArr = [];
     this.time = 0;
     this.vx = 1;
