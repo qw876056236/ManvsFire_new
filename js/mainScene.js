@@ -256,15 +256,17 @@ mainScene.prototype.setScene = function()
     this.camControl = camControl;
 
 
-    var ambientLight = new THREE.AmbientLight(0xcccccc,4);
+    var ambientLight = new THREE.AmbientLight(0xcccccc,1.5);
     this.scene.add(ambientLight);
 
-    var directionalLight_1 = new THREE.DirectionalLight(0xffffff,0.2);
-    directionalLight_1.position.set(0.3,0.4,0.5);
+    var directionalLight_1 = new THREE.DirectionalLight(0xffffff,1);
+    //directionalLight_1.position.set(0.3,0.4,0.5);
+    directionalLight_1.position.set(1,1,1);
     this.scene.add(directionalLight_1);
 
-    var directionalLight_2 = new THREE.DirectionalLight(0xffffff,0.2);
-    directionalLight_2.position.set(-0.3,-0.4,0.5);
+    var directionalLight_2 = new THREE.DirectionalLight(0xffffff,1);
+    //directionalLight_2.position.set(-0.3,-0.4,0.5);
+    directionalLight_2.position.set(-1,1,-1);
     this.scene.add(directionalLight_2);
 //endregion
 

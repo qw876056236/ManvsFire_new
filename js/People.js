@@ -414,7 +414,7 @@ People.prototype.init = function (_this) {
                 //动态人群位置
                 var distance = Math.random() * 17;
                 var distance1 = Math.random() * 26;
-                newMesh.scene.position.set(distance+43, -8, distance1+261);
+                newMesh.scene.position.set(distance+43, -8.5, distance1+261);
 
                 // 将模型的材质附在newMesh上
                 var loader = new THREE.TextureLoader();
@@ -616,7 +616,7 @@ People.prototype.init = function (_this) {
                 //动态人群位置
                 var distance = Math.random() * 17;
                 var distance1 = Math.random() * 26;
-                newMesh.scene.position.set(distance+43, -8, distance1+261);
+                newMesh.scene.position.set(distance+43, -8.5, distance1+261);
 
                 // 将模型的材质附在newMesh上
                 var loader = new THREE.TextureLoader();
@@ -700,7 +700,7 @@ People.prototype.init = function (_this) {
                 //动态人群位置
                 var distance = Math.random() * 17;
                 var distance1 = Math.random() * 26;
-                newMesh.scene.position.set(distance+43, -8, distance1+261);
+                newMesh.scene.position.set(distance+43, -8.5, distance1+261);
 
                 // 将模型的材质附在newMesh上
                 var loader = new THREE.TextureLoader();
@@ -791,7 +791,7 @@ People.prototype.init = function (_this) {
                 //动态人群位置
                 var distance = Math.random() * 17;
                 var distance1 = Math.random() * 26;
-                newMesh.scene.position.set(distance+43, -8, distance1+261);
+                newMesh.scene.position.set(distance+43, -8.5, distance1+261);
                 
                 // 将模型的材质附在newMesh上
                 var loader = new THREE.TextureLoader();
@@ -992,7 +992,7 @@ People.prototype.init = function (_this) {
                 //动态人群位置
                 var distance = Math.random() * 15;
                 var distance1 = Math.random() * 20;
-                newMesh.scene.position.set(distance+40, -8, distance1+241);
+                newMesh.scene.position.set(distance+40, -8.5, distance1+241);
 
                 // 将模型的材质附在newMesh上
                 var loader = new THREE.TextureLoader();
@@ -1195,7 +1195,7 @@ People.prototype.init = function (_this) {
                 //动态人群位置
                 var distance = Math.random() * 15;
                 var distance1 = Math.random() * 20;
-                newMesh.scene.position.set(distance+40, -8, distance1+241);
+                newMesh.scene.position.set(distance+40, -8.5, distance1+241);
 
                 // 将模型的材质附在newMesh上
                 var loader = new THREE.TextureLoader();
@@ -1272,7 +1272,7 @@ People.prototype.init = function (_this) {
                 //动态人群位置
                 var distance = Math.random() * 15;
                 var distance1 = Math.random() * 20;
-                newMesh.scene.position.set(distance+40, -8, distance1+241);
+                newMesh.scene.position.set(distance+40, -8.5, distance1+241);
 
                 // 将模型的材质附在newMesh上
                 var loader = new THREE.TextureLoader();
@@ -1473,7 +1473,7 @@ People.prototype.init = function (_this) {
                 //动态人群位置
                 var distance = Math.random() * 15;
                 var distance1 = Math.random() * 20;
-                newMesh.scene.position.set(distance+40, -8, distance1+222);
+                newMesh.scene.position.set(distance+40, -8.5, distance1+222);
 
                 // 将模型的材质附在newMesh上
                 var loader = new THREE.TextureLoader();
@@ -1676,7 +1676,7 @@ People.prototype.init = function (_this) {
                 //动态人群位置
                 var distance = Math.random() * 15;
                 var distance1 = Math.random() * 20;
-                newMesh.scene.position.set(distance+40, -8, distance1+222);
+                newMesh.scene.position.set(distance+40, -8.5, distance1+222);
 
                 // 将模型的材质附在newMesh上
                 var loader = new THREE.TextureLoader();
@@ -1754,7 +1754,7 @@ People.prototype.init = function (_this) {
                 //动态人群位置
                 var distance = Math.random() * 15;
                 var distance1 = Math.random() * 20;
-                newMesh.scene.position.set(distance+40, -8, distance1+222);
+                newMesh.scene.position.set(distance+40, -8.5, distance1+222);
 
                 // 将模型的材质附在newMesh上
                 var loader = new THREE.TextureLoader();
@@ -1934,7 +1934,7 @@ People.prototype.init = function (_this) {
                 //动态人群位置
                 var distance = Math.random() * 17;
                 var distance1 = Math.random() * 26;
-                newMesh.scene.position.set(distance+43, -8, distance1+197);
+                newMesh.scene.position.set(distance+43, -8.5, distance1+197);
 
                 // 将模型的材质附在newMesh上
                 var loader = new THREE.TextureLoader();
@@ -2159,7 +2159,7 @@ People.prototype.init = function (_this) {
                 //动态人群位置
                 var distance = Math.random() * 17;
                 var distance1 = Math.random() * 26;
-                newMesh.scene.position.set(distance+43, -8, distance1+197);
+                newMesh.scene.position.set(distance+43, -8.5, distance1+197);
 
                 // 将模型的材质附在newMesh上
                 var loader = new THREE.TextureLoader();
@@ -2244,7 +2244,7 @@ People.prototype.init = function (_this) {
                 //动态人群位置
                 var distance = Math.random() * 17;
                 var distance1 = Math.random() * 26;
-                newMesh.scene.position.set(distance+43, -8, distance1+197);
+                newMesh.scene.position.set(distance+43, -8.5, distance1+197);
 
                 // 将模型的材质附在newMesh上
                 var loader = new THREE.TextureLoader();
@@ -2315,7 +2315,7 @@ People.prototype.init = function (_this) {
                 //动态人群位置
                 var distance = Math.random() * 17;
                 var distance1 = Math.random() * 26;
-                newMesh.scene.position.set(distance+43, -8, distance1+197);
+                newMesh.scene.position.set(distance+43, -8.5, distance1+197);
 
                 //人物骨骼参数化
                 var headRandom =1 +  Math.random()* 1.5/number;
@@ -2415,7 +2415,7 @@ People.prototype.init = function (_this) {
                 //动态人群位置
                 var distance = Math.random() * 18;
                 var distance1 = Math.random() * 30;
-                newMesh.scene.position.set(distance+43, -8, distance1+170);
+                newMesh.scene.position.set(distance+43, -8.5, distance1+170);
 
                 // 将模型的材质附在newMesh上
                 var loader = new THREE.TextureLoader();
@@ -2499,7 +2499,7 @@ People.prototype.init = function (_this) {
                 //动态人群位置
                 var distance = Math.random() * 18;
                 var distance1 = Math.random() * 30;
-                newMesh.scene.position.set(distance+43, -8, distance1+170);
+                newMesh.scene.position.set(distance+43, -8.5, distance1+170);
 
                 // 将模型的材质附在newMesh上
                 var loader = new THREE.TextureLoader();
@@ -2590,7 +2590,7 @@ People.prototype.init = function (_this) {
                 //动态人群位置
                 var distance = Math.random() * 18;
                 var distance1 = Math.random() * 30;
-                newMesh.scene.position.set(distance+43, -8, distance1+170);
+                newMesh.scene.position.set(distance+43, -8.5, distance1+170);
 
                 // 将模型的材质附在newMesh上
                 var loader = new THREE.TextureLoader();
@@ -2791,7 +2791,7 @@ People.prototype.init = function (_this) {
                 //动态人群位置
                 var distance = Math.random() * 18;
                 var distance1 = Math.random() * 30;
-                newMesh.scene.position.set(distance+43, -8, distance1+170);
+                newMesh.scene.position.set(distance+43, -8.5, distance1+170);
 
                 // 将模型的材质附在newMesh上
                 var loader = new THREE.TextureLoader();
@@ -2993,7 +2993,7 @@ People.prototype.init = function (_this) {
                 //动态人群位置
                 var distance = Math.random() * 18;
                 var distance1 = Math.random() * 30;
-                newMesh.scene.position.set(distance+43, -8, distance1+170);
+                newMesh.scene.position.set(distance+43, -8.5, distance1+170);
 
                 // 将模型的材质附在newMesh上
                 var loader = new THREE.TextureLoader();
