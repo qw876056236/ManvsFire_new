@@ -203,7 +203,7 @@ mainScene.prototype.start = function()
         //self.Cameracontroller.update1(self);
         self.pMesh.position.set(document.getElementById("x").value,document.getElementById("y").value,document.getElementById("z").value);
 
-        self.cameraControl();
+        //self.cameraControl();
 
         TWEEN.update();
 
