@@ -52,9 +52,9 @@ Interaction.prototype.fuc1 = function (_this)
         _this.camera_status = _this.Cameracontroller.setenum.floor1;
         //设定视角具体数值
         _this.camera.position.set(397,29,42);
-        console.log(_this.camera);
-        console.log(_this.freeViewControl);
-        console.log(_this.camControl);
+        ///console.log(_this.camera);
+        ///console.log(_this.freeViewControl);
+        ///console.log(_this.camControl);
     });
 
     document.getElementById('floor2').addEventListener('click',function(event)
@@ -63,10 +63,10 @@ Interaction.prototype.fuc1 = function (_this)
         _this.camera_status = _this.Cameracontroller.setenum.floor2;
         //设定视角具体数值
         _this.camera.position.set(589,14,18);
-        console.log(_this.camera);
-        console.log(_this.freeViewControl);
+        ///console.log(_this.camera);
+        ///console.log(_this.freeViewControl);
 
-        console.log(_this.camControl);
+        ///console.log(_this.camControl);
     });
 
 
@@ -368,7 +368,7 @@ Interaction.prototype.fuc3 = function (MainScene)
             var intersects = MainScene.raycaster.intersectObjects(MainScene.smokeEditor.points, true);
             if (intersects.length > 0) {
                 MainScene.smokeEditor.transformControls.attach(intersects[0].object);
-                console.log(MainScene.smokeEditor.transformControls);
+                ///console.log(MainScene.smokeEditor.transformControls);
             }
         }
         //点击坐标测试
@@ -493,10 +493,10 @@ Interaction.prototype.fuc5 = function (_this)
     {
         var output = _this.camera.position.x.toString()+","+_this.camera.position.y.toString()+","+_this.camera.position.z.toString();
         alert(output);
-        console.log(_this.camera.position);
-        console.log(_this.camera);
-        console.log(_this.freeViewControl);
-        console.log(_this.camControl);
+        ///console.log(_this.camera.position);
+        ///console.log(_this.camera);
+        ///console.log(_this.freeViewControl);
+        ///console.log(_this.camControl);
     });
 
     function change(num)
