@@ -200,7 +200,7 @@ THREE.GLTFLoader = (function () {
 
                             if (extensionsRequired.indexOf(extensionName) >= 0) {
 
-                                console.warn('THREE.GLTFLoader: Unknown extension "' + extensionName + '".');
+                                ///console.warn('THREE.GLTFLoader: Unknown extension "' + extensionName + '".');
 
                             }
 
@@ -2848,7 +2848,7 @@ THREE.GLTFLoader = (function () {
 
                         if (material.aoMap && geometry.attributes.uv2 === undefined && geometry.attributes.uv !== undefined) {
 
-                            console.log('THREE.GLTFLoader: Duplicating UVs to support aoMap.');
+                            ///console.log('THREE.GLTFLoader: Duplicating UVs to support aoMap.');
                             geometry.addAttribute('uv2', new THREE.BufferAttribute(geometry.attributes.uv.array, 2));
 
                         }

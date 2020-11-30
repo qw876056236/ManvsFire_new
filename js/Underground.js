@@ -28,7 +28,7 @@ Underground.prototype.GlbBuilding = function (_this) {
         self.mesh = gltf.scene;
         self.mesh.scale.set(1,1,1);
         self.mesh.position.set(0,0,0);
-        console.log(self.mesh);
+        ///console.log(self.mesh);
 
         _this.scene.add(self.mesh);
         _this.Cameracontroller.collideMeshList.push(self.mesh);
