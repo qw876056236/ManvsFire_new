@@ -10,6 +10,7 @@ function PlayerControl(camera){
     */
     this.camera=camera;
     var scope=this;
+    this.autoPath=[];
 
     var myMouseManager=new MouseManager();
     myMouseManager.dragMouse=function (dx,dy) {
@@ -20,29 +21,44 @@ function PlayerControl(camera){
         var delta = 0;
         if ( event.wheelDelta !== undefined )delta = event.wheelDelta;
         else if ( event.detail !== undefined )delta = - event.detail;
-        scope.forward(delta);
+        scope.forward(delta/2);
     }
 
     var myKeyboardManager=new KeyboardManager();
     myMouseManager.init();
     myKeyboardManager.onKeyDown=function(event){
-        var step=10;
-        if(event.key==="ArrowUp"||event.key==="W"||event.key==="w")scope.forward(step);
-        else if(event.key==="ArrowDown"||event.key==="S"||event.key==="s")scope.forward(-step);
-        else if(event.key==="Q"||event.key==="q")scope.up(step);
-        else if(event.key==="E"||event.key==="e")scope.up(-step);
-        else if(event.key==="ArrowLeft"||event.key==="A"||event.key==="a")scope.left(step);
-        else if(event.key==="ArrowRight"||event.key==="D"||event.key==="d")scope.left(-step);
+        var step=3;
+        if(event.key==="ArrowUp"||event.key==="w")scope.forward(step);
+        else if(event.key==="ArrowDown"||event.key==="s")scope.forward(-step);
+        else if(event.key==="q")scope.up(step);
+        else if(event.key==="e")scope.up(-step);
+        else if(event.key==="ArrowLeft"||event.key==="a")scope.left(step);
+        else if(event.key==="ArrowRight"||event.key==="d")scope.left(-step);
 
-        else if(event.key==="v"||event.key==="V")
-            console.log("["+
-                Math.floor(scope.camera.position.x)+","+
-                Math.floor(scope.camera.position.y)+","+
-                Math.floor(scope.camera.position.z)+","+
-                Math.floor(scope.camera.rotation.x*100000)/100000+","+
-                Math.floor(scope.camera.rotation.y*100000)/100000+","+
-                Math.floor(scope.camera.rotation.z*100000)/100000+",100]"
-            );
+        else if(event.key==="Q")scope.camera.position.y+=step/2;
+        else if(event.key==="E")scope.camera.position.y-=step/2;
+        else if(event.key==="W")scope.camera.position.x+=step/2;
+        else if(event.key==="S")scope.camera.position.x-=step/2;
+        else if(event.key==="A")scope.camera.position.y+=step/2;
+        else if(event.key==="D")scope.camera.position.y-=step/2;
+        else if(event.key==="v"){
+            var a=Math.floor(scope.camera.rotation.x*100000)/100000;
+            var b=Math.floor(scope.camera.rotation.y*100000)/100000;
+            var c=Math.floor(scope.camera.rotation.z*100000)/100000;
+            /*if(a<-Math.PI)a+=Math.PI*2;
+            if(b<-Math.PI)b+=Math.PI*2;
+            if(c<-Math.PI)c+=Math.PI*2;*/
+            var s="["+
+                Math.floor(scope.camera.position.x*100)/100+","+
+                Math.floor(scope.camera.position.y*100)/100+","+
+                Math.floor(scope.camera.position.z*100)/100+","+
+                a+","+
+                b+","+
+                c+",100]"
+            console.log(","+s);
+            scope.autoPath.push(s);
+        }else if(event.key==="V")alert(scope.autoPath);
+
     }
     myKeyboardManager.init();
 

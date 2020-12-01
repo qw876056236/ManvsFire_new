@@ -61,10 +61,19 @@ function PreviewManager(camera,roamPath){//var myPreviewManager=new PreviewManag
             z+(z2-z1)/time
         );
 
+        var da=a2-a1;
+        var db=b2-b1;
+        var dc=c2-c1;
+        if(da>Math.PI)da-=2*Math.PI;
+        else if(da<-Math.PI)da+=2*Math.PI;
+        if(db>Math.PI)db-=2*Math.PI;
+        else if(db<-Math.PI)db+=2*Math.PI;
+        if(dc>Math.PI)dc-=2*Math.PI;
+        else if(dc<-Math.PI)dc+=2*Math.PI;/**/
         camera.rotation.set(
-            a+(a2-a1)/time,
-            b+(b2-b1)/time,
-            c+(c2-c1)/time
+            a+(da)/time,
+            b+(db)/time,
+            c+(dc)/time
         );
 
         //if(z1==3.8)console.log(x1,x,x2,';',z1,z,z2);
