@@ -7,13 +7,8 @@
     MainScene.start();
 
     MainScene.HCI.fuc3(MainScene);
-
-    /*document.addEventListener( 'mouseup', onMouseUp, true);
-    function onMouseUp(){
-        alert();
-    }*/
     new PlayerControl(MainScene.camera);
-//开始自动漫游路径
+    //开始自动漫游路径
     var mydata = [//自动漫游路径
         [60,3,146,-0.0138,0.3864,0.00519,100]
         ,[54,-6,159,-2.88231,0.28582,3.06694,100]
@@ -28,12 +23,10 @@
         //以下是上电梯
         ,[49.59,-12.99,188.96,2.78839,-0.0371,3.09644,100],[49.62,-7.02,201.4,3.09312,0.0504,-3.13915,100]
         ,[51.38,-7.05,209.43,-1.76594,1.48958,1.76655,100]
-
-
-
     ];
     var myPreviewManager=new PreviewManager(MainScene.camera,mydata);
-    myPreviewManager.isLoop=false;
+    myPreviewManager.autoRoam();
+    myPreviewManager.createCameraButton('./img/1.png','./img/2.png');
     //结束自动漫游路径
 
 }).call(this)
