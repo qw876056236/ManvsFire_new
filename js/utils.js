@@ -278,3 +278,28 @@ Utils.cloneUniforms = function( src ) {
     return dst;
 
 }
+
+//一元二次方程计算
+Utils.computeQuadratic = function(a,b,c){
+    if(b*b-4*a*c < 0)
+    {
+        console.log("方程无解");
+        return;
+    }
+    x1 = (Math.pow(b*b-4*a*c,1/2) - b) / (2*a);
+    x2 = (-Math.pow(b*b-4*a*c,1/2) - b) / (2*a);
+    if(x1<0)
+    {
+        console.log("两个解都小于0");
+        return;
+    }
+    if(x2<=0)
+    {
+        return x1;
+    }
+    if(x2>0)
+    {
+        console.log("两个解都大于0");
+        return x1>x2 ? x1 : x2;
+    }
+}
