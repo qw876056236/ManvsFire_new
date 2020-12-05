@@ -10,7 +10,7 @@ var Underground = function ()
 
 Underground.prototype.init = function (_this) {
     this.GlbBuilding(_this);
-    this.AddSubway(_this);
+    // this.AddSubway(_this);
 }
 
 
@@ -149,18 +149,18 @@ Underground.prototype.GlbBuilding = function (_this) {
         if(data) return loadAsync('./light_sub/18b2roof.glb');
     }).then(function(data){
         if(data) return loadAsync('./light_sub/19b2others.glb');
-    }).then(function(data){
-        if(data) return loadAsync('./light_sub/9ground.glb');
-    }).then(function(data){
-        if(data) return loadAsync('./light_sub/10f1buildings1.glb');
-    }).then(function(data){
-        if(data) return loadAsync('./light_sub/11f1others.glb');
-    }).then(function(data){
-        if(data) return loadAsync('./light_sub/33f1buildings2.glb');
-    }).then(function(data){
-        if(data) return loadAsync('./light_sub/34f1buildings3.glb');
-    }).then(function(data){
-        if(data) return loadAsync('./light_sub/35f1buildings4.glb');
+    // }).then(function(data){
+    //     if(data) return loadAsync('./light_sub/9ground.glb');
+    // }).then(function(data){
+    //     if(data) return loadAsync('./light_sub/10f1buildings1.glb');
+    // }).then(function(data){
+    //     if(data) return loadAsync('./light_sub/11f1others.glb');
+    // }).then(function(data){
+    //     if(data) return loadAsync('./light_sub/33f1buildings2.glb');
+    // }).then(function(data){
+    //     if(data) return loadAsync('./light_sub/34f1buildings3.glb');
+    // }).then(function(data){
+    //     if(data) return loadAsync('./light_sub/35f1buildings4.glb');
     }).then(() => {
         $("#loadTime")[0].innerText = ((performance.now() - startLoadTime) / 1000).toFixed(2) + "秒";
     });
@@ -228,31 +228,31 @@ Underground.prototype.GlbBuilding = function (_this) {
 
 };
 
-Underground.prototype.AddSubway = function (_this)
-{
-    var self = this;
-    var mtlLoader = new THREE.MTLLoader();
-    mtlLoader.setPath('Model/subway/');
-    mtlLoader.load('subway.mtl', function(materials) {
-
-        materials.preload();
-
-        var objLoader = new THREE.OBJLoader();
-        objLoader.setMaterials(materials);
-        objLoader.setPath('Model/subway/');
-        objLoader.load('subway.obj', function(object) {
-            self.subway = object;
-            //正确位置
-            object.position.set(43.2,-13.7,210);
-
-            //临时位置
-            //object.position.set(550,8,41.4);
-            object.scale.set(0.01, 0.01, 0.01);
-            //object.rotateY(Math.PI/2);
-            _this.scene.add(object);
-            self.isready = true;
-        });
-    });
-
-}
+// Underground.prototype.AddSubway = function (_this)
+// {
+//     var self = this;
+//     var mtlLoader = new THREE.MTLLoader();
+//     mtlLoader.setPath('Model/subway/');
+//     mtlLoader.load('subway.mtl', function(materials) {
+//
+//         materials.preload();
+//
+//         var objLoader = new THREE.OBJLoader();
+//         objLoader.setMaterials(materials);
+//         objLoader.setPath('Model/subway/');
+//         objLoader.load('subway.obj', function(object) {
+//             self.subway = object;
+//             //正确位置
+//             object.position.set(43.2,-13.7,210);
+//
+//             //临时位置
+//             //object.position.set(550,8,41.4);
+//             object.scale.set(0.01, 0.01, 0.01);
+//             //object.rotateY(Math.PI/2);
+//             _this.scene.add(object);
+//             self.isready = true;
+//         });
+//     });
+//
+// }
 
