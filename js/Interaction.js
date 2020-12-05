@@ -159,7 +159,6 @@ Interaction.prototype.fuc3 = function (MainScene)
 
     $('createPersonBtn').addEventListener('click',function (event)
     {
-        $('loading').style.display = 'block';
         $('createPerson').style.display = 'none';
         $('Menu').style.display = 'block';
         $('illustration-context').innerHTML = "<p>您已成功创建疏散人群</p>"+"若要开始火灾模拟，请点击“编辑烟雾”按钮进行编辑，编辑完毕后点击“开始模拟”"
