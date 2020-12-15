@@ -151,16 +151,16 @@ Underground.prototype.GlbBuilding = function (_this) {
         if(data) return loadAsync('./light_sub/19b2others.glb');
     }).then(function(data){
         if(data) return loadAsync('./light_sub/9ground.glb');
-    }).then(function(data){
-        if(data) return loadAsync('./light_sub/10f1buildings1.glb');
-    }).then(function(data){
-        if(data) return loadAsync('./light_sub/11f1others.glb');
-    }).then(function(data){
-        if(data) return loadAsync('./light_sub/33f1buildings2.glb');
-    }).then(function(data){
-        if(data) return loadAsync('./light_sub/34f1buildings3.glb');
-    }).then(function(data){
-        if(data) return loadAsync('./light_sub/35f1buildings4.glb');
+    // }).then(function(data){
+    //     if(data) return loadAsync('./light_sub/10f1buildings1.glb');
+    // }).then(function(data){
+    //     if(data) return loadAsync('./light_sub/11f1others.glb');
+    // }).then(function(data){
+    //     if(data) return loadAsync('./light_sub/33f1buildings2.glb');
+    // }).then(function(data){
+    //     if(data) return loadAsync('./light_sub/34f1buildings3.glb');
+    // }).then(function(data){
+    //     if(data) return loadAsync('./light_sub/35f1buildings4.glb');
     }).then(() => {
         $("#loadTime")[0].innerText = ((performance.now() - startLoadTime) / 1000).toFixed(2) + "秒";
     });
