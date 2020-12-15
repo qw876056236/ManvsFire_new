@@ -1,10 +1,12 @@
 function PlayerControl(MainScene){
     var scope=this;
     this.MainScene=MainScene;
+    this.controller;
     this.init=function () {
         this.controller=new PlayerControl0(MainScene.camera);
         function tool(){
             requestAnimationFrame(tool);
+            scope.controller.update();
             scope.controller.ableRotation=!scope.MainScene.isEdit;
         }tool();
     }
@@ -14,6 +16,17 @@ function PlayerControl0(camera){
     var scope=this;
     this.autoPath=[];
 
+    this.dposition={
+        left:0,
+        forward:0,
+        up:0
+    }//[0,0,0];//left、forward、up
+
+    this.update=function () {
+        if(scope.dposition.left)scope.left(scope.dposition.left);
+        if(scope.dposition.forward)scope.forward(scope.dposition.forward);
+        if(scope.dposition.up)scope.up(scope.dposition.up);
+    }
     this.ableRotation=true;
 
     var myMouseManager=new MouseManager();
@@ -33,19 +46,17 @@ function PlayerControl0(camera){
     myMouseManager.init();
     myKeyboardManager.onKeyDown=function(event){
         var step=3;
-        if(event.key==="ArrowUp"||event.key==="w")scope.forward(step);
-        else if(event.key==="ArrowDown"||event.key==="s")scope.forward(-step);
-        else if(event.key==="q")scope.up(step);
-        else if(event.key==="e")scope.up(-step);
-        else if(event.key==="ArrowLeft"||event.key==="a")scope.left(step);
-        else if(event.key==="ArrowRight"||event.key==="d")scope.left(-step);
+        if(event.key==="ArrowUp"||event.key==="w")scope.dposition.forward=step;//forward(step);
+        else if(event.key==="ArrowDown"||event.key==="s")scope.dposition.forward=-step;//forward(-step);
+        else if(event.key==="q"||event.key==="Q")scope.dposition.up=step;
+        else if(event.key==="e"||event.key==="E")scope.dposition.up=-step;
+        else if(event.key==="ArrowLeft"||event.key==="a")scope.dposition.left=step;
+        else if(event.key==="ArrowRight"||event.key==="d")scope.dposition.left=-step;
 
-        else if(event.key==="Q")scope.camera.position.y+=step/2;
-        else if(event.key==="E")scope.camera.position.y-=step/2;
-        else if(event.key==="W")scope.camera.position.x+=step/2;
-        else if(event.key==="S")scope.camera.position.x-=step/2;
-        else if(event.key==="A")scope.camera.position.y+=step/2;
-        else if(event.key==="D")scope.camera.position.y-=step/2;
+        else if(event.key==="W")scope.forward_horizon(step);
+        else if(event.key==="S")scope.forward_horizon(-step);
+        else if(event.key==="A")scope.left_horizon(step);
+        else if(event.key==="D")scope.left_horizon(-step);
         else if(event.key==="v"){
             var a=Math.floor(scope.camera.rotation.x*100000)/100000;
             var b=Math.floor(scope.camera.rotation.y*100000)/100000;
@@ -63,6 +74,15 @@ function PlayerControl0(camera){
             console.log(","+s);
             scope.autoPath.push(s);
         }else if(event.key==="V")alert(scope.autoPath);
+
+    }
+    myKeyboardManager.onKeyUp=function(event){
+        if(event.key==="ArrowUp"||event.key==="w")        scope.dposition.forward=0;//forward(step);
+        else if(event.key==="ArrowDown"||event.key==="s") scope.dposition.forward=0;//forward(-step);
+        else if(event.key==="q"||event.key==="Q")         scope.dposition.up=0;
+        else if(event.key==="e"||event.key==="E")         scope.dposition.up=0;
+        else if(event.key==="ArrowLeft"||event.key==="a") scope.dposition.left=0;
+        else if(event.key==="ArrowRight"||event.key==="d")scope.dposition.left=0;
 
     }
     myKeyboardManager.init();
@@ -109,18 +129,6 @@ function PlayerControl0(camera){
         this.up(y);
         this.left(z);
     }
-    this.forward=function (step) {//相机的初始方向是（0，0，-1）//对y旋转-90度后相机为水平方向camera.rotation.set(0,-Math.PI/2,0);
-        var direction = new THREE.Vector3(
-            -0.1*this.camera.matrixWorld.elements[8]*step
-            ,-0.1*this.camera.matrixWorld.elements[9]*step
-            ,-0.1*this.camera.matrixWorld.elements[10]*step
-        );
-        this.camera.position.set(
-            this.camera.position.x+direction.x,
-            this.camera.position.y+direction.y,
-            this.camera.position.z+direction.z
-        );
-    }
     this.up=function (step) {//相机的上方向是（0，1，0）
         var direction = new THREE.Vector3(
             0.1*this.camera.matrixWorld.elements[4]*step
@@ -133,11 +141,47 @@ function PlayerControl0(camera){
             this.camera.position.z+direction.z
         );
     }
+    this.forward=function (step) {//相机的初始方向是（0，0，-1）//对y旋转-90度后相机为水平方向camera.rotation.set(0,-Math.PI/2,0);
+        var direction = new THREE.Vector3(
+            -0.1*this.camera.matrixWorld.elements[8]*step
+            ,-0.1*this.camera.matrixWorld.elements[9]*step
+            ,-0.1*this.camera.matrixWorld.elements[10]*step
+        );
+        this.camera.position.set(
+            this.camera.position.x+direction.x,
+            this.camera.position.y+direction.y,
+            this.camera.position.z+direction.z
+        );
+    }
     this.left=function (step) {//相机的左方向是（-1，0，0）
         var direction = new THREE.Vector3(
             -0.1*this.camera.matrixWorld.elements[0]*step
             ,-0.1*this.camera.matrixWorld.elements[1]*step
             ,-0.1*this.camera.matrixWorld.elements[2]*step
+        );
+        this.camera.position.set(
+            this.camera.position.x+direction.x,
+            this.camera.position.y+direction.y,
+            this.camera.position.z+direction.z
+        );
+    }
+    this.left_horizon=function (step) {//相机的左方向是（-1，0，0）
+        var direction = new THREE.Vector3(
+            -0.1*this.camera.matrixWorld.elements[0]*step
+            ,0
+            ,-0.1*this.camera.matrixWorld.elements[2]*step
+        );
+        this.camera.position.set(
+            this.camera.position.x+direction.x,
+            this.camera.position.y+direction.y,
+            this.camera.position.z+direction.z
+        );
+    }
+    this.forward_horizon=function (step) {//相机的初始方向是（0，0，-1）//对y旋转-90度后相机为水平方向camera.rotation.set(0,-Math.PI/2,0);
+        var direction = new THREE.Vector3(
+            -0.1*this.camera.matrixWorld.elements[8]*step
+            ,0
+            ,-0.1*this.camera.matrixWorld.elements[10]*step
         );
         this.camera.position.set(
             this.camera.position.x+direction.x,
@@ -183,8 +227,12 @@ function KeyboardManager(){
     this.onKeyDown=function(event){
         console.log(event);
     }
+    this.onKeyUp=function(event){
+        console.log(event);
+    }
     this.init=function(){
         window.addEventListener( 'keydown',scope.onKeyDown, false );
+        window.addEventListener( 'keyup',scope.onKeyUp  , false );
     }
 }
 function PhoneManager(){
