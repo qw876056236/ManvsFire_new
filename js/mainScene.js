@@ -122,6 +122,7 @@ mainScene.prototype.init = function()
 
     //region 视角控制初始化
     this.Cameracontroller.init(this);
+    this.playerControl=null;////通过鼠标键盘或者手机触屏控制相机
     //endregion
 
     //region 路径
@@ -233,6 +234,8 @@ mainScene.prototype.setScene = function()
     this.camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 0.1, 2000000);
     this.camera.position.set(60,3,146);
     this.camera.lookAt(new THREE.Vector3(1,1,1));
+    this.playerControl=new PlayerControl(this);//通过鼠标键盘或者手机触屏控制相机
+    this.playerControl.init();
 
     this.renderer = new THREE.WebGLRenderer( { antialias: true } );
     this.renderer.autoClear = true;    //todo 不声明的话默认为true,原demo为false, 与start.animate 中renderer.clear()对应

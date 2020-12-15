@@ -1,19 +1,24 @@
-function PlayerControl(camera){
-    /*
-    function test(){
-    //myPlayerControl.forward(1);
-    //myPlayerControl.up(1);
-    //console.log(222);
-    myPlayerControl.rotation1(0.01);
-    requestAnimationFrame(test);
-    }test();
-    */
+function PlayerControl(MainScene){
+    var scope=this;
+    this.MainScene=MainScene;
+    this.init=function () {
+        this.controller=new PlayerControl0(MainScene.camera);
+        function tool(){
+            requestAnimationFrame(tool);
+            scope.controller.ableRotation=!scope.MainScene.isEdit;
+        }tool();
+    }
+}
+function PlayerControl0(camera){
     this.camera=camera;
     var scope=this;
     this.autoPath=[];
 
+    this.ableRotation=true;
+
     var myMouseManager=new MouseManager();
     myMouseManager.dragMouse=function (dx,dy) {
+        if(!scope.ableRotation)return;
         scope.rotation1(-0.015*dx);
         scope.rotation2(-0.015*dy);
     }
@@ -64,6 +69,7 @@ function PlayerControl(camera){
 
     var myPhoneManager=new PhoneManager();
     myPhoneManager.drag=function(dx,dy){
+        if(!scope.ableRotation)return;
         scope.rotation1(-0.015*dx);
         scope.rotation2(-0.015*dy);
     }

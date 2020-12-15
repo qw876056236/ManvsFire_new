@@ -7,7 +7,7 @@
     MainScene.start();
 
     MainScene.HCI.fuc3(MainScene);
-    new PlayerControl(MainScene.camera);
+    //new PlayerControl(MainScene.camera);
     //开始自动漫游路径
     var mydata = [//自动漫游路径
         [60,3,146,-0.0138,0.3864,0.00519,100]
