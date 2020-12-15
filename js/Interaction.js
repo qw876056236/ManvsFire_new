@@ -93,7 +93,7 @@ Interaction.prototype.fuc2 = function (_this)
         _this.isStartRun = true;
         _this.smoke.isStartSmoke = true;
         _this.active = true;
-        // _this.fire.fireManager.target.visible = true;
+        _this.fire.fireManager.target.visible = true;
         _this.clock=new THREE.Clock();
         //_this.messagecontrol.readSmoke(_this.smoke.firePointArr[2],_this);
 
@@ -245,7 +245,7 @@ Interaction.prototype.fuc3 = function (MainScene)
             MainScene.control.visible = true;
             // MainScene.fire.Te1Material.visible=false;
             // MainScene.fire.Te2Material.visible=false;
-            // MainScene.fire.fireManager.target.visible=true;
+            MainScene.fire.fireManager.target.visible=true;
             MainScene.smoke.positionBallMesh.visible=true;
             MainScene.smokeEditor.points.forEach(function(item){
                 item.visible = true;
@@ -277,7 +277,7 @@ Interaction.prototype.fuc3 = function (MainScene)
             MainScene.control.visible = false;
             // MainScene.fire.Te1Material.visible=false;
             // MainScene.fire.Te2Material.visible=false;
-            // MainScene.fire.fireManager.target.visible=false;
+            MainScene.fire.fireManager.target.visible=false;
             MainScene.smoke.positionBallMesh.visible=false;
             MainScene.smokeEditor.points.forEach(function(item){
                 item.visible = false;

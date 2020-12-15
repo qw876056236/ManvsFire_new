@@ -70,6 +70,8 @@ var mainScene = function()
      */
     this.smoke = new Smoke();//烟
 
+    this.fire = new fireControl();//火
+
     this.people = new People();//人群
 
     this.HCI = new Interaction();//交互控制
@@ -139,7 +141,7 @@ mainScene.prototype.init = function()
     //endregion
 
     //region 火
-    //this.fire.init(this);
+    this.fire.init(this);
     //endregion
 
     //region场景加载
@@ -179,13 +181,17 @@ mainScene.prototype.start = function()
         self.delta = self.clock.getDelta();
 
         if(self.isEdit)
+        {
             self.smokeEditor.update(self);
+            self.fire.update(self);
+        }
+
 
         if(self.active)
         {
             //self.water.update();    //todo debug here
 
-            //self.fire.update(self);
+            self.fire.update(self);
 
             self.smoke.update(self);
 

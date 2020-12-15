@@ -27,7 +27,7 @@ Smoke.prototype.init = function(_this)
         }
 
     var cameraOrtho = new THREE.OrthographicCamera(this.frustumSize * this.aspect / - 2, this.frustumSize * this.aspect / 2, this.frustumSize / 2, this.frustumSize / - 2, 0, 1000);
-    var positionBallGeometry=new THREE.SphereGeometry(2,4,4);
+    var positionBallGeometry=new THREE.SphereGeometry(1,4,4);
     var positionBallMaterial=new THREE.MeshPhongMaterial({color:0x00ff00});
     this.cameraPerspective = new THREE.PerspectiveCamera( 50,  this.aspect, 10, 1000 );
     this.positionBallMesh=new THREE.Mesh(positionBallGeometry,positionBallMaterial);

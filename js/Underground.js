@@ -149,8 +149,8 @@ Underground.prototype.GlbBuilding = function (_this) {
         if(data) return loadAsync('./light_sub/18b2roof.glb');
     }).then(function(data){
         if(data) return loadAsync('./light_sub/19b2others.glb');
-    }).then(function(data){
-        if(data) return loadAsync('./light_sub/9ground.glb');
+    // }).then(function(data){
+    //     if(data) return loadAsync('./light_sub/9ground.glb');
     // }).then(function(data){
     //     if(data) return loadAsync('./light_sub/10f1buildings1.glb');
     // }).then(function(data){
