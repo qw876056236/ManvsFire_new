@@ -14,23 +14,20 @@ var Interaction = function ()
 Interaction.prototype.fuc1 = function (_this)
 {
     document.getElementById('escapeDoor1').addEventListener('click',function (event) {
-        _this.camera.position.set(400,60,70);
+        _this.camera.position.set(60,0,175);
         _this.freeViewControl.center.set(416,22,7);
-        _this.camControl.lat = -85;
-        _this.camControl.lon = -70;
+        _this.camera.rotation.set(-2.8,0.7,2.9);
     });
 
     document.getElementById('escapeDoor2').addEventListener('click',function (event) {
-        _this.camera.position.set(520,38,12);
+        _this.camera.position.set(45,-2,265);
         _this.freeViewControl.center.set(554,22,46);
-        _this.camControl.lat = -80;
-        _this.camControl.lon = -298;
+        _this.camera.rotation.set(-2.5,-1.1,-2.5);
     });
     document.getElementById('escapeDoor3').addEventListener('click',function (event) {
-        _this.camera.position.set(525,52,-41);
+        _this.camera.position.set(51,5.6,305);
         _this.freeViewControl.center.set(548,22,6);
-        _this.camControl.lat = -85;
-        _this.camControl.lon = -285;
+        _this.camera.rotation.set(-2.5,0.6,2.8);
     });
     document.getElementById('WebGL-output').addEventListener('click',function(event){
         _this.freeViewControl.autoRotate=false;
@@ -51,7 +48,7 @@ Interaction.prototype.fuc1 = function (_this)
         //设置视角是一层 触发改变
         _this.camera_status = _this.Cameracontroller.setenum.floor1;
         //设定视角具体数值
-        _this.camera.position.set(397,29,42);
+        _this.camera.position.set(60,3,146);
         ///console.log(_this.camera);
         ///console.log(_this.freeViewControl);
         ///console.log(_this.camControl);
@@ -203,18 +200,16 @@ Interaction.prototype.fuc3 = function (MainScene)
 
     $('floor1').addEventListener('click',function (event)
     {
-        MainScene.camera.position.set(397,29,42);
-        MainScene.camControl.lon = 337;
-        MainScene.camControl.lat = -30;
+        MainScene.camera.position.set(55,-1,163);
         MainScene.currentFloor = "floor1";
+        MainScene.camera.rotation.set(-2.8,0.4,3);
     });
 
     $('floor2').addEventListener('click',function (event)
     {
-        MainScene.camera.position.set(589,14,18);
-        MainScene.camControl.lon = 160;
-        MainScene.camControl.lat = -30;
+        MainScene.camera.position.set(52,-11,203);
         MainScene.currentFloor = "floor2";
+        MainScene.camera.rotation.set(-2.8,0.4,3);
     });
 
     $('transformSmoke').addEventListener('click',function(event)
@@ -283,7 +278,7 @@ Interaction.prototype.fuc3 = function (MainScene)
                 item.visible = false;
             })
             MainScene.smokeEditor.shapeMesh.visible = false;
-            MainScene.smokeEditor.generateConvex(MainScene);
+            //MainScene.smokeEditor.generateConvex(MainScene);
 
         }
     });

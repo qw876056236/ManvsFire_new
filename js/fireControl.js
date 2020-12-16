@@ -7,12 +7,12 @@ var fireControl = function ()
 fireControl.prototype.init = function (_this)
 {
     var fireControl = new FIRE.ControlSheet({
-        width:0.1,
-        length: 0.1,
+        width:0.5,
+        length: 0.5,
         high: 2
     });
     var fireManager = new FIRE.Manager(fireControl);
-    fireManager.maxParticlesNum = 100;
+    fireManager.maxParticlesNum = 500;
     fireManager.runTimer();
     fireManager.controlSheet.x = _this.smoke.positionBallMesh.position.x;
     fireManager.controlSheet.y = _this.smoke.positionBallMesh.position.y;
