@@ -276,10 +276,26 @@ mainScene.prototype.setScene = function()
     this.scene.add( this.control );
     this.control.visible = false;
 
-    this.extinguisherControl=new THREE.TransformControls(this.camera,this.renderer.domElement);
-    this.extinguisherControl.attach();
-    this.scene.add(this.extinguisherControl);
-    this.extinguisherControl.visible=false;
+    this.extinguisherControl_1=new THREE.TransformControls(this.camera,this.renderer.domElement);
+    this.extinguisherControl_1.attach();
+    this.scene.add(this.extinguisherControl_1);
+    this.extinguisherControl_1.visible=false;
+    this.extinguisherControl_2=new THREE.TransformControls(this.camera,this.renderer.domElement);
+    this.extinguisherControl_2.attach();
+    this.scene.add(this.extinguisherControl_2);
+    this.extinguisherControl_2.visible=false;
+    this.extinguisherControl_3=new THREE.TransformControls(this.camera,this.renderer.domElement);
+    this.extinguisherControl_3.attach();
+    this.scene.add(this.extinguisherControl_3);
+    this.extinguisherControl_3.visible=false;
+    this.extinguisherControl_4=new THREE.TransformControls(this.camera,this.renderer.domElement);
+    this.extinguisherControl_4.attach();
+    this.scene.add(this.extinguisherControl_4);
+    this.extinguisherControl_4.visible=false;
+    this.extinguisherControl_5=new THREE.TransformControls(this.camera,this.renderer.domElement);
+    this.extinguisherControl_5.attach();
+    this.scene.add(this.extinguisherControl_5);
+    this.extinguisherControl_5.visible=false;
 //endregion
 
     //region 选取着火点剖切平面
