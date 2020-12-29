@@ -87,6 +87,8 @@ Interaction.prototype.fuc2 = function (_this)
         _this.smoke.firePos = _this.smoke.positionBallMesh.position;
         _this.smoke.positionBallMesh.visible=false;
         _this.smoke.clock.start();
+        _this.smoke.computeV0();
+        _this.smoke.cloudRank();
         _this.isStartRun = true;
         _this.smoke.isStartSmoke = true;
         _this.active = true;
@@ -233,8 +235,8 @@ Interaction.prototype.fuc3 = function (MainScene)
             // MainScene.camera.lookAt(450, 0, 8);
             MainScene.camera.position.set(50, 200, 240);//原x为150 450
             MainScene.camera.lookAt(50, 0, 240);
-            MainScene.globalPlane.constant = 17;
-            MainScene.globalPlane.set(new THREE.Vector3(0, -1, 0), 17);
+            MainScene.globalPlane.constant = 17;//地下一层
+            MainScene.globalPlane.set(new THREE.Vector3(0, -1, 0), -10.5);//地下二层
             MainScene.control.attach(MainScene.smoke.positionBallMesh);
             MainScene.isEdit = true;
             MainScene.control.visible = true;
