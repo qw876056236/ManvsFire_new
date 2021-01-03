@@ -13,6 +13,8 @@ var People = function () {
 }
 
 let meshMixer, action, modelURL, modelURL1, modelURL2, modelURL3, modelURL4, modelURL5, modelURL6, modelURL7, modelURL8, modelURL9, modelURL10, modelURL11, modelURL12, modelURL13, modelURL14, modelURL15, modelURL16, modelURL17, modelURL18, clip;
+let runMax_x = 0, runMax_z = 0;
+let runMin_x = 1000, runMin_z = 1000;
 var v0 = 0.8;//Agent初始速度
 var vmax = 1.6;//Agent最大速度
 var fear = 0;//Agent恐慌度，0-1
@@ -26,9 +28,52 @@ People.prototype.init = function (_this) {
     multi = Math.floor(multi / 109);
     _this.isFinishLoadCharactor = false;
     _this.isStartRun = false;
-    loadBlendMeshWithPromise();
+    this.groupRun = [];
+    this.groupWalk = [];
+    this.groupBend = [];
+    this.groupCrawl = [];
+    this.groupIdle = [];
+    this.cameraPerspective = new THREE.PerspectiveCamera( 50,  this.aspect, 10, 1000 );
+    loadBlendMeshWithPromise(_this);
+    this.positionPlaneGeometry_1=new THREE.PlaneGeometry(10,20);
+    this.positionPlaneMaterial_1=new THREE.MeshPhongMaterial({color:0xff0000, opacity:0.5, transparent:true});
+    this.positionPlaneGeometry_2=new THREE.PlaneGeometry(10,20);
+    this.positionPlaneMaterial_2=new THREE.MeshPhongMaterial({color:0x3CB371, opacity:0.5, transparent:true});
+    this.positionPlaneGeometry_3=new THREE.PlaneGeometry(10,20);
+    this.positionPlaneMaterial_3=new THREE.MeshPhongMaterial({color:0xFF4500, opacity:0.5, transparent:true});
+    this.positionPlaneGeometry_4=new THREE.PlaneGeometry(10,20);
+    this.positionPlaneMaterial_4=new THREE.MeshPhongMaterial({color:0xFF6347, opacity:0.5, transparent:true});
+    this.positionPlaneGeometry_5=new THREE.PlaneGeometry(10,20);
+    this.positionPlaneMaterial_5=new THREE.MeshPhongMaterial({color:0xA52A2A, opacity:0.5, transparent:true});
+    this.positionPlaneMesh_1=new THREE.Mesh(this.positionPlaneGeometry_1,this.positionPlaneMaterial_1);
+    this.positionPlaneMesh_1.position.set(51,-8.5,261);
+    this.positionPlaneMesh_1.rotation.x = -0.5 * Math.PI;
+    this.positionPlaneMesh_2=new THREE.Mesh(this.positionPlaneGeometry_2,this.positionPlaneMaterial_2);
+    this.positionPlaneMesh_2.position.set(51,-8.5,241);
+    this.positionPlaneMesh_2.rotation.x = -0.5 * Math.PI;
+    this.positionPlaneMesh_3=new THREE.Mesh(this.positionPlaneGeometry_3,this.positionPlaneMaterial_3);
+    this.positionPlaneMesh_3.position.set(51,-8.5,222);
+    this.positionPlaneMesh_3.rotation.x = -0.5 * Math.PI;
+    this.positionPlaneMesh_4=new THREE.Mesh(this.positionPlaneGeometry_4,this.positionPlaneMaterial_4);
+    this.positionPlaneMesh_4.position.set(51,-8.5,197);
+    this.positionPlaneMesh_4.rotation.x = -0.5 * Math.PI;
+    this.positionPlaneMesh_5=new THREE.Mesh(this.positionPlaneGeometry_5,this.positionPlaneMaterial_5);
+    this.positionPlaneMesh_5.position.set(51,-8.5,170);
+    this.positionPlaneMesh_5.rotation.x = -0.5 * Math.PI;//
+    this.cameraPerspective.position.set(-25,7,0);
+    this.cameraPerspective.lookAt(this.positionPlaneMesh_1.position);
+    _this.scene.add(this.positionPlaneMesh_1);
+    this.positionPlaneMesh_1.visible = false;
+    _this.scene.add(this.positionPlaneMesh_2);
+    this.positionPlaneMesh_2.visible = false;
+    _this.scene.add(this.positionPlaneMesh_3);
+    this.positionPlaneMesh_3.visible = false;
+    _this.scene.add(this.positionPlaneMesh_4);
+    this.positionPlaneMesh_4.visible = false;
+    _this.scene.add(this.positionPlaneMesh_5);
+    this.positionPlaneMesh_5.visible = false;
 
-    function loadBlendMeshWithPromise() {
+    function loadBlendMeshWithPromise(_this) {
         var loadModelPromise = function (modelurl) {
             return new Promise((resolve) => {
                 var loader = new THREE.GLTFLoader();
@@ -257,8 +302,6 @@ People.prototype.init = function (_this) {
                 temp = i % 31;
                 var newMesh, textureURL, textureURL1;
                 newMesh = cloneGltf(data[temp]);
-                console.log(newMesh);
-                console.log(i);
 
                 //贴图参数化
                 if (temp === 0) {
@@ -388,6 +431,7 @@ People.prototype.init = function (_this) {
 
                 newMesh.scene.scale.set(1, 1, 1);
                 newMesh.scene.name = 'run';
+                newMesh.scene.visible = false;
 
                 //人物骨骼参数化
                 var headRandom =1 +  Math.random()* 4/number;
@@ -414,8 +458,7 @@ People.prototype.init = function (_this) {
                 //动态人群位置
                 var distance = Math.random() * 17;
                 var distance1 = Math.random() * 26;
-                newMesh.scene.position.set(distance+43, -8.5, distance1+261);
-
+                newMesh.scene.position.set(distance + 43, -8.5, distance1 + 261);
                 // 将模型的材质附在newMesh上
                 var loader = new THREE.TextureLoader();
                 var texture = loader.load(textureURL, function () {
@@ -444,6 +487,7 @@ People.prototype.init = function (_this) {
                 self.mixerArr.push(meshMixer);
                 self.activateAction(self.action);
 
+                self.groupRun.push(newMesh.scene);
                 _this.scene.add(newMesh.scene);
 
             }
@@ -466,8 +510,6 @@ People.prototype.init = function (_this) {
                 temp = i % 39;
                 var newMesh, textureURL;
                 newMesh = cloneGltf(data[temp]);
-                console.log(newMesh);
-                console.log(i);
 
                 //贴图参数化
                 if (temp === 0) {
@@ -590,20 +632,22 @@ People.prototype.init = function (_this) {
 
                 newMesh.scene.scale.set(1, 1, 1);
                 newMesh.scene.name = 'run';
+                newMesh.scene.visible = false;
 
                 //人物骨骼参数化
-                var headRandom =1 +  Math.random()*4/number;
-                var upperRandom1 = 1 + Math.random()*2/number;
-                var upperRandom2 = 1 + Math.random()*3/number;
-                var thighRandom = 1 + Math.random()*2/number;
+                var headRandom =1 +  Math.random()/number;
+                var upperRandom1 = 1 + Math.random()/number;
+                var upperRandom2 = 1 + Math.random()/number;
+                var thighRandom = 1 + Math.random()/number;
 
                 var head0 = newMesh.scene.children[0].children[3].skeleton.boneInverses[2];
                 var chest0 = newMesh.scene.children[0].children[3].skeleton.boneInverses[0];
                 var wist0 = newMesh.scene.children[0].children[3].skeleton.boneInverses[4];
-                var lThigh10 = newMesh.scene.children[0].children[3].skeleton.boneInverses[7];
-                var lThigh20 = newMesh.scene.children[0].children[3].skeleton.boneInverses[8];
-                var rThigh10 = newMesh.scene.children[0].children[3].skeleton.boneInverses[17];
+                var lThigh10 = newMesh.scene.children[0].children[3].skeleton.boneInverses[8];
+                var lThigh20 = newMesh.scene.children[0].children[3].skeleton.boneInverses[9];
+                var rThigh10 = newMesh.scene.children[0].children[3].skeleton.boneInverses[5];
                 var rThigh20 = newMesh.scene.children[0].children[3].skeleton.boneInverses[18];
+
 
                 head0.scale(new THREE.Vector3(headRandom, headRandom, 1));
                 chest0.scale(new THREE.Vector3(upperRandom1, upperRandom1, 1));
@@ -637,6 +681,7 @@ People.prototype.init = function (_this) {
                 self.mixerArr.push(meshMixer);
                 self.activateAction(self.action);
 
+                self.groupRun.push(newMesh.scene);
                 _this.scene.add(newMesh.scene);
 
             }
@@ -659,8 +704,6 @@ People.prototype.init = function (_this) {
                 temp = i % 2;
                 var newMesh, textureURL, textureURL1;
                 newMesh = cloneGltf(data[temp]);
-                console.log(newMesh);
-                console.log(i);
 
                 //贴图参数化
                 if (temp === 0) {
@@ -674,18 +717,19 @@ People.prototype.init = function (_this) {
 
                 newMesh.scene.scale.set(1, 1, 1);
                 newMesh.scene.name = 'run';
+                newMesh.scene.visible = false;
 
                 //人物骨骼参数化
-                var headRandom =1 +  Math.random()* 2/number;
+                var headRandom =1 +  Math.random()/number;
                 var upperRandom1 = 1 + Math.random()/number;
-                var upperRandom2 = 1 + Math.random()/number;
-                var thighRandom = 1 + Math.random()/number;
+                var upperRandom2 = 1 + Math.random()*0.5/number;
+                var thighRandom = 1 + Math.random()*0.5/number;
 
                 var head = newMesh.scene.children[0].children[3].children[0].skeleton.boneInverses[4];
                 var chest = newMesh.scene.children[0].children[3].children[0].skeleton.boneInverses[0];
                 var wist = newMesh.scene.children[0].children[3].children[0].skeleton.boneInverses[1];
                 var lThigh1 = newMesh.scene.children[0].children[3].children[0].skeleton.boneInverses[9];
-                var lThigh2 = newMesh.scene.children[0].children[3].children[0].skeleton.boneInverses[11];
+                var lThigh2 = newMesh.scene.children[0].children[3].children[0].skeleton.boneInverses[18];
                 var rThigh1 = newMesh.scene.children[0].children[3].children[0].skeleton.boneInverses[8];
                 var rThigh2 = newMesh.scene.children[0].children[3].children[0].skeleton.boneInverses[10];
 
@@ -730,6 +774,7 @@ People.prototype.init = function (_this) {
                 self.mixerArr.push(meshMixer);
                 self.activateAction(self.action);
 
+                self.groupRun.push(newMesh.scene);
                 _this.scene.add(newMesh.scene);
 
             }
@@ -752,8 +797,6 @@ People.prototype.init = function (_this) {
                 temp = i % 2;
                 var newMesh, textureURL;
                 newMesh = cloneGltf(data[temp]);
-                console.log(newMesh);
-                console.log(i);
 
                 //贴图参数化
                 if (temp === 0) {
@@ -765,12 +808,13 @@ People.prototype.init = function (_this) {
 
                 newMesh.scene.scale.set(1, 1, 1);
                 newMesh.scene.name = 'run';
+                newMesh.scene.visible = false;
 
                 //人物骨骼参数化
-                var headRandom =1 +  Math.random()* 1.5/number;
+                var headRandom =1 +  Math.random()/number;
                 var upperRandom1 = 1 + Math.random()/number;
-                var upperRandom2 = 1 + Math.random()*2/number;
-                var thighRandom = 1 + Math.random()/number;
+                var upperRandom2 = 1 + Math.random()*0.5/number;
+                var thighRandom = 1 + Math.random()*0.5/number;
 
                 var head = newMesh.scene.children[0].children[3].skeleton.boneInverses[2];
                 var chest = newMesh.scene.children[0].children[3].skeleton.boneInverses[0];
@@ -812,6 +856,7 @@ People.prototype.init = function (_this) {
                 self.mixerArr.push(meshMixer);
                 self.activateAction(self.action);
 
+                self.groupRun.push(newMesh.scene);
                 _this.scene.add(newMesh.scene);
 
             }
@@ -834,8 +879,6 @@ People.prototype.init = function (_this) {
                 temp = i % 31;
                 var newMesh, textureURL, textureURL1;
                 newMesh = cloneGltf(data[temp]);
-                console.log(newMesh);
-                console.log(i);
 
                 //贴图参数化
                 if (temp === 0) {
@@ -965,6 +1008,7 @@ People.prototype.init = function (_this) {
 
                 newMesh.scene.scale.set(1, 1, 1);
                 newMesh.scene.name = 'walk';
+                newMesh.scene.visible = false;
                 newMesh.scene.rotation.set(0, Math.PI*13/48, 0);
 
                 //人物骨骼参数化
@@ -1022,6 +1066,7 @@ People.prototype.init = function (_this) {
                 self.mixerArr.push(meshMixer);
                 self.activateAction(self.action);
 
+                self.groupWalk.push(newMesh.scene);
                 _this.scene.add(newMesh.scene);
 
             }
@@ -1044,8 +1089,6 @@ People.prototype.init = function (_this) {
                 temp = i % 39;
                 var newMesh, textureURL;
                 newMesh = cloneGltf(data[temp]);
-                console.log(newMesh);
-                console.log(i);
 
                 //贴图参数化
                 if (temp === 0) {
@@ -1168,20 +1211,21 @@ People.prototype.init = function (_this) {
 
                 newMesh.scene.scale.set(1, 1, 1);
                 newMesh.scene.name = 'walk';
+                newMesh.scene.visible = false;
                 newMesh.scene.rotation.set(0, Math.PI*13/48, 0);
 
                 //人物骨骼参数化
-                var headRandom =1 +  Math.random()*4/number;
-                var upperRandom1 = 1 + Math.random()*2/number;
-                var upperRandom2 = 1 + Math.random()*3/number;
-                var thighRandom = 1 + Math.random()*2/number;
+                var headRandom =1 +  Math.random()/number;
+                var upperRandom1 = 1 + Math.random()/number;
+                var upperRandom2 = 1 + Math.random()/number;
+                var thighRandom = 1 + Math.random()/number;
 
                 var head0 = newMesh.scene.children[0].children[2].skeleton.boneInverses[2];
                 var chest0 = newMesh.scene.children[0].children[2].skeleton.boneInverses[0];
                 var wist0 = newMesh.scene.children[0].children[2].skeleton.boneInverses[4];
-                var lThigh10 = newMesh.scene.children[0].children[2].skeleton.boneInverses[7];
-                var lThigh20 = newMesh.scene.children[0].children[2].skeleton.boneInverses[8];
-                var rThigh10 = newMesh.scene.children[0].children[2].skeleton.boneInverses[17];
+                var lThigh10 = newMesh.scene.children[0].children[2].skeleton.boneInverses[8];
+                var lThigh20 = newMesh.scene.children[0].children[2].skeleton.boneInverses[9];
+                var rThigh10 = newMesh.scene.children[0].children[2].skeleton.boneInverses[5];
                 var rThigh20 = newMesh.scene.children[0].children[2].skeleton.boneInverses[18];
 
                 head0.scale(new THREE.Vector3(headRandom, headRandom, 1));
@@ -1216,6 +1260,7 @@ People.prototype.init = function (_this) {
                 self.mixerArr.push(meshMixer);
                 self.activateAction(self.action);
 
+                self.groupWalk.push(newMesh.scene);
                 _this.scene.add(newMesh.scene);
 
             }
@@ -1238,8 +1283,6 @@ People.prototype.init = function (_this) {
                 temp = i % 2;
                 var newMesh, textureURL;
                 newMesh = cloneGltf(data[temp]);
-                console.log(newMesh);
-                console.log(i);
 
                 //贴图参数化
                 if (i % 2 === 0) {
@@ -1251,13 +1294,14 @@ People.prototype.init = function (_this) {
 
                 newMesh.scene.scale.set(1, 1, 1);
                 newMesh.scene.name = 'walk';
+                newMesh.scene.visible = false;
                 newMesh.scene.rotation.set(0, Math.PI*13/48, 0);
 
                 //人物骨骼参数化
-                var headRandom =1 +  Math.random()* 2/number;
-                var upperRandom1 = 1 + Math.random()/number;
-                var upperRandom2 = 1 + Math.random()/number;
-                var upperRandom3 = 1 + Math.random()*1.5/number;
+                var headRandom =1 +  Math.random()/number;
+                var upperRandom1 = 1 + Math.random()*0.5/number;
+                var upperRandom2 = 1 + Math.random()*0.5/number;
+                var upperRandom3 = 1 + Math.random()*0.5/number;
 
                 var head = newMesh.scene.children[0].children[3].skeleton.boneInverses[9];
                 var chest = newMesh.scene.children[0].children[3].skeleton.boneInverses[7];
@@ -1293,6 +1337,7 @@ People.prototype.init = function (_this) {
                 self.mixerArr.push(meshMixer);
                 self.activateAction(self.action);
 
+                self.groupWalk.push(newMesh.scene);
                 _this.scene.add(newMesh.scene);
 
             }
@@ -1315,8 +1360,6 @@ People.prototype.init = function (_this) {
                 temp = i % 31;
                 var newMesh, textureURL, textureURL1;
                 newMesh = cloneGltf(data[temp]);
-                console.log(newMesh);
-                console.log(i);
 
                 //贴图参数化
                 if (temp === 0) {
@@ -1446,6 +1489,7 @@ People.prototype.init = function (_this) {
 
                 newMesh.scene.scale.set(1, 1, 1);
                 newMesh.scene.name = 'bend';
+                newMesh.scene.visible = false;
                 newMesh.scene.rotation.set(0, Math.PI/4, 0);
 
                 //人物骨骼参数化
@@ -1503,6 +1547,7 @@ People.prototype.init = function (_this) {
                 self.mixerArr.push(meshMixer);
                 self.activateAction(self.action);
 
+                self.groupBend.push(newMesh.scene);
                 _this.scene.add(newMesh.scene);
 
             }
@@ -1525,8 +1570,6 @@ People.prototype.init = function (_this) {
                 temp = i % 39;
                 var newMesh, textureURL;
                 newMesh = cloneGltf(data[temp]);
-                console.log(newMesh);
-                console.log(i);
 
                 //贴图参数化
                 if (temp === 0) {
@@ -1649,20 +1692,21 @@ People.prototype.init = function (_this) {
 
                 newMesh.scene.scale.set(1, 1, 1);
                 newMesh.scene.name = 'bend';
+                newMesh.scene.visible = false;
                 newMesh.scene.rotation.set(0, Math.PI/4, 0);
 
                 //人物骨骼参数化
-                var headRandom =1 +  Math.random()*4/number;
-                var upperRandom1 = 1 + Math.random()*2/number;
-                var upperRandom2 = 1 + Math.random()*3/number;
-                var thighRandom = 1 + Math.random()*2/number;
+                var headRandom =1 +  Math.random()/number;
+                var upperRandom1 = 1 + Math.random()/number;
+                var upperRandom2 = 1 + Math.random()/number;
+                var thighRandom = 1 + Math.random()/number;
 
                 var head0 = newMesh.scene.children[0].children[2].skeleton.boneInverses[2];
                 var chest0 = newMesh.scene.children[0].children[2].skeleton.boneInverses[0];
                 var wist0 = newMesh.scene.children[0].children[2].skeleton.boneInverses[4];
-                var lThigh10 = newMesh.scene.children[0].children[2].skeleton.boneInverses[7];
-                var lThigh20 = newMesh.scene.children[0].children[2].skeleton.boneInverses[8];
-                var rThigh10 = newMesh.scene.children[0].children[2].skeleton.boneInverses[17];
+                var lThigh10 = newMesh.scene.children[0].children[2].skeleton.boneInverses[8];
+                var lThigh20 = newMesh.scene.children[0].children[2].skeleton.boneInverses[9];
+                var rThigh10 = newMesh.scene.children[0].children[2].skeleton.boneInverses[5];
                 var rThigh20 = newMesh.scene.children[0].children[2].skeleton.boneInverses[18];
 
                 head0.scale(new THREE.Vector3(headRandom, headRandom, 1));
@@ -1697,8 +1741,8 @@ People.prototype.init = function (_this) {
                 self.mixerArr.push(meshMixer);
                 self.activateAction(self.action);
 
+                self.groupBend.push(newMesh.scene);
                 _this.scene.add(newMesh.scene);
-
             }
         });
 
@@ -1719,8 +1763,6 @@ People.prototype.init = function (_this) {
                 temp = i % 2;
                 var newMesh, textureURL;
                 newMesh = cloneGltf(data[temp]);
-                console.log(newMesh);
-                console.log(i);
 
                 //贴图参数化
                 if (i % 2 === 0) {
@@ -1732,13 +1774,14 @@ People.prototype.init = function (_this) {
 
                 newMesh.scene.scale.set(1, 1, 1);
                 newMesh.scene.name = 'bend';
+                newMesh.scene.visible = false;
                 newMesh.scene.rotation.set(0, Math.PI/4, 0);
 
                 //人物骨骼参数化
-                var headRandom =1 +  Math.random()* 2/number;
-                var upperRandom1 = 1 + Math.random()/number;
-                var upperRandom2 = 1 + Math.random()/number;
-                var upperRandom3 = 1 + Math.random()*1.5/number;
+                var headRandom =1 +  Math.random()/number;
+                var upperRandom1 = 1 + Math.random()*0.5/number;
+                var upperRandom2 = 1 + Math.random()*0.5/number;
+                var upperRandom3 = 1 + Math.random()*0.5/number;
 
                 var head = newMesh.scene.children[0].children[3].skeleton.boneInverses[9];
                 var chest = newMesh.scene.children[0].children[3].skeleton.boneInverses[7];
@@ -1775,6 +1818,7 @@ People.prototype.init = function (_this) {
                 self.mixerArr.push(meshMixer);
                 self.activateAction(self.action);
 
+                self.groupBend.push(newMesh.scene);
                 _this.scene.add(newMesh.scene);
 
             }
@@ -1798,8 +1842,6 @@ People.prototype.init = function (_this) {
                 temp = i % 31;
                 var newMesh, textureURL, textureURL1;
                 newMesh = cloneGltf(data[temp]);
-                console.log(newMesh);
-                console.log(i);
 
                 //贴图参数化
                 if (temp === 0) {
@@ -1929,6 +1971,7 @@ People.prototype.init = function (_this) {
 
                 newMesh.scene.scale.set(1, 1, 1);
                 newMesh.scene.name = 'crawl';
+                newMesh.scene.visible = false;
                 newMesh.scene.rotation.set(0, Math.PI*4/5, 0);
 
                 //动态人群位置
@@ -1986,6 +2029,7 @@ People.prototype.init = function (_this) {
                 self.mixerArr.push(meshMixer);
                 self.activateAction(self.action);
 
+                self.groupCrawl.push(newMesh.scene);
                 _this.scene.add(newMesh.scene);
 
             }
@@ -2008,8 +2052,6 @@ People.prototype.init = function (_this) {
                 temp = i % 39;
                 var newMesh, textureURL;
                 newMesh = cloneGltf(data[temp]);
-                console.log(newMesh);
-                console.log(i);
 
                 //贴图参数化
                 if (temp === 0) {
@@ -2132,20 +2174,21 @@ People.prototype.init = function (_this) {
 
                 newMesh.scene.scale.set(1, 1, 1);
                 newMesh.scene.name = 'crawl';
+                newMesh.scene.visible = false;
                 newMesh.scene.rotation.set(0, Math.PI*4/5, 0);
 
                 //人物骨骼参数化
-                var headRandom =1 +  Math.random()*4/number;
-                var upperRandom1 = 1 + Math.random()*2/number;
-                var upperRandom2 = 1 + Math.random()*3/number;
-                var thighRandom = 1 + Math.random()*2/number;
+                var headRandom =1 +  Math.random()/number;
+                var upperRandom1 = 1 + Math.random()/number;
+                var upperRandom2 = 1 + Math.random()/number;
+                var thighRandom = 1 + Math.random()/number;
 
                 var head0 = newMesh.scene.children[0].children[2].skeleton.boneInverses[2];
                 var chest0 = newMesh.scene.children[0].children[2].skeleton.boneInverses[0];
                 var wist0 = newMesh.scene.children[0].children[2].skeleton.boneInverses[4];
-                var lThigh10 = newMesh.scene.children[0].children[2].skeleton.boneInverses[7];
-                var lThigh20 = newMesh.scene.children[0].children[2].skeleton.boneInverses[8];
-                var rThigh10 = newMesh.scene.children[0].children[2].skeleton.boneInverses[17];
+                var lThigh10 = newMesh.scene.children[0].children[2].skeleton.boneInverses[8];
+                var lThigh20 = newMesh.scene.children[0].children[2].skeleton.boneInverses[9];
+                var rThigh10 = newMesh.scene.children[0].children[2].skeleton.boneInverses[5];
                 var rThigh20 = newMesh.scene.children[0].children[2].skeleton.boneInverses[18];
 
                 head0.scale(new THREE.Vector3(headRandom, headRandom, 1));
@@ -2180,6 +2223,7 @@ People.prototype.init = function (_this) {
                 self.mixerArr.push(meshMixer);
                 self.activateAction(self.action);
 
+                self.groupCrawl.push(newMesh.scene);
                 _this.scene.add(newMesh.scene);
 
             }
@@ -2202,8 +2246,6 @@ People.prototype.init = function (_this) {
                 temp = i % 2;
                 var newMesh, textureURL, textureURL1;
                 newMesh = cloneGltf(data[temp]);
-                console.log(newMesh);
-                console.log(i);
 
                 //贴图参数化
                 if (temp === 0) {
@@ -2217,19 +2259,20 @@ People.prototype.init = function (_this) {
 
                 newMesh.scene.scale.set(1, 1, 1);
                 newMesh.scene.name = 'crawl';
+                newMesh.scene.visible = false;
                 newMesh.scene.rotation.set(0, Math.PI*4/5, 0);
 
                 //人物骨骼参数化
-                var headRandom =1 +  Math.random()* 2/number;
-                var upperRandom1 = 1 + Math.random()/number;
-                var upperRandom2 = 1 + Math.random()/number;
-                var thighRandom = 1 + Math.random()/number;
+                var headRandom =1 +  Math.random()/number;
+                var upperRandom1 = 1 + Math.random()*1.5/number;
+                var upperRandom2 = 1 + Math.random()*0.5/number;
+                var thighRandom = 1 + Math.random()*0.5/number;
 
                 var head = newMesh.scene.children[0].children[3].children[0].skeleton.boneInverses[4];
                 var chest = newMesh.scene.children[0].children[3].children[0].skeleton.boneInverses[0];
                 var wist = newMesh.scene.children[0].children[3].children[0].skeleton.boneInverses[1];
                 var lThigh1 = newMesh.scene.children[0].children[3].children[0].skeleton.boneInverses[9];
-                var lThigh2 = newMesh.scene.children[0].children[3].children[0].skeleton.boneInverses[11];
+                var lThigh2 = newMesh.scene.children[0].children[3].children[0].skeleton.boneInverses[18];
                 var rThigh1 = newMesh.scene.children[0].children[3].children[0].skeleton.boneInverses[8];
                 var rThigh2 = newMesh.scene.children[0].children[3].children[0].skeleton.boneInverses[10];
 
@@ -2274,6 +2317,7 @@ People.prototype.init = function (_this) {
                 self.mixerArr.push(meshMixer);
                 self.activateAction(self.action);
 
+                self.groupCrawl.push(newMesh.scene);
                 _this.scene.add(newMesh.scene);
 
             }
@@ -2297,8 +2341,6 @@ People.prototype.init = function (_this) {
                 temp = i % 2;
                 var newMesh, textureURL;
                 newMesh = cloneGltf(data[temp]);
-                console.log(newMesh);
-                console.log(i);
 
                 //贴图参数化
                 if (temp === 0) {
@@ -2310,6 +2352,7 @@ People.prototype.init = function (_this) {
 
                 newMesh.scene.scale.set(1, 1, 1);
                 newMesh.scene.name = 'crawl';
+                newMesh.scene.visible = false;
                 newMesh.scene.rotation.set(0, Math.PI*4/5, 0);
 
                 //动态人群位置
@@ -2318,10 +2361,10 @@ People.prototype.init = function (_this) {
                 newMesh.scene.position.set(distance+43, -8.5, distance1+197);
 
                 //人物骨骼参数化
-                var headRandom =1 +  Math.random()* 1.5/number;
+                var headRandom =1 +  Math.random()/number;
                 var upperRandom1 = 1 + Math.random()/number;
-                var upperRandom2 = 1 + Math.random()*2/number;
-                var thighRandom = 1 + Math.random()/number;
+                var upperRandom2 = 1 + Math.random()*0.5/number;
+                var thighRandom = 1 + Math.random()*0.5/number;
 
                 var head = newMesh.scene.children[0].children[3].skeleton.boneInverses[2];
                 var chest = newMesh.scene.children[0].children[3].skeleton.boneInverses[0];
@@ -2360,6 +2403,7 @@ People.prototype.init = function (_this) {
                 self.mixerArr.push(meshMixer);
                 self.activateAction(self.action);
 
+                self.groupCrawl.push(newMesh.scene);
                 _this.scene.add(newMesh.scene);
 
             }
@@ -2381,8 +2425,6 @@ People.prototype.init = function (_this) {
                 temp = i % 2;
                 var newMesh, textureURL;
                 newMesh = cloneGltf(data[temp]);
-                console.log(newMesh);
-                console.log(i);
 
                 //贴图参数化
                 if (i % 2 === 0) {
@@ -2393,14 +2435,14 @@ People.prototype.init = function (_this) {
                 }
 
                 newMesh.scene.scale.set(1, 1, 1);
-                newMesh.scene.name = 'walk';
-                newMesh.scene.rotation.set(0, Math.PI*13/48, 0);
+                newMesh.scene.name = 'idle';
+                newMesh.scene.visible = false;
 
                 //人物骨骼参数化
-                var headRandom =1 +  Math.random()* 2/number;
-                var upperRandom1 = 1 + Math.random()/number;
-                var upperRandom2 = 1 + Math.random()/number;
-                var upperRandom3 = 1 + Math.random()*1.5/number;
+                var headRandom =1 +  Math.random()/number;
+                var upperRandom1 = 1 + Math.random()*0.5/number;
+                var upperRandom2 = 1 + Math.random()*0.5/number;
+                var upperRandom3 = 1 + Math.random()*0.5/number;
 
                 var head = newMesh.scene.children[0].children[3].skeleton.boneInverses[9];
                 var chest = newMesh.scene.children[0].children[3].skeleton.boneInverses[7];
@@ -2436,6 +2478,7 @@ People.prototype.init = function (_this) {
                 self.mixerArr.push(meshMixer);
                 self.activateAction(self.action);
 
+                self.groupIdle.push(newMesh.scene);
                 _this.scene.add(newMesh.scene);
 
             }
@@ -2458,8 +2501,6 @@ People.prototype.init = function (_this) {
                 temp = i % 2;
                 var newMesh, textureURL, textureURL1;
                 newMesh = cloneGltf(data[temp]);
-                console.log(newMesh);
-                console.log(i);
 
                 //贴图参数化
                 if (temp === 0) {
@@ -2472,19 +2513,20 @@ People.prototype.init = function (_this) {
                 }
 
                 newMesh.scene.scale.set(1, 1, 1);
-                newMesh.scene.name = 'run';
+                newMesh.scene.name = 'idle';
+                newMesh.scene.visible = false;
 
                 //人物骨骼参数化
-                var headRandom =1 +  Math.random()* 2/number;
+                var headRandom =1 +  Math.random()/number;
                 var upperRandom1 = 1 + Math.random()/number;
-                var upperRandom2 = 1 + Math.random()/number;
-                var thighRandom = 1 + Math.random()/number;
+                var upperRandom2 = 1 + Math.random()*0.5/number;
+                var thighRandom = 1 + Math.random()*0.5/number;
 
                 var head = newMesh.scene.children[0].children[3].children[0].skeleton.boneInverses[4];
                 var chest = newMesh.scene.children[0].children[3].children[0].skeleton.boneInverses[0];
                 var wist = newMesh.scene.children[0].children[3].children[0].skeleton.boneInverses[1];
                 var lThigh1 = newMesh.scene.children[0].children[3].children[0].skeleton.boneInverses[9];
-                var lThigh2 = newMesh.scene.children[0].children[3].children[0].skeleton.boneInverses[11];
+                var lThigh2 = newMesh.scene.children[0].children[3].children[0].skeleton.boneInverses[18];
                 var rThigh1 = newMesh.scene.children[0].children[3].children[0].skeleton.boneInverses[8];
                 var rThigh2 = newMesh.scene.children[0].children[3].children[0].skeleton.boneInverses[10];
 
@@ -2529,6 +2571,7 @@ People.prototype.init = function (_this) {
                 self.mixerArr.push(meshMixer);
                 self.activateAction(self.action);
 
+                self.groupIdle.push(newMesh.scene);
                 _this.scene.add(newMesh.scene);
 
             }
@@ -2551,8 +2594,6 @@ People.prototype.init = function (_this) {
                 temp = i % 2;
                 var newMesh, textureURL;
                 newMesh = cloneGltf(data[temp]);
-                console.log(newMesh);
-                console.log(i);
 
                 //贴图参数化
                 if (temp === 0) {
@@ -2563,13 +2604,14 @@ People.prototype.init = function (_this) {
                 }
 
                 newMesh.scene.scale.set(1, 1, 1);
-                newMesh.scene.name = 'run';
+                newMesh.scene.name = 'idle';
+                newMesh.scene.visible = false;
 
                 //人物骨骼参数化
-                var headRandom =1 +  Math.random()* 1.5/number;
+                var headRandom =1 +  Math.random()/number;
                 var upperRandom1 = 1 + Math.random()/number;
-                var upperRandom2 = 1 + Math.random()*2/number;
-                var thighRandom = 1 + Math.random()/number;
+                var upperRandom2 = 1 + Math.random()*0.5/number;
+                var thighRandom = 1 + Math.random()*0.5/number;
 
                 var head = newMesh.scene.children[0].children[3].skeleton.boneInverses[2];
                 var chest = newMesh.scene.children[0].children[3].skeleton.boneInverses[0];
@@ -2611,6 +2653,7 @@ People.prototype.init = function (_this) {
                 self.mixerArr.push(meshMixer);
                 self.activateAction(self.action);
 
+                self.groupIdle.push(newMesh.scene);
                 _this.scene.add(newMesh.scene);
 
             }
@@ -2634,8 +2677,6 @@ People.prototype.init = function (_this) {
                 temp = i % 31;
                 var newMesh, textureURL, textureURL1;
                 newMesh = cloneGltf(data[temp]);
-                console.log(newMesh);
-                console.log(i);
 
                 //贴图参数化
                 if (temp === 0) {
@@ -2764,7 +2805,8 @@ People.prototype.init = function (_this) {
                 }
 
                 newMesh.scene.scale.set(1, 1, 1);
-                newMesh.scene.name = 'run';
+                newMesh.scene.name = 'idle';
+                newMesh.scene.visible = false;
 
                 //人物骨骼参数化
                 var headRandom =1 +  Math.random()* 4/number;
@@ -2821,6 +2863,7 @@ People.prototype.init = function (_this) {
                 self.mixerArr.push(meshMixer);
                 self.activateAction(self.action);
 
+                self.groupIdle.push(newMesh.scene);
                 _this.scene.add(newMesh.scene);
 
             }
@@ -2843,8 +2886,6 @@ People.prototype.init = function (_this) {
                 temp = i % 39;
                 var newMesh, textureURL;
                 newMesh = cloneGltf(data[temp]);
-                console.log(newMesh);
-                console.log(i);
 
                 //贴图参数化
                 if (temp === 0) {
@@ -2966,20 +3007,21 @@ People.prototype.init = function (_this) {
                 }
 
                 newMesh.scene.scale.set(1, 1, 1);
-                newMesh.scene.name = 'run';
+                newMesh.scene.name = 'idle';
+                newMesh.scene.visible = false;
 
                 //人物骨骼参数化
-                var headRandom =1 +  Math.random()*4/number;
-                var upperRandom1 = 1 + Math.random()*2/number;
-                var upperRandom2 = 1 + Math.random()*3/number;
-                var thighRandom = 1 + Math.random()*2/number;
+                var headRandom =1 +  Math.random()/number;
+                var upperRandom1 = 1 + Math.random()/number;
+                var upperRandom2 = 1 + Math.random()/number;
+                var thighRandom = 1 + Math.random()/number;
 
                 var head0 = newMesh.scene.children[0].children[3].skeleton.boneInverses[2];
                 var chest0 = newMesh.scene.children[0].children[3].skeleton.boneInverses[0];
                 var wist0 = newMesh.scene.children[0].children[3].skeleton.boneInverses[4];
-                var lThigh10 = newMesh.scene.children[0].children[3].skeleton.boneInverses[7];
-                var lThigh20 = newMesh.scene.children[0].children[3].skeleton.boneInverses[8];
-                var rThigh10 = newMesh.scene.children[0].children[3].skeleton.boneInverses[17];
+                var lThigh10 = newMesh.scene.children[0].children[3].skeleton.boneInverses[8];
+                var lThigh20 = newMesh.scene.children[0].children[3].skeleton.boneInverses[9];
+                var rThigh10 = newMesh.scene.children[0].children[3].skeleton.boneInverses[5];
                 var rThigh20 = newMesh.scene.children[0].children[3].skeleton.boneInverses[18];
 
                 head0.scale(new THREE.Vector3(headRandom, headRandom, 1));
@@ -3014,6 +3056,7 @@ People.prototype.init = function (_this) {
                 self.mixerArr.push(meshMixer);
                 self.activateAction(self.action);
 
+                self.groupIdle.push(newMesh.scene);
                 _this.scene.add(newMesh.scene);
 
             }

@@ -76,16 +76,25 @@ Interaction.prototype.fuc2 = function (_this)
     document.getElementById('startRun').addEventListener('click',function (event)
     {
 
-
         document.getElementById("active").style.display = "inline-block";
         document.getElementById("startRun").style.display = "none";
         document.getElementById("transformSmoke").style.display = "none";
         document.getElementById("fireman").style.display = "inline-block";
+        document.getElementById("floor-menu").style.display = "inline-block";
 
         // _this.smoke.redBallMesh.position.x=_this.smoke.positionBallMesh.position.x+16;
         // _this.smoke.redBallMesh.position.z= _this.smoke.positionBallMesh.position.z;
+        _this.camera.position.set(50, 200, 240);//原x为150 450
+        _this.camera.lookAt(50, 0, 240);
+        _this.globalPlane.constant = 17;
+        _this.globalPlane.set(new THREE.Vector3(0, -1, 0), 17);
         _this.smoke.firePos = _this.smoke.positionBallMesh.position;
         _this.smoke.positionBallMesh.visible=false;
+        _this.people.positionPlaneMesh_1.visible=false;
+        _this.people.positionPlaneMesh_2.visible=false;
+        _this.people.positionPlaneMesh_3.visible=false;
+        _this.people.positionPlaneMesh_4.visible=false;
+        _this.people.positionPlaneMesh_5.visible=false;
         _this.smoke.clock.start();
         _this.smoke.computeV0();
         _this.smoke.cloudRank();
@@ -158,17 +167,220 @@ Interaction.prototype.fuc3 = function (MainScene)
 
     $('createPersonBtn').addEventListener('click',function (event)
     {
-        $('createPerson').style.display = 'none';
+        $('person-slider').style.display = 'none';
+        $('people-number').style.display = 'none';
+        $('people-text').style.display = 'none';
         $('Menu').style.display = 'block';
-        $('illustration-context').innerHTML = "<p>您已成功创建疏散人群</p>"+"若要开始火灾模拟，请点击“编辑烟雾”按钮进行编辑，编辑完毕后点击“开始模拟”"
 
-        var number=Number($('people-number').textContent);
-        MainScene.number=number;
-        Utils.loading(1000);
-        //MainScene.Path.createNav(MainScene);
-        Utils.loading(500);
-        MainScene.addPeople();
-        //MainScene.smoke.smokeStart(MainScene);
+
+        $('freeView').click();
+        if(!MainScene.isEdit){
+            $("startRun").style.display="none";
+            $("floor-menu").style.display = "none";
+            $('View').style.display = "none";
+            $('transformSmoke').style.display = "none";
+            $("fire-menu").style.display = "none";
+            $("switch").style.display="inline-block";
+            $('createPersonBtn').textContent="返回";
+            $('illustration-context').innerHTML = "您已进入人群编辑页面，请通过拖动屏幕上的坐标轴使其成半透明效果，以选择人群位置，点击切换按钮可以缩放人群区域面积。在编辑完毕后，请点击“返回”以退出编辑模式"
+
+            var number=Number($('people-number').textContent);
+            MainScene.number=number;
+            Utils.loading(1000);
+            //MainScene.Path.createNav(MainScene);
+            Utils.loading(500);
+            MainScene.addPeople();
+            //MainScene.smoke.smokeStart(MainScene);
+
+            MainScene.camera.position.set(50, 80, 240);//原x为150 450
+            MainScene.camera.lookAt(50, 0, 240);
+            MainScene.globalPlane.constant = 17;
+            MainScene.globalPlane.set(new THREE.Vector3(0, -1, 0), 17);
+            MainScene.isEdit = true;
+
+            MainScene.extinguisherControl_1.attach(MainScene.people.positionPlaneMesh_1);
+            MainScene.extinguisherControl_1.visible = true;
+            MainScene.people.positionPlaneMesh_1.visible=true;
+            MainScene.extinguisherControl_2.attach(MainScene.people.positionPlaneMesh_2);
+            MainScene.extinguisherControl_2.visible = true;
+            MainScene.people.positionPlaneMesh_2.visible=true;
+            MainScene.extinguisherControl_3.attach(MainScene.people.positionPlaneMesh_3);
+            MainScene.extinguisherControl_3.visible = true;
+            MainScene.people.positionPlaneMesh_3.visible=true;
+            MainScene.extinguisherControl_4.attach(MainScene.people.positionPlaneMesh_4);
+            MainScene.extinguisherControl_4.visible = true;
+            MainScene.people.positionPlaneMesh_4.visible=true;
+            MainScene.extinguisherControl_5.attach(MainScene.people.positionPlaneMesh_5);
+            MainScene.extinguisherControl_5.visible = true;
+            MainScene.people.positionPlaneMesh_5.visible=true;
+
+        } else{
+            $("startRun").style.display="inline-block";
+            $("floor-menu").style.display="none";
+            $('transformSmoke').style.display = "block";
+            $('View').style.display = "inline-block";
+            $("fire-menu").style.display = "none";
+            $("switch").style.display="none";
+            $('createPersonBtn').textContent="编辑人群";
+            $('illustration-context').innerHTML = "<p>您已成功选取人群排布</p>" + "<p>若想编辑烟雾请点击“编辑烟雾”,否则点击“开始模拟”</p>";
+
+            MainScene.camera.position.set(50, 80, 240);//原x为150 450
+            MainScene.camera.lookAt(50, 0, 240);
+            MainScene.globalPlane.constant = 17;
+            MainScene.globalPlane.set(new THREE.Vector3(0, -1, 0), 17);
+            //MainScene.camera.position.set(60,3,146);
+            MainScene.camControl.lon = 120;
+            MainScene.camControl.lat = -90;
+            //MainScene.globalPlane.constant=100000;
+            MainScene.isEdit = false;
+
+            MainScene.extinguisherControl_1.attach();
+            MainScene.extinguisherControl_1.visible = false;
+            MainScene.people.positionPlaneMesh_1.visible=false;
+            MainScene.extinguisherControl_2.attach();
+            MainScene.extinguisherControl_2.visible = false;
+            MainScene.people.positionPlaneMesh_2.visible=false;
+            MainScene.extinguisherControl_3.attach();
+            MainScene.extinguisherControl_3.visible = false;
+            MainScene.people.positionPlaneMesh_3.visible=false;
+            MainScene.extinguisherControl_4.attach();
+            MainScene.extinguisherControl_4.visible = false;
+            MainScene.people.positionPlaneMesh_4.visible=false;
+            MainScene.extinguisherControl_5.attach();
+            MainScene.extinguisherControl_5.visible = false;
+            MainScene.people.positionPlaneMesh_5.visible=false;
+
+            MainScene.people.groupRun.forEach(child => {
+                child.visible = true;
+                child.position.y = -8.5;
+                var num_1 = Math.floor(Math.random() * 2 + 1);
+                var num_2 = Math.floor(Math.random() * 2 + 1);
+                if (num_1 ===1) {
+                    if (num_2 === 1) {
+                        child.position.x = MainScene.people.positionPlaneMesh_1.position.x + Math.random() * Math.abs(MainScene.people.positionPlaneMesh_1.scale.x)*5;
+                        child.position.z = MainScene.people.positionPlaneMesh_1.position.z + Math.random() * Math.abs(MainScene.people.positionPlaneMesh_1.scale.z)*10;
+                    }
+                    else{
+                        child.position.x = MainScene.people.positionPlaneMesh_1.position.x + Math.random() * Math.abs(MainScene.people.positionPlaneMesh_1.scale.x)*5;
+                        child.position.z = MainScene.people.positionPlaneMesh_1.position.z - Math.random() * Math.abs(MainScene.people.positionPlaneMesh_1.scale.z)*10;
+                    }
+                }
+                else {
+                    if (num_2 === 1) {
+                        child.position.x = MainScene.people.positionPlaneMesh_1.position.x - Math.random() * Math.abs(MainScene.people.positionPlaneMesh_1.scale.x)*5;
+                        child.position.z = MainScene.people.positionPlaneMesh_1.position.z + Math.random() * Math.abs(MainScene.people.positionPlaneMesh_1.scale.z)*10;
+                    }
+                    else{
+                        child.position.x = MainScene.people.positionPlaneMesh_1.position.x - Math.random() * Math.abs(MainScene.people.positionPlaneMesh_1.scale.x)*5;
+                        child.position.z = MainScene.people.positionPlaneMesh_1.position.z - Math.random() * Math.abs(MainScene.people.positionPlaneMesh_1.scale.z)*10;
+                    }
+                }
+            });
+            MainScene.people.groupWalk.forEach(child => {
+                child.visible = true;
+                child.position.y = -8.5;
+                var num_1 = Math.floor(Math.random() * 2 + 1);
+                var num_2 = Math.floor(Math.random() * 2 + 1);
+                if (num_1 ===1) {
+                    if (num_2 === 1) {
+                        child.position.x = MainScene.people.positionPlaneMesh_2.position.x + Math.random() * Math.abs(MainScene.people.positionPlaneMesh_2.scale.x)*5;
+                        child.position.z = MainScene.people.positionPlaneMesh_2.position.z + Math.random() * Math.abs(MainScene.people.positionPlaneMesh_2.scale.z)*10;
+                    }
+                    else{
+                        child.position.x = MainScene.people.positionPlaneMesh_2.position.x + Math.random() * Math.abs(MainScene.people.positionPlaneMesh_2.scale.x)*5;
+                        child.position.z = MainScene.people.positionPlaneMesh_2.position.z - Math.random() * Math.abs(MainScene.people.positionPlaneMesh_2.scale.z)*10;
+                    }
+                }
+                else {
+                    if (num_2 === 1) {
+                        child.position.x = MainScene.people.positionPlaneMesh_2.position.x - Math.random() * Math.abs(MainScene.people.positionPlaneMesh_2.scale.x)*5;
+                        child.position.z = MainScene.people.positionPlaneMesh_2.position.z + Math.random() * Math.abs(MainScene.people.positionPlaneMesh_2.scale.z)*10;
+                    }
+                    else{
+                        child.position.x = MainScene.people.positionPlaneMesh_2.position.x - Math.random() * Math.abs(MainScene.people.positionPlaneMesh_2.scale.x)*5;
+                        child.position.z = MainScene.people.positionPlaneMesh_2.position.z - Math.random() * Math.abs(MainScene.people.positionPlaneMesh_2.scale.z)*10;
+                    }
+                }
+            });
+            MainScene.people.groupBend.forEach(child => {
+                child.visible = true;
+                child.position.y = -8.5;
+                var num_1 = Math.floor(Math.random() * 2 + 1);
+                var num_2 = Math.floor(Math.random() * 2 + 1);
+                if (num_1 ===1) {
+                    if (num_2 === 1) {
+                        child.position.x = MainScene.people.positionPlaneMesh_3.position.x + Math.random() * Math.abs(MainScene.people.positionPlaneMesh_3.scale.x)*5;
+                        child.position.z = MainScene.people.positionPlaneMesh_3.position.z + Math.random() * Math.abs(MainScene.people.positionPlaneMesh_3.scale.z)*10;
+                    }
+                    else{
+                        child.position.x = MainScene.people.positionPlaneMesh_3.position.x + Math.random() * Math.abs(MainScene.people.positionPlaneMesh_3.scale.x)*5;
+                        child.position.z = MainScene.people.positionPlaneMesh_3.position.z - Math.random() * Math.abs(MainScene.people.positionPlaneMesh_3.scale.z)*10;
+                    }
+                }
+                else {
+                    if (num_2 === 1) {
+                        child.position.x = MainScene.people.positionPlaneMesh_3.position.x - Math.random() * Math.abs(MainScene.people.positionPlaneMesh_3.scale.x)*5;
+                        child.position.z = MainScene.people.positionPlaneMesh_3.position.z + Math.random() * Math.abs(MainScene.people.positionPlaneMesh_3.scale.z)*10;
+                    }
+                    else{
+                        child.position.x = MainScene.people.positionPlaneMesh_3.position.x - Math.random() * Math.abs(MainScene.people.positionPlaneMesh_3.scale.x)*5;
+                        child.position.z = MainScene.people.positionPlaneMesh_3.position.z - Math.random() * Math.abs(MainScene.people.positionPlaneMesh_3.scale.z)*10;
+                    }
+                }
+            });
+            MainScene.people.groupCrawl.forEach(child => {
+                child.visible = true;
+                child.position.y = -8.5;
+                var num_1 = Math.floor(Math.random() * 2 + 1);
+                var num_2 = Math.floor(Math.random() * 2 + 1);
+                if (num_1 ===1) {
+                    if (num_2 === 1) {
+                        child.position.x = MainScene.people.positionPlaneMesh_4.position.x + Math.random() * Math.abs(MainScene.people.positionPlaneMesh_4.scale.x)*5;
+                        child.position.z = MainScene.people.positionPlaneMesh_4.position.z + Math.random() * Math.abs(MainScene.people.positionPlaneMesh_4.scale.z)*10;
+                    }
+                    else{
+                        child.position.x = MainScene.people.positionPlaneMesh_4.position.x + Math.random() * Math.abs(MainScene.people.positionPlaneMesh_4.scale.x)*5;
+                        child.position.z = MainScene.people.positionPlaneMesh_4.position.z - Math.random() * Math.abs(MainScene.people.positionPlaneMesh_4.scale.z)*10;
+                    }
+                }
+                else {
+                    if (num_2 === 1) {
+                        child.position.x = MainScene.people.positionPlaneMesh_4.position.x - Math.random() * Math.abs(MainScene.people.positionPlaneMesh_4.scale.x)*5;
+                        child.position.z = MainScene.people.positionPlaneMesh_4.position.z + Math.random() * Math.abs(MainScene.people.positionPlaneMesh_4.scale.z)*10;
+                    }
+                    else{
+                        child.position.x = MainScene.people.positionPlaneMesh_4.position.x - Math.random() * Math.abs(MainScene.people.positionPlaneMesh_4.scale.x)*5;
+                        child.position.z = MainScene.people.positionPlaneMesh_4.position.z - Math.random() * Math.abs(MainScene.people.positionPlaneMesh_4.scale.z)*10;
+                    }
+                }
+            });
+            MainScene.people.groupIdle.forEach(child => {
+                child.visible = true;
+                child.position.y = -8.5;
+                var num_1 = Math.floor(Math.random() * 2 + 1);
+                var num_2 = Math.floor(Math.random() * 2 + 1);
+                if (num_1 ===1) {
+                    if (num_2 === 1) {
+                        child.position.x = MainScene.people.positionPlaneMesh_5.position.x + Math.random() * Math.abs(MainScene.people.positionPlaneMesh_5.scale.x)*5;
+                        child.position.z = MainScene.people.positionPlaneMesh_5.position.z + Math.random() * Math.abs(MainScene.people.positionPlaneMesh_5.scale.z)*10;
+                    }
+                    else{
+                        child.position.x = MainScene.people.positionPlaneMesh_5.position.x + Math.random() * Math.abs(MainScene.people.positionPlaneMesh_5.scale.x)*5;
+                        child.position.z = MainScene.people.positionPlaneMesh_5.position.z - Math.random() * Math.abs(MainScene.people.positionPlaneMesh_5.scale.z)*10;
+                    }
+                }
+                else {
+                    if (num_2 === 1) {
+                        child.position.x = MainScene.people.positionPlaneMesh_5.position.x - Math.random() * Math.abs(MainScene.people.positionPlaneMesh_5.scale.x)*5;
+                        child.position.z = MainScene.people.positionPlaneMesh_5.position.z + Math.random() * Math.abs(MainScene.people.positionPlaneMesh_5.scale.z)*10;
+                    }
+                    else{
+                        child.position.x = MainScene.people.positionPlaneMesh_5.position.x - Math.random() * Math.abs(MainScene.people.positionPlaneMesh_5.scale.x)*5;
+                        child.position.z = MainScene.people.positionPlaneMesh_5.position.z - Math.random() * Math.abs(MainScene.people.positionPlaneMesh_5.scale.z)*10;
+                    }
+                }
+            });
+        }
     });
 
     $('fireman').addEventListener('click',function (event)
@@ -214,8 +426,14 @@ Interaction.prototype.fuc3 = function (MainScene)
         MainScene.camera.rotation.set(-2.8,0.4,3);
     });
 
+    // $('createPersonBtn').addEventListener('click',function(event)
+    // {
+    //
+    // });
+
     $('transformSmoke').addEventListener('click',function(event)
     {
+        $("createPersonBtn").style.display="none";
         $('freeView').click();
         if(!MainScene.isEdit){
            // userBookNumber=1;
@@ -223,16 +441,10 @@ Interaction.prototype.fuc3 = function (MainScene)
             $("floor-menu").style.display = "none";
             $('View').style.display = "none";
             $("fire-menu").style.display = "inline-block";
+            $("switch").style.display="none";
             $('transformSmoke').textContent="返回";
-            $('illustration-context').innerHTML = "您已进入烟雾编辑页面，请通过拖动屏幕上的坐标轴至“红色标识”下方并使其成半透明效果，以选择起火位置，或者直接点选“火灾情景”按钮进行选择。在选择完毕后，请点击“返回”以退出编辑模式，并点击“开始模拟”"
+            $('illustration-context').innerHTML = "您已进入烟雾编辑页面，请通过拖动屏幕上的坐标轴至“红色标识”下方并使其成半透明效果，以选择起火位置，或者直接点选“火灾情景”按钮进行选择。在选择完毕后，请点击“返回”以退出编辑模式"
 
-            // MainScene.smoke.Logo1Material.visible=true;
-            // MainScene.smoke.Logo2Material.visible=true;
-            // MainScene.smoke.Logo3Material.visible=true;
-            // MainScene.smoke.Logo4Material.visible=true;
-            // MainScene.smoke.Logo5Material.visible=true;
-            // MainScene.camera.position.set(450, 300, 60);//原x为150 450
-            // MainScene.camera.lookAt(450, 0, 8);
             MainScene.camera.position.set(50, 200, 240);//原x为150 450
             MainScene.camera.lookAt(50, 0, 240);
             MainScene.globalPlane.constant = 17;//地下一层
@@ -240,9 +452,12 @@ Interaction.prototype.fuc3 = function (MainScene)
             MainScene.control.attach(MainScene.smoke.positionBallMesh);
             MainScene.isEdit = true;
             MainScene.control.visible = true;
+<<<<<<< HEAD
             // MainScene.fire.Te1Material.visible=false;
             // MainScene.fire.Te2Material.visible=false;
             MainScene.fire.fireManager.target.visible=true;
+=======
+>>>>>>> people
             MainScene.smoke.positionBallMesh.visible=true;
             MainScene.smokeEditor.points.forEach(function(item){
                 item.visible = true;
@@ -252,29 +467,31 @@ Interaction.prototype.fuc3 = function (MainScene)
         } else{
            // userBookNumber=0;
             $("startRun").style.display="inline-block";
-            $("floor-menu").style.display="block";
+            $("floor-menu").style.display="none";
             $('View').style.display = "inline-block";
             $("fire-menu").style.display = "none";
-            $('transformSmoke').textContent="编辑烟雾";
+            $("transformSmoke").style.display="none";
+            $("switch").style.display="none";
             $('illustration-context').innerHTML = "<p>您已成功选取起火点位置</p>" + "<p>若想模拟火灾请点击“开始模拟”</p>";
 
-
-            // MainScene.smoke.Logo1Material.visible=false;
-            // MainScene.smoke.Logo2Material.visible=false;
-            // MainScene.smoke.Logo3Material.visible=false;
-            // MainScene.smoke.Logo4Material.visible=false;
-            // MainScene.smoke.Logo5Material.visible=false;
-            MainScene.camera.position.set(60,3,146);
+            MainScene.camera.position.set(50, 200, 240);//原x为150 450
+            MainScene.camera.lookAt(50, 0, 240);
+            MainScene.globalPlane.constant = 17;
+            MainScene.globalPlane.set(new THREE.Vector3(0, -1, 0), 17);
+            //MainScene.camera.position.set(60,3,146);
             MainScene.camControl.lon = 120;
             MainScene.camControl.lat = -90;
-            MainScene.globalPlane.constant=100000;
+            //MainScene.globalPlane.constant=100000;
             MainScene.control.attach();
             MainScene.smokeEditor.transformControls.detach();
             MainScene.isEdit = false;
             MainScene.control.visible = false;
+<<<<<<< HEAD
             // MainScene.fire.Te1Material.visible=false;
             // MainScene.fire.Te2Material.visible=false;
             MainScene.fire.fireManager.target.visible=false;
+=======
+>>>>>>> people
             MainScene.smoke.positionBallMesh.visible=false;
             MainScene.smokeEditor.points.forEach(function(item){
                 item.visible = false;
@@ -345,6 +562,24 @@ Interaction.prototype.fuc3 = function (MainScene)
         MainScene.active = true;
         $('continue').style.display = "none";
         $('pause').style.display = "block";
+    });
+    $('switch').addEventListener('click',function () {
+        if( document.getElementById('switch').textContent==="切换至缩放"){
+            $('switch').textContent="切换至平移";
+            MainScene.extinguisherControl_1.setMode('scale');
+            MainScene.extinguisherControl_2.setMode('scale');
+            MainScene.extinguisherControl_3.setMode('scale');
+            MainScene.extinguisherControl_4.setMode('scale');
+            MainScene.extinguisherControl_5.setMode('scale');
+        }
+        else{
+            $('switch').textContent="切换至缩放";
+            MainScene.extinguisherControl_1.setMode('translate');
+            MainScene.extinguisherControl_2.setMode('translate');
+            MainScene.extinguisherControl_3.setMode('translate');
+            MainScene.extinguisherControl_4.setMode('translate');
+            MainScene.extinguisherControl_5.setMode('translate');
+        }
     });
 //region 点击坐标测试
     window.addEventListener('mousemove', onMouseMove, false);
