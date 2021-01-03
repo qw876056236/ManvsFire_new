@@ -203,6 +203,39 @@ mainScene.prototype.start = function()
         //self.Cameracontroller.update1(self);
         self.pMesh.position.set(document.getElementById("x").value,document.getElementById("y").value,document.getElementById("z").value);
 
+        // if(this.extinguisherControl_2 && this.extinguisherControl_2.position.isChange()){
+        //     self.people.groupWalk.children.forEach(child => {
+        //         child.position.x = self.people.positionBallMesh_2.position.x - (50 - child.position.x);
+        //         child.position.y = self.people.positionBallMesh_2.position.y - (-8.5 - child.position.y);
+        //         child.position.z = self.people.positionBallMesh_2.position.z - (240 - child.position.z);
+        //     });
+        //     //self.people.groupWalk.position.set(this.extinguisherControl_2.position.x, this.extinguisherControl_2.position.y, this.extinguisherControl_2.position.z);
+        // }
+        // if(this.extinguisherControl_3 && this.extinguisherControl_3.position.isChange()){
+        //     self.people.groupBend.children.forEach(child => {
+        //         child.position.x = self.people.positionBallMesh_3.position.x - (50 - child.position.x);
+        //         child.position.y = self.people.positionBallMesh_3.position.y - (-8.5 - child.position.y);
+        //         child.position.z = self.people.positionBallMesh_3.position.z - (240 - child.position.z);
+        //     });
+        //     //self.people.groupBend.position.set(this.extinguisherControl_3.position.x, this.extinguisherControl_3.position.y, this.extinguisherControl_3.position.z);
+        // }
+        // if(this.extinguisherControl_4 && this.extinguisherControl_4.position.isChange()){
+        //     self.people.groupCrawl.children.forEach(child => {
+        //         child.position.x = self.people.positionBallMesh_4.position.x - (50 - child.position.x);
+        //         child.position.y = self.people.positionBallMesh_4.position.y - (-8.5 - child.position.y);
+        //         child.position.z = self.people.positionBallMesh_4.position.z - (240 - child.position.z);
+        //     });
+        //     //self.people.groupCrawl.position.set(this.extinguisherControl_4.position.x, this.extinguisherControl_4.position.y, this.extinguisherControl_4.position.z);
+        // }
+        // if(this.extinguisherControl_5 && this.extinguisherControl_5.position.isChange()){
+        //     self.people.groupIdle.children.forEach(child => {
+        //         child.position.x = self.people.positionBallMesh_5.position.x - (50 - child.position.x);
+        //         child.position.y = self.people.positionBallMesh_5.position.y - (-8.5 - child.position.y);
+        //         child.position.z = self.people.positionBallMesh_5.position.z - (240 - child.position.z);
+        //     });
+        //     //self.people.groupIdle.position.set(this.extinguisherControl_5.position.x, this.extinguisherControl_5.position.y, this.extinguisherControl_5.position.z);
+        // }
+
         //self.cameraControl();
 
         TWEEN.update();

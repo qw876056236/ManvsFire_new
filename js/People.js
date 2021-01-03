@@ -13,6 +13,8 @@ var People = function () {
 }
 
 let meshMixer, action, modelURL, modelURL1, modelURL2, modelURL3, modelURL4, modelURL5, modelURL6, modelURL7, modelURL8, modelURL9, modelURL10, modelURL11, modelURL12, modelURL13, modelURL14, modelURL15, modelURL16, modelURL17, modelURL18, clip;
+let runMax_x = 0, runMax_z = 0;
+let runMin_x = 1000, runMin_z = 1000;
 var v0 = 0.8;//Agent初始速度
 var vmax = 1.6;//Agent最大速度
 var fear = 0;//Agent恐慌度，0-1
@@ -26,52 +28,52 @@ People.prototype.init = function (_this) {
     multi = Math.floor(multi / 109);
     _this.isFinishLoadCharactor = false;
     _this.isStartRun = false;
-    this.groupRun = new THREE.Group();
-    this.groupRun.position = new THREE.Vector3(51.2,0,162);
-    this.groupWalk = new THREE.Group();
-    this.groupWalk.position = new THREE.Vector3(41.2,0,162);
-    this.groupBend = new THREE.Group();
-    this.groupBend.position = new THREE.Vector3(31.2,0,162);
-    this.groupCrawl = new THREE.Group();
-    this.groupCrawl.position = new THREE.Vector3(21.2,0,162);
-    this.groupIdle = new THREE.Group();
-    this.groupIdle.position = new THREE.Vector3(11.2,0,162);
-    var positionBallGeometry_1=new THREE.SphereGeometry(2,4,4);
-    var positionBallMaterial_1=new THREE.MeshPhongMaterial({color:0x00ff00});
+    this.groupRun = [];
+    this.groupWalk = [];
+    this.groupBend = [];
+    this.groupCrawl = [];
+    this.groupIdle = [];
     this.cameraPerspective = new THREE.PerspectiveCamera( 50,  this.aspect, 10, 1000 );
-    var positionBallGeometry_2=new THREE.SphereGeometry(2,4,4);
-    var positionBallMaterial_2=new THREE.MeshPhongMaterial({color:0x00ff00});
-    var positionBallGeometry_3=new THREE.SphereGeometry(2,4,4);
-    var positionBallMaterial_3=new THREE.MeshPhongMaterial({color:0x00ff00});
-    var positionBallGeometry_4=new THREE.SphereGeometry(2,4,4);
-    var positionBallMaterial_4=new THREE.MeshPhongMaterial({color:0x00ff00});
-    var positionBallGeometry_5=new THREE.SphereGeometry(2,4,4);
-    var positionBallMaterial_5=new THREE.MeshPhongMaterial({color:0x00ff00});
-    this.positionBallMesh_1=new THREE.Mesh(positionBallGeometry_1,positionBallMaterial_1);
-    this.positionBallMesh_1.position.set(50,-8.5,240);
-    this.positionBallMesh_2=new THREE.Mesh(positionBallGeometry_2,positionBallMaterial_2);
-    this.positionBallMesh_2.position.set(40,-8.5,240);
-    this.positionBallMesh_3=new THREE.Mesh(positionBallGeometry_3,positionBallMaterial_3);
-    this.positionBallMesh_3.position.set(30,-8.5,240);
-    this.positionBallMesh_4=new THREE.Mesh(positionBallGeometry_4,positionBallMaterial_4);
-    this.positionBallMesh_4.position.set(20,-8.5,240);
-    this.positionBallMesh_5=new THREE.Mesh(positionBallGeometry_5,positionBallMaterial_5);
-    this.positionBallMesh_5.position.set(10,-8.5,240);
+    loadBlendMeshWithPromise(_this);
+    this.positionPlaneGeometry_1=new THREE.PlaneGeometry(10,20);
+    this.positionPlaneMaterial_1=new THREE.MeshPhongMaterial({color:0xff0000, opacity:0.5, transparent:true});
+    this.positionPlaneGeometry_2=new THREE.PlaneGeometry(10,20);
+    this.positionPlaneMaterial_2=new THREE.MeshPhongMaterial({color:0x3CB371, opacity:0.5, transparent:true});
+    this.positionPlaneGeometry_3=new THREE.PlaneGeometry(10,20);
+    this.positionPlaneMaterial_3=new THREE.MeshPhongMaterial({color:0xFF4500, opacity:0.5, transparent:true});
+    this.positionPlaneGeometry_4=new THREE.PlaneGeometry(10,20);
+    this.positionPlaneMaterial_4=new THREE.MeshPhongMaterial({color:0xFF6347, opacity:0.5, transparent:true});
+    this.positionPlaneGeometry_5=new THREE.PlaneGeometry(10,20);
+    this.positionPlaneMaterial_5=new THREE.MeshPhongMaterial({color:0xA52A2A, opacity:0.5, transparent:true});
+    this.positionPlaneMesh_1=new THREE.Mesh(this.positionPlaneGeometry_1,this.positionPlaneMaterial_1);
+    this.positionPlaneMesh_1.position.set(51,-8.5,261);
+    this.positionPlaneMesh_1.rotation.x = -0.5 * Math.PI;
+    this.positionPlaneMesh_2=new THREE.Mesh(this.positionPlaneGeometry_2,this.positionPlaneMaterial_2);
+    this.positionPlaneMesh_2.position.set(51,-8.5,241);
+    this.positionPlaneMesh_2.rotation.x = -0.5 * Math.PI;
+    this.positionPlaneMesh_3=new THREE.Mesh(this.positionPlaneGeometry_3,this.positionPlaneMaterial_3);
+    this.positionPlaneMesh_3.position.set(51,-8.5,222);
+    this.positionPlaneMesh_3.rotation.x = -0.5 * Math.PI;
+    this.positionPlaneMesh_4=new THREE.Mesh(this.positionPlaneGeometry_4,this.positionPlaneMaterial_4);
+    this.positionPlaneMesh_4.position.set(51,-8.5,197);
+    this.positionPlaneMesh_4.rotation.x = -0.5 * Math.PI;
+    this.positionPlaneMesh_5=new THREE.Mesh(this.positionPlaneGeometry_5,this.positionPlaneMaterial_5);
+    this.positionPlaneMesh_5.position.set(51,-8.5,170);
+    this.positionPlaneMesh_5.rotation.x = -0.5 * Math.PI;//
     this.cameraPerspective.position.set(-25,7,0);
-    this.cameraPerspective.lookAt(this.positionBallMesh_1.position);
-    _this.scene.add(this.positionBallMesh_1);
-    this.positionBallMesh_1.visible = false;
-    _this.scene.add(this.positionBallMesh_2);
-    this.positionBallMesh_2.visible = false;
-    _this.scene.add(this.positionBallMesh_3);
-    this.positionBallMesh_3.visible = false;
-    _this.scene.add(this.positionBallMesh_4);
-    this.positionBallMesh_4.visible = false;
-    _this.scene.add(this.positionBallMesh_5);
-    this.positionBallMesh_5.visible = false;
-    loadBlendMeshWithPromise();
+    this.cameraPerspective.lookAt(this.positionPlaneMesh_1.position);
+    _this.scene.add(this.positionPlaneMesh_1);
+    this.positionPlaneMesh_1.visible = false;
+    _this.scene.add(this.positionPlaneMesh_2);
+    this.positionPlaneMesh_2.visible = false;
+    _this.scene.add(this.positionPlaneMesh_3);
+    this.positionPlaneMesh_3.visible = false;
+    _this.scene.add(this.positionPlaneMesh_4);
+    this.positionPlaneMesh_4.visible = false;
+    _this.scene.add(this.positionPlaneMesh_5);
+    this.positionPlaneMesh_5.visible = false;
 
-    function loadBlendMeshWithPromise() {
+    function loadBlendMeshWithPromise(_this) {
         var loadModelPromise = function (modelurl) {
             return new Promise((resolve) => {
                 var loader = new THREE.GLTFLoader();
@@ -300,8 +302,6 @@ People.prototype.init = function (_this) {
                 temp = i % 31;
                 var newMesh, textureURL, textureURL1;
                 newMesh = cloneGltf(data[temp]);
-                console.log(newMesh);
-                console.log(i);
 
                 //贴图参数化
                 if (temp === 0) {
@@ -431,6 +431,7 @@ People.prototype.init = function (_this) {
 
                 newMesh.scene.scale.set(1, 1, 1);
                 newMesh.scene.name = 'run';
+                newMesh.scene.visible = false;
 
                 //人物骨骼参数化
                 var headRandom =1 +  Math.random()* 4/number;
@@ -457,8 +458,7 @@ People.prototype.init = function (_this) {
                 //动态人群位置
                 var distance = Math.random() * 17;
                 var distance1 = Math.random() * 26;
-                newMesh.scene.position.set(distance+43, -8.5, distance1+261);
-
+                newMesh.scene.position.set(distance + 43, -8.5, distance1 + 261);
                 // 将模型的材质附在newMesh上
                 var loader = new THREE.TextureLoader();
                 var texture = loader.load(textureURL, function () {
@@ -487,9 +487,8 @@ People.prototype.init = function (_this) {
                 self.mixerArr.push(meshMixer);
                 self.activateAction(self.action);
 
+                self.groupRun.push(newMesh.scene);
                 _this.scene.add(newMesh.scene);
-                self.groupRun.add(newMesh.scene);
-                _this.scene.add(self.groupRun);
 
             }
         });
@@ -511,8 +510,6 @@ People.prototype.init = function (_this) {
                 temp = i % 39;
                 var newMesh, textureURL;
                 newMesh = cloneGltf(data[temp]);
-                console.log(newMesh);
-                console.log(i);
 
                 //贴图参数化
                 if (temp === 0) {
@@ -635,6 +632,7 @@ People.prototype.init = function (_this) {
 
                 newMesh.scene.scale.set(1, 1, 1);
                 newMesh.scene.name = 'run';
+                newMesh.scene.visible = false;
 
                 //人物骨骼参数化
                 var headRandom =1 +  Math.random()/number;
@@ -683,9 +681,8 @@ People.prototype.init = function (_this) {
                 self.mixerArr.push(meshMixer);
                 self.activateAction(self.action);
 
+                self.groupRun.push(newMesh.scene);
                 _this.scene.add(newMesh.scene);
-                self.groupRun.add(newMesh.scene);
-                _this.scene.add(self.groupRun);
 
             }
         });
@@ -707,8 +704,6 @@ People.prototype.init = function (_this) {
                 temp = i % 2;
                 var newMesh, textureURL, textureURL1;
                 newMesh = cloneGltf(data[temp]);
-                console.log(newMesh);
-                console.log(i);
 
                 //贴图参数化
                 if (temp === 0) {
@@ -722,6 +717,7 @@ People.prototype.init = function (_this) {
 
                 newMesh.scene.scale.set(1, 1, 1);
                 newMesh.scene.name = 'run';
+                newMesh.scene.visible = false;
 
                 //人物骨骼参数化
                 var headRandom =1 +  Math.random()/number;
@@ -778,9 +774,8 @@ People.prototype.init = function (_this) {
                 self.mixerArr.push(meshMixer);
                 self.activateAction(self.action);
 
+                self.groupRun.push(newMesh.scene);
                 _this.scene.add(newMesh.scene);
-                self.groupRun.add(newMesh.scene);
-                _this.scene.add(self.groupRun);
 
             }
         });
@@ -802,8 +797,6 @@ People.prototype.init = function (_this) {
                 temp = i % 2;
                 var newMesh, textureURL;
                 newMesh = cloneGltf(data[temp]);
-                console.log(newMesh);
-                console.log(i);
 
                 //贴图参数化
                 if (temp === 0) {
@@ -815,6 +808,7 @@ People.prototype.init = function (_this) {
 
                 newMesh.scene.scale.set(1, 1, 1);
                 newMesh.scene.name = 'run';
+                newMesh.scene.visible = false;
 
                 //人物骨骼参数化
                 var headRandom =1 +  Math.random()/number;
@@ -862,9 +856,8 @@ People.prototype.init = function (_this) {
                 self.mixerArr.push(meshMixer);
                 self.activateAction(self.action);
 
+                self.groupRun.push(newMesh.scene);
                 _this.scene.add(newMesh.scene);
-                self.groupRun.add(newMesh.scene);
-                _this.scene.add(self.groupRun);
 
             }
         });
@@ -886,8 +879,6 @@ People.prototype.init = function (_this) {
                 temp = i % 31;
                 var newMesh, textureURL, textureURL1;
                 newMesh = cloneGltf(data[temp]);
-                console.log(newMesh);
-                console.log(i);
 
                 //贴图参数化
                 if (temp === 0) {
@@ -1017,6 +1008,7 @@ People.prototype.init = function (_this) {
 
                 newMesh.scene.scale.set(1, 1, 1);
                 newMesh.scene.name = 'walk';
+                newMesh.scene.visible = false;
                 newMesh.scene.rotation.set(0, Math.PI*13/48, 0);
 
                 //人物骨骼参数化
@@ -1074,9 +1066,8 @@ People.prototype.init = function (_this) {
                 self.mixerArr.push(meshMixer);
                 self.activateAction(self.action);
 
+                self.groupWalk.push(newMesh.scene);
                 _this.scene.add(newMesh.scene);
-                self.groupWalk.add(newMesh.scene);
-                _this.scene.add(self.groupWalk);
 
             }
         });
@@ -1098,8 +1089,6 @@ People.prototype.init = function (_this) {
                 temp = i % 39;
                 var newMesh, textureURL;
                 newMesh = cloneGltf(data[temp]);
-                console.log(newMesh);
-                console.log(i);
 
                 //贴图参数化
                 if (temp === 0) {
@@ -1222,6 +1211,7 @@ People.prototype.init = function (_this) {
 
                 newMesh.scene.scale.set(1, 1, 1);
                 newMesh.scene.name = 'walk';
+                newMesh.scene.visible = false;
                 newMesh.scene.rotation.set(0, Math.PI*13/48, 0);
 
                 //人物骨骼参数化
@@ -1270,9 +1260,8 @@ People.prototype.init = function (_this) {
                 self.mixerArr.push(meshMixer);
                 self.activateAction(self.action);
 
+                self.groupWalk.push(newMesh.scene);
                 _this.scene.add(newMesh.scene);
-                self.groupWalk.add(newMesh.scene);
-                _this.scene.add(self.groupWalk);
 
             }
         });
@@ -1294,8 +1283,6 @@ People.prototype.init = function (_this) {
                 temp = i % 2;
                 var newMesh, textureURL;
                 newMesh = cloneGltf(data[temp]);
-                console.log(newMesh);
-                console.log(i);
 
                 //贴图参数化
                 if (i % 2 === 0) {
@@ -1307,6 +1294,7 @@ People.prototype.init = function (_this) {
 
                 newMesh.scene.scale.set(1, 1, 1);
                 newMesh.scene.name = 'walk';
+                newMesh.scene.visible = false;
                 newMesh.scene.rotation.set(0, Math.PI*13/48, 0);
 
                 //人物骨骼参数化
@@ -1349,9 +1337,8 @@ People.prototype.init = function (_this) {
                 self.mixerArr.push(meshMixer);
                 self.activateAction(self.action);
 
+                self.groupWalk.push(newMesh.scene);
                 _this.scene.add(newMesh.scene);
-                self.groupWalk.add(newMesh.scene);
-                _this.scene.add(self.groupWalk);
 
             }
         });
@@ -1373,8 +1360,6 @@ People.prototype.init = function (_this) {
                 temp = i % 31;
                 var newMesh, textureURL, textureURL1;
                 newMesh = cloneGltf(data[temp]);
-                console.log(newMesh);
-                console.log(i);
 
                 //贴图参数化
                 if (temp === 0) {
@@ -1504,6 +1489,7 @@ People.prototype.init = function (_this) {
 
                 newMesh.scene.scale.set(1, 1, 1);
                 newMesh.scene.name = 'bend';
+                newMesh.scene.visible = false;
                 newMesh.scene.rotation.set(0, Math.PI/4, 0);
 
                 //人物骨骼参数化
@@ -1561,9 +1547,8 @@ People.prototype.init = function (_this) {
                 self.mixerArr.push(meshMixer);
                 self.activateAction(self.action);
 
+                self.groupBend.push(newMesh.scene);
                 _this.scene.add(newMesh.scene);
-                self.groupBend.add(newMesh.scene);
-                _this.scene.add(self.groupBend);
 
             }
         });
@@ -1585,8 +1570,6 @@ People.prototype.init = function (_this) {
                 temp = i % 39;
                 var newMesh, textureURL;
                 newMesh = cloneGltf(data[temp]);
-                console.log(newMesh);
-                console.log(i);
 
                 //贴图参数化
                 if (temp === 0) {
@@ -1709,6 +1692,7 @@ People.prototype.init = function (_this) {
 
                 newMesh.scene.scale.set(1, 1, 1);
                 newMesh.scene.name = 'bend';
+                newMesh.scene.visible = false;
                 newMesh.scene.rotation.set(0, Math.PI/4, 0);
 
                 //人物骨骼参数化
@@ -1757,10 +1741,8 @@ People.prototype.init = function (_this) {
                 self.mixerArr.push(meshMixer);
                 self.activateAction(self.action);
 
+                self.groupBend.push(newMesh.scene);
                 _this.scene.add(newMesh.scene);
-                self.groupBend.add(newMesh.scene);
-                _this.scene.add(self.groupBend);
-
             }
         });
 
@@ -1781,8 +1763,6 @@ People.prototype.init = function (_this) {
                 temp = i % 2;
                 var newMesh, textureURL;
                 newMesh = cloneGltf(data[temp]);
-                console.log(newMesh);
-                console.log(i);
 
                 //贴图参数化
                 if (i % 2 === 0) {
@@ -1794,6 +1774,7 @@ People.prototype.init = function (_this) {
 
                 newMesh.scene.scale.set(1, 1, 1);
                 newMesh.scene.name = 'bend';
+                newMesh.scene.visible = false;
                 newMesh.scene.rotation.set(0, Math.PI/4, 0);
 
                 //人物骨骼参数化
@@ -1837,9 +1818,8 @@ People.prototype.init = function (_this) {
                 self.mixerArr.push(meshMixer);
                 self.activateAction(self.action);
 
+                self.groupBend.push(newMesh.scene);
                 _this.scene.add(newMesh.scene);
-                self.groupBend.add(newMesh.scene);
-                _this.scene.add(self.groupBend);
 
             }
         });
@@ -1862,8 +1842,6 @@ People.prototype.init = function (_this) {
                 temp = i % 31;
                 var newMesh, textureURL, textureURL1;
                 newMesh = cloneGltf(data[temp]);
-                console.log(newMesh);
-                console.log(i);
 
                 //贴图参数化
                 if (temp === 0) {
@@ -1993,6 +1971,7 @@ People.prototype.init = function (_this) {
 
                 newMesh.scene.scale.set(1, 1, 1);
                 newMesh.scene.name = 'crawl';
+                newMesh.scene.visible = false;
                 newMesh.scene.rotation.set(0, Math.PI*4/5, 0);
 
                 //动态人群位置
@@ -2050,9 +2029,8 @@ People.prototype.init = function (_this) {
                 self.mixerArr.push(meshMixer);
                 self.activateAction(self.action);
 
+                self.groupCrawl.push(newMesh.scene);
                 _this.scene.add(newMesh.scene);
-                self.groupCrawl.add(newMesh.scene);
-                _this.scene.add(self.groupCrawl);
 
             }
         });
@@ -2074,8 +2052,6 @@ People.prototype.init = function (_this) {
                 temp = i % 39;
                 var newMesh, textureURL;
                 newMesh = cloneGltf(data[temp]);
-                console.log(newMesh);
-                console.log(i);
 
                 //贴图参数化
                 if (temp === 0) {
@@ -2198,6 +2174,7 @@ People.prototype.init = function (_this) {
 
                 newMesh.scene.scale.set(1, 1, 1);
                 newMesh.scene.name = 'crawl';
+                newMesh.scene.visible = false;
                 newMesh.scene.rotation.set(0, Math.PI*4/5, 0);
 
                 //人物骨骼参数化
@@ -2246,9 +2223,8 @@ People.prototype.init = function (_this) {
                 self.mixerArr.push(meshMixer);
                 self.activateAction(self.action);
 
+                self.groupCrawl.push(newMesh.scene);
                 _this.scene.add(newMesh.scene);
-                self.groupCrawl.add(newMesh.scene);
-                _this.scene.add(self.groupCrawl);
 
             }
         });
@@ -2270,8 +2246,6 @@ People.prototype.init = function (_this) {
                 temp = i % 2;
                 var newMesh, textureURL, textureURL1;
                 newMesh = cloneGltf(data[temp]);
-                console.log(newMesh);
-                console.log(i);
 
                 //贴图参数化
                 if (temp === 0) {
@@ -2285,6 +2259,7 @@ People.prototype.init = function (_this) {
 
                 newMesh.scene.scale.set(1, 1, 1);
                 newMesh.scene.name = 'crawl';
+                newMesh.scene.visible = false;
                 newMesh.scene.rotation.set(0, Math.PI*4/5, 0);
 
                 //人物骨骼参数化
@@ -2342,9 +2317,8 @@ People.prototype.init = function (_this) {
                 self.mixerArr.push(meshMixer);
                 self.activateAction(self.action);
 
+                self.groupCrawl.push(newMesh.scene);
                 _this.scene.add(newMesh.scene);
-                self.groupCrawl.add(newMesh.scene);
-                _this.scene.add(self.groupCrawl);
 
             }
         });
@@ -2367,8 +2341,6 @@ People.prototype.init = function (_this) {
                 temp = i % 2;
                 var newMesh, textureURL;
                 newMesh = cloneGltf(data[temp]);
-                console.log(newMesh);
-                console.log(i);
 
                 //贴图参数化
                 if (temp === 0) {
@@ -2380,6 +2352,7 @@ People.prototype.init = function (_this) {
 
                 newMesh.scene.scale.set(1, 1, 1);
                 newMesh.scene.name = 'crawl';
+                newMesh.scene.visible = false;
                 newMesh.scene.rotation.set(0, Math.PI*4/5, 0);
 
                 //动态人群位置
@@ -2430,9 +2403,8 @@ People.prototype.init = function (_this) {
                 self.mixerArr.push(meshMixer);
                 self.activateAction(self.action);
 
+                self.groupCrawl.push(newMesh.scene);
                 _this.scene.add(newMesh.scene);
-                self.groupCrawl.add(newMesh.scene);
-                _this.scene.add(self.groupCrawl);
 
             }
         });
@@ -2453,8 +2425,6 @@ People.prototype.init = function (_this) {
                 temp = i % 2;
                 var newMesh, textureURL;
                 newMesh = cloneGltf(data[temp]);
-                console.log(newMesh);
-                console.log(i);
 
                 //贴图参数化
                 if (i % 2 === 0) {
@@ -2466,6 +2436,7 @@ People.prototype.init = function (_this) {
 
                 newMesh.scene.scale.set(1, 1, 1);
                 newMesh.scene.name = 'idle';
+                newMesh.scene.visible = false;
 
                 //人物骨骼参数化
                 var headRandom =1 +  Math.random()/number;
@@ -2507,9 +2478,8 @@ People.prototype.init = function (_this) {
                 self.mixerArr.push(meshMixer);
                 self.activateAction(self.action);
 
+                self.groupIdle.push(newMesh.scene);
                 _this.scene.add(newMesh.scene);
-                self.groupIdle.add(newMesh.scene);
-                _this.scene.add(self.groupIdle);
 
             }
         });
@@ -2531,8 +2501,6 @@ People.prototype.init = function (_this) {
                 temp = i % 2;
                 var newMesh, textureURL, textureURL1;
                 newMesh = cloneGltf(data[temp]);
-                console.log(newMesh);
-                console.log(i);
 
                 //贴图参数化
                 if (temp === 0) {
@@ -2546,6 +2514,7 @@ People.prototype.init = function (_this) {
 
                 newMesh.scene.scale.set(1, 1, 1);
                 newMesh.scene.name = 'idle';
+                newMesh.scene.visible = false;
 
                 //人物骨骼参数化
                 var headRandom =1 +  Math.random()/number;
@@ -2602,9 +2571,8 @@ People.prototype.init = function (_this) {
                 self.mixerArr.push(meshMixer);
                 self.activateAction(self.action);
 
+                self.groupIdle.push(newMesh.scene);
                 _this.scene.add(newMesh.scene);
-                self.groupIdle.add(newMesh.scene);
-                _this.scene.add(self.groupIdle);
 
             }
         });
@@ -2626,8 +2594,6 @@ People.prototype.init = function (_this) {
                 temp = i % 2;
                 var newMesh, textureURL;
                 newMesh = cloneGltf(data[temp]);
-                console.log(newMesh);
-                console.log(i);
 
                 //贴图参数化
                 if (temp === 0) {
@@ -2639,6 +2605,7 @@ People.prototype.init = function (_this) {
 
                 newMesh.scene.scale.set(1, 1, 1);
                 newMesh.scene.name = 'idle';
+                newMesh.scene.visible = false;
 
                 //人物骨骼参数化
                 var headRandom =1 +  Math.random()/number;
@@ -2686,9 +2653,8 @@ People.prototype.init = function (_this) {
                 self.mixerArr.push(meshMixer);
                 self.activateAction(self.action);
 
+                self.groupIdle.push(newMesh.scene);
                 _this.scene.add(newMesh.scene);
-                self.groupIdle.add(newMesh.scene);
-                _this.scene.add(self.groupIdle);
 
             }
         });
@@ -2711,8 +2677,6 @@ People.prototype.init = function (_this) {
                 temp = i % 31;
                 var newMesh, textureURL, textureURL1;
                 newMesh = cloneGltf(data[temp]);
-                console.log(newMesh);
-                console.log(i);
 
                 //贴图参数化
                 if (temp === 0) {
@@ -2842,6 +2806,7 @@ People.prototype.init = function (_this) {
 
                 newMesh.scene.scale.set(1, 1, 1);
                 newMesh.scene.name = 'idle';
+                newMesh.scene.visible = false;
 
                 //人物骨骼参数化
                 var headRandom =1 +  Math.random()* 4/number;
@@ -2898,9 +2863,9 @@ People.prototype.init = function (_this) {
                 self.mixerArr.push(meshMixer);
                 self.activateAction(self.action);
 
+                self.groupIdle.push(newMesh.scene);
                 _this.scene.add(newMesh.scene);
-                self.groupIdle.add(newMesh.scene);
-                _this.scene.add(self.groupIdle);
+
             }
         });
 
@@ -2921,8 +2886,6 @@ People.prototype.init = function (_this) {
                 temp = i % 39;
                 var newMesh, textureURL;
                 newMesh = cloneGltf(data[temp]);
-                console.log(newMesh);
-                console.log(i);
 
                 //贴图参数化
                 if (temp === 0) {
@@ -3045,6 +3008,7 @@ People.prototype.init = function (_this) {
 
                 newMesh.scene.scale.set(1, 1, 1);
                 newMesh.scene.name = 'idle';
+                newMesh.scene.visible = false;
 
                 //人物骨骼参数化
                 var headRandom =1 +  Math.random()/number;
@@ -3092,9 +3056,8 @@ People.prototype.init = function (_this) {
                 self.mixerArr.push(meshMixer);
                 self.activateAction(self.action);
 
+                self.groupIdle.push(newMesh.scene);
                 _this.scene.add(newMesh.scene);
-                self.groupIdle.add(newMesh.scene);
-                _this.scene.add(self.groupIdle);
 
             }
         });
