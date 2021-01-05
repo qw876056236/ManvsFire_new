@@ -452,12 +452,10 @@ Interaction.prototype.fuc3 = function (MainScene)
             MainScene.control.attach(MainScene.smoke.positionBallMesh);
             MainScene.isEdit = true;
             MainScene.control.visible = true;
-<<<<<<< HEAD
             // MainScene.fire.Te1Material.visible=false;
             // MainScene.fire.Te2Material.visible=false;
             MainScene.fire.fireManager.target.visible=true;
-=======
->>>>>>> people
+
             MainScene.smoke.positionBallMesh.visible=true;
             MainScene.smokeEditor.points.forEach(function(item){
                 item.visible = true;
@@ -486,12 +484,10 @@ Interaction.prototype.fuc3 = function (MainScene)
             MainScene.smokeEditor.transformControls.detach();
             MainScene.isEdit = false;
             MainScene.control.visible = false;
-<<<<<<< HEAD
             // MainScene.fire.Te1Material.visible=false;
             // MainScene.fire.Te2Material.visible=false;
             MainScene.fire.fireManager.target.visible=false;
-=======
->>>>>>> people
+
             MainScene.smoke.positionBallMesh.visible=false;
             MainScene.smokeEditor.points.forEach(function(item){
                 item.visible = false;
