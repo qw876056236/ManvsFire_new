@@ -226,13 +226,11 @@ Interaction.prototype.fuc3 = function (MainScene)
             $('createPersonBtn').textContent="编辑人群";
             $('illustration-context').innerHTML = "<p>您已成功选取人群排布</p>" + "<p>若想编辑烟雾请点击“编辑烟雾”,否则点击“开始模拟”</p>";
 
-            MainScene.camera.position.set(50, 80, 240);//原x为150 450
-            MainScene.camera.lookAt(50, 0, 240);
+            MainScene.camera.position.set(60,3,146);
+            MainScene.camera.rotation.set(-2.8,0.7,2.9);
+            //MainScene.camera.lookAt(50, 0, 240);
             MainScene.globalPlane.constant = 17;
             MainScene.globalPlane.set(new THREE.Vector3(0, -1, 0), 17);
-            //MainScene.camera.position.set(60,3,146);
-            MainScene.camControl.lon = 120;
-            MainScene.camControl.lat = -90;
             //MainScene.globalPlane.constant=100000;
             MainScene.isEdit = false;
 
@@ -467,20 +465,20 @@ Interaction.prototype.fuc3 = function (MainScene)
         } else{
            // userBookNumber=0;
             $("startRun").style.display="inline-block";
+            $("createPersonBtn").style.display="inline-block";
             $("floor-menu").style.display="none";
             $('View').style.display = "inline-block";
             $("fire-menu").style.display = "none";
-            $("transformSmoke").style.display="none";
+            $("transformSmoke").style.display="inline-block";
+            $('transformSmoke').textContent="编辑烟雾";
             $("switch").style.display="none";
             $('illustration-context').innerHTML = "<p>您已成功选取起火点位置</p>" + "<p>若想模拟火灾请点击“开始模拟”</p>";
 
-            MainScene.camera.position.set(50, 200, 240);//原x为150 450
-            MainScene.camera.lookAt(50, 0, 240);
+            MainScene.camera.position.set(60,3,146);
+            MainScene.camera.rotation.set(-2.8,0.7,2.9);
+            //MainScene.camera.lookAt(50, 0, 240);
             MainScene.globalPlane.constant = 17;
             MainScene.globalPlane.set(new THREE.Vector3(0, -1, 0), 17);
-            //MainScene.camera.position.set(60,3,146);
-            MainScene.camControl.lon = 120;
-            MainScene.camControl.lat = -90;
             //MainScene.globalPlane.constant=100000;
             MainScene.control.attach();
             MainScene.smokeEditor.transformControls.detach();
