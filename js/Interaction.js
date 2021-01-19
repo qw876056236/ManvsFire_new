@@ -79,13 +79,14 @@ Interaction.prototype.fuc2 = function (_this)
         document.getElementById("active").style.display = "inline-block";
         document.getElementById("startRun").style.display = "none";
         document.getElementById("transformSmoke").style.display = "none";
+        document.getElementById("createPersonBtn").style.display = "none";
         document.getElementById("fireman").style.display = "inline-block";
         document.getElementById("floor-menu").style.display = "inline-block";
 
         // _this.smoke.redBallMesh.position.x=_this.smoke.positionBallMesh.position.x+16;
         // _this.smoke.redBallMesh.position.z= _this.smoke.positionBallMesh.position.z;
-        _this.camera.position.set(50, 200, 240);//原x为150 450
-        _this.camera.lookAt(50, 0, 240);
+        //_this.camera.position.set(50, 200, 240);//原x为150 450
+        //_this.camera.lookAt(50, 0, 240);
         _this.globalPlane.constant = 17;
         _this.globalPlane.set(new THREE.Vector3(0, -1, 0), 17);
         _this.smoke.firePos = _this.smoke.positionBallMesh.position;
