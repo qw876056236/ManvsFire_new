@@ -11,10 +11,17 @@ var Smoke = function()
     this.step = 0.002;
     this.smokeUnitArrf1 = [];
     this.smokeUnitArrf2 = [];
+    this.smokeFloorArr = [];
     this.firePos = new THREE.Vector3(51.2,0,162);
+    this.fireFloorIndex = 0;
     this.frustumSize=100;//小窗口大小设置
     this.aspect = window.innerWidth / window.innerHeight;
     this.clock = new THREE.Clock();
+
+    this.Q = 0;//热释放速率
+    this.Qc = 0;//对流热释放速率
+    this.QcFactor = 0.7//对流热释放速率份数
+    this.D = 0;//火源有效直径
 
     this.ice = 0.9;//不完全燃烧系数
     this.eac = 1.3;//过剩空气系数
@@ -35,23 +42,65 @@ var Smoke = function()
 Smoke.prototype.init = function(_this)
 {
     var self = this;
-    var smokeUnit = null;
-    for(let i=0;i<4;++i)
-        for(let j=0;j<44;++j)
-        {
-            smokeUnit = new SmokeUnit();
-            smokeUnit.pos.set(43.7+5*i,-5.85,162.5+5*j);
-            this.smokeUnitArrf1.push(smokeUnit);
-        }
-    for(let i=0;i<3;++i)
-        for(let j=0;j<38;++j)
-        {
-            smokeUnit = new SmokeUnit();
-            smokeUnit.pos.set(47.3+4*i,-11.1,178.5+5*j);
-            smokeUnit.i = i;
-            smokeUnit.j = j;
-            this.smokeUnitArrf2.push(smokeUnit);
-        }
+
+    //地下二层防烟分区设置
+    var smokeFloor = new SmokeFloor();
+    var smokeBay = new SmokeBay();
+    smokeBay.init(44.8,56.8,-13.4,-10.3,176,280,4,4);
+    //joint
+    smokeFloor.smokeBayArr.push(smokeBay);
+
+    smokeBay = new SmokeBay();
+    smokeBay.init(44.8,56.8,-13.4,-10.3,280,366,4,4);
+    smokeFloor.smokeBayArr.push(smokeBay);
+
+    smokeFloor.smokeBayArr[0].neiborBay[0] = null;
+    smokeFloor.smokeBayArr[0].neiborBay[1] = null;
+    smokeFloor.smokeBayArr[0].neiborBay[2] = null;
+    smokeFloor.smokeBayArr[0].neiborBay[3] = smokeFloor.smokeBayArr[1];
+    smokeFloor.smokeBayArr[0].neiborBayNum = 1;
+
+    smokeFloor.smokeBayArr[1].neiborBay[0] = null;
+    smokeFloor.smokeBayArr[1].neiborBay[1] = null;
+    smokeFloor.smokeBayArr[1].neiborBay[2] = smokeFloor.smokeBayArr[0];
+    smokeFloor.smokeBayArr[1].neiborBay[3] = null;
+    smokeFloor.smokeBayArr[1].neiborBayNum = 1;
+
+    smokeFloor.init(44.8,56.8,-13.4,-10.3,176,366)
+    this.smokeFloorArr.push(smokeFloor);
+
+    //地下一层防烟分区设置
+    smokeFloor = new SmokeFloor();
+    smokeBay = new SmokeBay();
+    smokeBay.init(41.2,61.2,-8.4,-5,160,220,5,5);
+    smokeFloor.smokeBayArr.push(smokeBay);
+
+    smokeBay.init(41.2,61.2,-8.4,-5,220,300,5,5);
+    smokeFloor.smokeBayArr.push(smokeBay);
+
+    smokeBay.init(41.2,61.2,-8.4,-5,300,380,5,5);
+    smokeFloor.smokeBayArr.push(smokeBay);
+
+    smokeFloor.smokeBayArr[0].neiborBay[0] = null;
+    smokeFloor.smokeBayArr[0].neiborBay[1] = null;
+    smokeFloor.smokeBayArr[0].neiborBay[2] = null;
+    smokeFloor.smokeBayArr[0].neiborBay[3] = smokeFloor.smokeBayArr[1];
+    smokeFloor.smokeBayArr[0].neiborBayNum = 1;
+
+    smokeFloor.smokeBayArr[1].neiborBay[0] = null;
+    smokeFloor.smokeBayArr[1].neiborBay[1] = null;
+    smokeFloor.smokeBayArr[1].neiborBay[2] = smokeFloor.smokeBayArr[0];
+    smokeFloor.smokeBayArr[1].neiborBay[3] = smokeFloor.smokeBayArr[2];
+    smokeFloor.smokeBayArr[1].neiborBayNum = 2;
+
+    smokeFloor.smokeBayArr[2].neiborBay[0] = null;
+    smokeFloor.smokeBayArr[2].neiborBay[1] = null;
+    smokeFloor.smokeBayArr[2].neiborBay[2] = smokeFloor.smokeBayArr[1];
+    smokeFloor.smokeBayArr[2].neiborBay[3] = null;
+    smokeFloor.smokeBayArr[2].neiborBayNum = 1;
+    //joint
+    smokeFloor.init(41.2,61.2,-8.4,-5,160,380);
+    this.smokeFloorArr.push(smokeFloor);
 
     var cameraOrtho = new THREE.OrthographicCamera(this.frustumSize * this.aspect / - 2, this.frustumSize * this.aspect / 2, this.frustumSize / 2, this.frustumSize / - 2, 0, 1000);
     var positionBallGeometry=new THREE.SphereGeometry(1,4,4);
@@ -129,61 +178,58 @@ Smoke.prototype.createCloud = function(_this,smokeUnit)
     smokeUnit.cloudArr.push(cloud);
 }
 
-Smoke.prototype.compute = function(){
-    this.Vy = this.ice * this.B * (0.0187*this.Cy + 0.011*this.Hy + 0.007*this.Sy + 0.0124*this.Wy + 0.008*this.Ny + 0.8061*this.eac*this.V0);
-    if(this.eac < 1)
+Smoke.prototype.set = function(fire){
+    //判断着火在哪层,设置fireFloorIndex
+    var floor = null;
+    var firex = this.positionBallMesh.position.x;
+    var firey = this.positionBallMesh.position.y;
+    var firez = this.positionBallMesh.position.z;
+    for(let i=0;i<this.smokeFloorArr.length;++i)
     {
-        this.Vy += 0.21 * this.ice * this.B * (1-this.eac) * this.V0;
-    }
-    this.smokeVolume += this.Vy * this.dt / 3600;
-    this.smokeVolume = this.smokeVolume - 1 * 13 * 190 * this.dt / 60;
-    if(this.smokeVolume < 0)
-        this.smokeVolume = 0;
-
-}
-
-Smoke.prototype.computeV0 = function(){
-    this.V0 = (0.0187*this.Cy + 0.0556*this.Hy + 0.007*this.Sy - 0.007*this.Oy) / 0.21;
-}
-
-Smoke.prototype.cloudRank = function(){
-    var firePos = this.firePos;
-    var fireI = Math.floor((this.firePos.x - 45.3) / 4);
-    var fireJ = Math.floor((this.firePos.z - 176) / 5);
-    this.smokeUnitArrf2.forEach(function(item) {
-        item.r = Math.pow(Math.pow(item.pos.x-firePos.x,2)+Math.pow(item.pos.z-firePos.z,2),1/2);
-        //item.r = Math.abs(item.i - fireI) + Math.abs(item.j - fireJ);
-    })
-    this.smokeUnitArrf2.sort(function(x,y){
-        if(x.r < y.r)
-            return -1;
-        if(x.r > y.r)
-            return 1;
-        return 0;
-    })
-}
-
-Smoke.prototype.computeH = function(){
-    var unit = this.smokeVolume / (5*5*1.7);
-    if(unit<=114)
-    {
-
-        //var index = 0;
-        var i =0;
-        for(;i < unit-1; ++i)
+        floor = this.smokeFloorArr[i];
+        if(firey >= floor.ymin && firey < floor.ymax)
         {
-            this.smokeUnitArrf2[i].h = 1.7;
+            this.fireFloorIndex = i;
+            floor.fire = fire;
+            floor.fire.Zh = floor.ymax - firey;
+            floor.isFire = true;
+            floor.firePos.x = firex;
+            floor.firePos.y = firey;
+            floor.firePos.z = firez;
+            floor.stage = 1;
+            floor.smokeBayArr.forEach(function(smokeBay){
+                smokeBay.isFloor = true;
+            })
+            break;
         }
-        this.smokeUnitArrf2[i].h = (unit - i) * 1.7;
-    }
-    else if(this.smokeVolume<(57.8-44.8)*(366-176)*(-10.3+13.4))
-    {
-        var h = this.smokeVolume / (5*5*114);
-        this.smokeUnitArrf2.forEach(function(item){
-            item.h = h;
-        })
     }
 
+    //判断着火在哪一个防烟分区
+    var bay = null;
+    for(let i=0;i<floor.smokeBayArr.length;++i)
+    {
+        bay = floor.smokeBayArr[i];
+        if(firex>=bay.xmin && firex<bay.xmax && firez>=bay.zmin && firez<bay.zmax)
+        {
+            floor.fireBayIndex = i;
+            bay.isFire = true;
+            var x = Math.max(firex-bay.xmin,bay.xmax-firex);
+            var z = Math.max(firez-bay.zmin,bay.zmax-firez);
+            bay.maxr = Math.pow(x*x+z*z,1/2);
+
+            var minx,maxx,minz,maxz;
+            for(let j=0;j<bay.smokeUnitArr.length;++j)
+            {
+                minx = Math.max(0,Math.abs(bay.smokeUnitArr[j].pos.x-firex)-bay.xstep/2);
+                maxx = Math.abs(bay.smokeUnitArr[j].pos.x-firex)+bay.xstep/2;
+                minz = Math.max(0,Math.abs(bay.smokeUnitArr[j].pos.z-firez)-bay.zstep/2);
+                maxz = Math.abs(bay.smokeUnitArr[j].pos.z-firez)+bay.zstep/2;
+                bay.smokeUnitArr[j].minr = Math.pow(minx*minx+minz*minz,1/2);
+                bay.smokeUnitArr[j].maxr = Math.pow(maxx*maxx+maxz*maxz,1/2);
+            }
+            break;
+        }
+    }
 }
 
 Smoke.prototype.update = function(_this)
@@ -199,13 +245,16 @@ Smoke.prototype.update = function(_this)
         console.log(this.smokeVolume);
     }*/
     self.dt = this.clock.getDelta();
-    this.compute();
-    this.computeH();
-    self.smokeUnitArrf2.forEach(function(child)
+
+    //各楼层及各防烟分区
+    self.smokeFloorArr[self.fireFloorIndex].update(self.dt,_this);
+    for(let i=1;self.fireFloorIndex-i>=0 || self.fireFloorIndex+i<self.smokeFloorArr.length;++i)
     {
-        //child.computeH(self);
-        child.update(_this,self);
-    });
+        if(self.fireFloorIndex+i<self.smokeFloorArr.length)
+            self.smokeFloorArr[self.fireFloorIndex+i].update(self.dt,_this);
+        if(self.fireFloorIndex-i>=0)
+            self.smokeFloorArr[self.fireFloorIndex-i].update(self.dt,_this);
+    }
     //console.log(this.smokeUnitArr)
     //this.cloudArr[1].position.y -=0.001;
     // self.cloudArr.forEach(function (child)
@@ -220,49 +269,3 @@ Smoke.prototype.update = function(_this)
     // this.cloud.scale.set(x+0.01,y+0.01,z+0.01);
 
 };
-
-var SmokeUnit = function()
-{
-    this.h = 0;
-    this.cloudArr = [];
-    this.pos = new THREE.Vector3(0,0,0);
-    this.r = 0;//与火源点的距离
-    this.i = 0;
-    this.j = 0;
-};
-
-SmokeUnit.prototype.computeH = function(smoke)
-{
-    var hx = smoke.vx * smoke.time - Math.abs(this.pos.x-smoke.firePos.x);
-    var hz = smoke.vz * smoke.time - Math.abs(this.pos.z-smoke.firePos.z);
-    this.h = (hx+hz)/smoke.vy;
-};
-
-SmokeUnit.prototype.update = function(_this,smoke)
-{
-    var self = this;
-    if(this.h>0 && !this.cloudArr[0])
-        smoke.createCloud(_this,self);
-    if(this.cloudArr[0])
-    {
-        if(this.h<=1.7)
-            this.cloudArr[0].material.opacity = this.h/1.7;
-        //smoke.step += 0.00005;
-        this.cloudArr[0].rotation.y += smoke.step;
-    }
-    if(this.h>1.7 && this.h<3.5)
-    {
-        if(!this.cloudArr[1])
-        {
-            smoke.createCloud(_this,self);
-            this.cloudArr[1].material.opacity = 1;
-        }
-        this.cloudArr[1].position.y = this.pos.y+1.7-this.h;
-    }
-    if(this.cloudArr[1])
-    {
-        smoke.step += 0.00005;
-        this.cloudArr[1].rotation.y=smoke.step*(Math.random>0.5?1:-1)*1;
-    }
-}
-

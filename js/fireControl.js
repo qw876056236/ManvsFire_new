@@ -2,6 +2,33 @@
 var fireControl = function ()
 {
     this.roangle=0;
+
+    this.Q = 10000;//热释放速率 单位kw kj/s
+    this.QFactor = 100//火灾增长系数 单位kw/s2
+    this.Qc = 0;//对流热释放速率
+    //可由用户设置的常数
+    this.QcFactor = 0.7//对流热释放速率份数
+    this.ice = 0.9;//不完全燃烧系数
+    this.eac = 1.3;//过剩空气系数
+
+    //读取用户的设置
+    this.Zh = 0;//火源基部到顶棚高度
+    this.D = 1;//火源有效直径
+    this.Cy = 99.96;
+    this.Sy = 0;
+    this.Hy = 0.39;
+    this.Ny = 0;
+    this.Oy = 0;
+    this.Wy = 0;
+    this.calValue = 32600;//热值 单位kj/kg  j/g
+
+    //着火时计算出来的量
+    this.V0 = 0;//理论空气量
+
+    //着火过程中计算的量
+    this.B = 0;//单位时间内参与燃烧的可燃物质量  kg/s
+    this.L = 0;//火焰平均高度
+    this.Zv = 0;//火源基部以上虚点源高度
 }
 
 fireControl.prototype.init = function (_this)
@@ -48,6 +75,11 @@ fireControl.prototype.init = function (_this)
     Te2.push(Te2Mesh);*/
 //endregion
 
+}
+
+fireControl.prototype.set = function()
+{
+    this.V0 = (0.0187*this.Cy + 0.0556*this.Hy + 0.007*this.Sy - 0.007*this.Oy) / 0.21;
 }
 
 fireControl.prototype.Run = function (_this)
@@ -104,6 +136,16 @@ fireControl.prototype.ifisposition = function (_this)
 
 fireControl.prototype.update = function (_this)
 {
+    //this.Q = this.QFactor * Math.pow(_this.smoke.clock.getElapsedTime(),2);
+    //计算火羽流相关参数
+    var L = -1.02*this.D + 0.235*Math.pow(this.Q,2/5);
+    this.L = L > 0 ? L : 0;
+    var Zv = -1.02*this.D + 0.083*Math.pow(this.Q,2/5);
+    this.Zv = Zv > 0 ? Zv : 0;
+    this.Qc = this.QcFactor * this.Q;
+    this.fireManager.controlSheet.high = this.L;
+    this.B = this.Q / this.ice / this.calValue;
+    //console.log("l:"+this.L+" "+"Zv:"+this.Zv+" "+"B:"+this.B);
     this.Run(_this);
     //this.FirePosition(_this);
     //this.ifisposition(_this);
