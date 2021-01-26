@@ -429,7 +429,7 @@ People.prototype.init = function (_this) {
                     textureURL1 = './Model/avatar/texture/casual26_f_25.jpg';
                 }
 
-                newMesh.scene.scale.set(1, 1, 1);
+                newMesh.scene.scale.set(0.9, 0.9, 0.9);
                 newMesh.scene.name = 'run';
                 // newMesh.scene.visible = false;
 
@@ -459,7 +459,7 @@ People.prototype.init = function (_this) {
                 // var distance = Math.random() * 17;
                 // var distance1 = Math.random() * 26;
                 // newMesh.scene.position.set(distance + 43, -8.5, distance1 + 261);
-                newMesh.scene.position.y = -8.5;
+                newMesh.scene.position.y = -13.37;
                 var num = Math.floor(Math.random() * 2 + 1);
                 if (num === 1) {
                     newMesh.scene.position.x = 45.84 + Math.random() * 2.34;
@@ -641,7 +641,7 @@ People.prototype.init = function (_this) {
                     textureURL = './Model/avatar/texture/casual32_m_25.jpg';
                 }
 
-                newMesh.scene.scale.set(1, 1, 1);
+                newMesh.scene.scale.set(0.9, 0.9, 0.9);
                 newMesh.scene.name = 'run';
                 // newMesh.scene.visible = false;
 
@@ -672,7 +672,7 @@ People.prototype.init = function (_this) {
                 // var distance = Math.random() * 17;
                 // var distance1 = Math.random() * 26;
                 // newMesh.scene.position.set(distance+43, -8.5, distance1+261);
-                newMesh.scene.position.y = -8.5;
+                newMesh.scene.position.y = -13.37;
                 var num = Math.floor(Math.random() * 2 + 1);
                 if (num === 1) {
                     newMesh.scene.position.x = 56.57 - Math.random() * 2.74;
@@ -736,7 +736,7 @@ People.prototype.init = function (_this) {
                     textureURL1 = './Model/avatar/texture/child02_f_hair.jpg';
                 }
 
-                newMesh.scene.scale.set(1, 1, 1);
+                newMesh.scene.scale.set(0.9, 0.9, 0.9);
                 newMesh.scene.name = 'run';
                 // newMesh.scene.visible = false;
 
@@ -827,7 +827,7 @@ People.prototype.init = function (_this) {
                     textureURL = './Model/avatar/texture/child02_m.jpg';
                 }
 
-                newMesh.scene.scale.set(1, 1, 1);
+                newMesh.scene.scale.set(0.9, 0.9, 0.9);
                 newMesh.scene.name = 'run';
                 // newMesh.scene.visible = false;
 
@@ -1027,7 +1027,7 @@ People.prototype.init = function (_this) {
                     textureURL1 = './Model/avatar/texture/casual26_f_25.jpg';
                 }
 
-                newMesh.scene.scale.set(1, 1, 1);
+                newMesh.scene.scale.set(0.9, 0.9, 0.9);
                 newMesh.scene.name = 'walk';
                 // newMesh.scene.visible = false;
                 newMesh.scene.rotation.set(0, Math.PI*13/48, 0);
@@ -1058,7 +1058,7 @@ People.prototype.init = function (_this) {
                 // var distance = Math.random() * 15;
                 // var distance1 = Math.random() * 20;
                 // newMesh.scene.position.set(distance+40, -8.5, distance1+241);
-                newMesh.scene.position.y = -8.5;
+                newMesh.scene.position.y = -13.37;
                 var num = Math.floor(Math.random() * 2 + 1);
                 if (num === 1) {
                     newMesh.scene.position.x = 45.84 + Math.random() * 2.34;
@@ -1240,7 +1240,7 @@ People.prototype.init = function (_this) {
                     textureURL = './Model/avatar/texture/casual32_m_25.jpg';
                 }
 
-                newMesh.scene.scale.set(1, 1, 1);
+                newMesh.scene.scale.set(0.9, 0.9, 0.9);
                 newMesh.scene.name = 'walk';
                 // newMesh.scene.visible = false;
                 newMesh.scene.rotation.set(0, Math.PI*13/48, 0);
@@ -1271,7 +1271,7 @@ People.prototype.init = function (_this) {
                 // var distance = Math.random() * 15;
                 // var distance1 = Math.random() * 20;
                 // newMesh.scene.position.set(distance+40, -8.5, distance1+241);
-                newMesh.scene.position.y = -8.5;
+                newMesh.scene.position.y = -13.37;
                 var num = Math.floor(Math.random() * 2 + 1);
                 if (num === 1) {
                     newMesh.scene.position.x = 56.57 - Math.random() * 2.74;
@@ -1333,7 +1333,7 @@ People.prototype.init = function (_this) {
                     textureURL = './Model/avatar/texture/granny02.jpg';
                 }
 
-                newMesh.scene.scale.set(1, 1, 1);
+                newMesh.scene.scale.set(0.9, 0.9, 0.9);
                 newMesh.scene.name = 'walk';
                 // newMesh.scene.visible = false;
                 newMesh.scene.rotation.set(0, Math.PI*13/48, 0);
@@ -1528,7 +1528,7 @@ People.prototype.init = function (_this) {
                     textureURL1 = './Model/avatar/texture/casual26_f_25.jpg';
                 }
 
-                newMesh.scene.scale.set(1, 1, 1);
+                newMesh.scene.scale.set(0.9, 0.9, 0.9);
                 newMesh.scene.name = 'bend';
                 // newMesh.scene.visible = false;
                 newMesh.scene.rotation.set(0, Math.PI/4, 0);
@@ -1559,7 +1559,7 @@ People.prototype.init = function (_this) {
                 // var distance = Math.random() * 15;
                 // var distance1 = Math.random() * 20;
                 // newMesh.scene.position.set(distance+40, -8.5, distance1+222);
-                newMesh.scene.position.y = -8.5;
+                newMesh.scene.position.y = -13.37;
                 var num = Math.floor(Math.random() * 2 + 1);
                 if (num === 1) {
                     newMesh.scene.position.x = 45.84 + Math.random() * 2.34;
@@ -1741,7 +1741,7 @@ People.prototype.init = function (_this) {
                     textureURL = './Model/avatar/texture/casual32_m_25.jpg';
                 }
 
-                newMesh.scene.scale.set(1, 1, 1);
+                newMesh.scene.scale.set(0.9, 0.9, 0.9);
                 newMesh.scene.name = 'bend';
                 // newMesh.scene.visible = false;
                 newMesh.scene.rotation.set(0, Math.PI/4, 0);
@@ -1772,7 +1772,7 @@ People.prototype.init = function (_this) {
                 // var distance = Math.random() * 15;
                 // var distance1 = Math.random() * 20;
                 // newMesh.scene.position.set(distance+40, -8.5, distance1+222);
-                newMesh.scene.position.y = -8.5;
+                newMesh.scene.position.y = -13.37;
                 var num = Math.floor(Math.random() * 2 + 1);
                 if (num === 1) {
                     newMesh.scene.position.x = 56.57 - Math.random() * 2.74;
@@ -1833,7 +1833,7 @@ People.prototype.init = function (_this) {
                     textureURL = './Model/avatar/texture/granny02.jpg';
                 }
 
-                newMesh.scene.scale.set(1, 1, 1);
+                newMesh.scene.scale.set(0.9, 0.9, 0.9);
                 newMesh.scene.name = 'bend';
                 // newMesh.scene.visible = false;
                 newMesh.scene.rotation.set(0, Math.PI/4, 0);
@@ -2030,7 +2030,7 @@ People.prototype.init = function (_this) {
                     textureURL1 = './Model/avatar/texture/casual26_f_25.jpg';
                 }
 
-                newMesh.scene.scale.set(1, 1, 1);
+                newMesh.scene.scale.set(0.9, 0.9, 0.9);
                 newMesh.scene.name = 'crawl';
                 // newMesh.scene.visible = false;
                 newMesh.scene.rotation.set(0, Math.PI*4/5, 0);
@@ -2039,7 +2039,7 @@ People.prototype.init = function (_this) {
                 // var distance = Math.random() * 17;
                 // var distance1 = Math.random() * 26;
                 // newMesh.scene.position.set(distance+43, -8.5, distance1+197);
-                newMesh.scene.position.y = -8.5;
+                newMesh.scene.position.y = -13.37;
                 var num = Math.floor(Math.random() * 2 + 1);
                 if (num === 1) {
                     newMesh.scene.position.x = 45.84 + Math.random() * 2.34;
@@ -2242,8 +2242,7 @@ People.prototype.init = function (_this) {
                 if (temp === 38) {
                     textureURL = './Model/avatar/texture/casual32_m_25.jpg';
                 }
-
-                newMesh.scene.scale.set(1, 1, 1);
+                newMesh.scene.scale.set(0.9, 0.9, 0.9);
                 newMesh.scene.name = 'crawl';
                 // newMesh.scene.visible = false;
                 newMesh.scene.rotation.set(0, Math.PI*4/5, 0);
@@ -2274,7 +2273,7 @@ People.prototype.init = function (_this) {
                 // var distance = Math.random() * 17;
                 // var distance1 = Math.random() * 26;
                 // newMesh.scene.position.set(distance+43, -8.5, distance1+197);
-                newMesh.scene.position.y = -8.5;
+                newMesh.scene.position.y = -13.37;
                 var num = Math.floor(Math.random() * 2 + 1);
                 if (num === 1) {
                     newMesh.scene.position.x = 56.57 - Math.random() * 2.74;
@@ -2338,7 +2337,7 @@ People.prototype.init = function (_this) {
                     textureURL1 = './Model/avatar/texture/child02_f_hair.jpg';
                 }
 
-                newMesh.scene.scale.set(1, 1, 1);
+                newMesh.scene.scale.set(0.9, 0.9, 0.9);
                 newMesh.scene.name = 'crawl';
                 // newMesh.scene.visible = false;
                 newMesh.scene.rotation.set(0, Math.PI*4/5, 0);
@@ -2431,7 +2430,7 @@ People.prototype.init = function (_this) {
                     textureURL = './Model/avatar/texture/child02_m.jpg';
                 }
 
-                newMesh.scene.scale.set(1, 1, 1);
+                newMesh.scene.scale.set(0.9, 0.9, 0.9);
                 newMesh.scene.name = 'crawl';
                 // newMesh.scene.visible = false;
                 newMesh.scene.rotation.set(0, Math.PI*4/5, 0);
@@ -2516,7 +2515,7 @@ People.prototype.init = function (_this) {
                     textureURL = './Model/avatar/texture/granny02.jpg';
                 }
 
-                newMesh.scene.scale.set(1, 1, 1);
+                newMesh.scene.scale.set(0.9, 0.9, 0.9);
                 newMesh.scene.name = 'idle';
                 // newMesh.scene.visible = false;
 
@@ -2540,7 +2539,7 @@ People.prototype.init = function (_this) {
                 // var distance = Math.random() * 18;
                 // var distance1 = Math.random() * 30;
                 // newMesh.scene.position.set(distance+43, -8.5, distance1+170);
-                newMesh.scene.position.y = -8.5;
+                newMesh.scene.position.y = -13.37;
                 var num = Math.floor(Math.random() * 2 + 1);
                 if (num === 1) {
                     newMesh.scene.position.x = 45.84 + Math.random() * 2.34;
@@ -2604,7 +2603,7 @@ People.prototype.init = function (_this) {
                     textureURL1 = './Model/avatar/texture/child02_f_hair.jpg';
                 }
 
-                newMesh.scene.scale.set(1, 1, 1);
+                newMesh.scene.scale.set(0.9, 0.9, 0.9);
                 newMesh.scene.name = 'idle';
                 // newMesh.scene.visible = false;
 
@@ -2634,7 +2633,7 @@ People.prototype.init = function (_this) {
                 // var distance = Math.random() * 18;
                 // var distance1 = Math.random() * 30;
                 // newMesh.scene.position.set(distance+43, -8.5, distance1+170);
-                newMesh.scene.position.y = -8.5;
+                newMesh.scene.position.y = -13.37;
                 var num = Math.floor(Math.random() * 2 + 1);
                 if (num === 1) {
                     newMesh.scene.position.x = 56.57 - Math.random() * 2.74;
@@ -2705,7 +2704,7 @@ People.prototype.init = function (_this) {
                     textureURL = './Model/avatar/texture/child02_m.jpg';
                 }
 
-                newMesh.scene.scale.set(1, 1, 1);
+                newMesh.scene.scale.set(0.9, 0.9, 0.9);
                 newMesh.scene.name = 'idle';
                 // newMesh.scene.visible = false;
 
@@ -2906,7 +2905,7 @@ People.prototype.init = function (_this) {
                     textureURL1 = './Model/avatar/texture/casual26_f_25.jpg';
                 }
 
-                newMesh.scene.scale.set(1, 1, 1);
+                newMesh.scene.scale.set(0.9, 0.9, 0.9);
                 newMesh.scene.name = 'idle';
                 // newMesh.scene.visible = false;
 
@@ -3108,7 +3107,7 @@ People.prototype.init = function (_this) {
                     textureURL = './Model/avatar/texture/casual32_m_25.jpg';
                 }
 
-                newMesh.scene.scale.set(1, 1, 1);
+                newMesh.scene.scale.set(0.9, 0.9, 0.9);
                 newMesh.scene.name = 'idle';
                 // newMesh.scene.visible = false;
 
