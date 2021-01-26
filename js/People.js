@@ -431,7 +431,7 @@ People.prototype.init = function (_this) {
 
                 newMesh.scene.scale.set(1, 1, 1);
                 newMesh.scene.name = 'run';
-                newMesh.scene.visible = false;
+                // newMesh.scene.visible = false;
 
                 //人物骨骼参数化
                 var headRandom =1 +  Math.random()* 4/number;
@@ -456,9 +456,20 @@ People.prototype.init = function (_this) {
                 rThigh2.scale(new THREE.Vector3(thighRandom, thighRandom, 1));
 
                 //动态人群位置
-                var distance = Math.random() * 17;
-                var distance1 = Math.random() * 26;
-                newMesh.scene.position.set(distance + 43, -8.5, distance1 + 261);
+                // var distance = Math.random() * 17;
+                // var distance1 = Math.random() * 26;
+                // newMesh.scene.position.set(distance + 43, -8.5, distance1 + 261);
+                newMesh.scene.position.y = -8.5;
+                var num = Math.floor(Math.random() * 2 + 1);
+                if (num === 1) {
+                    newMesh.scene.position.x = 45.84 + Math.random() * 2.34;
+                    newMesh.scene.position.z = 343.83 + Math.random() * 16.5;
+                }
+                else{
+                    newMesh.scene.position.x = 45.84 + Math.random() * 2.34;
+                    newMesh.scene.position.z = 343.83 - Math.random() * 16.5;
+                }
+
                 // 将模型的材质附在newMesh上
                 var loader = new THREE.TextureLoader();
                 var texture = loader.load(textureURL, function () {
@@ -632,7 +643,7 @@ People.prototype.init = function (_this) {
 
                 newMesh.scene.scale.set(1, 1, 1);
                 newMesh.scene.name = 'run';
-                newMesh.scene.visible = false;
+                // newMesh.scene.visible = false;
 
                 //人物骨骼参数化
                 var headRandom =1 +  Math.random()/number;
@@ -658,9 +669,19 @@ People.prototype.init = function (_this) {
                 lThigh20.scale(new THREE.Vector3(thighRandom, thighRandom, 1));
 
                 //动态人群位置
-                var distance = Math.random() * 17;
-                var distance1 = Math.random() * 26;
-                newMesh.scene.position.set(distance+43, -8.5, distance1+261);
+                // var distance = Math.random() * 17;
+                // var distance1 = Math.random() * 26;
+                // newMesh.scene.position.set(distance+43, -8.5, distance1+261);
+                newMesh.scene.position.y = -8.5;
+                var num = Math.floor(Math.random() * 2 + 1);
+                if (num === 1) {
+                    newMesh.scene.position.x = 56.57 - Math.random() * 2.74;
+                    newMesh.scene.position.z = 342.97 + Math.random() * 16.90;
+                }
+                else{
+                    newMesh.scene.position.x = 56.57 - Math.random() * 2.74;
+                    newMesh.scene.position.z = 342.97 - Math.random() * 16.90;
+                }
 
                 // 将模型的材质附在newMesh上
                 var loader = new THREE.TextureLoader();
@@ -717,7 +738,7 @@ People.prototype.init = function (_this) {
 
                 newMesh.scene.scale.set(1, 1, 1);
                 newMesh.scene.name = 'run';
-                newMesh.scene.visible = false;
+                // newMesh.scene.visible = false;
 
                 //人物骨骼参数化
                 var headRandom =1 +  Math.random()/number;
@@ -775,7 +796,7 @@ People.prototype.init = function (_this) {
                 self.activateAction(self.action);
 
                 self.groupRun.push(newMesh.scene);
-                _this.scene.add(newMesh.scene);
+                // _this.scene.add(newMesh.scene);
 
             }
         });
@@ -808,7 +829,7 @@ People.prototype.init = function (_this) {
 
                 newMesh.scene.scale.set(1, 1, 1);
                 newMesh.scene.name = 'run';
-                newMesh.scene.visible = false;
+                // newMesh.scene.visible = false;
 
                 //人物骨骼参数化
                 var headRandom =1 +  Math.random()/number;
@@ -857,7 +878,7 @@ People.prototype.init = function (_this) {
                 self.activateAction(self.action);
 
                 self.groupRun.push(newMesh.scene);
-                _this.scene.add(newMesh.scene);
+                // _this.scene.add(newMesh.scene);
 
             }
         });
@@ -1008,7 +1029,7 @@ People.prototype.init = function (_this) {
 
                 newMesh.scene.scale.set(1, 1, 1);
                 newMesh.scene.name = 'walk';
-                newMesh.scene.visible = false;
+                // newMesh.scene.visible = false;
                 newMesh.scene.rotation.set(0, Math.PI*13/48, 0);
 
                 //人物骨骼参数化
@@ -1034,9 +1055,19 @@ People.prototype.init = function (_this) {
                 rThigh2.scale(new THREE.Vector3(thighRandom, thighRandom, 1));
 
                 //动态人群位置
-                var distance = Math.random() * 15;
-                var distance1 = Math.random() * 20;
-                newMesh.scene.position.set(distance+40, -8.5, distance1+241);
+                // var distance = Math.random() * 15;
+                // var distance1 = Math.random() * 20;
+                // newMesh.scene.position.set(distance+40, -8.5, distance1+241);
+                newMesh.scene.position.y = -8.5;
+                var num = Math.floor(Math.random() * 2 + 1);
+                if (num === 1) {
+                    newMesh.scene.position.x = 45.84 + Math.random() * 2.34;
+                    newMesh.scene.position.z = 305.63 + Math.random() * 16.5;
+                }
+                else{
+                    newMesh.scene.position.x = 45.84 + Math.random() * 2.34;
+                    newMesh.scene.position.z = 305.63 - Math.random() * 16.5;
+                }
 
                 // 将模型的材质附在newMesh上
                 var loader = new THREE.TextureLoader();
@@ -1211,7 +1242,7 @@ People.prototype.init = function (_this) {
 
                 newMesh.scene.scale.set(1, 1, 1);
                 newMesh.scene.name = 'walk';
-                newMesh.scene.visible = false;
+                // newMesh.scene.visible = false;
                 newMesh.scene.rotation.set(0, Math.PI*13/48, 0);
 
                 //人物骨骼参数化
@@ -1237,9 +1268,19 @@ People.prototype.init = function (_this) {
                 lThigh20.scale(new THREE.Vector3(thighRandom, thighRandom, 1));
 
                 //动态人群位置
-                var distance = Math.random() * 15;
-                var distance1 = Math.random() * 20;
-                newMesh.scene.position.set(distance+40, -8.5, distance1+241);
+                // var distance = Math.random() * 15;
+                // var distance1 = Math.random() * 20;
+                // newMesh.scene.position.set(distance+40, -8.5, distance1+241);
+                newMesh.scene.position.y = -8.5;
+                var num = Math.floor(Math.random() * 2 + 1);
+                if (num === 1) {
+                    newMesh.scene.position.x = 56.57 - Math.random() * 2.74;
+                    newMesh.scene.position.z = 264.41 + Math.random() * 15.46;
+                }
+                else{
+                    newMesh.scene.position.x = 56.57 - Math.random() * 2.74;
+                    newMesh.scene.position.z = 264.41 - Math.random() * 15.46;
+                }
 
                 // 将模型的材质附在newMesh上
                 var loader = new THREE.TextureLoader();
@@ -1294,7 +1335,7 @@ People.prototype.init = function (_this) {
 
                 newMesh.scene.scale.set(1, 1, 1);
                 newMesh.scene.name = 'walk';
-                newMesh.scene.visible = false;
+                // newMesh.scene.visible = false;
                 newMesh.scene.rotation.set(0, Math.PI*13/48, 0);
 
                 //人物骨骼参数化
@@ -1338,7 +1379,7 @@ People.prototype.init = function (_this) {
                 self.activateAction(self.action);
 
                 self.groupWalk.push(newMesh.scene);
-                _this.scene.add(newMesh.scene);
+                // _this.scene.add(newMesh.scene);
 
             }
         });
@@ -1489,7 +1530,7 @@ People.prototype.init = function (_this) {
 
                 newMesh.scene.scale.set(1, 1, 1);
                 newMesh.scene.name = 'bend';
-                newMesh.scene.visible = false;
+                // newMesh.scene.visible = false;
                 newMesh.scene.rotation.set(0, Math.PI/4, 0);
 
                 //人物骨骼参数化
@@ -1515,9 +1556,19 @@ People.prototype.init = function (_this) {
                 rThigh2.scale(new THREE.Vector3(thighRandom, thighRandom, 1));
 
                 //动态人群位置
-                var distance = Math.random() * 15;
-                var distance1 = Math.random() * 20;
-                newMesh.scene.position.set(distance+40, -8.5, distance1+222);
+                // var distance = Math.random() * 15;
+                // var distance1 = Math.random() * 20;
+                // newMesh.scene.position.set(distance+40, -8.5, distance1+222);
+                newMesh.scene.position.y = -8.5;
+                var num = Math.floor(Math.random() * 2 + 1);
+                if (num === 1) {
+                    newMesh.scene.position.x = 45.84 + Math.random() * 2.34;
+                    newMesh.scene.position.z = 266.28 + Math.random() * 16.5;
+                }
+                else{
+                    newMesh.scene.position.x = 45.84 + Math.random() * 2.34;
+                    newMesh.scene.position.z = 266.28 - Math.random() * 16.5;
+                }
 
                 // 将模型的材质附在newMesh上
                 var loader = new THREE.TextureLoader();
@@ -1692,7 +1743,7 @@ People.prototype.init = function (_this) {
 
                 newMesh.scene.scale.set(1, 1, 1);
                 newMesh.scene.name = 'bend';
-                newMesh.scene.visible = false;
+                // newMesh.scene.visible = false;
                 newMesh.scene.rotation.set(0, Math.PI/4, 0);
 
                 //人物骨骼参数化
@@ -1718,9 +1769,19 @@ People.prototype.init = function (_this) {
                 lThigh20.scale(new THREE.Vector3(thighRandom, thighRandom, 1));
 
                 //动态人群位置
-                var distance = Math.random() * 15;
-                var distance1 = Math.random() * 20;
-                newMesh.scene.position.set(distance+40, -8.5, distance1+222);
+                // var distance = Math.random() * 15;
+                // var distance1 = Math.random() * 20;
+                // newMesh.scene.position.set(distance+40, -8.5, distance1+222);
+                newMesh.scene.position.y = -8.5;
+                var num = Math.floor(Math.random() * 2 + 1);
+                if (num === 1) {
+                    newMesh.scene.position.x = 56.57 - Math.random() * 2.74;
+                    newMesh.scene.position.z = 305.72 + Math.random() * 17.27;
+                }
+                else{
+                    newMesh.scene.position.x = 56.57 - Math.random() * 2.74;
+                    newMesh.scene.position.z = 305.72 - Math.random() * 17.27;
+                }
 
                 // 将模型的材质附在newMesh上
                 var loader = new THREE.TextureLoader();
@@ -1774,7 +1835,7 @@ People.prototype.init = function (_this) {
 
                 newMesh.scene.scale.set(1, 1, 1);
                 newMesh.scene.name = 'bend';
-                newMesh.scene.visible = false;
+                // newMesh.scene.visible = false;
                 newMesh.scene.rotation.set(0, Math.PI/4, 0);
 
                 //人物骨骼参数化
@@ -1819,7 +1880,7 @@ People.prototype.init = function (_this) {
                 self.activateAction(self.action);
 
                 self.groupBend.push(newMesh.scene);
-                _this.scene.add(newMesh.scene);
+                // _this.scene.add(newMesh.scene);
 
             }
         });
@@ -1971,13 +2032,23 @@ People.prototype.init = function (_this) {
 
                 newMesh.scene.scale.set(1, 1, 1);
                 newMesh.scene.name = 'crawl';
-                newMesh.scene.visible = false;
+                // newMesh.scene.visible = false;
                 newMesh.scene.rotation.set(0, Math.PI*4/5, 0);
 
                 //动态人群位置
-                var distance = Math.random() * 17;
-                var distance1 = Math.random() * 26;
-                newMesh.scene.position.set(distance+43, -8.5, distance1+197);
+                // var distance = Math.random() * 17;
+                // var distance1 = Math.random() * 26;
+                // newMesh.scene.position.set(distance+43, -8.5, distance1+197);
+                newMesh.scene.position.y = -8.5;
+                var num = Math.floor(Math.random() * 2 + 1);
+                if (num === 1) {
+                    newMesh.scene.position.x = 45.84 + Math.random() * 2.34;
+                    newMesh.scene.position.z = 229.45 + Math.random() * 16.5;
+                }
+                else{
+                    newMesh.scene.position.x = 45.84 + Math.random() * 2.34;
+                    newMesh.scene.position.z = 229.45 - Math.random() * 16.5;
+                }
 
                 // 将模型的材质附在newMesh上
                 var loader = new THREE.TextureLoader();
@@ -2174,7 +2245,7 @@ People.prototype.init = function (_this) {
 
                 newMesh.scene.scale.set(1, 1, 1);
                 newMesh.scene.name = 'crawl';
-                newMesh.scene.visible = false;
+                // newMesh.scene.visible = false;
                 newMesh.scene.rotation.set(0, Math.PI*4/5, 0);
 
                 //人物骨骼参数化
@@ -2200,9 +2271,19 @@ People.prototype.init = function (_this) {
                 lThigh20.scale(new THREE.Vector3(thighRandom, thighRandom, 1));
 
                 //动态人群位置
-                var distance = Math.random() * 17;
-                var distance1 = Math.random() * 26;
-                newMesh.scene.position.set(distance+43, -8.5, distance1+197);
+                // var distance = Math.random() * 17;
+                // var distance1 = Math.random() * 26;
+                // newMesh.scene.position.set(distance+43, -8.5, distance1+197);
+                newMesh.scene.position.y = -8.5;
+                var num = Math.floor(Math.random() * 2 + 1);
+                if (num === 1) {
+                    newMesh.scene.position.x = 56.57 - Math.random() * 2.74;
+                    newMesh.scene.position.z = 234.37 + Math.random() * 10;
+                }
+                else{
+                    newMesh.scene.position.x = 56.57 - Math.random() * 2.74;
+                    newMesh.scene.position.z = 234.37 - Math.random() * 10;
+                }
 
                 // 将模型的材质附在newMesh上
                 var loader = new THREE.TextureLoader();
@@ -2259,7 +2340,7 @@ People.prototype.init = function (_this) {
 
                 newMesh.scene.scale.set(1, 1, 1);
                 newMesh.scene.name = 'crawl';
-                newMesh.scene.visible = false;
+                // newMesh.scene.visible = false;
                 newMesh.scene.rotation.set(0, Math.PI*4/5, 0);
 
                 //人物骨骼参数化
@@ -2318,7 +2399,7 @@ People.prototype.init = function (_this) {
                 self.activateAction(self.action);
 
                 self.groupCrawl.push(newMesh.scene);
-                _this.scene.add(newMesh.scene);
+                // _this.scene.add(newMesh.scene);
 
             }
         });
@@ -2352,7 +2433,7 @@ People.prototype.init = function (_this) {
 
                 newMesh.scene.scale.set(1, 1, 1);
                 newMesh.scene.name = 'crawl';
-                newMesh.scene.visible = false;
+                // newMesh.scene.visible = false;
                 newMesh.scene.rotation.set(0, Math.PI*4/5, 0);
 
                 //动态人群位置
@@ -2404,10 +2485,11 @@ People.prototype.init = function (_this) {
                 self.activateAction(self.action);
 
                 self.groupCrawl.push(newMesh.scene);
-                _this.scene.add(newMesh.scene);
+                // _this.scene.add(newMesh.scene);
 
             }
         });
+
         var promiseAll14 = Promise.all(arr14).then((data) => {
 
             var temp, number;
@@ -2436,7 +2518,7 @@ People.prototype.init = function (_this) {
 
                 newMesh.scene.scale.set(1, 1, 1);
                 newMesh.scene.name = 'idle';
-                newMesh.scene.visible = false;
+                // newMesh.scene.visible = false;
 
                 //人物骨骼参数化
                 var headRandom =1 +  Math.random()/number;
@@ -2455,9 +2537,19 @@ People.prototype.init = function (_this) {
                 hip.scale(new THREE.Vector3(upperRandom3, upperRandom3, 1));
 
                 //动态人群位置
-                var distance = Math.random() * 18;
-                var distance1 = Math.random() * 30;
-                newMesh.scene.position.set(distance+43, -8.5, distance1+170);
+                // var distance = Math.random() * 18;
+                // var distance1 = Math.random() * 30;
+                // newMesh.scene.position.set(distance+43, -8.5, distance1+170);
+                newMesh.scene.position.y = -8.5;
+                var num = Math.floor(Math.random() * 2 + 1);
+                if (num === 1) {
+                    newMesh.scene.position.x = 45.84 + Math.random() * 2.34;
+                    newMesh.scene.position.z = 197.62 + Math.random() * 10.60;
+                }
+                else{
+                    newMesh.scene.position.x = 45.84 + Math.random() * 2.34;
+                    newMesh.scene.position.z = 197.62 - Math.random() * 10.60;
+                }
 
                 // 将模型的材质附在newMesh上
                 var loader = new THREE.TextureLoader();
@@ -2514,7 +2606,7 @@ People.prototype.init = function (_this) {
 
                 newMesh.scene.scale.set(1, 1, 1);
                 newMesh.scene.name = 'idle';
-                newMesh.scene.visible = false;
+                // newMesh.scene.visible = false;
 
                 //人物骨骼参数化
                 var headRandom =1 +  Math.random()/number;
@@ -2539,9 +2631,19 @@ People.prototype.init = function (_this) {
                 rThigh2.scale(new THREE.Vector3(thighRandom, thighRandom, 1));
 
                 //动态人群位置
-                var distance = Math.random() * 18;
-                var distance1 = Math.random() * 30;
-                newMesh.scene.position.set(distance+43, -8.5, distance1+170);
+                // var distance = Math.random() * 18;
+                // var distance1 = Math.random() * 30;
+                // newMesh.scene.position.set(distance+43, -8.5, distance1+170);
+                newMesh.scene.position.y = -8.5;
+                var num = Math.floor(Math.random() * 2 + 1);
+                if (num === 1) {
+                    newMesh.scene.position.x = 56.57 - Math.random() * 2.74;
+                    newMesh.scene.position.z = 200.00 + Math.random() * 13.03;
+                }
+                else{
+                    newMesh.scene.position.x = 56.57 - Math.random() * 2.74;
+                    newMesh.scene.position.z = 200.00 - Math.random() * 13.03;
+                }
 
                 // 将模型的材质附在newMesh上
                 var loader = new THREE.TextureLoader();
@@ -2605,7 +2707,7 @@ People.prototype.init = function (_this) {
 
                 newMesh.scene.scale.set(1, 1, 1);
                 newMesh.scene.name = 'idle';
-                newMesh.scene.visible = false;
+                // newMesh.scene.visible = false;
 
                 //人物骨骼参数化
                 var headRandom =1 +  Math.random()/number;
@@ -2654,7 +2756,7 @@ People.prototype.init = function (_this) {
                 self.activateAction(self.action);
 
                 self.groupIdle.push(newMesh.scene);
-                _this.scene.add(newMesh.scene);
+                // _this.scene.add(newMesh.scene);
 
             }
         });
@@ -2806,7 +2908,7 @@ People.prototype.init = function (_this) {
 
                 newMesh.scene.scale.set(1, 1, 1);
                 newMesh.scene.name = 'idle';
-                newMesh.scene.visible = false;
+                // newMesh.scene.visible = false;
 
                 //人物骨骼参数化
                 var headRandom =1 +  Math.random()* 4/number;
@@ -2864,7 +2966,7 @@ People.prototype.init = function (_this) {
                 self.activateAction(self.action);
 
                 self.groupIdle.push(newMesh.scene);
-                _this.scene.add(newMesh.scene);
+                // _this.scene.add(newMesh.scene);
 
             }
         });
@@ -3008,7 +3110,7 @@ People.prototype.init = function (_this) {
 
                 newMesh.scene.scale.set(1, 1, 1);
                 newMesh.scene.name = 'idle';
-                newMesh.scene.visible = false;
+                // newMesh.scene.visible = false;
 
                 //人物骨骼参数化
                 var headRandom =1 +  Math.random()/number;
@@ -3057,7 +3159,7 @@ People.prototype.init = function (_this) {
                 self.activateAction(self.action);
 
                 self.groupIdle.push(newMesh.scene);
-                _this.scene.add(newMesh.scene);
+                // _this.scene.add(newMesh.scene);
 
             }
         });

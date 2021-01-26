@@ -5,7 +5,7 @@ var Underground = function ()
     this.subway=[];
     this.isready = false;
     this.rail=[];
-
+    this.arr = [];
 }
 
 Underground.prototype.init = function (_this) {
@@ -42,128 +42,119 @@ Underground.prototype.GlbBuilding = function (_this) {
             loader.load(path, (gltf) =>
             {
                 loadFunc(gltf);
-                resolve(true);
+                resolve(gltf);
             })
         })
     };
 
     /*建筑模型加载开始*/
     var startLoadTime = performance.now();
-    //异步加载
-    // Promise.all(
-    //     [
-    //
-    //         loadAsync('./subway/1securityCheck.glb'),
-    //         loadAsync('./subway/2glass.glb'),
-    //         loadAsync('./subway/3exitance2.glb'),
-    //         loadAsync('./subway/4exitance6.glb'),
-    //         loadAsync('./subway/5exitance3.glb'),
-    //         loadAsync('./subway/6exitance4.glb'),
-    //         loadAsync('./subway/7exitance5.glb'),
-    //         loadAsync('./subway/8exitance1.glb'),
-    //
-    //         //loadAsync('./subway/9ground.glb'),
-    //         //loadAsync('./subway/10f1buildings1.glb'),
-    //         //loadAsync('./subway/11f1others.glb'),
-    //
-    //         loadAsync('./subway/12b2lights.glb'),
-    //         loadAsync('./subway/13b2floor.glb'),
-    //         loadAsync('./subway/14b2escalators.glb'),
-    //         loadAsync('./subway/15b2escalatorWall.glb'),
-    //         loadAsync('./subway/16b2barriers.glb'),
-    //         loadAsync('./subway/17b2wall.glb'),
-    //         loadAsync('./subway/18b2roof.glb'),
-    //         loadAsync('./subway/19b2others.glb'),
-    //         loadAsync('./subway/20b2signages.glb'),
-    //         loadAsync('./subway/21b2pillars.glb'),
-    //         loadAsync('./subway/22b1lights.glb'),
-    //         loadAsync('./subway/23b1floor.glb'),
-    //         loadAsync('./subway/24b1stairs.glb'),
-    //         loadAsync('./subway/25b1wall.glb'),
-    //         loadAsync('./subway/26b1roof.glb'),
-    //         loadAsync('./subway/27b1fence.glb'),
-    //         loadAsync('./subway/28b1others.glb'),
-    //         loadAsync('./subway/29b1signages.glb'),
-    //         loadAsync('./subway/30b1pillars.glb'),
-    //         loadAsync('./subway/31automaticRightDoor.glb'),
-    //         loadAsync('./subway/32automaticLeftDoor.glb'),
-    //
-    //         //loadAsync('./subway/33f1buildings2.glb'),
-    //         //loadAsync('./subway/34f1buildings3.glb'),
-    //         //loadAsync('./subway/35f1buildings4.glb')
-    //     ]
-    // ).then(() => {
-    //     $("#loadTime")[0].innerText = ((performance.now() - startLoadTime) / 1000).toFixed(2) + "秒";
-    // });
 
     //分步加载
-    loadAsync('./light_sub/23b1floor.glb').then(function(data){
-        if(data) return loadAsync('./light_sub/25b1wall.glb');
-    }).then(function(data){
-        if(data) return loadAsync('./light_sub/14b2escalators.glb');
-    }).then(function(data){
-        if(data) return loadAsync('./light_sub/13b2floor.glb');
-    }).then(function(data){
-        if(data) return loadAsync('./light_sub/15b2escalatorWall.glb');
-    }).then(function(data){
-        if(data) return loadAsync('./light_sub/30b1pillars.glb');
-    }).then(function(data){
-        if(data) return loadAsync('./light_sub/17b2wall.glb');
-    }).then(function(data){
-        if(data) return loadAsync('./light_sub/16b2barriers.glb');
-    }).then(function(data){
-        if(data) return loadAsync('./light_sub/31automaticRightDoor.glb');
-    }).then(function(data){
-        if(data) return loadAsync('./light_sub/32automaticLeftDoor.glb');
-    }).then(function(data){
-        if(data) return loadAsync('./light_sub/27b1fence.glb');
-    }).then(function(data){
-        if(data) return loadAsync('./light_sub/1securityCheck.glb');
-    }).then(function(data){
-        if(data) return loadAsync('./light_sub/28b1others.glb');
-    }).then(function(data){
-        if(data) return loadAsync('./light_sub/22b1lights.glb');
-    }).then(function(data){
-        if(data) return loadAsync('./light_sub/21b2pillars.glb');
-    }).then(function(data){
-        if(data) return loadAsync('./light_sub/26b1roof.glb');
-    }).then(function(data){
-        if(data) return loadAsync('./light_sub/24b1stairs.glb');
-    }).then(function(data){
-        if(data) return loadAsync('./light_sub/3exitance2.glb');
-    }).then(function(data){
-        if(data) return loadAsync('./light_sub/4exitance6.glb');
-    }).then(function(data){
-        if(data) return loadAsync('./light_sub/5exitance3.glb');
-    }).then(function(data){
-        if(data) return loadAsync('./light_sub/6exitance4.glb');
-    }).then(function(data){
-        if(data) return loadAsync('./light_sub/7exitance5.glb');
-    }).then(function(data){
-        if(data) return loadAsync('./light_sub/8exitance1.glb');
-    }).then(function(data){
-        if(data) return loadAsync('./light_sub/2glass.glb');
-    }).then(function(data){
-        if(data) return loadAsync('./light_sub/12b2lights.glb');
-    }).then(function(data){
-        if(data) return loadAsync('./light_sub/18b2roof.glb');
-    }).then(function(data){
-        if(data) return loadAsync('./light_sub/19b2others.glb');
+    this.arr[0] = loadAsync('./light_sub/23b1floor.glb');
+    this.arr[1] = loadAsync('./light_sub/25b1wall.glb');
+    this.arr[2] = loadAsync('./light_sub/30b1pillars.glb');
+    this.arr[3] = loadAsync('./light_sub/27b1fence.glb');
+    this.arr[4] = loadAsync('./light_sub/1securityCheck.glb');
+    this.arr[5] = loadAsync('./light_sub/28b1others.glb');
+    this.arr[6] = loadAsync('./light_sub/22b1lights.glb');
+    this.arr[7] = loadAsync('./light_sub/26b1roof.glb');
+    this.arr[8] = loadAsync('./light_sub/24b1stairs.glb');
+    this.arr[9] = loadAsync('./light_sub/3exitance2.glb');
+    this.arr[10] = loadAsync('./light_sub/4exitance6.glb');
+    this.arr[11] = loadAsync('./light_sub/5exitance3.glb');
+    this.arr[12] = loadAsync('./light_sub/6exitance4.glb');
+    this.arr[13] = loadAsync('./light_sub/7exitance5.glb');
+    this.arr[14] = loadAsync('./light_sub/8exitance1.glb');
+    this.arr[15] = loadAsync('./light_sub/18b2roof.glb');
+    this.arr[16] = loadAsync('./light_sub/2glass.glb');
+    this.arr[17] = loadAsync('./light_sub/12b2lights.glb');
+
+    this.arr[18] = loadAsync('./light_sub/13b2floor.glb');
+    this.arr[19] = loadAsync('./light_sub/15b2escalatorWall.glb');
+    this.arr[20] = loadAsync('./light_sub/17b2wall.glb');
+    this.arr[21] = loadAsync('./light_sub/16b2barriers.glb');
+    this.arr[22] = loadAsync('./light_sub/31automaticRightDoor.glb');
+    this.arr[23] = loadAsync('./light_sub/32automaticLeftDoor.glb');
+    this.arr[24] = loadAsync('./light_sub/21b2pillars.glb');
+    this.arr[25] = loadAsync('./light_sub/19b2others.glb');
+    this.arr[26] = loadAsync('./light_sub/14b2escalators.glb');
+
+    // this.promiseAll = Promise.all(this.arr).then((data) => {
+    //     for (var i =0; i < 18; i++) {
+    //         data[i].scene.visible = false;
+    //     }
+    // });
+
+    $("#loadTime")[0].innerText = ((performance.now() - startLoadTime) / 1000).toFixed(2) + "秒";
+
+    // loadAsync('./light_sub/23b1floor.glb').then(function(data){
+    //     if(data) return loadAsync('./light_sub/25b1wall.glb');
     // }).then(function(data){
-    //     if(data) return loadAsync('./light_sub/9ground.glb');
+    //     if(data) return loadAsync('./light_sub/14b2escalators.glb');
     // }).then(function(data){
-    //     if(data) return loadAsync('./light_sub/10f1buildings1.glb');
+    //     if(data) return loadAsync('./light_sub/13b2floor.glb');
     // }).then(function(data){
-    //     if(data) return loadAsync('./light_sub/11f1others.glb');
+    //     if(data) return loadAsync('./light_sub/15b2escalatorWall.glb');
     // }).then(function(data){
-    //     if(data) return loadAsync('./light_sub/33f1buildings2.glb');
+    //     if(data) return loadAsync('./light_sub/30b1pillars.glb');
     // }).then(function(data){
-    //     if(data) return loadAsync('./light_sub/34f1buildings3.glb');
+    //     if(data) return loadAsync('./light_sub/17b2wall.glb');
     // }).then(function(data){
-    //     if(data) return loadAsync('./light_sub/35f1buildings4.glb');
-    }).then(() => {
-        $("#loadTime")[0].innerText = ((performance.now() - startLoadTime) / 1000).toFixed(2) + "秒";
-    });
+    //     if(data) return loadAsync('./light_sub/16b2barriers.glb');
+    // }).then(function(data){
+    //     if(data) return loadAsync('./light_sub/31automaticRightDoor.glb');
+    // }).then(function(data){
+    //     if(data) return loadAsync('./light_sub/32automaticLeftDoor.glb');
+    // }).then(function(data){
+    //     if(data) return loadAsync('./light_sub/27b1fence.glb');
+    // }).then(function(data){
+    //     if(data) return loadAsync('./light_sub/1securityCheck.glb');
+    // }).then(function(data){
+    //     if(data) return loadAsync('./light_sub/28b1others.glb');
+    // }).then(function(data){
+    //     if(data) return loadAsync('./light_sub/22b1lights.glb');
+    // }).then(function(data){
+    //     if(data) return loadAsync('./light_sub/21b2pillars.glb');
+    // }).then(function(data){
+    //     if(data) return loadAsync('./light_sub/26b1roof.glb');
+    // }).then(function(data){
+    //     if(data) return loadAsync('./light_sub/24b1stairs.glb');
+    // }).then(function(data){
+    //     if(data) return loadAsync('./light_sub/3exitance2.glb');
+    // }).then(function(data){
+    //     if(data) return loadAsync('./light_sub/4exitance6.glb');
+    // }).then(function(data){
+    //     if(data) return loadAsync('./light_sub/5exitance3.glb');
+    // }).then(function(data){
+    //     if(data) return loadAsync('./light_sub/6exitance4.glb');
+    // }).then(function(data){
+    //     if(data) return loadAsync('./light_sub/7exitance5.glb');
+    // }).then(function(data){
+    //     if(data) return loadAsync('./light_sub/8exitance1.glb');
+    // }).then(function(data){
+    //     if(data) return loadAsync('./light_sub/2glass.glb');
+    // }).then(function(data){
+    //     if(data) return loadAsync('./light_sub/12b2lights.glb');
+    // }).then(function(data){
+    //     if(data) return loadAsync('./light_sub/18b2roof.glb');
+    // }).then(function(data){
+    //     if(data) return loadAsync('./light_sub/19b2others.glb');
+    // // }).then(function(data){
+    // //     if(data) return loadAsync('./light_sub/9ground.glb');
+    // // }).then(function(data){
+    // //     if(data) return loadAsync('./light_sub/10f1buildings1.glb');
+    // // }).then(function(data){
+    // //     if(data) return loadAsync('./light_sub/11f1others.glb');
+    // // }).then(function(data){
+    // //     if(data) return loadAsync('./light_sub/33f1buildings2.glb');
+    // // }).then(function(data){
+    // //     if(data) return loadAsync('./light_sub/34f1buildings3.glb');
+    // // }).then(function(data){
+    // //     if(data) return loadAsync('./light_sub/35f1buildings4.glb');
+    // }).then(() => {
+    //     $("#loadTime")[0].innerText = ((performance.now() - startLoadTime) / 1000).toFixed(2) + "秒";
+    // });
 
     //分块加载
     // Promise.all(
