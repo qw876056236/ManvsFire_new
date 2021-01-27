@@ -298,18 +298,39 @@ mainScene.prototype.setScene = function()
     this.camControl = camControl;
 
 
-    var ambientLight = new THREE.AmbientLight(0xcccccc,1.5);
-    this.scene.add(ambientLight);
+    /*var ambientLight = new THREE.AmbientLight();
+    this.scene.add(ambientLight);*/
 
     var directionalLight_1 = new THREE.DirectionalLight(0xffffff,1);
     //directionalLight_1.position.set(0.3,0.4,0.5);
-    directionalLight_1.position.set(1,1,1);
+    directionalLight_1.position.set(0,1,1);
     this.scene.add(directionalLight_1);
 
     var directionalLight_2 = new THREE.DirectionalLight(0xffffff,1);
     //directionalLight_2.position.set(-0.3,-0.4,0.5);
-    directionalLight_2.position.set(-1,1,-1);
+    directionalLight_2.position.set(0,1,-1);
     this.scene.add(directionalLight_2);
+
+    var directionalLight_3 = new THREE.DirectionalLight(0xffffff,1);
+    //directionalLight_2.position.set(-0.3,-0.4,0.5);
+    directionalLight_3.position.set(1,0,0);
+    this.scene.add(directionalLight_3);
+
+    var directionalLight_4 = new THREE.DirectionalLight(0xffffff,1);
+    //directionalLight_2.position.set(-0.3,-0.4,0.5);
+    directionalLight_4.position.set(-1,0,0);
+    this.scene.add(directionalLight_4);
+
+    var directionalLight_5 = new THREE.DirectionalLight(0xffffff,1);
+    //directionalLight_2.position.set(-0.3,-0.4,0.5);
+    directionalLight_5.position.set(0,-1,0);
+    this.scene.add(directionalLight_5);
+
+    var directionalLight_6 = new THREE.DirectionalLight(0xffffff,1);
+    //directionalLight_2.position.set(-0.3,-0.4,0.5);
+    directionalLight_6.position.set(0,1,0);
+    this.scene.add(directionalLight_6);
+
 //endregion
 
     //region 物体操作工具
