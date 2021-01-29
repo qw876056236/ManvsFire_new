@@ -456,19 +456,7 @@ People.prototype.init = function (_this) {
                 rThigh2.scale(new THREE.Vector3(thighRandom, thighRandom, 1));
 
                 //动态人群位置
-                // var distance = Math.random() * 17;
-                // var distance1 = Math.random() * 26;
-                // newMesh.scene.position.set(distance + 43, -8.5, distance1 + 261);
-                newMesh.scene.position.y = -13.37;
-                var num = Math.floor(Math.random() * 2 + 1);
-                if (num === 1) {
-                    newMesh.scene.position.x = 45.84 + Math.random() * 2.34;
-                    newMesh.scene.position.z = 343.83 + Math.random() * 16.5;
-                }
-                else{
-                    newMesh.scene.position.x = 45.84 + Math.random() * 2.34;
-                    newMesh.scene.position.z = 343.83 - Math.random() * 16.5;
-                }
+                self.setPosition (newMesh);
 
                 // 将模型的材质附在newMesh上
                 var loader = new THREE.TextureLoader();
@@ -669,19 +657,7 @@ People.prototype.init = function (_this) {
                 lThigh20.scale(new THREE.Vector3(thighRandom, thighRandom, 1));
 
                 //动态人群位置
-                // var distance = Math.random() * 17;
-                // var distance1 = Math.random() * 26;
-                // newMesh.scene.position.set(distance+43, -8.5, distance1+261);
-                newMesh.scene.position.y = -13.37;
-                var num = Math.floor(Math.random() * 2 + 1);
-                if (num === 1) {
-                    newMesh.scene.position.x = 56.57 - Math.random() * 2.74;
-                    newMesh.scene.position.z = 342.97 + Math.random() * 16.90;
-                }
-                else{
-                    newMesh.scene.position.x = 56.57 - Math.random() * 2.74;
-                    newMesh.scene.position.z = 342.97 - Math.random() * 16.90;
-                }
+                self.setPosition (newMesh);
 
                 // 将模型的材质附在newMesh上
                 var loader = new THREE.TextureLoader();
@@ -763,9 +739,7 @@ People.prototype.init = function (_this) {
                 rThigh2.scale(new THREE.Vector3(thighRandom, thighRandom, 1));
 
                 //动态人群位置
-                var distance = Math.random() * 17;
-                var distance1 = Math.random() * 26;
-                newMesh.scene.position.set(distance+43, -8.5, distance1+261);
+                self.setPosition (newMesh);
 
                 // 将模型的材质附在newMesh上
                 var loader = new THREE.TextureLoader();
@@ -854,9 +828,7 @@ People.prototype.init = function (_this) {
                 rThigh2.scale(new THREE.Vector3(thighRandom, thighRandom, 1));
 
                 //动态人群位置
-                var distance = Math.random() * 17;
-                var distance1 = Math.random() * 26;
-                newMesh.scene.position.set(distance+43, -8.5, distance1+261);
+                self.setPosition (newMesh);
 
                 // 将模型的材质附在newMesh上
                 var loader = new THREE.TextureLoader();
@@ -1055,19 +1027,7 @@ People.prototype.init = function (_this) {
                 rThigh2.scale(new THREE.Vector3(thighRandom, thighRandom, 1));
 
                 //动态人群位置
-                // var distance = Math.random() * 15;
-                // var distance1 = Math.random() * 20;
-                // newMesh.scene.position.set(distance+40, -8.5, distance1+241);
-                newMesh.scene.position.y = -13.37;
-                var num = Math.floor(Math.random() * 2 + 1);
-                if (num === 1) {
-                    newMesh.scene.position.x = 45.84 + Math.random() * 2.34;
-                    newMesh.scene.position.z = 305.63 + Math.random() * 16.5;
-                }
-                else{
-                    newMesh.scene.position.x = 45.84 + Math.random() * 2.34;
-                    newMesh.scene.position.z = 305.63 - Math.random() * 16.5;
-                }
+                self.setPosition (newMesh);
 
                 // 将模型的材质附在newMesh上
                 var loader = new THREE.TextureLoader();
@@ -1268,19 +1228,7 @@ People.prototype.init = function (_this) {
                 lThigh20.scale(new THREE.Vector3(thighRandom, thighRandom, 1));
 
                 //动态人群位置
-                // var distance = Math.random() * 15;
-                // var distance1 = Math.random() * 20;
-                // newMesh.scene.position.set(distance+40, -8.5, distance1+241);
-                newMesh.scene.position.y = -13.37;
-                var num = Math.floor(Math.random() * 2 + 1);
-                if (num === 1) {
-                    newMesh.scene.position.x = 56.57 - Math.random() * 2.74;
-                    newMesh.scene.position.z = 264.41 + Math.random() * 15.46;
-                }
-                else{
-                    newMesh.scene.position.x = 56.57 - Math.random() * 2.74;
-                    newMesh.scene.position.z = 264.41 - Math.random() * 15.46;
-                }
+                self.setPosition (newMesh);
 
                 // 将模型的材质附在newMesh上
                 var loader = new THREE.TextureLoader();
@@ -1355,9 +1303,7 @@ People.prototype.init = function (_this) {
                 hip.scale(new THREE.Vector3(upperRandom3, upperRandom3, 1));
 
                 //动态人群位置
-                var distance = Math.random() * 15;
-                var distance1 = Math.random() * 20;
-                newMesh.scene.position.set(distance+40, -8.5, distance1+241);
+                self.setPosition (newMesh);
 
                 // 将模型的材质附在newMesh上
                 var loader = new THREE.TextureLoader();
@@ -1556,19 +1502,7 @@ People.prototype.init = function (_this) {
                 rThigh2.scale(new THREE.Vector3(thighRandom, thighRandom, 1));
 
                 //动态人群位置
-                // var distance = Math.random() * 15;
-                // var distance1 = Math.random() * 20;
-                // newMesh.scene.position.set(distance+40, -8.5, distance1+222);
-                newMesh.scene.position.y = -13.37;
-                var num = Math.floor(Math.random() * 2 + 1);
-                if (num === 1) {
-                    newMesh.scene.position.x = 45.84 + Math.random() * 2.34;
-                    newMesh.scene.position.z = 266.28 + Math.random() * 16.5;
-                }
-                else{
-                    newMesh.scene.position.x = 45.84 + Math.random() * 2.34;
-                    newMesh.scene.position.z = 266.28 - Math.random() * 16.5;
-                }
+                self.setPosition (newMesh);
 
                 // 将模型的材质附在newMesh上
                 var loader = new THREE.TextureLoader();
@@ -1769,19 +1703,7 @@ People.prototype.init = function (_this) {
                 lThigh20.scale(new THREE.Vector3(thighRandom, thighRandom, 1));
 
                 //动态人群位置
-                // var distance = Math.random() * 15;
-                // var distance1 = Math.random() * 20;
-                // newMesh.scene.position.set(distance+40, -8.5, distance1+222);
-                newMesh.scene.position.y = -13.37;
-                var num = Math.floor(Math.random() * 2 + 1);
-                if (num === 1) {
-                    newMesh.scene.position.x = 56.57 - Math.random() * 2.74;
-                    newMesh.scene.position.z = 305.72 + Math.random() * 17.27;
-                }
-                else{
-                    newMesh.scene.position.x = 56.57 - Math.random() * 2.74;
-                    newMesh.scene.position.z = 305.72 - Math.random() * 17.27;
-                }
+                self.setPosition (newMesh);
 
                 // 将模型的材质附在newMesh上
                 var loader = new THREE.TextureLoader();
@@ -1856,9 +1778,7 @@ People.prototype.init = function (_this) {
 
 
                 //动态人群位置
-                var distance = Math.random() * 15;
-                var distance1 = Math.random() * 20;
-                newMesh.scene.position.set(distance+40, -8.5, distance1+222);
+                self.setPosition (newMesh);
 
                 // 将模型的材质附在newMesh上
                 var loader = new THREE.TextureLoader();
@@ -2036,19 +1956,7 @@ People.prototype.init = function (_this) {
                 newMesh.scene.rotation.set(0, Math.PI*4/5, 0);
 
                 //动态人群位置
-                // var distance = Math.random() * 17;
-                // var distance1 = Math.random() * 26;
-                // newMesh.scene.position.set(distance+43, -8.5, distance1+197);
-                newMesh.scene.position.y = -13.37;
-                var num = Math.floor(Math.random() * 2 + 1);
-                if (num === 1) {
-                    newMesh.scene.position.x = 45.84 + Math.random() * 2.34;
-                    newMesh.scene.position.z = 229.45 + Math.random() * 16.5;
-                }
-                else{
-                    newMesh.scene.position.x = 45.84 + Math.random() * 2.34;
-                    newMesh.scene.position.z = 229.45 - Math.random() * 16.5;
-                }
+                self.setPosition (newMesh);
 
                 // 将模型的材质附在newMesh上
                 var loader = new THREE.TextureLoader();
@@ -2270,19 +2178,7 @@ People.prototype.init = function (_this) {
                 lThigh20.scale(new THREE.Vector3(thighRandom, thighRandom, 1));
 
                 //动态人群位置
-                // var distance = Math.random() * 17;
-                // var distance1 = Math.random() * 26;
-                // newMesh.scene.position.set(distance+43, -8.5, distance1+197);
-                newMesh.scene.position.y = -13.37;
-                var num = Math.floor(Math.random() * 2 + 1);
-                if (num === 1) {
-                    newMesh.scene.position.x = 56.57 - Math.random() * 2.74;
-                    newMesh.scene.position.z = 234.37 + Math.random() * 10;
-                }
-                else{
-                    newMesh.scene.position.x = 56.57 - Math.random() * 2.74;
-                    newMesh.scene.position.z = 234.37 - Math.random() * 10;
-                }
+                self.setPosition (newMesh);
 
                 // 将模型的材质附在newMesh上
                 var loader = new THREE.TextureLoader();
@@ -2436,9 +2332,7 @@ People.prototype.init = function (_this) {
                 newMesh.scene.rotation.set(0, Math.PI*4/5, 0);
 
                 //动态人群位置
-                var distance = Math.random() * 17;
-                var distance1 = Math.random() * 26;
-                newMesh.scene.position.set(distance+43, -8.5, distance1+197);
+                self.setPosition (newMesh);
 
                 //人物骨骼参数化
                 var headRandom =1 +  Math.random()/number;
@@ -2536,19 +2430,7 @@ People.prototype.init = function (_this) {
                 hip.scale(new THREE.Vector3(upperRandom3, upperRandom3, 1));
 
                 //动态人群位置
-                // var distance = Math.random() * 18;
-                // var distance1 = Math.random() * 30;
-                // newMesh.scene.position.set(distance+43, -8.5, distance1+170);
-                newMesh.scene.position.y = -13.37;
-                var num = Math.floor(Math.random() * 2 + 1);
-                if (num === 1) {
-                    newMesh.scene.position.x = 45.84 + Math.random() * 2.34;
-                    newMesh.scene.position.z = 197.62 + Math.random() * 10.60;
-                }
-                else{
-                    newMesh.scene.position.x = 45.84 + Math.random() * 2.34;
-                    newMesh.scene.position.z = 197.62 - Math.random() * 10.60;
-                }
+                self.setPosition (newMesh);
 
                 // 将模型的材质附在newMesh上
                 var loader = new THREE.TextureLoader();
@@ -2630,19 +2512,7 @@ People.prototype.init = function (_this) {
                 rThigh2.scale(new THREE.Vector3(thighRandom, thighRandom, 1));
 
                 //动态人群位置
-                // var distance = Math.random() * 18;
-                // var distance1 = Math.random() * 30;
-                // newMesh.scene.position.set(distance+43, -8.5, distance1+170);
-                newMesh.scene.position.y = -13.37;
-                var num = Math.floor(Math.random() * 2 + 1);
-                if (num === 1) {
-                    newMesh.scene.position.x = 56.57 - Math.random() * 2.74;
-                    newMesh.scene.position.z = 200.00 + Math.random() * 13.03;
-                }
-                else{
-                    newMesh.scene.position.x = 56.57 - Math.random() * 2.74;
-                    newMesh.scene.position.z = 200.00 - Math.random() * 13.03;
-                }
+                self.setPosition (newMesh);
 
                 // 将模型的材质附在newMesh上
                 var loader = new THREE.TextureLoader();
@@ -2731,9 +2601,7 @@ People.prototype.init = function (_this) {
                 rThigh2.scale(new THREE.Vector3(thighRandom, thighRandom, 1));
 
                 //动态人群位置
-                var distance = Math.random() * 18;
-                var distance1 = Math.random() * 30;
-                newMesh.scene.position.set(distance+43, -8.5, distance1+170);
+                self.setPosition (newMesh);
 
                 // 将模型的材质附在newMesh上
                 var loader = new THREE.TextureLoader();
@@ -2932,9 +2800,7 @@ People.prototype.init = function (_this) {
                 rThigh2.scale(new THREE.Vector3(thighRandom, thighRandom, 1));
 
                 //动态人群位置
-                var distance = Math.random() * 18;
-                var distance1 = Math.random() * 30;
-                newMesh.scene.position.set(distance+43, -8.5, distance1+170);
+                self.setPosition (newMesh);
 
                 // 将模型的材质附在newMesh上
                 var loader = new THREE.TextureLoader();
@@ -3134,9 +3000,7 @@ People.prototype.init = function (_this) {
                 lThigh20.scale(new THREE.Vector3(thighRandom, thighRandom, 1));
 
                 //动态人群位置
-                var distance = Math.random() * 18;
-                var distance1 = Math.random() * 30;
-                newMesh.scene.position.set(distance+43, -8.5, distance1+170);
+                self.setPosition (newMesh);
 
                 // 将模型的材质附在newMesh上
                 var loader = new THREE.TextureLoader();
@@ -3167,6 +3031,234 @@ People.prototype.init = function (_this) {
 
 };
 
+People.prototype.setPosition = function (newMesh) {
+    console.log(1111);
+    var num = Math.floor(Math.random()*16+1); // 16块随机区域对应（1-16）的随机整数
+    var num1 = Math.floor(Math.random() * 2 + 1);
+    var num2 = Math.floor(Math.random() * 2 + 1);
+    switch (num) {
+        case 1:
+            newMesh.scene.position.y = -13.37;
+            if (num1 === 1) {
+                newMesh.scene.position.x = 45.84 + Math.random() * 2.34;
+                newMesh.scene.position.z = 343.83 + Math.random() * 16.5;
+            } else {
+                newMesh.scene.position.x = 45.84 + Math.random() * 2.34;
+                newMesh.scene.position.z = 343.83 - Math.random() * 16.5;
+            }
+            break;
+        case 2:
+            newMesh.scene.position.y = -13.37;
+            if (num1 === 1) {
+                newMesh.scene.position.x = 56.57 - Math.random() * 2.74;
+                newMesh.scene.position.z = 342.97 + Math.random() * 16.90;
+            } else {
+                newMesh.scene.position.x = 56.57 - Math.random() * 2.74;
+                newMesh.scene.position.z = 342.97 - Math.random() * 16.90;
+            }
+            break;
+        case 3:
+            newMesh.scene.position.y = -13.37;
+            if (num1 === 1) {
+                newMesh.scene.position.x = 45.84 + Math.random() * 2.34;
+                newMesh.scene.position.z = 305.63 + Math.random() * 16.5;
+            } else {
+                newMesh.scene.position.x = 45.84 + Math.random() * 2.34;
+                newMesh.scene.position.z = 305.63 - Math.random() * 16.5;
+            }
+            break;
+        case 4:
+            newMesh.scene.position.y = -13.37;
+            if (num1 === 1) {
+                newMesh.scene.position.x = 56.57 - Math.random() * 2.74;
+                newMesh.scene.position.z = 264.41 + Math.random() * 15.46;
+            } else {
+                newMesh.scene.position.x = 56.57 - Math.random() * 2.74;
+                newMesh.scene.position.z = 264.41 - Math.random() * 15.46;
+            }
+            break;
+        case 5:
+            newMesh.scene.position.y = -13.37;
+            if (num1 === 1) {
+                newMesh.scene.position.x = 45.84 + Math.random() * 2.34;
+                newMesh.scene.position.z = 266.28 + Math.random() * 16.5;
+            } else {
+                newMesh.scene.position.x = 45.84 + Math.random() * 2.34;
+                newMesh.scene.position.z = 266.28 - Math.random() * 16.5;
+            }
+            break;
+        case 6:
+            newMesh.scene.position.y = -13.37;
+            if (num1 === 1) {
+                newMesh.scene.position.x = 56.57 - Math.random() * 2.74;
+                newMesh.scene.position.z = 305.72 + Math.random() * 17.27;
+            } else {
+                newMesh.scene.position.x = 56.57 - Math.random() * 2.74;
+                newMesh.scene.position.z = 305.72 - Math.random() * 17.27;
+            }
+            break;
+        case 7:
+            newMesh.scene.position.y = -13.37;
+            if (num1 === 1) {
+                newMesh.scene.position.x = 45.84 + Math.random() * 2.34;
+                newMesh.scene.position.z = 229.45 + Math.random() * 16.5;
+            } else {
+                newMesh.scene.position.x = 45.84 + Math.random() * 2.34;
+                newMesh.scene.position.z = 229.45 - Math.random() * 16.5;
+            }
+            break;
+        case 8:
+            newMesh.scene.position.y = -13.37;
+            if (num1 === 1) {
+                newMesh.scene.position.x = 56.57 - Math.random() * 2.74;
+                newMesh.scene.position.z = 234.37 + Math.random() * 10;
+            } else {
+                newMesh.scene.position.x = 56.57 - Math.random() * 2.74;
+                newMesh.scene.position.z = 234.37 - Math.random() * 10;
+            }
+            break;
+        case 9:
+            newMesh.scene.position.y = -13.37;
+            if (num1 === 1) {
+                newMesh.scene.position.x = 45.84 + Math.random() * 2.34;
+                newMesh.scene.position.z = 197.62 + Math.random() * 10.60;
+            } else {
+                newMesh.scene.position.x = 45.84 + Math.random() * 2.34;
+                newMesh.scene.position.z = 197.62 - Math.random() * 10.60;
+            }
+            break;
+        case 10:
+            newMesh.scene.position.y = -13.37;
+            if (num === 1) {
+                newMesh.scene.position.x = 56.57 - Math.random() * 2.74;
+                newMesh.scene.position.z = 200.00 + Math.random() * 13.03;
+            } else {
+                newMesh.scene.position.x = 56.57 - Math.random() * 2.74;
+                newMesh.scene.position.z = 200.00 - Math.random() * 13.03;
+            }
+            break;
+        case 11:
+            newMesh.scene.position.y = -8.5;
+            if (num1 === 1) {
+                if (num2 ===1) {
+                    newMesh.scene.position.x = 51.29 + Math.random() * 8.72;
+                    newMesh.scene.position.z = 361.68 + Math.random() * 10;
+                } else {
+                    newMesh.scene.position.x = 51.29 + Math.random() * 8.72;
+                    newMesh.scene.position.z = 361.68 - Math.random() * 10;
+                }
+            } else {
+                if (num2 === 1) {
+                    newMesh.scene.position.x = 51.29 - Math.random() * 8.72;
+                    newMesh.scene.position.z = 361.18 + Math.random() * 10;
+                } else {
+                    newMesh.scene.position.x = 51.29 - Math.random() * 8.72;
+                    newMesh.scene.position.z = 361.68 - Math.random() * 10;
+                }
+            }
+            break;
+        case 12:
+            newMesh.scene.position.y = -8.5;
+            if (num1 === 1) {
+                if (num2 ===1) {
+                    newMesh.scene.position.x = 51.25 + Math.random() * 9.09;
+                    newMesh.scene.position.z = 328.91 + Math.random() * 10.53;
+                } else {
+                    newMesh.scene.position.x = 51.25 + Math.random() * 9.09;
+                    newMesh.scene.position.z = 328.91 - Math.random() * 10.53;
+                }
+            } else {
+                if (num2 === 1) {
+                    newMesh.scene.position.x = 51.25 - Math.random() * 9.09;
+                    newMesh.scene.position.z = 328.91 + Math.random() * 10.53;
+                } else {
+                    newMesh.scene.position.x = 51.25 - Math.random() * 9.09;
+                    newMesh.scene.position.z = 328.91 - Math.random() * 10.53;
+                }
+            }
+            break;
+        case 13:
+            newMesh.scene.position.y = -8.5;
+            if (num1 === 1) {
+                if (num2 ===1) {
+                    newMesh.scene.position.x = 50.47 + Math.random() * 8.08;
+                    newMesh.scene.position.z = 288.48 + Math.random() * 9.26;
+                } else {
+                    newMesh.scene.position.x = 50.47 + Math.random() * 8.08;
+                    newMesh.scene.position.z = 288.48 - Math.random() * 9.26;
+                }
+            } else {
+                if (num2 === 1) {
+                    newMesh.scene.position.x = 50.47 - Math.random() * 8.08;
+                    newMesh.scene.position.z = 288.48 + Math.random() * 9.26;
+                } else {
+                    newMesh.scene.position.x = 50.47 - Math.random() * 8.08;
+                    newMesh.scene.position.z = 288.48 - Math.random() * 9.26;
+                }
+            }
+            break;
+        case 14:
+            newMesh.scene.position.y = -8.5;
+            if (num1 === 1) {
+                if (num2 ===1) {
+                    newMesh.scene.position.x = 51.40 + Math.random() * 8.77;
+                    newMesh.scene.position.z = 248.07 + Math.random() * 10.69;
+                } else {
+                    newMesh.scene.position.x = 51.40 + Math.random() * 8.77;
+                    newMesh.scene.position.z = 248.07 - Math.random() * 10.69;
+                }
+            } else {
+                if (num2 === 1) {
+                    newMesh.scene.position.x = 51.40 - Math.random() * 8.77;
+                    newMesh.scene.position.z = 248.07 + Math.random() * 10.69;
+                } else {
+                    newMesh.scene.position.x = 51.40 - Math.random() * 8.77;
+                    newMesh.scene.position.z = 248.07 - Math.random() * 10.69;
+                }
+            }
+            break;
+        case 15:
+            newMesh.scene.position.y = -8.5;
+            if (num1 === 1) {
+                if (num2 ===1) {
+                    newMesh.scene.position.x = 51.19 + Math.random() * 9.05;
+                    newMesh.scene.position.z = 212.34 + Math.random() * 10.84;
+                } else {
+                    newMesh.scene.position.x = 51.19 + Math.random() * 9.05;
+                    newMesh.scene.position.z = 212.34 - Math.random() * 10.84;
+                }
+            } else {
+                if (num2 === 1) {
+                    newMesh.scene.position.x = 51.19 - Math.random() * 9.05;
+                    newMesh.scene.position.z = 212.34 + Math.random() * 10.84;
+                } else {
+                    newMesh.scene.position.x = 56.17 - Math.random() * 9.05;
+                    newMesh.scene.position.z = 212.34 - Math.random() * 10.84;
+                }
+            }
+            break;
+        case 16:
+            newMesh.scene.position.y = -8.5;
+            if (num1 === 1) {
+                if (num2 ===1) {
+                    newMesh.scene.position.x = 51.17 + Math.random() * 8.46;
+                    newMesh.scene.position.z = 175.17 + Math.random() * 10.05;
+                } else {
+                    newMesh.scene.position.x = 51.17 + Math.random() * 8.46;
+                    newMesh.scene.position.z = 175.17 - Math.random() * 10.05;
+                }
+            } else {
+                if (num2 === 1) {
+                    newMesh.scene.position.x = 51.17 - Math.random() * 8.46;
+                    newMesh.scene.position.z = 175.17 + Math.random() * 10.05;
+                } else {
+                    newMesh.scene.position.x = 51.17 - Math.random() * 8.46;
+                    newMesh.scene.position.z = 175.17 - Math.random() * 10.05;
+                }
+            }
+            break;
+    }
+}
 
 //动画随机速度，除去速度为0的情况
 People.prototype.activateAction = function (action) {

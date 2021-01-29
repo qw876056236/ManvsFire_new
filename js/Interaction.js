@@ -228,6 +228,13 @@ Interaction.prototype.fuc3 = function (MainScene)
             $('createPersonBtn').textContent="编辑人群";
             $('illustration-context').innerHTML = "<p>您已成功选取人群排布</p>" + "<p>若想编辑烟雾请点击“编辑烟雾”,否则点击“开始模拟”</p>";
 
+            /*人物分布测试用
+            console.log(MainScene.people.positionPlaneMesh_1.position.x, MainScene.people.positionPlaneMesh_1.position.z, Math.abs(MainScene.people.positionPlaneMesh_1.scale.x * 5), Math.abs(MainScene.people.positionPlaneMesh_1.scale.z * 10));
+            console.log(MainScene.people.positionPlaneMesh_2.position.x, MainScene.people.positionPlaneMesh_2.position.z, Math.abs(MainScene.people.positionPlaneMesh_2.scale.x * 5), Math.abs(MainScene.people.positionPlaneMesh_2.scale.z * 10));
+            console.log(MainScene.people.positionPlaneMesh_3.position.x, MainScene.people.positionPlaneMesh_3.position.z, Math.abs(MainScene.people.positionPlaneMesh_3.scale.x * 5), Math.abs(MainScene.people.positionPlaneMesh_3.scale.z * 10));
+            console.log(MainScene.people.positionPlaneMesh_4.position.x, MainScene.people.positionPlaneMesh_4.position.z, Math.abs(MainScene.people.positionPlaneMesh_4.scale.x * 5), Math.abs(MainScene.people.positionPlaneMesh_4.scale.z * 10));
+            console.log(MainScene.people.positionPlaneMesh_5.position.x, MainScene.people.positionPlaneMesh_5.position.z, Math.abs(MainScene.people.positionPlaneMesh_5.scale.x * 5), Math.abs(MainScene.people.positionPlaneMesh_5.scale.z * 10));
+            */
             MainScene.camera.position.set(60,3,146);
             MainScene.camera.rotation.set(-2.8,0.7,2.9);
             //MainScene.camera.lookAt(50, 0, 240);
