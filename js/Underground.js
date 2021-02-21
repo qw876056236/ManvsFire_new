@@ -67,11 +67,18 @@ Underground.prototype.GlbBuilding = function (_this) {
     var startLoadTime = performance.now();
 
     //分步加载
+<<<<<<< HEAD
     this.arr[0] = loadAsync('./light_sub/subwayStation05.glb');
     this.arr[1] = loadAsync('./light_sub/floor03.glb');
     this.arr[2] = loadSubwayAsync('./light_sub/subway04.glb',43.2,-12.9,270.65);
     this.arr[3] = loadSubwayAsync('./light_sub/subway04.glb',59.6,-12.9,270.65);
     /*this.arr[1] = loadAsync('./light_sub/25b1wall.glb');
+=======
+    this.arr[0] = loadAsync('./light_sub/subwayStation04.glb');
+    /*人物分布测试用
+    this.arr[0] = loadAsync('./light_sub/23b1floor.glb');
+    this.arr[1] = loadAsync('./light_sub/25b1wall.glb');
+>>>>>>> 3cff061d15f1e091ef4d579540a6c9a67f35afcc
     this.arr[2] = loadAsync('./light_sub/30b1pillars.glb');
     this.arr[3] = loadAsync('./light_sub/27b1fence.glb');
     this.arr[4] = loadAsync('./light_sub/1securityCheck.glb');
@@ -97,14 +104,14 @@ Underground.prototype.GlbBuilding = function (_this) {
     this.arr[23] = loadAsync('./light_sub/32automaticLeftDoor.glb');
     this.arr[24] = loadAsync('./light_sub/21b2pillars.glb');
     this.arr[25] = loadAsync('./light_sub/19b2others.glb');
-    this.arr[26] = loadAsync('./light_sub/14b2escalators.glb');*/
+    this.arr[26] = loadAsync('./light_sub/14b2escalators.glb');
 
-    //只b2层可见
-    // this.promiseAll = Promise.all(this.arr).then((data) => {
-    //     for (var i =0; i < 18; i++) {
-    //         data[i].scene.visible = false;
-    //     }
-    // });
+    // 只b2层可见
+    this.promiseAll = Promise.all(this.arr).then((data) => {
+        for (var i =0; i < 18; i++) {
+            data[i].scene.visible = false;
+        }
+    }); */
 
     $("#loadTime")[0].innerText = ((performance.now() - startLoadTime) / 1000).toFixed(2) + "秒";
 
