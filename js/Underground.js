@@ -10,7 +10,7 @@ var Underground = function ()
 
 Underground.prototype.init = function (_this) {
     this.GlbBuilding(_this);
-    this.AddSubway(_this);
+    //this.AddSubway(_this);
 }
 
 
@@ -46,11 +46,31 @@ Underground.prototype.GlbBuilding = function (_this) {
         })
     };
 
+    var loadSubwayAsync = function (path,x,y,z)
+    {
+        return new Promise((resolve) =>
+        {
+            loader.load(path, (gltf) =>
+            {
+                self.mesh = gltf.scene;
+                self.mesh.scale.set(1,1,1);
+                self.mesh.position.set(x,y,z);
+
+                _this.scene.add(self.mesh);
+                _this.Cameracontroller.collideMeshList.push(self.mesh);
+                resolve(gltf);
+            })
+        })
+    };
+
     /*建筑模型加载开始*/
     var startLoadTime = performance.now();
 
     //分步加载
-    this.arr[0] = loadAsync('./light_sub/subwayStation04.glb');
+    this.arr[0] = loadAsync('./light_sub/subwayStation05.glb');
+    this.arr[1] = loadAsync('./light_sub/floor03.glb');
+    this.arr[2] = loadSubwayAsync('./light_sub/subway04.glb',43.2,-12.9,270.65);
+    this.arr[3] = loadSubwayAsync('./light_sub/subway04.glb',59.6,-12.9,270.65);
     /*this.arr[1] = loadAsync('./light_sub/25b1wall.glb');
     this.arr[2] = loadAsync('./light_sub/30b1pillars.glb');
     this.arr[3] = loadAsync('./light_sub/27b1fence.glb');
