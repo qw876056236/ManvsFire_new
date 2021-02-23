@@ -46,9 +46,9 @@ Underground.prototype.GlbBuilding = function (_this) {
         })
     };
 
-    var loadSubwayAsync = function (path,x,y,z)
+    var loadSubwaySync = function (path,x,y,z)
     {
-        return new Promise((resolve) =>
+        self.arr.push(new Promise((resolve) =>
         {
             loader.load(path, (gltf) =>
             {
@@ -61,16 +61,42 @@ Underground.prototype.GlbBuilding = function (_this) {
                 resolve(gltf);
             })
         })
+        );
+        return self.arr[self.arr.length-1];
     };
+
+    var loadSync = function(path){
+        self.arr.push(new Promise((resolve) =>
+        {
+            loader.load(path, (gltf) =>
+            {
+                loadFunc(gltf);
+                resolve(gltf);
+            })
+        })
+        );
+        return self.arr[self.arr.length-1];
+    }
 
     /*建筑模型加载开始*/
     var startLoadTime = performance.now();
 
+    //同步加载
+    loadSync('./light_sub/subwayStation05.glb').then(function(data){
+        if(data) return loadSubwaySync('./light_sub/subway04.glb',43.2,-12.9,270.65);
+    }).then(function(data){
+        if(data) return loadSubwaySync('./light_sub/subway04.glb',59.6,-12.9,270.65);
+    }).then(function(data){
+        if(data) return loadSync('./light_sub/floor03.glb',59.6,-12.9,270.65);
+    }).then(() => {
+        $("#loadTime")[0].innerText = ((performance.now() - startLoadTime) / 1000).toFixed(2) + "秒";
+    });
+
     //分步加载
-    this.arr[0] = loadAsync('./light_sub/subwayStation05.glb');
+    /*this.arr[0] = loadAsync('./light_sub/subwayStation05.glb');
     this.arr[1] = loadAsync('./light_sub/floor03.glb');
     this.arr[2] = loadSubwayAsync('./light_sub/subway04.glb',43.2,-12.9,270.65);
-    this.arr[3] = loadSubwayAsync('./light_sub/subway04.glb',59.6,-12.9,270.65);
+    this.arr[3] = loadSubwayAsync('./light_sub/subway04.glb',59.6,-12.9,270.65);*/
     /*this.arr[1] = loadAsync('./light_sub/25b1wall.glb');
 
     this.arr[0] = loadAsync('./light_sub/subwayStation04.glb');
@@ -111,7 +137,7 @@ Underground.prototype.GlbBuilding = function (_this) {
         }
     }); */
 
-    $("#loadTime")[0].innerText = ((performance.now() - startLoadTime) / 1000).toFixed(2) + "秒";
+
 
     /*建筑模型加载结束*/
 
