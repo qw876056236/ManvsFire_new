@@ -39,10 +39,10 @@ fireControl.prototype.init = function (_this)
         high: 2
     });
     var fireManager = new FIRE.Manager(fireControl);
-    fireManager.maxParticlesNum = 500;
+    fireManager.maxParticlesNum = 250;
     fireManager.runTimer();
     fireManager.controlSheet.x = _this.smoke.positionBallMesh.position.x;
-    fireManager.controlSheet.y = _this.smoke.positionBallMesh.position.y;
+    fireManager.controlSheet.y = _this.smoke.positionBallMesh.position.y+0.7;
     fireManager.controlSheet.z = _this.smoke.positionBallMesh.position.z;
     fireManager.target.visible =false;
     this.fireManager = fireManager;
@@ -88,7 +88,7 @@ fireControl.prototype.Run = function (_this)
     if(self.fireManager.controlSheet.x != _this.smoke.positionBallMesh.position.x)
     {
         self.fireManager.controlSheet.x = _this.smoke.positionBallMesh.position.x;
-        self.fireManager.controlSheet.y = _this.smoke.positionBallMesh.position.y;
+        self.fireManager.controlSheet.y = _this.smoke.positionBallMesh.position.y+0.7;
         self.fireManager.controlSheet.z = _this.smoke.positionBallMesh.position.z;
     }
     self.fireManager.run();
@@ -143,7 +143,7 @@ fireControl.prototype.update = function (_this)
     var Zv = -1.02*this.D + 0.083*Math.pow(this.Q,2/5);
     this.Zv = Zv > 0 ? Zv : 0;
     this.Qc = this.QcFactor * this.Q;
-    this.fireManager.controlSheet.high = this.L;
+    //this.fireManager.controlSheet.high = this.L;
     this.B = this.Q / this.ice / this.calValue;
     //console.log("l:"+this.L+" "+"Zv:"+this.Zv+" "+"B:"+this.B);
     this.Run(_this);

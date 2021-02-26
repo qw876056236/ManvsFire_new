@@ -31,7 +31,7 @@ FIRE.Color = {
 
 // 火焰纹理常量定义
 FIRE.Texture = {
-    Normal: new THREE.TextureLoader().load("textures/fire.png")
+    Normal: new THREE.TextureLoader().load("textures/fire1.png")
 };
 
 
