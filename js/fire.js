@@ -31,7 +31,7 @@ FIRE.Color = {
 
 // 火焰纹理常量定义
 FIRE.Texture = {
-    Normal: new THREE.TextureLoader().load("textures/fire1.png")
+    Normal: new THREE.TextureLoader().load("textures/fire4.png")
 };
 
 
@@ -110,7 +110,8 @@ FIRE.Manager.prototype.initSizeAnimation = function (particle) {
     var self = this;
     particle.animation.reSizing = (particle.animation.reSizing) ? particle.animation.reSizing : new TWEEN.Tween(particle.scale);
     particle.animation.reSizing
-        .to({ x: 4, y: 4, z: 0 }, particle.curLifetime / 5 * 500)
+        //.to({ x: 4, y: 4, z: 0 }, particle.curLifetime / 5 * 500)
+        .to({ x: 3, y: 3, z: 0 }, particle.curLifetime / 5 * 500)
         .onUpdate(function () {
             particle.redraw();
         })

@@ -34,15 +34,15 @@ var fireControl = function ()
 fireControl.prototype.init = function (_this)
 {
     var fireControl = new FIRE.ControlSheet({
-        width:0.5,
-        length: 0.5,
-        high: 2
+        width:0.3,
+        length: 0.3,
+        high: 0.5
     });
     var fireManager = new FIRE.Manager(fireControl);
-    fireManager.maxParticlesNum = 250;
+    fireManager.maxParticlesNum = 500;
     fireManager.runTimer();
     fireManager.controlSheet.x = _this.smoke.positionBallMesh.position.x;
-    fireManager.controlSheet.y = _this.smoke.positionBallMesh.position.y+0.7;
+    fireManager.controlSheet.y = _this.smoke.positionBallMesh.position.y+0.5;
     fireManager.controlSheet.z = _this.smoke.positionBallMesh.position.z;
     fireManager.target.visible =false;
     this.fireManager = fireManager;
@@ -88,7 +88,7 @@ fireControl.prototype.Run = function (_this)
     if(self.fireManager.controlSheet.x != _this.smoke.positionBallMesh.position.x)
     {
         self.fireManager.controlSheet.x = _this.smoke.positionBallMesh.position.x;
-        self.fireManager.controlSheet.y = _this.smoke.positionBallMesh.position.y+0.7;
+        self.fireManager.controlSheet.y = _this.smoke.positionBallMesh.position.y+0.5;
         self.fireManager.controlSheet.z = _this.smoke.positionBallMesh.position.z;
     }
     self.fireManager.run();
