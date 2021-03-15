@@ -210,38 +210,6 @@ mainScene.prototype.start = function()
         //self.Cameracontroller.update1(self);
         self.pMesh.position.set(document.getElementById("x").value,document.getElementById("y").value,document.getElementById("z").value);
 
-        // if(this.extinguisherControl_2 && this.extinguisherControl_2.position.isChange()){
-        //     self.people.groupWalk.children.forEach(child => {
-        //         child.position.x = self.people.positionBallMesh_2.position.x - (50 - child.position.x);
-        //         child.position.y = self.people.positionBallMesh_2.position.y - (-8.5 - child.position.y);
-        //         child.position.z = self.people.positionBallMesh_2.position.z - (240 - child.position.z);
-        //     });
-        //     //self.people.groupWalk.position.set(this.extinguisherControl_2.position.x, this.extinguisherControl_2.position.y, this.extinguisherControl_2.position.z);
-        // }
-        // if(this.extinguisherControl_3 && this.extinguisherControl_3.position.isChange()){
-        //     self.people.groupBend.children.forEach(child => {
-        //         child.position.x = self.people.positionBallMesh_3.position.x - (50 - child.position.x);
-        //         child.position.y = self.people.positionBallMesh_3.position.y - (-8.5 - child.position.y);
-        //         child.position.z = self.people.positionBallMesh_3.position.z - (240 - child.position.z);
-        //     });
-        //     //self.people.groupBend.position.set(this.extinguisherControl_3.position.x, this.extinguisherControl_3.position.y, this.extinguisherControl_3.position.z);
-        // }
-        // if(this.extinguisherControl_4 && this.extinguisherControl_4.position.isChange()){
-        //     self.people.groupCrawl.children.forEach(child => {
-        //         child.position.x = self.people.positionBallMesh_4.position.x - (50 - child.position.x);
-        //         child.position.y = self.people.positionBallMesh_4.position.y - (-8.5 - child.position.y);
-        //         child.position.z = self.people.positionBallMesh_4.position.z - (240 - child.position.z);
-        //     });
-        //     //self.people.groupCrawl.position.set(this.extinguisherControl_4.position.x, this.extinguisherControl_4.position.y, this.extinguisherControl_4.position.z);
-        // }
-        // if(this.extinguisherControl_5 && this.extinguisherControl_5.position.isChange()){
-        //     self.people.groupIdle.children.forEach(child => {
-        //         child.position.x = self.people.positionBallMesh_5.position.x - (50 - child.position.x);
-        //         child.position.y = self.people.positionBallMesh_5.position.y - (-8.5 - child.position.y);
-        //         child.position.z = self.people.positionBallMesh_5.position.z - (240 - child.position.z);
-        //     });
-        //     //self.people.groupIdle.position.set(this.extinguisherControl_5.position.x, this.extinguisherControl_5.position.y, this.extinguisherControl_5.position.z);
-        // }
 
         //self.cameraControl();
 
@@ -376,6 +344,63 @@ mainScene.prototype.setScene = function()
     this.pMesh = new THREE.Mesh(pointGeo,pointMaterial);
     this.scene.add(this.pMesh);
     this.pMesh.position.set(0,0,0);
+
+
+    //开始测试
+    var obj=initPeople(2);
+    movePeople(obj);
+    this.scene.add(obj);
+    function initPeople(number) {
+        var obj=new THREE.Object3D();
+        var pmLoader = new MyPMLoader(
+            {animations: []},
+            './peopleModel/Male',    //模型路径
+            [],//没有LOD分级//LOD等级的数组
+            null,  //LOD需要判断到相机的距离//实例化渲染难以使用LOD
+            0,       //有多个动画时,表示第0个动画//可以通过pmLoader.updateAnimation(i)来切换动画
+            0,     //动画播放速度//可以通过调整pmLoader.animationSpeed来调整速度
+            [],
+            function () {
+                var mesh = pmLoader.rootObject.children[0];
+                var people = new InstancedGroup(
+                    number,//人数
+                    [mesh],//这些mesh的网格应该一致
+                    true//有动画
+                );
+                people.neckPosition=0.68;
+                people.init(
+                    ['./peopleTexture/m/m0.jpg'],
+                    32
+                );
+                for (var i = 0; i < people.instanceCount; i++) {
+                    people.rotationSet(i, [Math.PI / 2, 0, 0]);
+                    people.positionSet(i, [8 * i, 0, 0]);
+                    people.scaleSet(i, [0.1, 0.1, 0.1]);
+                    people.animationSet(i,Math.floor(Math.random()*3));
+                    people.speedSet(i,Math.random()+0.5);
+                    people.textureSet(i,[Math.floor(Math.random()*16),Math.floor(Math.random()*16),Math.floor(Math.random()*16)]);
+                }
+                obj.add(people.obj);
+                obj.people=people;
+                var timeId = setInterval(function () {
+                    mesh = pmLoader.rootObject.children[0];
+                    people.setGeometry(mesh.geometry);
+                    console.log(pmLoader.finished);
+                    if (pmLoader.finished) window.clearInterval(timeId)
+                }, 1000);
+            }
+        );
+        return obj;
+    }
+    function movePeople(obj0) {
+        setInterval(function () {
+            var people=obj0.people;
+            people.move(0,[0,0,0.5]);
+            people.rotation(1,[0,0,0.1]);
+        },100)
+    }
+    //完成测试
+    
 //endregion
 }
 
