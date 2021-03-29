@@ -78,6 +78,8 @@ var mainScene = function()
 
     this.smokeEditor = new SmokeEditor();//烟雾编辑器
 
+    this.sign = new Sign();//标志牌
+
     this.globalPlane = null;
 
     this.currentEscapeTime = 0;
@@ -155,6 +157,8 @@ mainScene.prototype.init = function()
 
     //this.light.init(this);
 
+    //标志牌加载
+    this.sign.init(this);
 
     //交互1
     this.HCI.fuc1(this);
