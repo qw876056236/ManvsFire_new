@@ -82,12 +82,18 @@ Underground.prototype.GlbBuilding = function (_this) {
     var startLoadTime = performance.now();
 
     //同步加载
-    loadSync('./light_sub/subwayStation05.glb').then(function(data){
+    /*loadSync('./light_sub/subwayStation05.glb').then(function(data){
         if(data) return loadSubwaySync('./light_sub/subway04.glb',43.2,-12.9,270.65);
     }).then(function(data){
         if(data) return loadSubwaySync('./light_sub/subway04.glb',59.6,-12.9,270.65);
     }).then(function(data){
         if(data) return loadSync('./light_sub/floor03.glb',59.6,-12.9,270.65);
+    }).then(() => {
+        $("#loadTime")[0].innerText = ((performance.now() - startLoadTime) / 1000).toFixed(2) + "秒";
+    });*/
+
+    loadSubwaySync('./light_sub/subway04.glb',43.2,-12.9,270.65).then(function(data){
+        if(data) return loadSubwaySync('./light_sub/subway04.glb',59.6,-12.9,270.65);
     }).then(() => {
         $("#loadTime")[0].innerText = ((performance.now() - startLoadTime) / 1000).toFixed(2) + "秒";
     });
