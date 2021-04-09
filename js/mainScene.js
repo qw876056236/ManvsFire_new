@@ -50,6 +50,8 @@ var mainScene = function()
 
     this.underground = new Underground();//场景
 
+    this.resourceLoader = new Resourceload();
+
     /*
     this.Path = new path();
 
@@ -149,6 +151,8 @@ mainScene.prototype.init = function()
 
     //region场景加载
     this.underground.init(this);
+    this.resourceLoader.init(this);
+    console.log(this.resourceLoader);
     //endregion
 
     //regiog消防员加载
@@ -184,6 +188,7 @@ mainScene.prototype.start = function()
     function animate()
     {
         self.delta = self.clock.getDelta();
+        console.log(this.resourceLoader);
 
         if(self.isEdit)
         {

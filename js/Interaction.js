@@ -670,7 +670,7 @@ Interaction.prototype.fuc5 = function (_this)
     $("#x_4").html('        <button  id="x_4" class="btn btn-default btn-lg">坐标-10</button>\n');
 
     var flag = 'x';
-    var _flag =_this.underground.subway;
+    //var _flag =_this.underground.subway;
     document.getElementById('flag').addEventListener('click',function (event)
     {
         if(flag==='x')
