@@ -10,6 +10,7 @@ var Resourceload = function(){
     this.loader = new THREE.GLTFLoader();//模型加载器
     this.resourceList = null;
     this.test=false;//true;//
+    //this.cullingList = new Map();//记录要被剔除的模型
 }
 
 Resourceload.prototype.init = function(_this){
@@ -26,14 +27,14 @@ Resourceload.prototype.init = function(_this){
         );
         if(scope.test)scope.object.add(scope.resourceList.testObj);
 
-        scope.loadGeometry();
+        scope.loadGeometry(_this.scene);
         scope.loadMap();
         _this.scene.add(scope.object);
     });
 
 }
 
-Resourceload.prototype.loadGeometry=function(){
+Resourceload.prototype.loadGeometry=function(scene){
     var scope=this;
     load();
     function load() {
@@ -45,7 +46,7 @@ Resourceload.prototype.loadGeometry=function(){
                     load();
                     clearInterval(myInterval);
                 }
-            },100);
+            },300);
         }else{
             scope.loader.load(scope.url+fileName, (gltf) => {
                 if(scope.resourceList.getModelByName(fileName)!=="")
@@ -57,6 +58,30 @@ Resourceload.prototype.loadGeometry=function(){
                 load();
             });
         }
+        modelCulling();
+        //对多次处于视锥外且已被加载的模型进行剔除
+        function modelCulling()
+        {
+            scope.resourceList.cullingList.forEach(function (key,value)
+            {
+                let limit = 100;
+                if(key>limit) {
+                    scene.traverse(function (mesh0) {
+                        if(mesh0.nameFlag === value){
+                            mesh0.parent.remove(mesh0);
+                            let model=scope.resourceList.getModelByName(value);
+                            let filename = value.replace("gltf","jpg");
+                            let map=scope.resourceList.getMapByName(filename);
+                            model.finishLoad = false;
+                            map.finishLoad = false;
+                        }
+                    });
+                    scope.resourceList.cullingList.delete(value);
+                    let i = 0;
+                }
+            });
+        }
+
         function updateCameraPre(){
             scope.cameraPre.position=scope.camera.position.clone();
             scope.cameraPre.rotation=scope.camera.rotation.clone();
@@ -116,7 +141,7 @@ class ResourceList{//这个对象主要负责资源列表的生成和管理
     mapsIndex;
     camera;
     frustum;
-
+    cullingList;//记录要被剔除的模型
     testObj;//=new THREE.Object3D();
     //每接收一次数据进行一次计算
     constructor (input) {
@@ -139,6 +164,8 @@ class ResourceList{//这个对象主要负责资源列表的生成和管理
             scope.models[i].inView=false;
         }
         scope.mapsIndex=resourceInfo.mapsIndex;
+
+        scope.cullingList = new Map();
 
         if(scope.testObj){//开始测试
             testObjMesh();
@@ -177,8 +204,32 @@ class ResourceList{//这个对象主要负责资源列表的生成和管理
             scope.#update();//计算每个模型的inView
             var list=[];
             for(var i=0;i<scope.models.length;i++){
-                if(scope.models[i].inView&&!scope.models[i].finishLoad)
+                // if(scope.models[i].inView&&!scope.models[i].finishLoad)
+                //     list.push(scope.models[i].fileName);
+
+                if(scope.models[i].finishLoad)
+                {
+                    if(!scope.models[i].inView) {
+                        if (scope.cullingList.has(scope.models[i].fileName)) {
+                            //scope.cullingList[model.fileName]++;
+                            scope.cullingList.set(scope.models[i].fileName,scope.cullingList.get(scope.models[i].fileName)+1);
+                        } else
+                            scope.cullingList.set(scope.models[i].fileName, 0);
+                    }
+                    else
+                    {
+                        if (scope.cullingList.has(scope.models[i].fileName)) {
+                            if(scope.cullingList.get(scope.models[i].fileName) === 0)
+                                scope.cullingList.delete(scope.models[i].fileName);
+                            else
+                                scope.cullingList[scope.models[i].fileName]--;
+                        }
+                    }
+                }
+                else if(scope.models[i].inView)
+                {
                     list.push(scope.models[i].fileName);
+                }
             }
             return list;
         }
@@ -208,6 +259,28 @@ class ResourceList{//这个对象主要负责资源列表的生成和管理
                     &&model.inView
                     &&!scope.maps[i].finishLoad)
                     list.push(scope.maps[i].fileName);
+
+                // if(model.finishLoad)
+                // {
+                //     if(!model.inView) {
+                //         if (scope.cullingList.has(model.fileName)) {
+                //             //scope.cullingList[model.fileName]++;
+                //             scope.cullingList.set(model.fileName,scope.cullingList.get(model.fileName)+1);
+                //         } else
+                //             scope.cullingList.set(model.fileName, 0);
+                //     }
+                //     else
+                //     {
+                //         if (scope.cullingList.has(model.fileName)) {
+                //             if(scope.cullingList.get(model.fileName) === 0)
+                //                 scope.cullingList.delete(model.fileName);
+                //             else
+                //                 scope.cullingList[model.fileName]--;
+                //         }
+                //         if(!scope.maps[i].finishLoad)
+                //             list.push(scope.maps[i].fileName);
+                //     }
+                // }
             }
             return list;
         }
