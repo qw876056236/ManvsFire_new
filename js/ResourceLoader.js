@@ -30,22 +30,7 @@ Resourceload.prototype.init = function(_this){
         scope.loadMap();
         _this.scene.add(scope.object);
     }
-
-    // var loader = new THREE.XHRLoader(THREE.DefaultLoadingManager);
-    // loader.load(this.url+"resourceInfo.json", function(str){//dataTexture
-    //     var resourceInfo=JSON.parse(str);
-    //
-    //
-    //     scope.resourceList=new ResourceList(
-    //         {resourceInfo:resourceInfo,camera:scope.camera,test:scope.test}
-    //     );
-    //     if(scope.test)scope.object.add(scope.resourceList.testObj);
-    //
-    //     scope.loadGeometry(_this.scene);
-    //     scope.loadMap();
-    //     _this.scene.add(scope.object);
-    // });
-
+    
 }
 
 Resourceload.prototype.loadGeometry=function(scene){
@@ -78,7 +63,7 @@ Resourceload.prototype.loadGeometry=function(scene){
         {
             scope.resourceList.cullingList.forEach(function (key,value)
             {
-                let limit = 100;
+                let limit = 350;
                 if(key>limit) {
                     scene.traverse(function (mesh0) {
                         if(mesh0.nameFlag === value){
@@ -228,7 +213,7 @@ ResourceList.prototype.getOneModelFileName=function(){
                         if(scope.cullingList.get(scope.models[i].fileName) === 0)
                             scope.cullingList.delete(scope.models[i].fileName);
                         else
-                            scope.cullingList[scope.models[i].fileName]--;
+                            scope.cullingList.set(scope.models[i].fileName,scope.cullingList.get(scope.models[i].fileName)-1);
                     }
                 }
             }
