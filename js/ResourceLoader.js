@@ -10,18 +10,17 @@ var Resourceload = function(){
     this.loader = new THREE.GLTFLoader();//模型加载器
     this.resourceList = null;
     this.test=false;//true;//
-    //this.cullingList = new Map();//记录要被剔除的模型
 }
 
 Resourceload.prototype.init = function(_this){
     var scope = this;
     scope.camera = _this.camera;
-
-    var loader = new THREE.XHRLoader(THREE.DefaultLoadingManager);
-    loader.load(this.url+"resourceInfo.json", function(str){//dataTexture
-        var resourceInfo=JSON.parse(str);
-
-
+    //开启多线程对模型资源信息进行加载
+    let worker = new Worker('js/resourceLoadWorker.js');
+    worker.postMessage("../"+this.url+"resourceInfo.json");
+    worker.onmessage = function (event)
+    {
+        let resourceInfo=JSON.parse(event.data);
         scope.resourceList=new ResourceList(
             {resourceInfo:resourceInfo,camera:scope.camera,test:scope.test}
         );
@@ -30,7 +29,22 @@ Resourceload.prototype.init = function(_this){
         scope.loadGeometry(_this.scene);
         scope.loadMap();
         _this.scene.add(scope.object);
-    });
+    }
+
+    // var loader = new THREE.XHRLoader(THREE.DefaultLoadingManager);
+    // loader.load(this.url+"resourceInfo.json", function(str){//dataTexture
+    //     var resourceInfo=JSON.parse(str);
+    //
+    //
+    //     scope.resourceList=new ResourceList(
+    //         {resourceInfo:resourceInfo,camera:scope.camera,test:scope.test}
+    //     );
+    //     if(scope.test)scope.object.add(scope.resourceList.testObj);
+    //
+    //     scope.loadGeometry(_this.scene);
+    //     scope.loadMap();
+    //     _this.scene.add(scope.object);
+    // });
 
 }
 
@@ -259,28 +273,6 @@ class ResourceList{//这个对象主要负责资源列表的生成和管理
                     &&model.inView
                     &&!scope.maps[i].finishLoad)
                     list.push(scope.maps[i].fileName);
-
-                // if(model.finishLoad)
-                // {
-                //     if(!model.inView) {
-                //         if (scope.cullingList.has(model.fileName)) {
-                //             //scope.cullingList[model.fileName]++;
-                //             scope.cullingList.set(model.fileName,scope.cullingList.get(model.fileName)+1);
-                //         } else
-                //             scope.cullingList.set(model.fileName, 0);
-                //     }
-                //     else
-                //     {
-                //         if (scope.cullingList.has(model.fileName)) {
-                //             if(scope.cullingList.get(model.fileName) === 0)
-                //                 scope.cullingList.delete(model.fileName);
-                //             else
-                //                 scope.cullingList[model.fileName]--;
-                //         }
-                //         if(!scope.maps[i].finishLoad)
-                //             list.push(scope.maps[i].fileName);
-                //     }
-                // }
             }
             return list;
         }
