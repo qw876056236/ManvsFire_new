@@ -206,13 +206,16 @@ InstancedGroup.prototype={
             });
 
             function updateAnimationData(index) {
-                loader.load("json/animationData"+index+".json", function(str){//dataTexture
+                let worker = new Worker('js/animationLoadWorker.js');
+                worker.postMessage("../json/animationData"+index+".json");
+                worker.onmessage = function (event)
+                {
                     animationDataLength+=scope.animationConfig[index];
                     uniforms.animationDataLength={value:animationDataLength};
-                    scope.animationData= scope.animationData.concat(JSON.parse(str).data);
+                    scope.animationData= scope.animationData.concat(JSON.parse(event.data).data);
                     uniforms.animationData=getTex(scope.animationData);
                     if(index+1<scope.animationConfig.length)updateAnimationData(index+1);
-                });
+                }
             }
             function getTex(arr) {//(str) {
                 //var data0=JSON.parse(str).data;//204
