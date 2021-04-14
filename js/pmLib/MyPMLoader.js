@@ -61,18 +61,13 @@ MyPMLoader.prototype={
         var animationClips=THIS.glbObj.animations;//获取动画
         if(animationClips.length>0)this.ainmationInit();
 
-        //加载基模的三个JSON文件,然后进行解析、执行parse函数
-        var baseMeshUrl = this.url + '/basemesh.json';
-        var skeletonUrl = this.url + '/skeleton.json';
-        var skeletonIndexUrl = this.url + '/skeletonindex.json';
-        var loader = new THREE.XHRLoader(THREE.DefaultLoadingManager);
-        loader.load(baseMeshUrl, function(baseMesh){
-            loader.load(skeletonUrl, function(skeleton){
-                loader.load(skeletonIndexUrl, function(skeletonIndex){
-                    THIS.handlePMJson_i( baseMesh, skeleton, skeletonIndex, animationClips);
-                });
-            });
-        });
+        let data = ['.'+this.url + '/basemesh.json','.'+this.url + '/skeleton.json','.'+this.url + '/skeletonindex.json'];
+        let worker = new Worker('js/pmLoaderWorker.js');
+        worker.postMessage(data);
+        worker.onmessage = function (event)
+        {
+            THIS.handlePMJson_i( event.data[0], event.data[1], event.data[2], animationClips);
+        }
     },
     handlePMJson_i:function(baseMesh, skeleton, skeletonIndex, animationClips) {
         var THIS=this;
