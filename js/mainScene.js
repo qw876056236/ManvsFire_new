@@ -52,6 +52,14 @@ var mainScene = function()
 
     this.resourceLoader = new Resourceload();
 
+    this.directionalLight = [];
+
+    this.ambientLight = new THREE.AmbientLight(0x1c1c1c,1);
+
+    this.emergencyLightArr = [];
+
+    this.emergencyLightMeshArr = [];
+
     /*
     this.Path = new path();
 
@@ -274,39 +282,96 @@ mainScene.prototype.setScene = function()
     camControl.lat =-90;
     this.camControl = camControl;
 
-
-    /*var ambientLight = new THREE.AmbientLight();
-    this.scene.add(ambientLight);*/
-
-    var directionalLight_1 = new THREE.DirectionalLight(0xffffff,1);
+    var directionalLight_1 = new THREE.DirectionalLight(0xffffff,0.6);
     //directionalLight_1.position.set(0.3,0.4,0.5);
     directionalLight_1.position.set(0,1,1);
     this.scene.add(directionalLight_1);
+    this.directionalLight.push(directionalLight_1);
 
-    var directionalLight_2 = new THREE.DirectionalLight(0xffffff,1);
+    var directionalLight_2 = new THREE.DirectionalLight(0xffffff,0.6);
     //directionalLight_2.position.set(-0.3,-0.4,0.5);
     directionalLight_2.position.set(0,1,-1);
     this.scene.add(directionalLight_2);
+    this.directionalLight.push(directionalLight_2);
 
-    var directionalLight_3 = new THREE.DirectionalLight(0xffffff,1);
+    var directionalLight_3 = new THREE.DirectionalLight(0xffffff,0.6);
     //directionalLight_2.position.set(-0.3,-0.4,0.5);
     directionalLight_3.position.set(1,0,0);
     this.scene.add(directionalLight_3);
+    this.directionalLight.push(directionalLight_3);
 
-    var directionalLight_4 = new THREE.DirectionalLight(0xffffff,1);
+    var directionalLight_4 = new THREE.DirectionalLight(0xffffff,0.6);
     //directionalLight_2.position.set(-0.3,-0.4,0.5);
     directionalLight_4.position.set(-1,0,0);
     this.scene.add(directionalLight_4);
+    this.directionalLight.push(directionalLight_4);
 
-    var directionalLight_5 = new THREE.DirectionalLight(0xffffff,1);
+    var directionalLight_5 = new THREE.DirectionalLight(0xffffff,0.6);
     //directionalLight_2.position.set(-0.3,-0.4,0.5);
     directionalLight_5.position.set(0,-1,0);
     this.scene.add(directionalLight_5);
+    this.directionalLight.push(directionalLight_5);
 
-    var directionalLight_6 = new THREE.DirectionalLight(0xffffff,1);
+    var directionalLight_6 = new THREE.DirectionalLight(0xffffff,0.6);
     //directionalLight_2.position.set(-0.3,-0.4,0.5);
     directionalLight_6.position.set(0,1,0);
     this.scene.add(directionalLight_6);
+    this.directionalLight.push(directionalLight_6);
+
+    var emerencyLight, lightMesh;
+    for(i=0;i<10;i++){
+        emerencyLight = new THREE.PointLight(0Xffffff,4,8);
+        emerencyLight.position.set(41.2,-5.7,173+18*i);
+        this.emergencyLightArr.push(emerencyLight);
+        //this.scene.add(emerencyLight);
+
+        emerencyLight = new THREE.PointLight(0Xffffff,4,8);
+        emerencyLight.position.set(61.2,-5.7,173+18*i);
+        this.emergencyLightArr.push(emerencyLight);
+        //this.scene.add(emerencyLight);
+
+        lightMesh = new THREE.Mesh(new THREE.SphereGeometry(0.1,4,4),
+                                    new THREE.MeshBasicMaterial({color: 0xffffff}));
+        this.emergencyLightMeshArr.push(lightMesh);
+        lightMesh.position.set(41.2,-5.7,170+18*i);
+        this.scene.add(lightMesh);
+
+        lightMesh = new THREE.Mesh(new THREE.SphereGeometry(0.1,4,4),
+            new THREE.MeshBasicMaterial({color: 0xffffff}));
+        this.emergencyLightMeshArr.push(lightMesh);
+        lightMesh.position.set(61.2,-5.7,170+18*i);
+        this.scene.add(lightMesh);
+    }
+
+    for(i=0;i<14;i++){
+        emerencyLight = new THREE.PointLight(0Xffffff,4,8);
+        emerencyLight.position.set(45,-11,181.4+13.8*i);
+        this.emergencyLightArr.push(emerencyLight);
+        //this.scene.add(emerencyLight);
+
+        emerencyLight = new THREE.PointLight(0Xffffff,4,8);
+        emerencyLight.position.set(45,-11,181.4+13.8*i);
+        this.emergencyLightArr.push(emerencyLight);
+        //this.scene.add(emerencyLight);
+
+        lightMesh = new THREE.Mesh(new THREE.SphereGeometry(0.1,4,4),
+            new THREE.MeshBasicMaterial({color: 0xffffff}));
+        this.emergencyLightMeshArr.push(lightMesh);
+        lightMesh.position.set(45,-11,181.4+13.8*i);
+        this.scene.add(lightMesh);
+
+        lightMesh = new THREE.Mesh(new THREE.SphereGeometry(0.1,4,4),
+            new THREE.MeshBasicMaterial({color: 0xffffff}));
+        this.emergencyLightMeshArr.push(lightMesh);
+        lightMesh.position.set(57.4,-11,181.4+13.8*i);
+        this.scene.add(lightMesh);
+    }
+
+
+
+
+
+
 
 //endregion
 

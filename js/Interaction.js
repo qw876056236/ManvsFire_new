@@ -84,6 +84,11 @@ Interaction.prototype.fuc2 = function (_this)
         document.getElementById("fireman").style.display = "inline-block";
         document.getElementById("floor-menu").style.display = "inline-block";
 
+        //灯光设置
+        _this.directionalLight.forEach((light)=>{_this.scene.remove(light)});
+        _this.scene.add(_this.ambientLight);
+        _this.emergencyLightArr.forEach((light)=>{_this.scene.add(light)})
+
         // _this.smoke.redBallMesh.position.x=_this.smoke.positionBallMesh.position.x+16;
         // _this.smoke.redBallMesh.position.z= _this.smoke.positionBallMesh.position.z;
         //_this.camera.position.set(50, 200, 240);//原x为150 450

@@ -123,7 +123,7 @@ Resourceload.prototype.loadMap=function(){
                                 mesh0=scope.object.children[i];
                         }
                         if(mesh0){
-                            mesh0.material = new THREE.MeshBasicMaterial({map: texture});
+                            mesh0.material = new THREE.MeshLambertMaterial({map: texture});
                             clearInterval(myInterval2);
                         }
                     },100)
