@@ -88,6 +88,14 @@ Interaction.prototype.fuc2 = function (_this)
         _this.directionalLight.forEach((light)=>{_this.scene.remove(light)});
         _this.scene.add(_this.ambientLight);
         _this.emergencyLightArr.forEach((light)=>{_this.scene.add(light)})
+        //音效设置
+        var audioLoader = new THREE.AudioLoader();
+        audioLoader.load( 'audio/siren.wav', function( buffer ) {
+            _this.sirenSound.setBuffer( buffer );
+            _this.sirenSound.setLoop(true);
+            _this.sirenSound.setVolume(0.5);
+            _this.sirenSound.play();
+        });
 
         // _this.smoke.redBallMesh.position.x=_this.smoke.positionBallMesh.position.x+16;
         // _this.smoke.redBallMesh.position.z= _this.smoke.positionBallMesh.position.z;
@@ -233,6 +241,14 @@ Interaction.prototype.fuc3 = function (MainScene)
             $('createPersonBtn').textContent="编辑人群";
             $('illustration-context').innerHTML = "<p>您已成功选取人群排布</p>" + "<p>若想编辑烟雾请点击“编辑烟雾”,否则点击“开始模拟”</p>";
 
+            //音效
+            var audioLoader = new THREE.AudioLoader();
+            audioLoader.load('audio/noisy.wav',function( buffer ) {
+                MainScene.noisySound.setBuffer( buffer );
+                MainScene.noisySound.setLoop(true);
+                MainScene.noisySound.setVolume(0.5);
+                MainScene.noisySound.play();
+            });
             /*人物分布测试用
             console.log(MainScene.people.positionPlaneMesh_1.position.x, MainScene.people.positionPlaneMesh_1.position.z, Math.abs(MainScene.people.positionPlaneMesh_1.scale.x * 5), Math.abs(MainScene.people.positionPlaneMesh_1.scale.z * 10));
             console.log(MainScene.people.positionPlaneMesh_2.position.x, MainScene.people.positionPlaneMesh_2.position.z, Math.abs(MainScene.people.positionPlaneMesh_2.scale.x * 5), Math.abs(MainScene.people.positionPlaneMesh_2.scale.z * 10));

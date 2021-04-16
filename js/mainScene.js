@@ -60,6 +60,10 @@ var mainScene = function()
 
     this.emergencyLightMeshArr = [];
 
+    this.sirenSound = null;
+
+    this.noisySound = null;
+
     /*
     this.Path = new path();
 
@@ -196,7 +200,6 @@ mainScene.prototype.start = function()
     function animate()
     {
         self.delta = self.clock.getDelta();
-        console.log(this.resourceLoader);
 
         if(self.isEdit)
         {
@@ -248,6 +251,7 @@ mainScene.prototype.start = function()
 
 mainScene.prototype.setScene = function()
 {
+    var self = this;
     //region 基础场景
     this.camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 0.1, 2000000);
     this.camera.position.set(60,3,146);
@@ -318,15 +322,18 @@ mainScene.prototype.setScene = function()
     this.scene.add(directionalLight_6);
     this.directionalLight.push(directionalLight_6);
 
-    var emerencyLight, lightMesh;
+    var emerencyLight, lightMesh,targetObject;
     for(i=0;i<10;i++){
         emerencyLight = new THREE.PointLight(0Xffffff,4,8);
-        emerencyLight.position.set(41.2,-5.7,173+18*i);
+        //emerencyLight.position.set(41.2,-5.7,173+18*i);
+        emerencyLight.position.set(42,-5.7,173+18*i);
         this.emergencyLightArr.push(emerencyLight);
+
         //this.scene.add(emerencyLight);
 
         emerencyLight = new THREE.PointLight(0Xffffff,4,8);
-        emerencyLight.position.set(61.2,-5.7,173+18*i);
+        //emerencyLight.position.set(61.2,-5.7,173+18*i);
+        emerencyLight.position.set(60.4,-5.7,173+18*i);
         this.emergencyLightArr.push(emerencyLight);
         //this.scene.add(emerencyLight);
 
@@ -344,12 +351,12 @@ mainScene.prototype.setScene = function()
     }
 
     for(i=0;i<14;i++){
-        emerencyLight = new THREE.PointLight(0Xffffff,4,8);
+        emerencyLight = new THREE.SpotLight(0Xffffff,4,8);
         emerencyLight.position.set(45,-11,181.4+13.8*i);
         this.emergencyLightArr.push(emerencyLight);
         //this.scene.add(emerencyLight);
 
-        emerencyLight = new THREE.PointLight(0Xffffff,4,8);
+        emerencyLight = new THREE.SpotLight(0Xffffff,4,8);
         emerencyLight.position.set(45,-11,181.4+13.8*i);
         this.emergencyLightArr.push(emerencyLight);
         //this.scene.add(emerencyLight);
@@ -366,6 +373,18 @@ mainScene.prototype.setScene = function()
         lightMesh.position.set(57.4,-11,181.4+13.8*i);
         this.scene.add(lightMesh);
     }
+
+    // create an AudioListener and add it to the camera
+    var listener = new THREE.AudioListener();
+    this.camera.add( listener );
+
+// create a global audio source
+    this.sirenSound = new THREE.Audio( listener );
+
+    var listener = new THREE.AudioListener();
+    this.camera.add(listener);
+    this.noisySound = new THREE.Audio(listener);
+
 
 
 
