@@ -113,12 +113,12 @@ Interaction.prototype.fuc2 = function (_this)
         _this.smoke.clock.start();
         //_this.smoke.cloudRank();
         //fire必须在smoke之前set
-        _this.fire.set();
+        _this.fire.set(_this.smoke.positionBallMesh.position);
         _this.smoke.set(_this.fire);
         _this.isStartRun = true;
         _this.smoke.isStartSmoke = true;
         _this.active = true;
-        _this.fire.fireManager.target.visible = true;
+        //_this.fire.fireManager.target.visible = true;
         _this.clock=new THREE.Clock();
         //_this.messagecontrol.readSmoke(_this.smoke.firePointArr[2],_this);
 

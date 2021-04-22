@@ -159,6 +159,7 @@ mainScene.prototype.init = function()
 
     //region 火
     this.fire.init(this);
+    console.log(this.fire.spawnTime);
     //endregion
 
     //region场景加载
@@ -204,7 +205,7 @@ mainScene.prototype.start = function()
         if(self.isEdit)
         {
             self.smokeEditor.update(self);
-            self.fire.update(self);
+            //self.fire.update(self);
         }
 
 
@@ -212,7 +213,7 @@ mainScene.prototype.start = function()
         {
             //self.water.update();    //todo debug here
 
-            self.fire.update(self);
+            self.fire.update(20);
 
             self.smoke.update(self);
 
@@ -229,7 +230,6 @@ mainScene.prototype.start = function()
         }
         //self.Cameracontroller.update1(self);
         self.pMesh.position.set(document.getElementById("x").value,document.getElementById("y").value,document.getElementById("z").value);
-
 
         //self.cameraControl();
 
