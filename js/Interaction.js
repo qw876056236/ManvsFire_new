@@ -84,6 +84,9 @@ Interaction.prototype.fuc2 = function (_this)
         document.getElementById("fireman").style.display = "inline-block";
         document.getElementById("floor-menu").style.display = "inline-block";
 
+        window.testFlag=12;
+        window.crowd.obj.visible=true;
+        //alert(123)
         //灯光设置
         _this.directionalLight.forEach((light)=>{_this.scene.remove(light)});
         _this.scene.add(_this.ambientLight);

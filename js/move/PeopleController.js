@@ -210,7 +210,7 @@ class PeopleController{
             flag=0;
             mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
             mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
-            raycaster.setFromCamera( mouse, scope.myMain.camera );
+            raycaster.setFromCamera( mouse, window.c );
             const intersects = raycaster.intersectObjects(
                 scope.myMain.scene.children[1].children[0].children
             );////myRoomManager.room

@@ -254,13 +254,13 @@ mainScene.prototype.setScene = function()
     var self = this;
     //region 基础场景
     this.camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 0.1, 2000000);
-    //this.camera.position.set(60,3,146);
-    //this.camera.lookAt(new THREE.Vector3(1,1,1));
+    this.camera.position.set(60,3,146);
+    this.camera.lookAt(new THREE.Vector3(1,1,1));
 
     window.c=this.camera;
 
-    this.camera.position.set( 58.01241244232402,  -5.641555076511444, 166.09795410450);
-    this.camera.rotation.set(-3.0998049228015434, 0.03830701739587247, 3.139991350918273)
+    //this.camera.position.set( 58.01241244232402,  -5.641555076511444, 166.09795410450);
+    //this.camera.rotation.set(-3.0998049228015434, 0.03830701739587247, 3.139991350918273)
 
     this.playerControl=new PlayerControl(this);//通过鼠标键盘或者手机触屏控制相机
     this.playerControl.init();
@@ -448,7 +448,9 @@ mainScene.prototype.setScene = function()
     //开始进行人群设置
 
     var crowd=new Crowd();
+    crowd.obj.visible=false;
     this.scene.add(crowd.obj);
+    window.crowd=crowd;
     //完成人群设置
 
 

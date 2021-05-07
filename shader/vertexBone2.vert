@@ -143,7 +143,6 @@ void Animation_init(){
     oAnimation.skeletonPos0=0.0;
     oAnimation.skeletonPos1=(oAnimation.skeletonPos0+SKELETON_SIZE0);
 
-    if(round(type[3])==0.)Animation_frameIndexSet(8.);//设置全局变量frame_index的值
-    else Animation_frameIndexSet(35.);
+    Animation_frameIndexSet(35.);
 }
 

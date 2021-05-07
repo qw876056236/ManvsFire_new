@@ -8,10 +8,23 @@ class Crowd{//将PM和实例化渲染结合起来
     constructor(){
         var scope=this;
         this.obj=new THREE.Object3D();
-        this.init(3,function () {
-            scope.people.positionSet(0, [59.24,-8.54,216.22]);
+        this.init(12,function () {
+            scope.people.positionSet(0, [59.24+1,-8.54,216.22]);
             scope.people.positionSet(1, [58.91,-8.54,181.01]);
             scope.people.positionSet(2, [59.78,-8.54,159.48]);
+
+            scope.people.positionSet(3, [59.24-2,-8.54,216.22]);
+            scope.people.positionSet(4, [58.91-10,-8.54,181.01]);
+            scope.people.positionSet(5, [59.78-10,-8.54,159.48]);
+
+            scope.people.positionSet(6, [59.24+1,-8.54,216.22+5]);
+            scope.people.positionSet(7, [58.91,-8.54,181.01+5]);
+            scope.people.positionSet(8, [59.78,-8.54,159.48+5]);
+
+            scope.people.positionSet(9, [59.24-2,-8.54,216.22+5]);
+            scope.people.positionSet(10, [58.91-10,-8.54,181.01+5]);
+            scope.people.positionSet(11, [59.78-10,-8.54,159.48]+5);
+
             var loader = new THREE.XHRLoader(THREE.DefaultLoadingManager);
             loader.load("grid.json", function(str){//dataTexture
                 var grid0=JSON.parse(str).grid;
