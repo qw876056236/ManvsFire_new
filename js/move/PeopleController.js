@@ -92,7 +92,6 @@ class PeopleController{
         if(myMain)this.init(myMain,obstacle0,obstacle1,pos)
     }
     init(myMain,obstacle0,obstacle1,pos){
-        console.log(this)
         var scope=this;
         /*if(typeof(k)!=="undefined"){
             scope.setPosition=scope.getPosition=
@@ -233,13 +232,6 @@ class SameFloorPF{
                 path[i][2]+=this.zMin;
             }
             if(path.length){
-                console.log(this)
-                console.log({
-                    setPosition:scope.setPosition,
-                    getPosition:scope.getPosition,
-                    setRotation:scope.setRotation,
-                    getRotation:scope.getRotation
-                })
                 new MoveManager(
                     {
                         obj:this.model,

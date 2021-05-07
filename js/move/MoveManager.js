@@ -4,11 +4,14 @@ export {MoveManager};
 
 class MoveManager{
     avatar;//每一个移动控制器只能控制一个对象
+    index;//
+
     roamPath;
     myPreviewflag;//确定目标节点
     stopFlag;//控制是否开始移动
     isLoop;//如果不进行循环漫游的话，第一行的初始状态就没用了
     finished;//到达终点后执行的函数
+
 
     myMakeOneRoamStep;
 
@@ -22,6 +25,7 @@ class MoveManager{
     newObj=function (opt) {//添加了新的对象
         var scope=this;
         scope.avatar=opt.obj;
+        scope.index=opt.index;
         scope.roamPath=opt.roamPath;
         scope.myPreviewflag=1;//确定目标节点
         scope.stopFlag=typeof(opt.stopFlag)==="undefined"?false:opt.stopFlag;//true;
@@ -29,13 +33,13 @@ class MoveManager{
         scope.finished=opt.finished?opt.finished:function(){};
         scope.myMakeOneRoamStep=new MakeOneRoamStep();
 
-        console.log(opt,opt.setPosition)
-        if(typeof(opt.setPosition)!=="undefined")scope.setPosition=opt.setPosition;
-        if(typeof(opt.getPosition)!=="undefined")scope.getPosition=opt.getPosition;
-        if(typeof(opt.setRotation)!=="undefined")scope.setRotation=opt.setRotation;
-        if(typeof(opt.getRotation)!=="undefined")scope.getRotation=opt.getRotation;
 
-        console.log("!!!!!!!!!!!",scope.setPosition)
+        if(typeof(opt.setPosition)!=="undefined")scope.myMakeOneRoamStep.setPosition=opt.setPosition;
+        if(typeof(opt.getPosition)!=="undefined")scope.myMakeOneRoamStep.getPosition=opt.getPosition;
+        if(typeof(opt.setRotation)!=="undefined")scope.myMakeOneRoamStep.setRotation=opt.setRotation;
+        if(typeof(opt.getRotation)!=="undefined")scope.myMakeOneRoamStep.getRotation=opt.getRotation;
+
+
         scope.#autoRoam();//创建后自动执行
     }
     #autoRoam=function () {
@@ -101,16 +105,15 @@ class MakeOneRoamStep{//一个这种对象只能操作一个物体
         scope.stepIndex=1;//记录这是第几步//第一步更新参数，最后一步纠正状态
     }
 
+
     setPosition(avatar,pos){
-        if(!avatar.position)console.log(avatar)
         avatar.position.set(pos[0],pos[1],pos[2]);
     }
     getPosition(avatar){
         return [avatar.position.x,avatar.position.y,avatar.position.z];
     }
-    #addPosition(avatar,add){
+    addPosition(avatar,add){
         var pos=this.getPosition(avatar);
-        //console.log(this)
         this.setPosition(avatar,[
             pos[0]+add[0],
             pos[1]+add[1],
@@ -176,7 +179,7 @@ class MakeOneRoamStep{//一个这种对象只能操作一个物体
         return movetoPos(avatar,scope);
         function movetoPos(avatar,scope){//移动
             if(scope.stepIndex<scope.stepIndex_max){
-                scope.#addPosition(avatar,[scope.dx,scope.dy,scope.dz])
+                scope.addPosition(avatar,[scope.dx,scope.dy,scope.dz])
 
                 /*
                 avatar.quaternion.x=scope.q1.x;

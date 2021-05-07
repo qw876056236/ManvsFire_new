@@ -571,19 +571,19 @@ mainScene.prototype.setScene = function()
                     p1.model.position={x:pos0[0],y:pos0[1],z:pos0[2]}
                 }
                 p1.setPosition=function(avatar,pos){
-                    console.log(avatar)
                     avatar.positionSet(0,pos);
                 };
-                p1.getPosition=function(avatar,pos){
-                    console.log(avatar)
-                    ///avatar.position.set(pos[0],pos[1],pos[2]);
+                p1.getPosition=function(avatar){
+                    return avatar.positionGet(0);
                 };
                 p1.setRotation=function(avatar,pos){
-                    console.log(avatar)
+                    return avatar.rotationSet(0,pos);
+                    //console.log(avatar)
                     //avatar.position.set(pos[0],pos[1],pos[2]);
                 };
                 p1.getRotation=function(avatar,pos){
-                    console.log(avatar)
+                    return avatar.rotationGet(0);
+                    //console.log(avatar)
                     ///avatar.position.set(pos[0],pos[1],pos[2]);
                 };/**/
                 p1.init(crowed.people,grid0,grid1);
