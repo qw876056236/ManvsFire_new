@@ -7,6 +7,7 @@ var Resourceload = function(){
     this.NumberWaitMaps = 0;//等待加载的贴图个数
 
     this.object = new THREE.Object3D();
+    //this.object.visible=false;
     this.loader = new THREE.GLTFLoader();//模型加载器
     this.resourceList = null;
     this.test=false;//true;//

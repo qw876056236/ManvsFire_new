@@ -1,3 +1,4 @@
+//主要负责人群生成和初始位置的设定
 import {PeopleController} from "./PeopleController.js";
 export {Crowd};
 class Crowd{//将PM和实例化渲染结合起来
@@ -8,9 +9,9 @@ class Crowd{//将PM和实例化渲染结合起来
         var scope=this;
         this.obj=new THREE.Object3D();
         this.init(3,function () {
-            scope.people.positionSet(0, [59.24+1,-8.54,216.22]);
-            scope.people.positionSet(1, [58.91+1,-8.54,181.01]);
-            scope.people.positionSet(2, [59.78+1,-8.54,159.48]);
+            scope.people.positionSet(0, [59.24,-8.54,216.22]);
+            scope.people.positionSet(1, [58.91,-8.54,181.01]);
+            scope.people.positionSet(2, [59.78,-8.54,159.48]);
             var loader = new THREE.XHRLoader(THREE.DefaultLoadingManager);
             loader.load("grid.json", function(str){//dataTexture
                 var grid0=JSON.parse(str).grid;

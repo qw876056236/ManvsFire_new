@@ -1,3 +1,4 @@
+//主要负责单个化身的寻路
 import {MoveManager} from './MoveManager.js';
 //import {PF} from './lib/PF.js';
 export {PeopleController};
@@ -111,14 +112,38 @@ class PeopleController{
             scope.getPosition=function(avatar){
                 return avatar.positionGet(people_index);
             };
-            scope.setRotation=function(avatar,pos){
-                return avatar.rotationSet(people_index,pos);
+
+
+            scope.setRotation=function(avatar,rot){
+                var m1=new THREE.Mesh();
+                m1.rotation.set(Math.PI/2,0,0);
+                m1.applyMatrix4(new THREE.Matrix4().identity ());
+
+                var m2=new THREE.Mesh();
+                m2.rotation.set(rot[0],rot[1],rot[2]);
+                m2.applyMatrix4(new THREE.Matrix4().identity ());
+
+
+                m1.applyMatrix4(m2.matrix);
+
+                return avatar.rotationSet(people_index,[
+                    m1.rotation.x,m1.rotation.y,m1.rotation.z
+                ]);
             };
             scope.getRotation=function(avatar){
-                return avatar.rotationGet(people_index);
+                var m1=new THREE.Mesh();
+                m1.rotation.set(-Math.PI/2,0,0);
+                m1.applyMatrix4(new THREE.Matrix4().identity ());
+                var m2=new THREE.Mesh();
+                var rot=avatar.rotationGet(people_index);
+                m2.rotation.set(rot[0],rot[1],rot[2]);
+                m2.applyMatrix4(new THREE.Matrix4().identity ());
+                m1.applyMatrix4(m2.matrix);
+                return [
+                    m1.rotation.x,m1.rotation.y,m1.rotation.z
+                ];
             };
-            //scope.setPosition=scope.getPosition=
-        }/**/
+        }
         scope.model=myMain;
         if(scope.model.position){
             scope.model.position.set(pos[0],pos[1],pos[2]);//(58.91,-8.54,181.01);//(100,0,194);//(90,0,196);//(90,1.17,196);
