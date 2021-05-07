@@ -1,3 +1,5 @@
+export {mainScene};
+import {PeopleController} from './move/PeopleController.js';
 var mainScene = function()
 {
         this.stats = initStats();
@@ -14,11 +16,9 @@ var mainScene = function()
         }
 
 
-    clock = new THREE.Clock();
-
+    //this.clock = new THREE.Clock();
     this.scene = new THREE.Scene();
-
-    clock.start();
+    //this.clock.start();
 
     this.number = 100;//人数
 
@@ -254,8 +254,14 @@ mainScene.prototype.setScene = function()
     var self = this;
     //region 基础场景
     this.camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 0.1, 2000000);
-    this.camera.position.set(60,3,146);
-    this.camera.lookAt(new THREE.Vector3(1,1,1));
+    //this.camera.position.set(60,3,146);
+    //this.camera.lookAt(new THREE.Vector3(1,1,1));
+
+    window.c=this.camera;
+
+    this.camera.position.set( 58.01241244232402,  -5.641555076511444, 166.09795410450);
+    this.camera.rotation.set(-3.0998049228015434, 0.03830701739587247, 3.139991350918273)
+
     this.playerControl=new PlayerControl(this);//通过鼠标键盘或者手机触屏控制相机
     this.playerControl.init();
 
@@ -323,7 +329,7 @@ mainScene.prototype.setScene = function()
     this.directionalLight.push(directionalLight_6);
 
     var emerencyLight, lightMesh,targetObject;
-    for(i=0;i<10;i++){
+    for(var i=0;i<10;i++){
         emerencyLight = new THREE.PointLight(0Xffffff,4,8);
         //emerencyLight.position.set(41.2,-5.7,173+18*i);
         emerencyLight.position.set(42,-5.7,173+18*i);
@@ -494,7 +500,7 @@ mainScene.prototype.setScene = function()
             },100)
         }
     }
-    class Crowed{
+    class Crowed{//将PM和实例化渲染结合起来
         obj;
         people;
         number;
@@ -549,72 +555,102 @@ mainScene.prototype.setScene = function()
     }
 
 
-    /*var crowed=new Crowed();
-    crowed.init(3,function () {
-        crowed.people.positionSet(0, [59.24,-8.54,216.22]);
-        crowed.people.positionSet(1, [58.91,-8.54,181.01]);
-        crowed.people.positionSet(2, [59.78,-8.54,159.48]);
-    })
-    this.scene.add(crowed.obj);
-    */
-    //完成测试
-
-    //开始测试2
-
-        var scope0=this;
+    var crowed=new Crowed();
+    crowed.init(1,function () {
+        crowed.people.positionSet(0, [59.24+1,-8.54,216.22]);
+        //crowed.people.positionSet(1, [58.91+1,-8.54,181.01]);
+        //crowed.people.positionSet(2, [59.78+1,-8.54,159.48]);
         var loader = new THREE.XHRLoader(THREE.DefaultLoadingManager);
         loader.load("grid.json", function(str){//dataTexture
             var grid0=JSON.parse(str).grid;
             loader.load("grid_1.json", function(str1){//dataTexture
                 var grid1=JSON.parse(str1).grid;//"./Model/avatar/male_run.glb",
-                new THREE.GLTFLoader().load("./Model/avatar/male_run.glb", (glb) => {
-                    function play(G){
-                        var meshMixer2 = new THREE.AnimationMixer(G.scene);
-                        meshMixer2.clipAction(G.animations[0]).play();
-                        setInterval(function () {
-                            meshMixer2.update(0.01);
-                        },20);
-                        return glb.scene;
-                    }
-                    play(glb);var g1=glb.scene;scope0.scene.add(g1)
-                    scope0.scene.add(new window.PeopleController(g1,grid0,grid1,[59.24,-8.54,216.22]).model)
-                    //scope0.scene.add(new window.PeopleController(g2,grid0,grid1,[58.91,-8.54,181.01]).model)
-                    //scope0.scene.add(new window.PeopleController(play(glb),grid0,grid1,[59.78,-8.54,159.48]).model)
-                });
-                new THREE.GLTFLoader().load("./Model/avatar/female_run.glb", (glb) => {
-                    function play(G){
-                        var meshMixer2 = new THREE.AnimationMixer(G.scene);
-                        meshMixer2.clipAction(G.animations[0]).play();
-                        setInterval(function () {
-                            meshMixer2.update(0.01);
-                        },20);
-                        return glb.scene;
-                    }
-                    play(glb);var g1=glb.scene;scope0.scene.add(g1)
-                    //scope0.scene.add(new window.PeopleController(g1,grid0,grid1,[59.24,-8.54,216.22]).model)
-                    scope0.scene.add(new window.PeopleController(g1,grid0,grid1,[58.91,-8.54,181.01]).model)
-                    //scope0.scene.add(new window.PeopleController(play(glb),grid0,grid1,[59.78,-8.54,159.48]).model)
-                });
-                new THREE.GLTFLoader().load("./Model/avatar/childMale_run.glb", (glb) => {
-                    function play(G){
-                        var meshMixer2 = new THREE.AnimationMixer(G.scene);
-                        meshMixer2.clipAction(G.animations[0]).play();
-                        setInterval(function () {
-                            meshMixer2.update(0.01);
-                        },20);
-                        return glb.scene;
-                    }
-                    play(glb);var g1=glb.scene;scope0.scene.add(g1)
-                    //scope0.scene.add(new window.PeopleController(g1,grid0,grid1,[59.24,-8.54,216.22]).model)
-                    //scope0.scene.add(new window.PeopleController(g1,grid0,grid1,[58.91,-8.54,181.01]).model)
-                    scope0.scene.add(new window.PeopleController(g1,grid0,grid1,[59.78,-8.54,159.48]).model)
-                });
-
-
-                //[59.78,-8.54,159.48]
+                var p1=new PeopleController()
+                p1.updateModel=function () {
+                    var pos0=crowed.people.positionGet(0);
+                    p1.model.position={x:pos0[0],y:pos0[1],z:pos0[2]}
+                }
+                p1.setPosition=function(avatar,pos){
+                    console.log(avatar)
+                    avatar.positionSet(0,pos);
+                };
+                p1.getPosition=function(avatar,pos){
+                    console.log(avatar)
+                    ///avatar.position.set(pos[0],pos[1],pos[2]);
+                };
+                p1.setRotation=function(avatar,pos){
+                    console.log(avatar)
+                    //avatar.position.set(pos[0],pos[1],pos[2]);
+                };
+                p1.getRotation=function(avatar,pos){
+                    console.log(avatar)
+                    ///avatar.position.set(pos[0],pos[1],pos[2]);
+                };/**/
+                p1.init(crowed.people,grid0,grid1);
             });
         });
-        /**/
+    })
+    this.scene.add(crowed.obj);
+
+    //完成测试
+
+    //开始测试2
+
+            var scope0=this;
+            var loader = new THREE.XHRLoader(THREE.DefaultLoadingManager);
+            loader.load("grid.json", function(str){//dataTexture
+                var grid0=JSON.parse(str).grid;
+                loader.load("grid_1.json", function(str1){//dataTexture
+                    var grid1=JSON.parse(str1).grid;//"./Model/avatar/male_run.glb",
+                    new THREE.GLTFLoader().load("./Model/avatar/male_run.glb", (glb) => {
+                        function play(G){
+                            var meshMixer2 = new THREE.AnimationMixer(G.scene);
+                            meshMixer2.clipAction(G.animations[0]).play();
+                            setInterval(function () {
+                                meshMixer2.update(0.01);
+                            },20);
+                            return glb.scene;
+                        }
+                        play(glb);var g1=glb.scene;scope0.scene.add(g1)
+                        scope0.scene.add(new PeopleController(g1,grid0,grid1,[59.24,-8.54,216.22]).model)
+                        //scope0.scene.add(new window.PeopleController(g2,grid0,grid1,[58.91,-8.54,181.01]).model)
+                        //scope0.scene.add(new window.PeopleController(play(glb),grid0,grid1,[59.78,-8.54,159.48]).model)
+                    });
+                    /*new THREE.GLTFLoader().load("./Model/avatar/female_run.glb", (glb) => {
+                        function play(G){
+                            var meshMixer2 = new THREE.AnimationMixer(G.scene);
+                            meshMixer2.clipAction(G.animations[0]).play();
+                            setInterval(function () {
+                                meshMixer2.update(0.01);
+                            },20);
+                            return glb.scene;
+                        }
+                        play(glb);var g1=glb.scene;scope0.scene.add(g1)
+                        //scope0.scene.add(new window.PeopleController(g1,grid0,grid1,[59.24,-8.54,216.22]).model)
+                        scope0.scene.add(new PeopleController(g1,grid0,grid1,[58.91,-8.54,181.01]).model)
+                        //scope0.scene.add(new window.PeopleController(play(glb),grid0,grid1,[59.78,-8.54,159.48]).model)
+                    });
+                    new THREE.GLTFLoader().load("./Model/avatar/childMale_run.glb", (glb) => {
+                        function play(G){
+                            var meshMixer2 = new THREE.AnimationMixer(G.scene);
+                            meshMixer2.clipAction(G.animations[0]).play();
+                            setInterval(function () {
+                                meshMixer2.update(0.01);
+                            },20);
+                            return glb.scene;
+                        }
+                        play(glb);var g1=glb.scene;scope0.scene.add(g1)
+                        //scope0.scene.add(new window.PeopleController(g1,grid0,grid1,[59.24,-8.54,216.22]).model)
+                        //scope0.scene.add(new window.PeopleController(g1,grid0,grid1,[58.91,-8.54,181.01]).model)
+                        scope0.scene.add(new PeopleController(g1,grid0,grid1,[59.78,-8.54,159.48]).model)
+                    });
+                    */
+
+
+                    //[59.78,-8.54,159.48]
+                });
+            });
+            /**/
     //完成测试2
 
 //endregion

@@ -8,7 +8,11 @@ class PreviewManager{
     constructor(camera,roamPath,myVideoManager){
         var scope=this;
         if(myVideoManager)scope.myVideoManager=myVideoManager;
-        scope.myMoveManager=new MoveManager({obj:camera,roamPath:roamPath,isLoop:true});
+        //scope.myMoveManager=new MoveManager(camera,roamPath);
+        scope.myMoveManager=new MoveManager();
+        scope.myMoveManager.newObj(
+            {obj:camera,roamPath:roamPath,isLoop:true,stopFlag:true}
+            )
     }
     #cameraImg1;
     #cameraImg2;

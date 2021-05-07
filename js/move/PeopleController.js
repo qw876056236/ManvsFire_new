@@ -6,8 +6,11 @@ class PeopleController{
     model;
     xMin;zMin;
     floor0;floor1;
+    setPosition;getPosition;setRotation;getRotation;
+    updateModel(){}
     goToPosition(pos,finished){
         var scope=this;
+        scope.updateModel();
 
         var y1=Math.floor(scope.model.position.y);//化身当前的位置
         var y2=pos.y?Math.round(pos.y):y1;//目标位置
@@ -21,7 +24,6 @@ class PeopleController{
                 scope.floor1.goToPosition(pos,finished);
             }
         } else diffFloor();
-
 
         function diffFloor() {//路径跨层
             console.log(y1,y2)
@@ -71,32 +73,64 @@ class PeopleController{
             }
             function move(arr,f) {
                 new MoveManager(//从0地面到-1层
-                    scope.model, MoveManager.getArray(arr), f
+                    //{obj:avatar,roamPath:roamPath,finished:finished}
+                    {
+                        obj:scope.model,
+                        roamPath:MoveManager.getArray(arr),
+                        finished:f,
+
+                        setPosition:scope.setPosition,
+                        getPosition:scope.getPosition,
+                        setRotation:scope.setRotation,
+                        getRotation:scope.getRotation
+                    }
                 );
             }
         }
     }
     constructor(myMain,obstacle0,obstacle1,pos){
+        if(myMain)this.init(myMain,obstacle0,obstacle1,pos)
+    }
+    init(myMain,obstacle0,obstacle1,pos){
+        console.log(this)
         var scope=this;
+        /*if(typeof(k)!=="undefined"){
+            scope.setPosition=scope.getPosition=
+        }*/
         scope.model=myMain;
-        scope.model.position.set(pos[0],pos[1],pos[2]);//(58.91,-8.54,181.01);//(100,0,194);//(90,0,196);//(90,1.17,196);
-        scope.model.scale.set(0.5,0.5,0.5);
+        if(scope.model.position){
+            scope.model.position.set(pos[0],pos[1],pos[2]);//(58.91,-8.54,181.01);//(100,0,194);//(90,0,196);//(90,1.17,196);
+            scope.model.scale.set(0.5,0.5,0.5);
+        }
+
         //scope.myMain=myMain;
         scope.#radiographicTesting();
 
-        scope.floor0=new SameFloorPF({model:scope.model,obstacle:obstacle0});
+        scope.floor0=new SameFloorPF({
+            model:scope.model,obstacle:obstacle0,
+            setPosition:scope.setPosition,
+            getPosition:scope.getPosition,
+            setRotation:scope.setRotation,
+            getRotation:scope.getRotation
+        });
         scope.floor1=new SameFloorPF({
             model:scope.model,obstacle:obstacle1,
             xMin:-39,xMax:262,
-            zMin:112, zMax:531
+            zMin:112, zMax:531,
+            setPosition:scope.setPosition,
+            getPosition:scope.getPosition,
+            setRotation:scope.setRotation,
+            getRotation:scope.getRotation
         });
 
     }
     #test=function (){
         var scope=this;
         new MoveManager(
-            scope.model,
-            MoveManager.getArray([
+            //{obj:avatar,roamPath:roamPath,finished:finished}
+
+            {obj:scope.model,
+                roamPath:MoveManager.getArray([
                 [90,1.17,196],
                 [90.28,1.17,196.0],
                 [75.3,-3.7,196.05],
@@ -104,7 +138,13 @@ class PeopleController{
                 [52.29,-3.7,206.17],
                 [49.62,-3.67,203.3],
                 [49.96,-8.53,188.86],
-            ])
+            ]),
+
+                setPosition:scope.setPosition,
+                getPosition:scope.getPosition,
+                setRotation:scope.setRotation,
+                getRotation:scope.getRotation
+            }
         );
     }
     #addCamera=function(){
@@ -157,6 +197,8 @@ class SameFloorPF{
     grid;finder;
     xMin;zMin;xMax;zMax;
 
+    setPosition;getPosition;setRotation;getRotation;
+
     canPass(area){
         for(var i=0;i<area.length;i++){
             this.grid.setWalkableAt(
@@ -172,6 +214,7 @@ class SameFloorPF{
         }
     }
     goToPosition(pos,finished){
+        var scope=this;
         //化身当前的位置
         var x1=Math.floor(this.model.position.x)-this.xMin;
         var z1=Math.floor(this.model.position.z)-this.zMin;
@@ -190,10 +233,24 @@ class SameFloorPF{
                 path[i][2]+=this.zMin;
             }
             if(path.length){
+                console.log(this)
+                console.log({
+                    setPosition:scope.setPosition,
+                    getPosition:scope.getPosition,
+                    setRotation:scope.setRotation,
+                    getRotation:scope.getRotation
+                })
                 new MoveManager(
-                    this.model,
-                    MoveManager.getArray(path),
-                    finished
+                    {
+                        obj:this.model,
+                        roamPath:MoveManager.getArray(path),
+                        finished:finished,
+
+                        setPosition:scope.setPosition,
+                        getPosition:scope.getPosition,
+                        setRotation:scope.setRotation,
+                        getRotation:scope.getRotation
+                    }
                 );
             }else{
                 console.log("没有找到路径!");
@@ -209,6 +266,11 @@ class SameFloorPF{
         scope.zMin=(typeof(options.zMin)==="undefined")?-1000:options.zMin;
         scope.xMax=(typeof(options.xMax)==="undefined")?1000:options.xMax;//options.xMax||1000;
         scope.zMax=(typeof(options.zMax)==="undefined")?1000:options.zMax;//options.zMax||1000;
+
+        scope.setPosition=options.setPosition;
+        scope.getPosition=options.getPosition;
+        scope.setRotation=options.setRotation;
+        scope.getRotation=options.getRotation;
         initPF();
         function initPF(){
             scope.grid = new PF.Grid(scope.xMax-scope.xMin+1,scope.zMax-scope.zMin+1);//生成网格

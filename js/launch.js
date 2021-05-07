@@ -1,4 +1,4 @@
-
+import {mainScene} from './mainScene.js';
 var MainScene = new mainScene();
 MainScene.init();
 Utils.loading(1500);
