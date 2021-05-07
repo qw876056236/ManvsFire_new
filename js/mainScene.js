@@ -445,61 +445,7 @@ mainScene.prototype.setScene = function()
     this.pMesh.position.set(0,0,0);
 
 
-    //开始测试
-    function createCrowed(number,finished) {
-        var obj=initPeople(2);
-        //movePeople(obj);
-        //this.scene.add(obj);
-        function initPeople(number) {
-            var obj=new THREE.Object3D();
-            var pmLoader = new MyPMLoader(
-                {animations: []},
-                './peopleModel/Male',    //模型路径
-                [],//没有LOD分级//LOD等级的数组
-                null,  //LOD需要判断到相机的距离//实例化渲染难以使用LOD
-                0,       //有多个动画时,表示第0个动画//可以通过pmLoader.updateAnimation(i)来切换动画
-                0,     //动画播放速度//可以通过调整pmLoader.animationSpeed来调整速度
-                [],
-                function () {
-                    var mesh = pmLoader.rootObject.children[0];
-                    var people = new InstancedGroup(
-                        number,//人数
-                        [mesh],//这些mesh的网格应该一致
-                        true//有动画
-                    );
-                    people.neckPosition=0.68;
-                    people.init(
-                        ['./peopleTexture/m/m0.jpg'],
-                        32
-                    );
-                    for (var i = 0; i < people.instanceCount; i++) {
-                        people.rotationSet(i, [Math.PI / 2, 0, 0]);
-                        people.positionSet(i, [8 * i, 0, 0]);
-                        people.scaleSet(i, [0.1, 0.1, 0.1]);
-                        people.animationSet(i,Math.floor(Math.random()*3));
-                        people.speedSet(i,Math.random()+0.5);
-                        people.textureSet(i,[Math.floor(Math.random()*16),Math.floor(Math.random()*16),Math.floor(Math.random()*16)]);
-                    }
-                    obj.add(people.obj);
-                    obj.people=people;
-                    var timeId = setInterval(function () {
-                        mesh = pmLoader.rootObject.children[0];
-                        people.setGeometry(mesh.geometry);
-                        console.log(pmLoader.finished);
-                        if (pmLoader.finished) window.clearInterval(timeId)
-                    }, 1000);
-                }
-            );
-            return obj;
-        }
-        function movePeople(obj0) {
-            setInterval(function () {
-                var people=obj0.people;
-                people.move(0,[0,0,0.5]);
-                people.rotation(1,[0,0,0.1]);
-            },100)
-        }
-    }
+    //开始进行人群设置
     class Crowed{//将PM和实例化渲染结合起来
         obj;
         people;
@@ -554,104 +500,29 @@ mainScene.prototype.setScene = function()
         }
     }
 
-
     var crowed=new Crowed();
-    crowed.init(1,function () {
+    crowed.init(3,function () {
         crowed.people.positionSet(0, [59.24+1,-8.54,216.22]);
-        //crowed.people.positionSet(1, [58.91+1,-8.54,181.01]);
-        //crowed.people.positionSet(2, [59.78+1,-8.54,159.48]);
+        crowed.people.positionSet(1, [58.91+1,-8.54,181.01]);
+        crowed.people.positionSet(2, [59.78+1,-8.54,159.48]);
         var loader = new THREE.XHRLoader(THREE.DefaultLoadingManager);
         loader.load("grid.json", function(str){//dataTexture
             var grid0=JSON.parse(str).grid;
             loader.load("grid_1.json", function(str1){//dataTexture
                 var grid1=JSON.parse(str1).grid;//"./Model/avatar/male_run.glb",
-                var p1=new PeopleController()
-                p1.updateModel=function () {
-                    var pos0=crowed.people.positionGet(0);
-                    p1.model.position={x:pos0[0],y:pos0[1],z:pos0[2]}
-                }
-                p1.setPosition=function(avatar,pos){
-                    avatar.positionSet(0,pos);
-                };
-                p1.getPosition=function(avatar){
-                    return avatar.positionGet(0);
-                };
-                p1.setRotation=function(avatar,pos){
-                    return avatar.rotationSet(0,pos);
-                    //console.log(avatar)
-                    //avatar.position.set(pos[0],pos[1],pos[2]);
-                };
-                p1.getRotation=function(avatar,pos){
-                    return avatar.rotationGet(0);
-                    //console.log(avatar)
-                    ///avatar.position.set(pos[0],pos[1],pos[2]);
-                };/**/
-                p1.init(crowed.people,grid0,grid1);
+                for(var kkk=0;kkk<crowed.people.instanceCount;kkk++)
+                    new PeopleController().init({
+                        myMain:crowed.people,
+                        obstacle0:grid0,
+                        obstacle1:grid1,
+                        people_index:kkk
+                    });
             });
         });
     })
     this.scene.add(crowed.obj);
+    //完成人群设置
 
-    //完成测试
-
-    //开始测试2
-
-            var scope0=this;
-            var loader = new THREE.XHRLoader(THREE.DefaultLoadingManager);
-            loader.load("grid.json", function(str){//dataTexture
-                var grid0=JSON.parse(str).grid;
-                loader.load("grid_1.json", function(str1){//dataTexture
-                    var grid1=JSON.parse(str1).grid;//"./Model/avatar/male_run.glb",
-                    new THREE.GLTFLoader().load("./Model/avatar/male_run.glb", (glb) => {
-                        function play(G){
-                            var meshMixer2 = new THREE.AnimationMixer(G.scene);
-                            meshMixer2.clipAction(G.animations[0]).play();
-                            setInterval(function () {
-                                meshMixer2.update(0.01);
-                            },20);
-                            return glb.scene;
-                        }
-                        play(glb);var g1=glb.scene;scope0.scene.add(g1)
-                        scope0.scene.add(new PeopleController(g1,grid0,grid1,[59.24,-8.54,216.22]).model)
-                        //scope0.scene.add(new window.PeopleController(g2,grid0,grid1,[58.91,-8.54,181.01]).model)
-                        //scope0.scene.add(new window.PeopleController(play(glb),grid0,grid1,[59.78,-8.54,159.48]).model)
-                    });
-                    /*new THREE.GLTFLoader().load("./Model/avatar/female_run.glb", (glb) => {
-                        function play(G){
-                            var meshMixer2 = new THREE.AnimationMixer(G.scene);
-                            meshMixer2.clipAction(G.animations[0]).play();
-                            setInterval(function () {
-                                meshMixer2.update(0.01);
-                            },20);
-                            return glb.scene;
-                        }
-                        play(glb);var g1=glb.scene;scope0.scene.add(g1)
-                        //scope0.scene.add(new window.PeopleController(g1,grid0,grid1,[59.24,-8.54,216.22]).model)
-                        scope0.scene.add(new PeopleController(g1,grid0,grid1,[58.91,-8.54,181.01]).model)
-                        //scope0.scene.add(new window.PeopleController(play(glb),grid0,grid1,[59.78,-8.54,159.48]).model)
-                    });
-                    new THREE.GLTFLoader().load("./Model/avatar/childMale_run.glb", (glb) => {
-                        function play(G){
-                            var meshMixer2 = new THREE.AnimationMixer(G.scene);
-                            meshMixer2.clipAction(G.animations[0]).play();
-                            setInterval(function () {
-                                meshMixer2.update(0.01);
-                            },20);
-                            return glb.scene;
-                        }
-                        play(glb);var g1=glb.scene;scope0.scene.add(g1)
-                        //scope0.scene.add(new window.PeopleController(g1,grid0,grid1,[59.24,-8.54,216.22]).model)
-                        //scope0.scene.add(new window.PeopleController(g1,grid0,grid1,[58.91,-8.54,181.01]).model)
-                        scope0.scene.add(new PeopleController(g1,grid0,grid1,[59.78,-8.54,159.48]).model)
-                    });
-                    */
-
-
-                    //[59.78,-8.54,159.48]
-                });
-            });
-            /**/
-    //完成测试2
 
 //endregion
 }

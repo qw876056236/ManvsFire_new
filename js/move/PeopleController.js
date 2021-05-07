@@ -89,13 +89,36 @@ class PeopleController{
         }
     }
     constructor(myMain,obstacle0,obstacle1,pos){
-        if(myMain)this.init(myMain,obstacle0,obstacle1,pos)
+        if(myMain)this.init({myMain:myMain,obstacle0:obstacle0,obstacle1:obstacle1,pos:pos})
     }
-    init(myMain,obstacle0,obstacle1,pos){
+    init(opt){
+        var myMain=opt.myMain,
+            obstacle0=opt.obstacle0,
+            obstacle1=opt.obstacle1,
+            pos=opt.pos,
+            people_index=opt.people_index;
+
         var scope=this;
-        /*if(typeof(k)!=="undefined"){
-            scope.setPosition=scope.getPosition=
-        }*/
+
+        if(typeof(people_index)!=="undefined"){
+            scope.updateModel=function () {
+                var pos0=myMain.positionGet(people_index);
+                scope.model.position={x:pos0[0],y:pos0[1],z:pos0[2]}
+            }
+            scope.setPosition=function(avatar,pos){
+                avatar.positionSet(people_index,pos);
+            };
+            scope.getPosition=function(avatar){
+                return avatar.positionGet(people_index);
+            };
+            scope.setRotation=function(avatar,pos){
+                return avatar.rotationSet(people_index,pos);
+            };
+            scope.getRotation=function(avatar){
+                return avatar.rotationGet(people_index);
+            };
+            //scope.setPosition=scope.getPosition=
+        }/**/
         scope.model=myMain;
         if(scope.model.position){
             scope.model.position.set(pos[0],pos[1],pos[2]);//(58.91,-8.54,181.01);//(100,0,194);//(90,0,196);//(90,1.17,196);
