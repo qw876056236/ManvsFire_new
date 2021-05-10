@@ -117,7 +117,7 @@ Interaction.prototype.fuc2 = function (_this)
         //_this.smoke.cloudRank();
         //fire必须在smoke之前set
         _this.fire.set(_this.smoke.positionBallMesh.position);
-        _this.smoke.set(_this.fire);
+        _this.smoke.set(_this.fire,_this);
         _this.isStartRun = true;
         _this.smoke.isStartSmoke = true;
         _this.active = true;
