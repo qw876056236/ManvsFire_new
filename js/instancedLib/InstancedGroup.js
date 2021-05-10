@@ -175,7 +175,7 @@ InstancedGroup.prototype={
             )
         };
 
-        if(this.vertURL===undefined)this.vertURL=this.haveSkeleton?"shader/vertexBone.vert":"shader/vertex.vert";
+        if(this.vertURL===undefined)this.vertURL=this.haveSkeleton?"shader/vertexBone2.vert":"shader/vertex.vert";
         if(this.fragURL===undefined)this.fragURL="shader/fragment.frag";
         let material = new THREE.RawShaderMaterial();//原始着色器材质
         material.side=THREE.DoubleSide;

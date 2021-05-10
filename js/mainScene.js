@@ -1,3 +1,5 @@
+export {mainScene};
+import {Crowd} from "./move/Crowd.js";
 var mainScene = function()
 {
         this.stats = initStats();
@@ -14,11 +16,9 @@ var mainScene = function()
         }
 
 
-    clock = new THREE.Clock();
-
+    //this.clock = new THREE.Clock();
     this.scene = new THREE.Scene();
-
-    clock.start();
+    //this.clock.start();
 
     this.number = 100;//人数
 
@@ -256,6 +256,12 @@ mainScene.prototype.setScene = function()
     this.camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 0.1, 2000000);
     this.camera.position.set(60,3,146);
     this.camera.lookAt(new THREE.Vector3(1,1,1));
+
+    window.c=this.camera;
+
+    //this.camera.position.set( 58.01241244232402,  -5.641555076511444, 166.09795410450);
+    //this.camera.rotation.set(-3.0998049228015434, 0.03830701739587247, 3.139991350918273)
+
     this.playerControl=new PlayerControl(this);//通过鼠标键盘或者手机触屏控制相机
     this.playerControl.init();
 
@@ -323,7 +329,7 @@ mainScene.prototype.setScene = function()
     this.directionalLight.push(directionalLight_6);
 
     var emerencyLight, lightMesh,targetObject;
-    for(i=0;i<10;i++){
+    for(var i=0;i<10;i++){
         emerencyLight = new THREE.PointLight(0Xffffff,4,8);
         //emerencyLight.position.set(41.2,-5.7,173+18*i);
         emerencyLight.position.set(42,-5.7,173+18*i);
@@ -439,61 +445,15 @@ mainScene.prototype.setScene = function()
     this.pMesh.position.set(0,0,0);
 
 
-    //开始测试
-    var obj=initPeople(2);
-    movePeople(obj);
-    this.scene.add(obj);
-    function initPeople(number) {
-        var obj=new THREE.Object3D();
-        var pmLoader = new MyPMLoader(
-            {animations: []},
-            './peopleModel/Male',    //模型路径
-            [],//没有LOD分级//LOD等级的数组
-            null,  //LOD需要判断到相机的距离//实例化渲染难以使用LOD
-            0,       //有多个动画时,表示第0个动画//可以通过pmLoader.updateAnimation(i)来切换动画
-            0,     //动画播放速度//可以通过调整pmLoader.animationSpeed来调整速度
-            [],
-            function () {
-                var mesh = pmLoader.rootObject.children[0];
-                var people = new InstancedGroup(
-                    number,//人数
-                    [mesh],//这些mesh的网格应该一致
-                    true//有动画
-                );
-                people.neckPosition=0.68;
-                people.init(
-                    ['./peopleTexture/m/m0.jpg'],
-                    32
-                );
-                for (var i = 0; i < people.instanceCount; i++) {
-                    people.rotationSet(i, [Math.PI / 2, 0, 0]);
-                    people.positionSet(i, [8 * i, 0, 0]);
-                    people.scaleSet(i, [0.1, 0.1, 0.1]);
-                    people.animationSet(i,Math.floor(Math.random()*3));
-                    people.speedSet(i,Math.random()+0.5);
-                    people.textureSet(i,[Math.floor(Math.random()*16),Math.floor(Math.random()*16),Math.floor(Math.random()*16)]);
-                }
-                obj.add(people.obj);
-                obj.people=people;
-                var timeId = setInterval(function () {
-                    mesh = pmLoader.rootObject.children[0];
-                    people.setGeometry(mesh.geometry);
-                    console.log(pmLoader.finished);
-                    if (pmLoader.finished) window.clearInterval(timeId)
-                }, 1000);
-            }
-        );
-        return obj;
-    }
-    function movePeople(obj0) {
-        setInterval(function () {
-            var people=obj0.people;
-            people.move(0,[0,0,0.5]);
-            people.rotation(1,[0,0,0.1]);
-        },100)
-    }
-    //完成测试
-    
+    //开始进行人群设置
+
+    var crowd=new Crowd();
+    crowd.obj.visible=false;
+    this.scene.add(crowd.obj);
+    window.crowd=crowd;
+    //完成人群设置
+
+
 //endregion
 }
 
@@ -539,6 +499,7 @@ mainScene.prototype.LOD = function ()
         }
 
     }
+    /**/
 }
 
 //视角的转动 并非调整不同房间

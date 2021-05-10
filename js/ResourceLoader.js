@@ -7,6 +7,7 @@ var Resourceload = function(){
     this.NumberWaitMaps = 0;//等待加载的贴图个数
 
     this.object = new THREE.Object3D();
+    //this.object.visible=false;
     this.loader = new THREE.GLTFLoader();//模型加载器
     this.resourceList = null;
     this.test=false;//true;//
@@ -16,6 +17,7 @@ Resourceload.prototype.init = function(_this){
     var scope = this;
     scope.camera = _this.camera;
     //开启多线程对模型资源信息进行加载
+    let data = [];
     let worker = new Worker('js/resourceLoadWorker.js');
     worker.postMessage("../"+this.url+"resourceInfo.json");
     worker.onmessage = function (event)
@@ -30,7 +32,7 @@ Resourceload.prototype.init = function(_this){
         scope.loadMap();
         _this.scene.add(scope.object);
     }
-    
+
 }
 
 Resourceload.prototype.loadGeometry=function(scene){
@@ -57,7 +59,7 @@ Resourceload.prototype.loadGeometry=function(scene){
                 load();
             });
         }
-        modelCulling();
+        //modelCulling();
         //对多次处于视锥外且已被加载的模型进行剔除
         function modelCulling()
         {

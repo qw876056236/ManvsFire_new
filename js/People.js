@@ -23,7 +23,7 @@ var num;
 
 People.prototype.init = function (_this) {
     let self = this;
-    let multi = _this.number;
+    let multi =0/// _this.number;
     var surplus = multi % 109;
     multi = Math.floor(multi / 109);
     _this.isFinishLoadCharactor = false;

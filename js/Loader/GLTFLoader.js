@@ -3201,7 +3201,7 @@ THREE.GLTFLoader = (function () {
 
                 var matrix = new THREE.Matrix4();
                 matrix.fromArray(nodeDef.matrix);
-                node.applyMatrix(matrix);
+                node.applyMatrix4(matrix);
 
             } else {
 
