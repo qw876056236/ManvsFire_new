@@ -41,7 +41,8 @@ fire.prototype.init = function (radius)
             }
         },
         vertexShader: vertexFlameShader,
-        fragmentShader: fragmentFlameShader
+        fragmentShader: fragmentFlameShader,
+        transparent: true
     });
     this.mesh = new THREE.Mesh(new THREE.IcosahedronGeometry(radius, 3), this.material);
     this.mesh.position.set(0,0,0);

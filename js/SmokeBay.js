@@ -530,11 +530,14 @@ SmokeBay.prototype.setJetSmoke = function(firePos){
         this.jetSmokeArr[0].FLOATING_INTERVAL = lr / smokeAnimation.velocity * 20;
         this.jetSmokeArr[1].FLOATING_INTERVAL = rr / smokeAnimation.velocity * 20;
 
-        this.jetSmokeArr[0].h = Math.max(this.smokeh ,0.5) * smokeAnimation.scaleFactor;
-        this.jetSmokeArr[1].h = Math.max(this.smokeh ,0.5) * smokeAnimation.scaleFactor;
+        /*this.jetSmokeArr[0].h = Math.max(this.smokeh ,0.5) * smokeAnimation.scaleFactor;
+        this.jetSmokeArr[1].h = Math.max(this.smokeh ,0.5) * smokeAnimation.scaleFactor;*/
+        this.jetSmokeArr[0].h = this.smokeh * smokeAnimation.scaleFactor;
+        this.jetSmokeArr[1].h = this.smokeh * smokeAnimation.scaleFactor;
     }else{
         this.jetSmokeArr[0].FLOATING_INTERVAL = this.smoker / smokeAnimation.velocity * 20;
-        this.jetSmokeArr[0].h = Math.max(this.smokeh ,0.5) * smokeAnimation.scaleFactor;
+        //this.jetSmokeArr[0].h = Math.max(this.smokeh ,0.5) * smokeAnimation.scaleFactor;
+        this.jetSmokeArr[0].h = this.smokeh * smokeAnimation.scaleFactor;
     }
 }
 
@@ -570,7 +573,6 @@ SmokeBay.prototype.update = function(smokeFloor,dt,_this){
             }
 
         }
-        console.log(smokeFloor.stage);
 
 
 
