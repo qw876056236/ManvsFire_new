@@ -161,6 +161,7 @@ var SmokeBay = function(){
 
     //有烟气输入时设置的值
     this.inBayIndex = -1;//输入烟气的防烟分区下标
+    this.jetSmokeArr = [];
 
     //着火过程中实时计算并更新的值
     this.smokeVolume = [];//该防烟分区新产生/进入的烟气量
@@ -213,7 +214,7 @@ SmokeBay.prototype.init = function(xmin,xmax,ymin,ymax,zmin,zmax,xstep,zstep){
 
 }
 
-SmokeBay.prototype.getVolume = function(smokeFloor,dt){
+SmokeBay.prototype.getVolume = function(smokeFloor,dt,_this){
     if(this.isFloor)
     {
         if(this.isFire)
@@ -236,6 +237,8 @@ SmokeBay.prototype.getVolume = function(smokeFloor,dt){
                     if(this.neiborBay[i] && this.neiborBay[i].jetOutVolume>0)
                     {
                         this.inBayIndex = i;
+                        this.jetSmokeArr.push(new smokeControl());
+                        this.jetSmokeArr[0].init(this.inPos[i],i,this,_this);
                         if(i==0 || i==1)
                             this.maxr = this.xmax-this.xmin;
                         if(i==2 || i==3)
@@ -392,7 +395,7 @@ SmokeBay.prototype.compute = function(smokeFloor,dt){
     if(this.smoker<this.maxr)
     {
         //顶棚射流阶段，计算顶棚射流速
-        if(this.isFire && smokeFloor.isInTurning)
+        /*if(this.isFire && smokeFloor.isInTurning)
             this.smokev = 0.96 * Math.pow(smokeFloor.fire.Qc/(smokeFloor.fire.Zh-smokeFloor.fire.Zv)/smokeFloor.fire.QcFactor,1/3);
         else if(this.isFire)
             this.smokev = 0.195 * Math.pow(smokeFloor.fire.Qc/(smokeFloor.fire.Zh-smokeFloor.fire.Zv)/smokeFloor.fire.QcFactor,1/3) / Math.pow(this.smoker/(smokeFloor.fire.Zh-smokeFloor.fire.Zv),5/6);
@@ -404,7 +407,8 @@ SmokeBay.prototype.compute = function(smokeFloor,dt){
             if(this.inBayIndex==2 || this.inBayIndex == 3)
                 r = Math.abs(this.inPos[this.inBayIndex].z - smokeFloor.firePos.z) + this.smoker;
             this.smokev = 0.195 * Math.pow(smokeFloor.fire.Qc/(smokeFloor.fire.Zh-smokeFloor.fire.Zv)/smokeFloor.fire.QcFactor,1/3) / Math.pow(r/(smokeFloor.fire.Zh-smokeFloor.fire.Zv),5/6);
-        }
+        }*/
+        this.smokev = 0.8;
 
         this.smoker += this.smokev * dt;
         //console.log(this.smokev);
@@ -514,12 +518,33 @@ SmokeBay.prototype.rankByDistance = function(x,z)
     this.indexArr.push(index);
 }
 
+SmokeBay.prototype.setJetSmoke = function(firePos){
+    if(this.isFire){
+        if(this.xmax-this.xmin>this.zmax-this.zmin){
+            var lr = Math.min(this.smoker,firePos.x-this.xmin);
+            var rr = Math.min(this.smoker,this.xmax - firePos.x);
+        }else{
+            var lr = Math.min(this.smoker,firePos.z-this.zmin);
+            var rr = Math.min(this.smoker,this.zmax - firePos.z);
+        }
+        this.jetSmokeArr[0].FLOATING_INTERVAL = lr / smokeAnimation.velocity * 20;
+        this.jetSmokeArr[1].FLOATING_INTERVAL = rr / smokeAnimation.velocity * 20;
+
+        this.jetSmokeArr[0].h = Math.max(this.smokeh ,0.5) * smokeAnimation.scaleFactor;
+        this.jetSmokeArr[1].h = Math.max(this.smokeh ,0.5) * smokeAnimation.scaleFactor;
+    }else{
+        this.jetSmokeArr[0].FLOATING_INTERVAL = this.smoker / smokeAnimation.velocity * 20;
+        this.jetSmokeArr[0].h = Math.max(this.smokeh ,0.5) * smokeAnimation.scaleFactor;
+    }
+}
+
 SmokeBay.prototype.update = function(smokeFloor,dt,_this){
+    var self = this;
     if(this.isFloor)
     {
         if(smokeFloor.stage==1)
         {
-            this.getVolume(smokeFloor,dt);
+            this.getVolume(smokeFloor,dt,_this);
             //console.log(this.sumVolume);
             if(this.sumVolume>0)
             {
@@ -531,13 +556,21 @@ SmokeBay.prototype.update = function(smokeFloor,dt,_this){
             this.smokeh = smokeFloor.smokeh;
         }
         //console.log(this.smokeh);
+        //console.log(this.smoker);
         if(this.smokeh>0)
         {
-            for(let i=0;i<this.smokeUnitArr.length;++i)
-                this.smokeUnitArr[i].update(this,smokeFloor.stage,_this);
-            //if(!this.isFire)
+            if(smokeFloor.stage==1){
+                this.setJetSmoke(smokeFloor.firePos);
+                this.jetSmokeArr.forEach(jet=>jet.update(20));
+            }else{
+                for(let i=0;i<this.smokeUnitArr.length;++i)
+                    this.smokeUnitArr[i].update(this,smokeFloor.stage,_this);
+                //if(!this.isFire)
                 //console.log(this.smokeUnitArr);
+            }
+
         }
+        console.log(smokeFloor.stage);
 
 
 

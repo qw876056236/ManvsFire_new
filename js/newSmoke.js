@@ -178,7 +178,7 @@ Smoke.prototype.createCloud = function(_this,smokeUnit)
     smokeUnit.cloudArr.push(cloud);
 }
 
-Smoke.prototype.set = function(fire){
+Smoke.prototype.set = function(fire,_this){
     //判断着火在哪层,设置fireFloorIndex
     var floor = null;
     var firex = this.positionBallMesh.position.x;
@@ -216,6 +216,16 @@ Smoke.prototype.set = function(fire){
             var x = Math.max(firex-bay.xmin,bay.xmax-firex);
             var z = Math.max(firez-bay.zmin,bay.zmax-firez);
             bay.maxr = Math.pow(x*x+z*z,1/2);
+
+            bay.jetSmokeArr.push(new smokeControl());
+            bay.jetSmokeArr.push(new smokeControl());
+            if(bay.xmax-bay.xmin>bay.zmax-bay.zmin){
+                bay.jetSmokeArr[0].init(floor.firePos,1,bay,_this);
+                bay.jetSmokeArr[1].init(floor.firePos,0,bay,_this);
+            }else{
+                bay.jetSmokeArr[0].init(floor.firePos,3,bay,_this);
+                bay.jetSmokeArr[1].init(floor.firePos,2,bay,_this);
+            }
 
             var minx,maxx,minz,maxz;
             for(let j=0;j<bay.smokeUnitArr.length;++j)
