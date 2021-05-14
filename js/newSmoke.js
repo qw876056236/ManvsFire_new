@@ -35,6 +35,8 @@ var Smoke = function()
     this.V0 = 0;//理论空气量
 
     this.smokeVolume = 0;
+    this.nowVolume = 0;
+    this.exhaustVolume = 0;
     this.Vy = 0;
 
 };
@@ -265,6 +267,15 @@ Smoke.prototype.update = function(_this)
         if(self.fireFloorIndex-i>=0)
             self.smokeFloorArr[self.fireFloorIndex-i].update(self.dt,_this);
     }
+
+    self.exhaustVolume = 0;
+    self.nowVolume = 0;
+    self.smokeFloorArr.forEach(function(smokeFloor){
+        self.exhaustVolume += smokeFloor.exhaustVolume;
+        smokeFloor.smokeBayArr.forEach(function(smokeBay){
+            self.nowVolume += smokeBay.sumVolume;
+        })
+    })
     //console.log(this.smokeUnitArr)
     //this.cloudArr[1].position.y -=0.001;
     // self.cloudArr.forEach(function (child)

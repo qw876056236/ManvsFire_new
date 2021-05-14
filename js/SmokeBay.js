@@ -31,6 +31,8 @@ var SmokeFloor = function(){
     this.generateVolume = 0;
     this.Vy = 0;
 
+    this.exhaustVolume = 0;
+
     //着火过程中用户实时设定的量
     this.exhuastV= 0//总排烟速度
 
@@ -61,6 +63,7 @@ SmokeFloor.prototype.compute = function(dt,_this){
     }
     //console.log(this.Vy);
     this.generateVolume = this.Vy * dt;
+    _this.smoke.smokeVolume += this.generateVolume;
     var exhuastVolume = 0;
     for(let i=0;i<this.smokeBayArr.length;++i)
         exhuastVolume += this.smokeBayArr[i].exhaustVel * this.smokeBayArr[i].S * dt / 60 * this.smokeBayArr[i].sumVolume / this.smokeBayArr[i].V;
@@ -78,6 +81,7 @@ SmokeFloor.prototype.compute = function(dt,_this){
         if(fullBayNum == this.smokeBayArr.length){
             this.stage = 2;
             this.smokeVolume = Volume;
+            this.exhaustVolume += exhuastVolume;
             //烟雾形态转换
             this.cloudSwitch(_this);
         }else
@@ -85,8 +89,10 @@ SmokeFloor.prototype.compute = function(dt,_this){
     }
     else if(this.stage==1)
         this.smokeVolume += this.generateVolume;
-    else if(this.stage==2)
+    else if(this.stage==2){
         this.smokeVolume = Volume;
+        this.exhaustVolume += exhuastVolume;
+    }
     if(this.smokeVolume > this.V)
         this.stage = 3;
 
@@ -244,10 +250,15 @@ SmokeBay.prototype.getVolume = function(smokeFloor,dt,_this){
         {
             var exhaustVolume = this.exhaustVel * this.S * dt / 60 * this.sumVolume / this.V;
             this.sumVolume += smokeFloor.generateVolume - exhaustVolume;
-            if(this.sumVolume>0)
+            if(this.sumVolume>0){
                 smokeFloor.smokeVolume = smokeFloor.smokeVolume - exhaustVolume;
-            else
+                smokeFloor.exhaustVolume += exhaustVolume;
+            }
+            else{
                 smokeFloor.smokeVolume = smokeFloor.smokeVolume - smokeFloor.generateVolume;
+                smokeFloor.exhaustVolume += exhaustVolume;
+            }
+
             this.sumVolume = this.sumVolume>0 ? this.sumVolume : 0;
             //console.log(smokeFloor.generateVolume);
             //console.log(this.exhaustVel);
@@ -288,10 +299,15 @@ SmokeBay.prototype.getVolume = function(smokeFloor,dt,_this){
             {
                 var exhaustVolume = this.exhaustVel * this.S * dt / 60 * this.sumVolume / this.V;
                 this.sumVolume += this.neiborBay[this.inBayIndex].jetOutVolume - exhaustVolume;
-                if(this.sumVolume>0)
+                if(this.sumVolume>0){
                     smokeFloor.smokeVolume = smokeFloor.smokeVolume - exhaustVolume;
-                else
+                    smokeFloor.exhaustVolume += exhaustVolume;
+                }
+                else{
                     smokeFloor.smokeVolume = smokeFloor.smokeVolume - this.neiborBay[this.inBayIndex].jetOutVolume;
+                    smokeFloor.exhaustVolume += exhaustVolume;
+                }
+
                 this.sumVolume = this.sumVolume>0 ? this.sumVolume : 0;
             }
         }

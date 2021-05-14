@@ -137,7 +137,10 @@ Interaction.prototype.fuc2 = function (_this)
                         $('#escapeTimePanel').css("color", "red");
                     $('#escapeTimePanel').html('0' + Math.floor(clockTime / 60) + ':' + Math.floor((clockTime % 60) / 10) + (clockTime % 60) % 10);
                     $('#illustration-title').text("火场情况");
-                    $('#illustration-context').html("<br/>火场剩余人数： " + _this.number + "人");
+                    $('#illustration-context').html("<br/>产烟总量： " + Math.round(_this.smoke.smokeVolume) + "m<sup>3</sup>"
+                        + "<br/>排烟总量： " + Math.round(_this.smoke.exhaustVolume) + "m<sup>3</sup>"
+                        + "<br/>火场内烟量： " + Math.round(_this.smoke.nowVolume) + "m<sup>3</sup>"
+                        + "<br/>火场剩余人数： " + _this.number + "人");
 
                 } else {
                     clearInterval(timeEscape);
