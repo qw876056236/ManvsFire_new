@@ -61,30 +61,32 @@ SmokeFloor.prototype.compute = function(dt,_this){
     }
     //console.log(this.Vy);
     this.generateVolume = this.Vy * dt;
-    var Volume = this.smokeVolume + this.generateVolume - this.exhuastV * dt /60;
+    var exhuastVolume = 0;
+    for(let i=0;i<this.smokeBayArr.length;++i)
+        exhuastVolume += this.smokeBayArr[i].exhaustVel * this.smokeBayArr[i].S * dt / 60 * this.smokeBayArr[i].sumVolume / this.smokeBayArr[i].V;
+    var Volume = this.smokeVolume + this.generateVolume - exhuastVolume;
     if(Volume < 0)
         this.smokeVolume = 0;
 
 
-    if(this.stage==1)
+    if(this.stage==1 && Volume>this.jetVolume)
     {
-        if(Volume>this.jetVolume){
-            var fullBayNum = 0;//smoker>=maxr的防烟分区的数量
-            for(let i=0;i<this.smokeBayArr.length;++i)
-                if(this.smokeBayArr[i].smoker >= this.smokeBayArr[i].maxr)
-                    ++fullBayNum;
-            if(fullBayNum == this.smokeBayArr.length){
-                this.stage = 2;
-                this.smokeVolume = Volume;
-                //烟雾形态转换
-                this.cloudSwitch(_this);
-            }else
-                this.smokeVolume += this.generateVolume;
+        var fullBayNum = 0;//smoker>=maxr的防烟分区的数量
+        for(let i=0;i<this.smokeBayArr.length;++i)
+            if(this.smokeBayArr[i].smoker >= this.smokeBayArr[i].maxr)
+                ++fullBayNum;
+        if(fullBayNum == this.smokeBayArr.length){
+            this.stage = 2;
+            this.smokeVolume = Volume;
+            //烟雾形态转换
+            this.cloudSwitch(_this);
         }else
             this.smokeVolume += this.generateVolume;
     }
-    else
+    else if(this.stage==1)
         this.smokeVolume += this.generateVolume;
+    else if(this.stage==2)
+        this.smokeVolume = Volume;
     if(this.smokeVolume > this.V)
         this.stage = 3;
 
@@ -196,7 +198,7 @@ var SmokeBay = function(){
     this.inArr = false;//是否在floor的arr里
 
     //用户实时设置的值
-    this.exhaustVel = 0;//排烟速度
+    this.exhaustVel = 0.5;//排烟速度
 }
 
 SmokeBay.prototype.init = function(xmin,xmax,ymin,ymax,zmin,zmax,xstep,zstep){
@@ -240,9 +242,10 @@ SmokeBay.prototype.getVolume = function(smokeFloor,dt,_this){
     {
         if(this.isFire)
         {
-            this.sumVolume += smokeFloor.generateVolume - this.exhaustVel * this.S * dt / 60;
+            var exhaustVolume = this.exhaustVel * this.S * dt / 60 * this.sumVolume / this.V;
+            this.sumVolume += smokeFloor.generateVolume - exhaustVolume;
             if(this.sumVolume>0)
-                smokeFloor.smokeVolume = smokeFloor.smokeVolume - this.exhaustVel * this.S * dt / 60;
+                smokeFloor.smokeVolume = smokeFloor.smokeVolume - exhaustVolume;
             else
                 smokeFloor.smokeVolume = smokeFloor.smokeVolume - smokeFloor.generateVolume;
             this.sumVolume = this.sumVolume>0 ? this.sumVolume : 0;
@@ -283,10 +286,10 @@ SmokeBay.prototype.getVolume = function(smokeFloor,dt,_this){
             }
             if(this.inBayIndex >=0)
             {
-                this.sumVolume += this.neiborBay[this.inBayIndex].jetOutVolume;
-                this.sumVolume += - this.exhaustVel * this.S * dt / 60;
+                var exhaustVolume = this.exhaustVel * this.S * dt / 60 * this.sumVolume / this.V;
+                this.sumVolume += this.neiborBay[this.inBayIndex].jetOutVolume - exhaustVolume;
                 if(this.sumVolume>0)
-                    smokeFloor.smokeVolume = smokeFloor.smokeVolume - this.exhaustVel * this.S * dt / 60;
+                    smokeFloor.smokeVolume = smokeFloor.smokeVolume - exhaustVolume;
                 else
                     smokeFloor.smokeVolume = smokeFloor.smokeVolume - this.neiborBay[this.inBayIndex].jetOutVolume;
                 this.sumVolume = this.sumVolume>0 ? this.sumVolume : 0;
