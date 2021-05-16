@@ -1,54 +1,95 @@
-var Resourceload = function(){
-    this.url="room_model/";//资源路径
+let flag = false;
+let instance = [];
+
+onmessage = function (event)
+{
+    importScripts('../lib/three.js');
+    importScripts('../js/Loader/GLTFLoader.js');
+
+    //初次加载子线程
+    if(!flag)
+    {
+        instance = new Resourceloader();
+        let data = event.data.camera.planes;
+        for(let i =0;i<6;i++)
+        {
+            let temp = new THREE.Vector3(data[i].normal.x,data[i].normal.y,data[i].normal.z);
+            data[i] = new THREE.Plane(temp, data[i].constant);
+        }
+        instance.init(data);
+        flag = true;
+    }
+    else //非第一次加载子线程，进入循环模式
+    {
+        let output = instance.updateInit(event.data);
+        postMessage(output);
+    }
+
+}
+
+var Resourceloader = function(){
+
+    this.url="../room_model/";//资源路径
     this.camera = null;
+    this.scene = null;
     this.cameraPre = {};
     this.unitProcess = function(gltf){};//对各模型单元进行处理的函数
 
     this.NumberWaitMaps = 0;//等待加载的贴图个数
 
     this.object = new THREE.Object3D();
+    this.object.name = "resource";
     //this.object.visible=false;
     this.loader = new THREE.GLTFLoader();//模型加载器
     this.resourceList = null;
     this.test=false;//true;//
 }
 
-Resourceload.prototype.init = function(_this){
+Resourceloader.prototype.init = function(_this){
     var scope = this;
-    scope.camera = _this.camera;
-    //开启多线程对模型资源信息进行加载
-    let data = [];
-    let worker = new Worker('js/resourceLoadWorker.js');
-    worker.postMessage("../"+this.url+"resourceInfo.json");
-    worker.onmessage = function (event)
-    {
-        let resourceInfo=JSON.parse(event.data);
-        scope.resourceList=new ResourceList(
+    scope.camera = _this;
+
+    let loader = new THREE.XHRLoader(THREE.DefaultLoadingManager);
+    loader.load(this.url+"resourceInfo.json", function(str) {//dataTexture
+        var resourceInfo = JSON.parse(str);
+        scope.resourceList=new resourceListTest(
             {resourceInfo:resourceInfo,camera:scope.camera,test:scope.test}
         );
-        if(scope.test)scope.object.add(scope.resourceList.testObj);
+        if (scope.test)scope.object.add(scope.resourceList.testObj);
 
-        scope.loadGeometry(_this.scene);
+        scope.loadGeometry();
         scope.loadMap();
-        _this.scene.add(scope.object);
-    }
+        let data = [];
+        data.flag = 1;
+        data.object = scope.object;
+        postMessage(data);
+    });
 
 }
 
-Resourceload.prototype.loadGeometry=function(scene){
+Resourceloader.prototype.updateInit = function (_this)
+{
+    var scope = this;
+    scope.camera = _this.camera;
+
+    if (scope.test)scope.object.add(scope.resourceList.testObj);
+
+    scope.loadGeometry();
+    scope.loadMap();
+    let data = [];
+    data.flag = 2;
+    data.object = scope.object;
+    return data;
+}
+
+Resourceloader.prototype.loadGeometry=function(){
     var scope=this;
     load();
     function load() {
         var fileName=scope.resourceList.getOneModelFileName();
         if(!fileName){//如果当前没有需要加载的几何文件
-            updateCameraPre();
-            var myInterval=setInterval(function () {
-                if(cameraHasChanged()){//如果相机位置和角度发生了变化
-                    load();
-                    clearInterval(myInterval);
-                }
-            },300);
-        }else{
+        }
+        else{
             scope.loader.load(scope.url+fileName, (gltf) => {
                 if(scope.resourceList.getModelByName(fileName)!=="")
                     scope.NumberWaitMaps++;//如果这个几何数据需要加载对应的贴图资源
@@ -56,10 +97,13 @@ Resourceload.prototype.loadGeometry=function(scene){
                 mesh0.nameFlag=fileName;
                 scope.unitProcess(gltf);
                 scope.object.add(mesh0);
-                load();
+                let data = [];
+                data.flag = 2;
+                data.object = scope.object;
+                postMessage(data);
             });
         }
-        modelCulling();
+        //modelCulling();
         //对多次处于视锥外且已被加载的模型进行剔除
         function modelCulling()
         {
@@ -67,7 +111,7 @@ Resourceload.prototype.loadGeometry=function(scene){
             {
                 let limit = 250;
                 if(key>limit) {
-                    scene.traverse(function (mesh0) {
+                    scope.scene.traverse(function (mesh0) {
                         if(mesh0.nameFlag === value){
                             mesh0.parent.remove(mesh0);
                             let model=scope.resourceList.getModelByName(value);
@@ -82,22 +126,11 @@ Resourceload.prototype.loadGeometry=function(scene){
             });
         }
 
-        function updateCameraPre(){
-            scope.cameraPre.position=scope.camera.position.clone();
-            scope.cameraPre.rotation=scope.camera.rotation.clone();
-        }
-        function cameraHasChanged(){
-            return scope.camera.position.x !== scope.cameraPre.position.x ||
-                scope.camera.position.y !== scope.cameraPre.position.y ||
-                scope.camera.position.z !== scope.cameraPre.position.z ||
-                scope.camera.rotation.x !== scope.cameraPre.rotation.x ||
-                scope.camera.rotation.y !== scope.cameraPre.rotation.y ||
-                scope.camera.rotation.z !== scope.cameraPre.rotation.z;
-        }
+
     }
 }
 
-Resourceload.prototype.loadMap=function(){
+Resourceloader.prototype.loadMap=function(){
     var scope=this;
     load();
     function load() {
@@ -135,9 +168,9 @@ Resourceload.prototype.loadMap=function(){
     }
 }
 
-var ResourceList = function(input){
+var resourceListTest = function(input){
     var scope=this;
-    window.l=this;
+    //window.l=this;
     scope.camera=input.camera;
     var resourceInfo=input.resourceInfo;
     if(input.test)scope.testObj=new THREE.Object3D();
@@ -177,7 +210,7 @@ var ResourceList = function(input){
     }
 }
 
-ResourceList.prototype.getOneModelFileName=function(){
+resourceListTest.prototype.getOneModelFileName=function(){
     var scope=this;
     var list=getModelList();
     if(list.length===0)return null;
@@ -227,7 +260,7 @@ ResourceList.prototype.getOneModelFileName=function(){
     }
 }
 
-ResourceList.prototype.getOneMapFileName=function(){
+resourceListTest.prototype.getOneMapFileName=function(){
     var scope=this;
     var list=getMapList();
     if(list.length===0)return null;
@@ -257,7 +290,7 @@ ResourceList.prototype.getOneMapFileName=function(){
     }
 }
 
-ResourceList.prototype.update=function(){//判断哪些资源在视锥内
+resourceListTest.prototype.update=function(){//判断哪些资源在视锥内
     var scope=this;
     computeFrustumFromCamera();
     for(var i=0;i<scope.models.length;i++){
@@ -270,17 +303,18 @@ ResourceList.prototype.update=function(){//判断哪些资源在视锥内
     }
     function computeFrustumFromCamera(){//求视锥体
         var camera=scope.camera;
-        var frustum = new THREE.Frustum();
-        //frustum.setFromMatrix( new THREE.Matrix4().multiplyMatrices( camera.projectionMatrix,camera.matrixWorldInverse ) );
+        // var frustum = new THREE.Frustum();
+        // //frustum.setFromMatrix( new THREE.Matrix4().multiplyMatrices( camera.projectionMatrix,camera.matrixWorldInverse ) );
+        //
+        // const projScreenMatrix = new THREE.Matrix4();
+        // projScreenMatrix.multiplyMatrices( camera.projectionMatrix, camera.matrixWorldInverse );
+        // frustum.setFromProjectionMatrix(projScreenMatrix);
 
-        const projScreenMatrix = new THREE.Matrix4();
-        projScreenMatrix.multiplyMatrices( camera.projectionMatrix, camera.matrixWorldInverse );
-        frustum.setFromProjectionMatrix(projScreenMatrix);
-        scope.frustum=frustum;
+        scope.frustum=camera;
     }
     function intersectsSphere(x,y,z,radius ) {
         var center=new THREE.Vector3(x,y,z)
-        const planes = scope.frustum.planes;
+        const planes = scope.frustum;
         //const center = sphere.center;
         const negRadius = - radius;
         for ( let i = 0; i < 6; i ++ ) {
@@ -293,14 +327,14 @@ ResourceList.prototype.update=function(){//判断哪些资源在视锥内
     }
 }
 
-ResourceList.prototype.getMapByName=function (name) {
+resourceListTest.prototype.getMapByName=function (name) {
     var scope=this;
     for(var i=0;i<scope.maps.length;i++){
         if(scope.maps[i].fileName===name)
             return scope.maps[i];
     }
 }
-ResourceList.prototype.getModelByName=function (name) {
+resourceListTest.prototype.getModelByName=function (name) {
     var scope=this;
     for(var i=0;i<scope.models.length;i++){
         if(scope.models[i].fileName===name)

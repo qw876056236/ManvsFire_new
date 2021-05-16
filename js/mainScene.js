@@ -50,7 +50,8 @@ var mainScene = function()
 
     this.underground = new Underground();//场景
 
-    this.resourceLoader = new Resourceload();
+    this.resourceLoader = new resourceloaderTest();
+    //this.resourceLoader = new Resourceload();
 
     this.directionalLight = [];
 
