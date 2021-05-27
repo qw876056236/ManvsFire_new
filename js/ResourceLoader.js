@@ -59,13 +59,13 @@ Resourceload.prototype.loadGeometry=function(scene){
                 load();
             });
         }
-        //modelCulling();
+        modelCulling();
         //对多次处于视锥外且已被加载的模型进行剔除
         function modelCulling()
         {
             scope.resourceList.cullingList.forEach(function (key,value)
             {
-                let limit = 350;
+                let limit = 300;
                 if(key>limit) {
                     scene.traverse(function (mesh0) {
                         if(mesh0.nameFlag === value){

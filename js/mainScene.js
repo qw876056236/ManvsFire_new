@@ -15,16 +15,11 @@ var mainScene = function()
             return stats;
         }
 
-
-    //this.clock = new THREE.Clock();
-    this.scene = new THREE.Scene();
-    //this.clock.start();
+        this.scene = new THREE.Scene();
 
     this.number = 100;//人数
 
     this.camera = null;
-
-    this.camDirection;
 
     this.renderer = null;//渲染器
 
@@ -64,24 +59,6 @@ var mainScene = function()
 
     this.noisySound = null;
 
-    /*
-    this.Path = new path();
-
-    this.smoke = new NSsmoke();//烟
-
-    this.messagecontrol = new messageControl();//控制子线程传输
-
-    this.fire = new fireControl();//火
-
-    this.water = new waterControl();//水
-
-    this.Fireman = new fireman();//消防员&灭火
-
-    this.light = new light();//光照
-
-    this.FOI = new foiControl();//视锥控制
-
-     */
     this.smoke = new Smoke();//烟
 
     this.fire = new fireControl();//火
@@ -124,8 +101,6 @@ var mainScene = function()
     this.count = new Array(10);
     this.count.fill(0);
 
-    //this.messagecontrol.START(this);
-
     //debug专用
     //this.Test = new test();
 }
@@ -143,10 +118,6 @@ mainScene.prototype.init = function()
 
     //region 路径
     //this.Path.init(this);
-    //endregion
-
-    //region 水
-    //this.water.init(this);
     //endregion
 
     //region 烟雾
@@ -219,19 +190,11 @@ mainScene.prototype.start = function()
 
             //self.Fireman.update(self);
 
-            self.people.update(self);
+            //self.people.update(self);
 
-            //self.Test.update(self);
-            //视锥剔除
-            //self.FOI.update(self);
-
-            //火车动
-            ///self.underground.update(self,self.delta);
         }
-        //self.Cameracontroller.update1(self);
         self.pMesh.position.set(document.getElementById("x").value,document.getElementById("y").value,document.getElementById("z").value);
 
-        //self.cameraControl();
 
         TWEEN.update();
 
@@ -241,17 +204,11 @@ mainScene.prototype.start = function()
         self.renderer.clear();
         self.renderer.setViewport(0, 0, window.innerWidth, window.innerHeight);
         self.renderer.render(self.scene, self.camera);
-        //todo self.renderer.clear();    与renderer.autoClear = false 对应 不知道意义何在
-        //self.stats.end()
-
-       // self.LOD;//lod算法
     }
-
 }
 
 mainScene.prototype.setScene = function()
 {
-    var self = this;
     //region 基础场景
     this.camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 0.1, 2000000);
     this.camera.position.set(60,3,146);
@@ -381,15 +338,15 @@ mainScene.prototype.setScene = function()
     }
 
     // create an AudioListener and add it to the camera
-    var listener = new THREE.AudioListener();
-    this.camera.add( listener );
+    let listener1 = new THREE.AudioListener();
+    //this.camera.add( listener );
 
 // create a global audio source
-    this.sirenSound = new THREE.Audio( listener );
+    this.sirenSound = new THREE.Audio( listener1 );
 
-    var listener = new THREE.AudioListener();
-    this.camera.add(listener);
-    this.noisySound = new THREE.Audio(listener);
+    let listener2 = new THREE.AudioListener();
+    //this.camera.add(listener);
+    this.noisySound = new THREE.Audio(listener2);
 
 
 
@@ -455,94 +412,4 @@ mainScene.prototype.setScene = function()
 
 
 //endregion
-}
-
-mainScene.prototype.addPeople = function ()
-{
-    this.people.init(this);
-}
-
-mainScene.prototype.addFOI = function()
-{
-    this.FOI.init(this);
-}
-
-mainScene.prototype.LOD = function ()
-{
-    var self = this;
-    //LOD算法，根据视距进行模型的显示和隐藏
-    self.camDirection = self.camera.position.clone();
-    var isCamUp = self.camera.position.y>18; //如果摄像机在第二层，将此变量设置成true
-    for(var key in self.people.pathControlMap){
-
-        if(self.people.pathControlMap[key].prototype === THREE.FollowerControl.prototype){
-            if(Math.abs(self.people.pathControlMap[key].object.position.x-self.camDirection.x)+
-                Math.abs(self.people.pathControlMap[key].object.position.y-self.camDirection.y)+
-                Math.abs(self.people.pathControlMap[key].object.position.z-self.camDirection.z) > 100){
-
-                self.people.pathControlMap[key].object.visible = false;
-                if(self.people.pathControlMap[key].lod_low_level_obj){
-                    if((isCamUp && self.people.pathControlMap[key].object.position.y>18)||(!isCamUp && self.people.pathControlMap[key].object.position.y<18)){
-                        self.people.pathControlMap[key].lod_low_level_obj.visible = true;
-                    }else{
-                        self.people.pathControlMap[key].lod_low_level_obj.visible = false;
-                    }
-                }
-            }else{
-                if((isCamUp && self.people.pathControlMap[key].object.position.y>18)||(!isCamUp && self.people.pathControlMap[key].object.position.y<18)){
-                    self.people.pathControlMap[key].object.visible = true;
-                }else{
-                    self.people.pathControlMap[key].object.visible = false;
-                }
-                if(self.people.pathControlMap[key].lod_low_level_obj) self.people.pathControlMap[key].lod_low_level_obj.visible = false;
-            }
-        }
-
-    }
-    /**/
-}
-
-//视角的转动 并非调整不同房间
-mainScene.prototype.cameraControl = function ()
-{
-    var self = this;
-    if (self.isOverView){
-        if(/*self.Fireman.cubeFireman && self.Fireman.isOverViewFireMan*/0){
-
-            if(self.Fireman.cubeFireman.position.x<355&&self.Fireman.cubeFireman.position.x>280){
-                self.freeViewControl.center = new THREE.Vector3(self.Fireman.cubeFireman.position.x,self.Fireman.cubeFireman.position.y+2.5,self.Fireman.cubeFireman.position.z);
-                self.camera.lookAt(self.Fireman.cubeFireman.position.x,self.Fireman.cubeFireman.position.y,self.Fireman.cubeFireman.position.z);
-                self.freeViewControl.maxDistance = 3;
-            }
-            else{
-                self.freeViewControl.center = new THREE.Vector3(self.Fireman.cubeFireman.position.x,self.Fireman.cubeFireman.position.y+2,self.Fireman.cubeFireman.position.z);
-                self.freeViewControl.maxDistance = 6;
-            }
-        }
-        // if(isOverViewLeader){
-        //
-        //     camControlOver.center = new THREE.Vector3(leaderMeshArr[overViewLeaderIndex].position.x,leaderMeshArr[overViewLeaderIndex].position.y+2.5,leaderMeshArr[overViewLeaderIndex].position.z);
-        //     camera.lookAt(leaderMeshArr[overViewLeaderIndex].position.x,leaderMeshArr[overViewLeaderIndex].position.y,leaderMeshArr[overViewLeaderIndex].position.z);
-        //     camControlOver.maxDistance = 3;
-        // }
-
-        self.freeViewControl.update(self.delta);
-    }else{
-        if (self.camControl && !self.isEdit)
-        {
-            self.camControl.update(self.delta)
-        }
-        else
-        {
-            self.renderer.setViewport(window.innerWidth * 0.6, window.innerHeight * 0.6, window.innerWidth, window.innerHeight);
-            //renderer.render(scene, cameraOrtho);
-            self.renderer.setViewport(0, window.innerHeight * 0.6, window.innerWidth * 0.6, window.innerHeight);
-            //renderer.render(scene,cameraPerspective);
-        }
-    }
-}
-
-mainScene.prototype.camera_tatus_change = function ()
-{
-
 }
