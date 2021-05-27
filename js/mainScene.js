@@ -190,7 +190,7 @@ mainScene.prototype.start = function()
 
             //self.Fireman.update(self);
 
-            self.people.update(self);
+            //self.people.update(self);
 
         }
         self.pMesh.position.set(document.getElementById("x").value,document.getElementById("y").value,document.getElementById("z").value);
@@ -404,10 +404,10 @@ mainScene.prototype.setScene = function()
 
     //开始进行人群设置
 
-    var crowd=new Crowd();
-    crowd.obj.visible=false;
-    this.scene.add(crowd.obj);
-    window.crowd=crowd;
+    // var crowd=new Crowd();
+    // crowd.obj.visible=false;
+    // this.scene.add(crowd.obj);
+    // window.crowd=crowd;
     //完成人群设置
 
 

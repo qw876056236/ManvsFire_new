@@ -11,6 +11,7 @@ var Resourceload = function(){
     this.loader = new THREE.GLTFLoader();//模型加载器
     this.resourceList = null;
     this.test=false;//true;//
+    this.count = 0;
 }
 
 Resourceload.prototype.init = function(_this){
@@ -56,6 +57,8 @@ Resourceload.prototype.loadGeometry=function(scene){
                 mesh0.nameFlag=fileName;
                 scope.unitProcess(gltf);
                 scope.object.add(mesh0);
+                scope.count++;
+                $("#loadTime")[0].innerText = scope.count;
                 load();
             });
         }
@@ -78,7 +81,8 @@ Resourceload.prototype.loadGeometry=function(scene){
                         }
                     });
                     scope.resourceList.cullingList.delete(value);
-                    let i = 0;
+                    scope.count--;
+                    $("#loadTime")[0].innerText = scope.count;
                 }
             });
         }
