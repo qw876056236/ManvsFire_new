@@ -190,7 +190,7 @@ mainScene.prototype.start = function()
 
             //self.Fireman.update(self);
 
-            //self.people.update(self);
+            self.people.update(self);
 
         }
         self.pMesh.position.set(document.getElementById("x").value,document.getElementById("y").value,document.getElementById("z").value);
@@ -412,4 +412,9 @@ mainScene.prototype.setScene = function()
 
 
 //endregion
+}
+
+mainScene.prototype.addPeople = function ()
+{
+    this.people.init(this);
 }
