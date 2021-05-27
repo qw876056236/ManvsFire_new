@@ -404,10 +404,10 @@ mainScene.prototype.setScene = function()
 
     //开始进行人群设置
 
-    // var crowd=new Crowd();
-    // crowd.obj.visible=false;
-    // this.scene.add(crowd.obj);
-    // window.crowd=crowd;
+    let crowd=new Crowd();
+    crowd.obj.visible=false;
+    this.scene.add(crowd.obj);
+    window.crowd=crowd;
     //完成人群设置
 
 
