@@ -12,6 +12,7 @@ var Resourceload = function(){
     this.resourceList = null;
     this.test=false;//true;//
     this.count = 0;
+    this.sum = 0;
 }
 
 Resourceload.prototype.init = function(_this){
@@ -41,6 +42,7 @@ Resourceload.prototype.loadGeometry=function(scene){
     load();
     modelCulling();
     cullingCompute();
+    test();
     function load() {
         var fileName=scope.resourceList.getOneModelFileName();
         if(!fileName){//如果当前没有需要加载的几何文件
@@ -83,17 +85,17 @@ Resourceload.prototype.loadGeometry=function(scene){
         {
             let limit = 200;
             if(key>limit) {
-                scene.traverse(function (mesh0) {
-                    if(mesh0.nameFlag === value){
-                        mesh0.parent.remove(mesh0);
+                for(let i =0;i<scope.object.children.length;i++)
+                {
+                    if(scope.object.children[i].nameFlag === value){
+                        scope.object.remove(scope.object.children[i]);
                         let model=scope.resourceList.getModelByName(value);
                         let filename = value.replace("gltf","jpg");
                         let map=scope.resourceList.getMapByName(filename);
                         model.finishLoad = false;
                         map.finishLoad = false;
-
                     }
-                });
+                }
                 scope.resourceList.cullingList.delete(value);
             }
         });
@@ -105,7 +107,7 @@ Resourceload.prototype.loadGeometry=function(scene){
 
     function cullingCompute()
     {
-        $("#loadTime")[0].innerText = scope.object.children.length;
+
         let _scope = scope.resourceList;
         _scope.update();//计算每个模型的inView
         for(let i=0;i<_scope.models.length;i++) {
@@ -130,6 +132,19 @@ Resourceload.prototype.loadGeometry=function(scene){
             cullingCompute();
             clearInterval(myInterval);
         },100);
+    }
+
+    function test()
+    {
+        $("#loadTime")[0].innerText = "实时建筑数量:"+scope.object.children.length;
+        console.log(scope.object.children.length);
+        scope.count++;
+        scope.sum += scope.object.children.length;
+        $("#avg")[0].innerText = "平均建筑数量:"+parseInt(scope.sum/scope.count);
+        let myInterval=setInterval(function () {
+            test();
+            clearInterval(myInterval);
+        },1000);
     }
 }
 
