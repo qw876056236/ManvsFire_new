@@ -44,8 +44,10 @@ class MoveManager{
     }
     #autoRoam=function () {
         var scope=this;
+        let count = 0;
         autoRoam0();
         function autoRoam0(){
+            //if(count%5===1)
             if(!scope.stopFlag)//是否停止自动漫游
                 if(scope.myMakeOneRoamStep.preview(scope.myPreviewflag,scope.avatar,scope.roamPath)) {
                     scope.myPreviewflag++;
@@ -56,6 +58,7 @@ class MoveManager{
                     }
                 }
             requestAnimationFrame(autoRoam0);
+                count++;
         }
     }
     static getArray=function(arr1){//通过平面位置获取输入数据

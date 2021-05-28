@@ -93,7 +93,8 @@ Resourceload.prototype.loadGeometry=function(scene){
                         let filename = value.replace("gltf","jpg");
                         let map=scope.resourceList.getMapByName(filename);
                         model.finishLoad = false;
-                        map.finishLoad = false;
+                        if(map!==undefined)
+                            map.finishLoad = false;
                     }
                 }
                 scope.resourceList.cullingList.delete(value);
