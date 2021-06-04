@@ -1,5 +1,5 @@
 var fireAnimation = function () {
-    fireAnimation.TIME_SCALE = 0.1;
+    fireAnimation.TIME_SCALE = 0.12;
     fireAnimation.SCALE = 0.05;
     fireAnimation.STATE_BEFORE_START = 0;
     fireAnimation.STATE_SPAWN = 1;
@@ -8,8 +8,8 @@ var fireAnimation = function () {
     fireAnimation.STATE_IDLE = 4;
     fireAnimation.BEFORE_INTERVAL = 300 * fireAnimation.TIME_SCALE ;
     fireAnimation.SPAWN_INTERVAL = 400 * fireAnimation.TIME_SCALE ;
-    fireAnimation.SPAWN_DOWN_INTERVAL = 2000 * fireAnimation.TIME_SCALE ;
-    fireAnimation.FLOATING_INTERVAL = 8000 * fireAnimation.TIME_SCALE ;
+    fireAnimation.SPAWN_DOWN_INTERVAL = 1000 * fireAnimation.TIME_SCALE ;
+    fireAnimation.FLOATING_INTERVAL = 4000 * fireAnimation.TIME_SCALE ;
     fireAnimation.IDLE_INTERVAL = 18000 * fireAnimation.TIME_SCALE ;
     /*fireAnimation.SPAWN_DOWN_INTERVAL = 500 * fireAnimation.TIME_SCALE ;
     fireAnimation.FLOATING_INTERVAL = 700 * fireAnimation.TIME_SCALE ;
@@ -148,6 +148,7 @@ fireAnimation.prototype.update = function (deltaTime) {
         mesh.position.set(this.initPos.x + this.distX * t2, mesh.position.y + (t * 0.4 * this.yRatio * timeScale)*fireAnimation.TIME_SCALE, this.initPos.z + this.distZ * t2);
         var scale = t * fireAnimation.SCALE;
         mesh.scale.set(scale, scale, scale);
+        this.instance.setOpacity(0.6);
     }
     else if (this.currentState === fireAnimation.STATE_SPAWN_DOWN) {
         let t2 = (this.currentTime + fireAnimation.SPAWN_INTERVAL) /
@@ -162,7 +163,7 @@ fireAnimation.prototype.update = function (deltaTime) {
             this.posX = mesh.position.x;
             this.posY = mesh.position.y;
             this.posZ = mesh.position.z;
-            this.instance.setFlowRatio(0.5);
+            this.instance.setFlowRatio(0.7);
         }
         mesh.position.set(mesh.position.x + this.randFlyX * timeScale, mesh.position.y + 0.2 * timeScale * fireAnimation.TIME_SCALE, mesh.position.z + this.randFlyZ * timeScale);
         let scale = mesh.scale.x + 0.003 * timeScale * fireAnimation.SCALE;
@@ -173,14 +174,15 @@ fireAnimation.prototype.update = function (deltaTime) {
             this.posX = mesh.position.x;
             this.posY = mesh.position.y;
             this.posZ = mesh.position.z;
-            this.instance.setFlowRatio(0.2);
+            this.instance.setFlowRatio(0.5);
         }
         //mesh.position.set(mesh.position.x + this.randFlyX * timeScale, this.posY + this.currentTime / 100 * fireAnimation.TIME_SCALE, mesh.position.z + this.randFlyZ * timeScale);
         mesh.position.setY(this.posY + this.currentTime / 100 * fireAnimation.TIME_SCALE);
-        /*if (this.currentTime > fireAnimation.IDLE_INTERVAL - 5000) {
-            this.instance.setOpacity(1 - (this.currentTime - (fireAnimation.IDLE_INTERVAL - 5000)) / 5000);
-        }*/
-        let scale = mesh.scale.x + 0.015 * timeScale * fireAnimation.SCALE;
+        if (this.currentTime > fireAnimation.IDLE_INTERVAL - 5000) {
+            this.instance.setOpacity((1 - (this.currentTime - (fireAnimation.IDLE_INTERVAL - 5000)) / 5000) * 0.8);
+        }
+        //let scale = mesh.scale.x + 0.015 * timeScale * fireAnimation.SCALE;
+        let scale = mesh.scale.x - 0.01 * timeScale * fireAnimation.SCALE;
         mesh.scale.set(scale, scale, scale);
     }
     this.setColor();

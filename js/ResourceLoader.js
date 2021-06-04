@@ -11,6 +11,8 @@ var Resourceload = function(){
     this.loader = new THREE.GLTFLoader();//模型加载器
     this.resourceList = null;
     this.test=false;//true;//
+    this.count = 0;
+    this.sum = 0;
 }
 
 Resourceload.prototype.init = function(_this){
@@ -38,11 +40,14 @@ Resourceload.prototype.init = function(_this){
 Resourceload.prototype.loadGeometry=function(scene){
     var scope=this;
     load();
+    modelCulling();
+    cullingCompute();
+    test();
     function load() {
         var fileName=scope.resourceList.getOneModelFileName();
         if(!fileName){//如果当前没有需要加载的几何文件
             updateCameraPre();
-            var myInterval=setInterval(function () {
+            let myInterval=setInterval(function () {
                 if(cameraHasChanged()){//如果相机位置和角度发生了变化
                     load();
                     clearInterval(myInterval);
@@ -59,29 +64,6 @@ Resourceload.prototype.loadGeometry=function(scene){
                 load();
             });
         }
-        //modelCulling();
-        //对多次处于视锥外且已被加载的模型进行剔除
-        function modelCulling()
-        {
-            scope.resourceList.cullingList.forEach(function (key,value)
-            {
-                let limit = 350;
-                if(key>limit) {
-                    scene.traverse(function (mesh0) {
-                        if(mesh0.nameFlag === value){
-                            mesh0.parent.remove(mesh0);
-                            let model=scope.resourceList.getModelByName(value);
-                            let filename = value.replace("gltf","jpg");
-                            let map=scope.resourceList.getMapByName(filename);
-                            model.finishLoad = false;
-                            map.finishLoad = false;
-                        }
-                    });
-                    scope.resourceList.cullingList.delete(value);
-                    let i = 0;
-                }
-            });
-        }
 
         function updateCameraPre(){
             scope.cameraPre.position=scope.camera.position.clone();
@@ -95,6 +77,75 @@ Resourceload.prototype.loadGeometry=function(scene){
                 scope.camera.rotation.y !== scope.cameraPre.rotation.y ||
                 scope.camera.rotation.z !== scope.cameraPre.rotation.z;
         }
+    }
+    //对多次处于视锥外且已被加载的模型进行剔除
+    function modelCulling()
+    {
+        scope.resourceList.cullingList.forEach(function (key,value)
+        {
+            let limit = 200;
+            if(key>limit) {
+                for(let i =0;i<scope.object.children.length;i++)
+                {
+                    if(scope.object.children[i].nameFlag === value){
+                        scope.object.remove(scope.object.children[i]);
+                        let model=scope.resourceList.getModelByName(value);
+                        let filename = value.replace("gltf","jpg");
+                        let map=scope.resourceList.getMapByName(filename);
+                        model.finishLoad = false;
+                        if(map!==undefined)
+                            map.finishLoad = false;
+                    }
+                }
+                scope.resourceList.cullingList.delete(value);
+            }
+        });
+        let myInterval=setInterval(function () {
+            modelCulling();
+            clearInterval(myInterval);
+        },200);
+    }
+
+    function cullingCompute()
+    {
+
+        let _scope = scope.resourceList;
+        _scope.update();//计算每个模型的inView
+        for(let i=0;i<_scope.models.length;i++) {
+
+            if (_scope.models[i].finishLoad) {
+                if (!_scope.models[i].inView) {
+                    if (_scope.cullingList.has(_scope.models[i].fileName)) {
+                        _scope.cullingList.set(_scope.models[i].fileName, _scope.cullingList.get(_scope.models[i].fileName) + 5);
+                    } else
+                        _scope.cullingList.set(_scope.models[i].fileName, 0);
+                } else {
+                    if (_scope.cullingList.has(_scope.models[i].fileName)) {
+                        if (_scope.cullingList.get(_scope.models[i].fileName) === 0)
+                            _scope.cullingList.delete(_scope.models[i].fileName);
+                        else
+                            _scope.cullingList.set(_scope.models[i].fileName, _scope.cullingList.get(_scope.models[i].fileName) - 1);
+                    }
+                }
+            }
+        }
+        let myInterval=setInterval(function () {
+            cullingCompute();
+            clearInterval(myInterval);
+        },100);
+    }
+
+    function test()
+    {
+        $("#loadTime")[0].innerText = "实时建筑数量:"+scope.object.children.length;
+        console.log(scope.object.children.length);
+        scope.count++;
+        scope.sum += scope.object.children.length;
+        $("#avg")[0].innerText = "平均建筑数量:"+parseInt(scope.sum/scope.count);
+        let myInterval=setInterval(function () {
+            test();
+            clearInterval(myInterval);
+        },1000);
     }
 }
 
@@ -202,22 +253,7 @@ ResourceList.prototype.getOneModelFileName=function(){
 
             if(scope.models[i].finishLoad)
             {
-                if(!scope.models[i].inView) {
-                    if (scope.cullingList.has(scope.models[i].fileName)) {
-                        //scope.cullingList[model.fileName]++;
-                        scope.cullingList.set(scope.models[i].fileName,scope.cullingList.get(scope.models[i].fileName)+1);
-                    } else
-                        scope.cullingList.set(scope.models[i].fileName, 0);
-                }
-                else
-                {
-                    if (scope.cullingList.has(scope.models[i].fileName)) {
-                        if(scope.cullingList.get(scope.models[i].fileName) === 0)
-                            scope.cullingList.delete(scope.models[i].fileName);
-                        else
-                            scope.cullingList.set(scope.models[i].fileName,scope.cullingList.get(scope.models[i].fileName)-1);
-                    }
-                }
+
             }
             else if(scope.models[i].inView)
             {

@@ -92,11 +92,11 @@ Underground.prototype.GlbBuilding = function (_this) {
         $("#loadTime")[0].innerText = ((performance.now() - startLoadTime) / 1000).toFixed(2) + "秒";
     });*/
 
-    loadSubwaySync('./light_sub/subway04.glb',43.2,-12.9,270.65).then(function(data){
-        if(data) return loadSubwaySync('./light_sub/subway04.glb',59.6,-12.9,270.65);
-    }).then(() => {
-        $("#loadTime")[0].innerText = ((performance.now() - startLoadTime) / 1000).toFixed(2) + "秒";
-    });
+    // loadSubwaySync('./light_sub/subway04.glb',43.2,-12.9,270.65).then(function(data){
+    //     if(data) return loadSubwaySync('./light_sub/subway04.glb',59.6,-12.9,270.65);
+    // }).then(() => {
+    //     $("#loadTime")[0].innerText = ((performance.now() - startLoadTime) / 1000).toFixed(2) + "秒";
+    // });
 
     //分步加载
     /*this.arr[0] = loadAsync('./light_sub/subwayStation05.glb');
