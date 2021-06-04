@@ -5,7 +5,8 @@ var Sign = function () {
     //this.signMeshArr = [];
     this.signArr1 = []; //B1层标志牌
     this.signArr2 = []; //B2层标志牌
-    this.signInitArr = [//指向，面向，x，y，z
+    this.signInitArr = [//指向direction，面向site，x，y，z
+        //B1
         [1, 1, 41.2, -7.7, 170],
         [3, 1, 41.25, -7.7, 181.7],
         [0, 5, 40, -8.53, 186.8],
@@ -44,8 +45,85 @@ var Sign = function () {
         [2, 2, 61.18, -7.7, 350],
         [2, 2, 61.18, -7.7, 370],
         [2, 4, 56.1, -7.7, 378.95],
+        //B1地面辅助箭头
+        [5, 5, 51, -8.53, 185],
+        [5, 6, 45, -8.53, 272],
+        [5, 7, 51.3, -8.53, 355],
+        //B2
+        [2, 2, 47.7, -12.8, 180.65],
+        [1, 2, 47.7, -12.8, 198],
+        [2, 2, 47.7, -12.8, 217.3],
+        [2, 2, 47.7, -12.8, 230.6],
+        [1, 2, 47.7, -12.8, 245.55],
+        [2, 2, 47.7, -12.8, 265.5],
+        [1, 2, 47.7, -12.8, 282.8],
+        [2, 2, 47.7, -12.8, 291.3],
+        [1, 2, 47.7, -12.8, 309],
+        [2, 2, 47.7, -12.8, 328.1],
+        [1, 2, 47.7, -12.8, 346.1],
+        [1, 2, 47.7, -12.8, 361.5],
+        [2, 1, 54.7, -12.8, 361.5],
+        [2, 1, 54.7, -12.8, 346.1],
+        [1, 1, 54.7, -12.8, 328.1],
+        [2, 1, 54.7, -12.8, 309],
+        [1, 1, 54.7, -12.8, 291.3],
+        [2, 1, 54.7, -12.8, 282.8],
+        [1, 1, 54.7, -12.8, 265.5],
+        [2, 1, 54.7, -12.8, 245.55],
+        [1, 1, 54.7, -12.8, 217.3],
+        [1, 1, 54.7, -12.8, 180.65],
+        [2, 1, 54.7, -12.8, 198],
+        [5, 6, 52.55, -13.36, 335],
+        [5, 6, 52.55, -13.36, 223],
     ];
 
+    /* canvas
+        this.arrowCanvas = document.getElementById("myCanvas");
+        this.arrowCanvas.width = 512;
+        this.arrowCanvas.height = 128;
+        var c = this.arrowCanvas.getContext("2d");
+    // 矩形区域填充背景
+        c.fillStyle = "#000000";
+        c.fillRect(0, 0, 512, 128);
+        c.beginPath();
+
+    //箭头
+        c.fillStyle = "#00FF00";
+        c.beginPath();
+        c.moveTo(60,34);
+        c.lineTo(30,64);
+        c.lineTo(60,94);
+        c.lineTo(60,84);
+        c.lineTo(110,84);
+        c.lineTo(110,84);
+        c.lineTo(110,44);
+        c.lineTo(60,44);
+        c.fill();
+
+        c.fillStyle = "#00FF00";
+        c.beginPath();
+        c.moveTo(452,34);
+        c.lineTo(482,64);
+        c.lineTo(452,94);
+        c.lineTo(452,84);
+        c.lineTo(402,84);
+        c.lineTo(402,84);
+        c.lineTo(402,44);
+        c.lineTo(452,44);
+        c.fill();
+
+    // 文字
+        c.beginPath();
+        c.translate(256,40);
+        c.fillStyle = "#00FF00"; //文本填充颜色
+        c.font = "bold 48px 黑体"; //字体样式设置
+        c.textBaseline = "middle"; //文本与fillText定义的纵坐标
+        c.textAlign = "center"; //文本居中(以fillText定义的横坐标)
+        c.fillText("安全出口", 0, 0);
+        c.fillText("EXIT", 0, 50);
+
+        c.restore();
+        */
 }
 
 
@@ -55,8 +133,10 @@ Sign.prototype.init = function (_this) {
     this.signTextureArr[2] = new THREE.TextureLoader().load('./textures/signimg/right.png');
     this.signTextureArr[3] = new THREE.TextureLoader().load('./textures/signimg/leftup.png');
     this.signTextureArr[4] = new THREE.TextureLoader().load('./textures/signimg/rightup.png');
-
+    this.signTextureArr[5] = new THREE.TextureLoader().load('./textures/signimg/arrow2.png');
+    this.signTextureArr[6] = new THREE.CanvasTexture(this.arrowCanvas);
     this.signGeometry = new THREE.PlaneGeometry(0.9, 0.35);
+    this.arrowGeometry = new THREE.PlaneGeometry(0.7, 0.7);
     /*
     for (i = 0; i < 5; i++) {
         this.signMaterialArr[i] = new THREE.MeshBasicMaterial({
@@ -68,8 +148,13 @@ Sign.prototype.init = function (_this) {
     this.getMesh = function (i) {
         var material = new THREE.MeshBasicMaterial({
             map: this.signTextureArr[i], // 设置纹理贴图
+            //map: this.signTextureArr[6], //canvas贴图
         });
-        return new THREE.Mesh(this.signGeometry, material);
+        if (i == 5) {
+            return new THREE.Mesh(this.arrowGeometry, material);
+        } else {
+            return new THREE.Mesh(this.signGeometry, material);
+        }
     }
 
     this.setSign = function (n, direction, site, x, y, z) {
@@ -124,4 +209,59 @@ Sign.prototype.init = function (_this) {
 
 Sign.prototype.update = function (_this) {
 
+    function initDragControls() {
+        // 添加平移控件
+        this.transformControls = new THREE.TransformControls(_this.camera, _this.renderer.domElement);
+        _this.scene.add(this.transformControls);
+
+        // 过滤不是 Mesh 的物体,例如辅助网格对象
+        var objects = this.signArr1;
+        for (let i = 0; i < _this.scene.children.length; i++) {
+            if (_this.scene.children[i].isMesh) {
+                objects.push(_this.scene.children[i]);
+            }
+        }
+        // 初始化拖拽控件
+        this.dragControls = new THREE.DragControls(objects, _this.camera, _this.renderer.domElement);
+
+        // 鼠标略过事件
+        this.dragControls.addEventListener('hoveron', function (event) {
+            // 让变换控件对象和选中的对象绑定
+            this.transformControls.attach(event.object);
+        });
+        // 开始拖拽
+        this.dragControls.addEventListener('dragstart', function (event) {
+            this.controls.enabled = false;
+        });
+        // 拖拽结束
+        this.dragControls.addEventListener('dragend', function (event) {
+            this.controls.enabled = true;
+        });
+    }
+
+// 初始化
+    function init() {
+        initDragControls();
+        window.addEventListener('resize', onWindowResize, false);
+    }
+
+    function animate() {
+        requestAnimationFrame(animate);
+        _this.renderer.render(_this.scene, _this.camera);
+        this.controls.update();
+    }
+
+    init();
+    animate();
+
+
+    this.controls = new THREE.DragControls(objects, _this.camera, _this.renderer.domElement);
+    this.controls.addEventListener('dragstart', function (event) {
+
+        event.object.material.emissive.set(0xaaaaaa);
+
+    });
+    this.controls.addEventListener('dragend', function (event) {
+        event.object.material.emissive.set(0x000000);
+    });
 }
