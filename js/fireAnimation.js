@@ -7,9 +7,9 @@ var fireAnimation = function () {
     fireAnimation.STATE_FLOATING = 3;
     fireAnimation.STATE_IDLE = 4;
     fireAnimation.BEFORE_INTERVAL = 300 * fireAnimation.TIME_SCALE ;
-    fireAnimation.SPAWN_INTERVAL = 400 * fireAnimation.TIME_SCALE ;
-    fireAnimation.SPAWN_DOWN_INTERVAL = 1000 * fireAnimation.TIME_SCALE ;
-    fireAnimation.FLOATING_INTERVAL = 4000 * fireAnimation.TIME_SCALE ;
+    fireAnimation.SPAWN_INTERVAL = 5000 * fireAnimation.TIME_SCALE ;
+    fireAnimation.SPAWN_DOWN_INTERVAL = 5000 * fireAnimation.TIME_SCALE ;
+    fireAnimation.FLOATING_INTERVAL = 1000 * fireAnimation.TIME_SCALE ;
     fireAnimation.IDLE_INTERVAL = 18000 * fireAnimation.TIME_SCALE ;
     /*fireAnimation.SPAWN_DOWN_INTERVAL = 500 * fireAnimation.TIME_SCALE ;
     fireAnimation.FLOATING_INTERVAL = 700 * fireAnimation.TIME_SCALE ;
@@ -79,7 +79,7 @@ fireAnimation.prototype.setColor = function () {
             colLight: Utils.vec3Blend(this.params.LightColor, this.params.NormalColor, t)
         });
     }
-    else if (tc < 17000 * fireAnimation.TIME_SCALE) {
+    else if (tc < 20000 * fireAnimation.TIME_SCALE) {
         let t = Math.min(1, (tc - 12000 * fireAnimation.TIME_SCALE) / 5000 / fireAnimation.TIME_SCALE);
         this.instance.setColor({
             colDark: Utils.vec3Blend(this.params.DarkColor, this.params.DarkColor, t),
@@ -88,7 +88,7 @@ fireAnimation.prototype.setColor = function () {
         });
     }
     else {
-        let t = Math.min(1, (tc - 17000 * fireAnimation.TIME_SCALE) / 6000 / fireAnimation.TIME_SCALE);
+        let t = Math.min(1, (tc - 20000 * fireAnimation.TIME_SCALE) / 6000 / fireAnimation.TIME_SCALE);
         this.instance.setColor({
             colDark: Utils.vec3Blend(this.params.DarkColor, this.params.GreyColor, t),
             colNormal: Utils.vec3Blend(this.params.DarkColor, this.params.GreyColor, t),
@@ -119,15 +119,17 @@ fireAnimation.prototype.updateState = function (deltaTime) {
         }
     }
     else if (this.currentState === fireAnimation.STATE_FLOATING) {
+        /*this.randFlyX = (Math.random()-0.5) * 0.2 * 0.1;
+        this.randFlyZ = (Math.random()-0.5) * 0.2 * 0.1;*/
         if (cTime > fireAnimation.FLOATING_INTERVAL) {
-            this.randFlyX += Math.random() * 0.2 * 0.2;
-            this.randFlyZ += Math.random() * 0.2 * 0.2;
             cTime -= fireAnimation.FLOATING_INTERVAL;
             this.posX = -1;
             this.currentState = fireAnimation.STATE_IDLE;
         }
     }
     else if (this.currentState === fireAnimation.STATE_IDLE) {
+        /*this.randFlyX += (Math.random()-0.5) * 0.2 * 0.01;
+        this.randFlyZ += (Math.random()-0.5) * 0.2 * 0.01;*/
         if (cTime > fireAnimation.IDLE_INTERVAL) {
             this.isObjDie = true;
         }
@@ -157,6 +159,8 @@ fireAnimation.prototype.update = function (deltaTime) {
             ((0.6 * timeScale *
                 (1 - this.currentTime / fireAnimation.SPAWN_DOWN_INTERVAL) +
                 0.2 * timeScale) * this.yRatio)*fireAnimation.TIME_SCALE, this.initPos.z + this.distZ * t2);
+       /* var scale = t2 * fireAnimation.SCALE;
+        mesh.scale.set(scale, scale, scale);*/
     }
     else if (this.currentState === fireAnimation.STATE_FLOATING) {
         if (this.posX === -1) {
@@ -177,9 +181,11 @@ fireAnimation.prototype.update = function (deltaTime) {
             this.instance.setFlowRatio(0.5);
         }
         //mesh.position.set(mesh.position.x + this.randFlyX * timeScale, this.posY + this.currentTime / 100 * fireAnimation.TIME_SCALE, mesh.position.z + this.randFlyZ * timeScale);
-        mesh.position.setY(this.posY + this.currentTime / 100 * fireAnimation.TIME_SCALE);
+        mesh.position.setY(this.posY + this.currentTime / 6000 / fireAnimation.TIME_SCALE);
+        mesh.position.setX(this.posX+(this.initPos.x-mesh.position.x)*this.currentTime / 24000/ fireAnimation.TIME_SCALE);
+        mesh.position.setZ(this.posZ+(this.initPos.z-mesh.position.z)*this.currentTime / 24000 / fireAnimation.TIME_SCALE);
         if (this.currentTime > fireAnimation.IDLE_INTERVAL - 5000) {
-            this.instance.setOpacity((1 - (this.currentTime - (fireAnimation.IDLE_INTERVAL - 5000)) / 5000) * 0.8);
+            this.instance.setOpacity((1 - (this.currentTime - (fireAnimation.IDLE_INTERVAL - 5000)) / 5000) * 1);
         }
         //let scale = mesh.scale.x + 0.015 * timeScale * fireAnimation.SCALE;
         let scale = mesh.scale.x - 0.01 * timeScale * fireAnimation.SCALE;

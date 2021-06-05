@@ -130,7 +130,6 @@ mainScene.prototype.init = function()
 
     //region 火
     this.fire.init(this);
-    console.log(this.fire.spawnTime);
     //endregion
 
     //region场景加载
