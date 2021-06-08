@@ -94,7 +94,7 @@ fireControl.prototype.spawnNewFlame = function ()
         let temp = new fire();
         temp.init(Math.random() * 5 + 8)
         let obj = new fireAnimation();
-        obj.init(temp, (Math.random() * 2 - 1)*0.2, (Math.random() * 2 - 1)*0.2, (Math.random() * 0.4 + 0.35) / 4, Math.random() * 0.4 + 0.3,this.pos);
+        obj.init(temp, (Math.random() * 2 - 1)*0.05, (Math.random() * 2 - 1)*0.05, (Math.random() * 0.4 + 0.35) / 4, Math.random() * 0.4 + 0.3,this.pos);
         obj.instance.setColor(this.currentCol);
         this.objs.push(obj);
         this.scene.add(this.objs[i].instance.getMesh());
@@ -112,9 +112,9 @@ fireControl.prototype.update = function (deltaTime)
     if(this.finished) {
         let timeScale = this.params.TimeScale;
         this.spawnTime += deltaTime * timeScale;
-        if (this.spawnTime > 30) {
-            while (this.spawnTime > 30)
-                this.spawnTime -= 30;
+        if (this.spawnTime > 50) {
+            while (this.spawnTime > 50)
+                this.spawnTime -= 50;
             this.spawnNewFlame();
         }
         for (let i = 0; i < this.objs.length; i++) {
