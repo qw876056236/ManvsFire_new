@@ -193,7 +193,7 @@ mainScene.prototype.start = function()
             //self.people.update(self);
 
         }
-        self.pMesh.position.set(document.getElementById("x").value,document.getElementById("y").value,document.getElementById("z").value);
+        //self.pMesh.position.set(document.getElementById("x").value,document.getElementById("y").value,document.getElementById("z").value);
 
 
         TWEEN.update();
@@ -204,6 +204,8 @@ mainScene.prototype.start = function()
         self.renderer.clear();
         self.renderer.setViewport(0, 0, window.innerWidth, window.innerHeight);
         self.renderer.render(self.scene, self.camera);
+        $("#view_pos")[0].innerText = "当前坐标："+parseInt(self.camera.position.x).toString()+","+parseInt(self.camera.position.y).toString()+","+parseInt(self.camera.position.z).toString();
+
     }
 }
 

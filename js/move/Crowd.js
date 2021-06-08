@@ -25,20 +25,20 @@ class Crowd{//将PM和实例化渲染结合起来
             scope.people.positionSet(10, [58.91-10,-8.54,181.01+5]);
             scope.people.positionSet(11, [59.78-10,-8.54,159.48]+5);
 
-            var loader = new THREE.XHRLoader(THREE.DefaultLoadingManager);
-            loader.load("grid.json", function(str){//dataTexture
-                var grid0=JSON.parse(str).grid;
-                loader.load("grid_1.json", function(str1){//dataTexture
-                    var grid1=JSON.parse(str1).grid;//"./Model/avatar/male_run.glb",
-                    for(var kkk=0;kkk<scope.people.instanceCount;kkk++)
-                        new PeopleController().init({
-                            myMain:scope.people,
-                            obstacle0:grid0,
-                            obstacle1:grid1,
-                            people_index:kkk
-                        });
-                });
-            });
+            // var loader = new THREE.XHRLoader(THREE.DefaultLoadingManager);
+            // loader.load("grid.json", function(str){//dataTexture
+            //     var grid0=JSON.parse(str).grid;
+            //     loader.load("grid_1.json", function(str1){//dataTexture
+            //         var grid1=JSON.parse(str1).grid;//"./Model/avatar/male_run.glb",
+            //         for(var kkk=0;kkk<scope.people.instanceCount;kkk++)
+            //             new PeopleController().init({
+            //                 myMain:scope.people,
+            //                 obstacle0:grid0,
+            //                 obstacle1:grid1,
+            //                 people_index:kkk
+            //             });
+            //     });
+            // });
         })
     }
     init=function(number,config) {

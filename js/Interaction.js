@@ -13,25 +13,25 @@ var Interaction = function ()
 //todo 房屋加载
 Interaction.prototype.fuc1 = function (_this)
 {
-    document.getElementById('escapeDoor1').addEventListener('click',function (event) {
-        _this.camera.position.set(60,0,175);
-        _this.freeViewControl.center.set(416,22,7);
-        _this.camera.rotation.set(-2.8,0.7,2.9);
-    });
-
-    document.getElementById('escapeDoor2').addEventListener('click',function (event) {
-        _this.camera.position.set(45,-2,265);
-        _this.freeViewControl.center.set(554,22,46);
-        _this.camera.rotation.set(-2.5,-1.1,-2.5);
-    });
-    document.getElementById('escapeDoor3').addEventListener('click',function (event) {
-        _this.camera.position.set(51,5.6,305);
-        _this.freeViewControl.center.set(548,22,6);
-        _this.camera.rotation.set(-2.5,0.6,2.8);
-    });
-    document.getElementById('WebGL-output').addEventListener('click',function(event){
-        _this.freeViewControl.autoRotate=false;
-    });
+    // document.getElementById('escapeDoor1').addEventListener('click',function (event) {
+    //     _this.camera.position.set(60,0,175);
+    //     _this.freeViewControl.center.set(416,22,7);
+    //     _this.camera.rotation.set(-2.8,0.7,2.9);
+    // });
+    //
+    // document.getElementById('escapeDoor2').addEventListener('click',function (event) {
+    //     _this.camera.position.set(45,-2,265);
+    //     _this.freeViewControl.center.set(554,22,46);
+    //     _this.camera.rotation.set(-2.5,-1.1,-2.5);
+    // });
+    // document.getElementById('escapeDoor3').addEventListener('click',function (event) {
+    //     _this.camera.position.set(51,5.6,305);
+    //     _this.freeViewControl.center.set(548,22,6);
+    //     _this.camera.rotation.set(-2.5,0.6,2.8);
+    // });
+    // document.getElementById('WebGL-output').addEventListener('click',function(event){
+    //     _this.freeViewControl.autoRotate=false;
+    // });
 
     // document.getElementById('floor1').addEventListener('click',function(event)
     // {
@@ -43,29 +43,29 @@ Interaction.prototype.fuc1 = function (_this)
     // });
 
     //上层 视角控制 加载
-    document.getElementById('floor1').addEventListener('click',function(event)
-    {
-        //设置视角是一层 触发改变
-        _this.camera_status = _this.Cameracontroller.setenum.floor1;
-        //设定视角具体数值
-        _this.camera.position.set(60,3,146);
-        ///console.log(_this.camera);
-        ///console.log(_this.freeViewControl);
-        ///console.log(_this.camControl);
-    });
-
-    document.getElementById('floor2').addEventListener('click',function(event)
-    {
-        //设置视角是二层 触发改变
-        _this.camera_status = _this.Cameracontroller.setenum.floor2;
-        //设定视角具体数值
-        _this.camera.position.set(589,14,18);
-
-        ///console.log(_this.camera);
-        ///console.log(_this.freeViewControl);
-
-        ///console.log(_this.camControl);
-    });
+    // document.getElementById('floor1').addEventListener('click',function(event)
+    // {
+    //     //设置视角是一层 触发改变
+    //     _this.camera_status = _this.Cameracontroller.setenum.floor1;
+    //     //设定视角具体数值
+    //     _this.camera.position.set(60,3,146);
+    //     ///console.log(_this.camera);
+    //     ///console.log(_this.freeViewControl);
+    //     ///console.log(_this.camControl);
+    // });
+    //
+    // document.getElementById('floor2').addEventListener('click',function(event)
+    // {
+    //     //设置视角是二层 触发改变
+    //     _this.camera_status = _this.Cameracontroller.setenum.floor2;
+    //     //设定视角具体数值
+    //     _this.camera.position.set(589,14,18);
+    //
+    //     ///console.log(_this.camera);
+    //     ///console.log(_this.freeViewControl);
+    //
+    //     ///console.log(_this.camControl);
+    // });
 
 
 
@@ -687,79 +687,79 @@ Interaction.prototype.fuc4 = function (_this)
 Interaction.prototype.fuc5 = function (_this)
 {
 
-    $("#view_pos").html('        <button  id="view_pos" class="btn btn-default btn-lg">视角坐标</button>\n');
-    $("#mesh_pos").html('        <button  id="mesh_pos" class="btn btn-default btn-lg">建筑坐标</button>\n');
-    $("#flag").html('        <button  id="flag" class="btn btn-default btn-lg">X</button>\n');
-    $("#_flag").html('        <button  id="flag" class="btn btn-default btn-lg">subway</button>\n');
-    $("#x_1").html('        <button  id="x_1" class="btn btn-default btn-lg">坐标+1</button>\n');
-    $("#x_2").html('        <button  id="x_2" class="btn btn-default btn-lg">坐标-1</button>\n');
-    $("#x_3").html('        <button  id="x_3" class="btn btn-default btn-lg">坐标+10</button>\n');
-    $("#x_4").html('        <button  id="x_4" class="btn btn-default btn-lg">坐标-10</button>\n');
+    // $("#view_pos").html('        <button  id="view_pos" class="btn btn-default btn-lg">视角坐标</button>\n');
+    // $("#mesh_pos").html('        <button  id="mesh_pos" class="btn btn-default btn-lg">建筑坐标</button>\n');
+    // $("#flag").html('        <button  id="flag" class="btn btn-default btn-lg">X</button>\n');
+    // $("#_flag").html('        <button  id="flag" class="btn btn-default btn-lg">subway</button>\n');
+    // $("#x_1").html('        <button  id="x_1" class="btn btn-default btn-lg">坐标+1</button>\n');
+    // $("#x_2").html('        <button  id="x_2" class="btn btn-default btn-lg">坐标-1</button>\n');
+    // $("#x_3").html('        <button  id="x_3" class="btn btn-default btn-lg">坐标+10</button>\n');
+    // $("#x_4").html('        <button  id="x_4" class="btn btn-default btn-lg">坐标-10</button>\n');
 
-    var flag = 'x';
-    //var _flag =_this.underground.subway;
-    document.getElementById('flag').addEventListener('click',function (event)
-    {
-        if(flag==='x')
-        {
-            flag = 'y';
-            $("#flag").html('        <button  id="flag" class="btn btn-default btn-lg">Y</button>\n');
-        }
-        else if(flag==='y')
-        {
-            flag = 'z';
-            $("#flag").html('        <button  id="flag" class="btn btn-default btn-lg">Z</button>\n');
-        }
-        else if(flag==='z')
-        {
-            flag = 'x';
-            $("#flag").html('        <button  id="flag" class="btn btn-default btn-lg">X</button>\n');
-        }
+    // var flag = 'x';
+    // //var _flag =_this.underground.subway;
+    // document.getElementById('flag').addEventListener('click',function (event)
+    // {
+    //     if(flag==='x')
+    //     {
+    //         flag = 'y';
+    //         $("#flag").html('        <button  id="flag" class="btn btn-default btn-lg">Y</button>\n');
+    //     }
+    //     else if(flag==='y')
+    //     {
+    //         flag = 'z';
+    //         $("#flag").html('        <button  id="flag" class="btn btn-default btn-lg">Z</button>\n');
+    //     }
+    //     else if(flag==='z')
+    //     {
+    //         flag = 'x';
+    //         $("#flag").html('        <button  id="flag" class="btn btn-default btn-lg">X</button>\n');
+    //     }
+    //
+    // });
 
-    });
+    // document.getElementById('_flag').addEventListener('click',function (event)
+    // {
+    //     if(_flag===_this.underground.subway)
+    //     {
+    //         _flag =_this.underground.rail;
+    //         $("#_flag").html('        <button  id="flag" class="btn btn-default btn-lg">rail</button>\n');
+    //     }
+    //     else
+    //     {
+    //         _flag =_this.underground.subway;
+    //         $("#_flag").html('        <button  id="flag" class="btn btn-default btn-lg">subway</button>\n');
+    //     }
+    //
+    // });
 
-    document.getElementById('_flag').addEventListener('click',function (event)
-    {
-        if(_flag===_this.underground.subway)
-        {
-            _flag =_this.underground.rail;
-            $("#_flag").html('        <button  id="flag" class="btn btn-default btn-lg">rail</button>\n');
-        }
-        else
-        {
-            _flag =_this.underground.subway;
-            $("#_flag").html('        <button  id="flag" class="btn btn-default btn-lg">subway</button>\n');
-        }
-
-    });
-
-    document.getElementById('x_1').addEventListener('click',function (event)
-    {
-        change(0.1);
-    });
-    document.getElementById('x_2').addEventListener('click',function (event) {
-        change(-0.1);
-});
-    document.getElementById('x_3').addEventListener('click',function (event) {
-        change(10);
-});
-    document.getElementById('x_4').addEventListener('click',function (event) {
-        change(-10);
-    });
-    document.getElementById('mesh_pos').addEventListener('click',function (event) {
-
-        var output = _flag.position.x.toString()+","+_flag.position.y.toString()+","+_flag.position.z.toString();
-        alert(output);
-    });
-    document.getElementById('view_pos').addEventListener('click',function(event)
-    {
-        var output = _this.camera.position.x.toString()+","+_this.camera.position.y.toString()+","+_this.camera.position.z.toString();
-        alert(output);
-        ///console.log(_this.camera.position);
-        ///console.log(_this.camera);
-        ///console.log(_this.freeViewControl);
-        ///console.log(_this.camControl);
-    });
+//     document.getElementById('x_1').addEventListener('click',function (event)
+//     {
+//         change(0.1);
+//     });
+//     document.getElementById('x_2').addEventListener('click',function (event) {
+//         change(-0.1);
+// });
+//     document.getElementById('x_3').addEventListener('click',function (event) {
+//         change(10);
+// });
+//     document.getElementById('x_4').addEventListener('click',function (event) {
+//         change(-10);
+//     });
+//     document.getElementById('mesh_pos').addEventListener('click',function (event) {
+//
+//         var output = _flag.position.x.toString()+","+_flag.position.y.toString()+","+_flag.position.z.toString();
+//         alert(output);
+//     });
+//     document.getElementById('view_pos').addEventListener('click',function(event)
+//     {
+//         var output = _this.camera.position.x.toString()+","+_this.camera.position.y.toString()+","+_this.camera.position.z.toString();
+//         alert(output);
+//         ///console.log(_this.camera.position);
+//         ///console.log(_this.camera);
+//         ///console.log(_this.freeViewControl);
+//         ///console.log(_this.camControl);
+//     });
 
     function change(num)
     {
