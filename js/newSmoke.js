@@ -272,9 +272,13 @@ Smoke.prototype.update = function(_this)
     self.nowVolume = 0;
     self.smokeFloorArr.forEach(function(smokeFloor){
         self.exhaustVolume += smokeFloor.exhaustVolume;
-        smokeFloor.smokeBayArr.forEach(function(smokeBay){
-            self.nowVolume += smokeBay.sumVolume;
-        })
+        if(smokeFloor.stage==1){
+            smokeFloor.smokeBayArr.forEach(function(smokeBay){
+                self.nowVolume += smokeBay.sumVolume;
+            })
+        }else if(smokeFloor.stage==2)
+            self.nowVolume += smokeFloor.smokeVolume;
+
     })
     //console.log(this.smokeUnitArr)
     //this.cloudArr[1].position.y -=0.001;
