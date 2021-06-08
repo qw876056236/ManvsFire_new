@@ -76,13 +76,13 @@ Interaction.prototype.fuc2 = function (_this)
     var self = this;
     document.getElementById('startRun').addEventListener('click',function (event)
     {
-
-        document.getElementById("active").style.display = "inline-block";
         document.getElementById("startRun").style.display = "none";
-        document.getElementById("transformSmoke").style.display = "none";
-        document.getElementById("createPersonBtn").style.display = "none";
-        document.getElementById("fireman").style.display = "inline-block";
-        document.getElementById("floor-menu").style.display = "inline-block";
+
+        // document.getElementById("active").style.display = "inline-block";
+        // document.getElementById("transformSmoke").style.display = "none";
+        // document.getElementById("createPersonBtn").style.display = "none";
+        // document.getElementById("fireman").style.display = "inline-block";
+        // document.getElementById("floor-menu").style.display = "inline-block";
 
         window.testFlag=12;
         window.crowd.obj.visible=true;
@@ -108,11 +108,7 @@ Interaction.prototype.fuc2 = function (_this)
         _this.globalPlane.set(new THREE.Vector3(0, -1, 0), 17);
         _this.smoke.firePos = _this.smoke.positionBallMesh.position;
         _this.smoke.positionBallMesh.visible=false;
-        _this.people.positionPlaneMesh_1.visible=false;
-        _this.people.positionPlaneMesh_2.visible=false;
-        _this.people.positionPlaneMesh_3.visible=false;
-        _this.people.positionPlaneMesh_4.visible=false;
-        _this.people.positionPlaneMesh_5.visible=false;
+
         _this.smoke.clock.start();
         //_this.smoke.cloudRank();
         //fire必须在smoke之前set
@@ -188,278 +184,278 @@ Interaction.prototype.fuc3 = function (MainScene)
         return document.getElementById(_);
     };
 
-    $('createPersonBtn').addEventListener('click',function (event)
-    {
-        $('person-slider').style.display = 'none';
-        $('people-number').style.display = 'none';
-        $('people-text').style.display = 'none';
-        $('Menu').style.display = 'block';
+    // $('createPersonBtn').addEventListener('click',function (event)
+    // {
+    //     $('person-slider').style.display = 'none';
+    //     $('people-number').style.display = 'none';
+    //     $('people-text').style.display = 'none';
+    //     $('Menu').style.display = 'block';
+    //
+    //
+    //     $('freeView').click();
+    //     if(!MainScene.isEdit){
+    //         $("startRun").style.display="none";
+    //         $("floor-menu").style.display = "none";
+    //         $('View').style.display = "none";
+    //         $('transformSmoke').style.display = "none";
+    //         $("fire-menu").style.display = "none";
+    //         $("switch").style.display="inline-block";
+    //         $('createPersonBtn').textContent="返回";
+    //         $('illustration-context').innerHTML = "您已进入人群编辑页面，请通过拖动屏幕上的坐标轴使其成半透明效果，以选择人群位置，点击切换按钮可以缩放人群区域面积。在编辑完毕后，请点击“返回”以退出编辑模式"
+    //
+    //         var number=Number($('people-number').textContent);
+    //         MainScene.number=number;
+    //         Utils.loading(1000);
+    //         //MainScene.Path.createNav(MainScene);
+    //         Utils.loading(500);
+    //         MainScene.addPeople();
+    //         //MainScene.smoke.smokeStart(MainScene);
+    //
+    //         MainScene.camera.position.set(50, 80, 240);//原x为150 450
+    //         MainScene.camera.lookAt(50, 0, 240);
+    //         MainScene.globalPlane.constant = 17;
+    //         MainScene.globalPlane.set(new THREE.Vector3(0, -1, 0), 17);
+    //         MainScene.isEdit = true;
+    //
+    //         MainScene.extinguisherControl_1.attach(MainScene.people.positionPlaneMesh_1);
+    //         MainScene.extinguisherControl_1.visible = true;
+    //         MainScene.people.positionPlaneMesh_1.visible=true;
+    //         MainScene.extinguisherControl_2.attach(MainScene.people.positionPlaneMesh_2);
+    //         MainScene.extinguisherControl_2.visible = true;
+    //         MainScene.people.positionPlaneMesh_2.visible=true;
+    //         MainScene.extinguisherControl_3.attach(MainScene.people.positionPlaneMesh_3);
+    //         MainScene.extinguisherControl_3.visible = true;
+    //         MainScene.people.positionPlaneMesh_3.visible=true;
+    //         MainScene.extinguisherControl_4.attach(MainScene.people.positionPlaneMesh_4);
+    //         MainScene.extinguisherControl_4.visible = true;
+    //         MainScene.people.positionPlaneMesh_4.visible=true;
+    //         MainScene.extinguisherControl_5.attach(MainScene.people.positionPlaneMesh_5);
+    //         MainScene.extinguisherControl_5.visible = true;
+    //         MainScene.people.positionPlaneMesh_5.visible=true;
+    //
+    //     } else{
+    //         $("startRun").style.display="inline-block";
+    //         $("floor-menu").style.display="none";
+    //         $('transformSmoke').style.display = "block";
+    //         $('View').style.display = "inline-block";
+    //         $("fire-menu").style.display = "none";
+    //         $("switch").style.display="none";
+    //         $('createPersonBtn').textContent="编辑人群";
+    //         $('illustration-context').innerHTML = "<p>您已成功选取人群排布</p>" + "<p>若想编辑烟雾请点击“编辑烟雾”,否则点击“开始模拟”</p>";
+    //
+    //         //音效
+    //         var audioLoader = new THREE.AudioLoader();
+    //         audioLoader.load('audio/noisy.wav',function( buffer ) {
+    //             MainScene.noisySound.setBuffer( buffer );
+    //             MainScene.noisySound.setLoop(true);
+    //             MainScene.noisySound.setVolume(0.5);
+    //             MainScene.noisySound.play();
+    //         });
+    //         /*人物分布测试用
+    //         console.log(MainScene.people.positionPlaneMesh_1.position.x, MainScene.people.positionPlaneMesh_1.position.z, Math.abs(MainScene.people.positionPlaneMesh_1.scale.x * 5), Math.abs(MainScene.people.positionPlaneMesh_1.scale.z * 10));
+    //         console.log(MainScene.people.positionPlaneMesh_2.position.x, MainScene.people.positionPlaneMesh_2.position.z, Math.abs(MainScene.people.positionPlaneMesh_2.scale.x * 5), Math.abs(MainScene.people.positionPlaneMesh_2.scale.z * 10));
+    //         console.log(MainScene.people.positionPlaneMesh_3.position.x, MainScene.people.positionPlaneMesh_3.position.z, Math.abs(MainScene.people.positionPlaneMesh_3.scale.x * 5), Math.abs(MainScene.people.positionPlaneMesh_3.scale.z * 10));
+    //         console.log(MainScene.people.positionPlaneMesh_4.position.x, MainScene.people.positionPlaneMesh_4.position.z, Math.abs(MainScene.people.positionPlaneMesh_4.scale.x * 5), Math.abs(MainScene.people.positionPlaneMesh_4.scale.z * 10));
+    //         console.log(MainScene.people.positionPlaneMesh_5.position.x, MainScene.people.positionPlaneMesh_5.position.z, Math.abs(MainScene.people.positionPlaneMesh_5.scale.x * 5), Math.abs(MainScene.people.positionPlaneMesh_5.scale.z * 10));
+    //         */
+    //         MainScene.camera.position.set(60,3,146);
+    //         MainScene.camera.rotation.set(-2.8,0.7,2.9);
+    //         //MainScene.camera.lookAt(50, 0, 240);
+    //         MainScene.globalPlane.constant = 17;
+    //         MainScene.globalPlane.set(new THREE.Vector3(0, -1, 0), 17);
+    //         //MainScene.globalPlane.constant=100000;
+    //         MainScene.isEdit = false;
+    //         MainScene.extinguisherControl_1.attach();
+    //         MainScene.extinguisherControl_1.visible = false;
+    //         MainScene.people.positionPlaneMesh_1.visible=false;
+    //         MainScene.extinguisherControl_2.attach();
+    //         MainScene.extinguisherControl_2.visible = false;
+    //         MainScene.people.positionPlaneMesh_2.visible=false;
+    //         MainScene.extinguisherControl_3.attach();
+    //         MainScene.extinguisherControl_3.visible = false;
+    //         MainScene.people.positionPlaneMesh_3.visible=false;
+    //         MainScene.extinguisherControl_4.attach();
+    //         MainScene.extinguisherControl_4.visible = false;
+    //         MainScene.people.positionPlaneMesh_4.visible=false;
+    //         MainScene.extinguisherControl_5.attach();
+    //         MainScene.extinguisherControl_5.visible = false;
+    //         MainScene.people.positionPlaneMesh_5.visible=false;
+    //
+    //         // MainScene.people.groupRun.forEach(child => {
+    //         //     child.visible = true;
+    //         //     child.position.y = -8.5;
+    //         //     var num_1 = Math.floor(Math.random() * 2 + 1);
+    //         //     var num_2 = Math.floor(Math.random() * 2 + 1);
+    //         //     if (num_1 ===1) {
+    //         //         if (num_2 === 1) {
+    //         //             child.position.x = MainScene.people.positionPlaneMesh_1.position.x + Math.random() * Math.abs(MainScene.people.positionPlaneMesh_1.scale.x)*5;
+    //         //             child.position.z = MainScene.people.positionPlaneMesh_1.position.z + Math.random() * Math.abs(MainScene.people.positionPlaneMesh_1.scale.z)*10;
+    //         //         }
+    //         //         else{
+    //         //             child.position.x = MainScene.people.positionPlaneMesh_1.position.x + Math.random() * Math.abs(MainScene.people.positionPlaneMesh_1.scale.x)*5;
+    //         //             child.position.z = MainScene.people.positionPlaneMesh_1.position.z - Math.random() * Math.abs(MainScene.people.positionPlaneMesh_1.scale.z)*10;
+    //         //         }
+    //         //     }
+    //         //     else {
+    //         //         if (num_2 === 1) {
+    //         //             child.position.x = MainScene.people.positionPlaneMesh_1.position.x - Math.random() * Math.abs(MainScene.people.positionPlaneMesh_1.scale.x)*5;
+    //         //             child.position.z = MainScene.people.positionPlaneMesh_1.position.z + Math.random() * Math.abs(MainScene.people.positionPlaneMesh_1.scale.z)*10;
+    //         //         }
+    //         //         else{
+    //         //             child.position.x = MainScene.people.positionPlaneMesh_1.position.x - Math.random() * Math.abs(MainScene.people.positionPlaneMesh_1.scale.x)*5;
+    //         //             child.position.z = MainScene.people.positionPlaneMesh_1.position.z - Math.random() * Math.abs(MainScene.people.positionPlaneMesh_1.scale.z)*10;
+    //         //         }
+    //         //     }
+    //         // });
+    //         // MainScene.people.groupWalk.forEach(child => {
+    //         //     child.visible = true;
+    //         //     child.position.y = -8.5;
+    //         //     var num_1 = Math.floor(Math.random() * 2 + 1);
+    //         //     var num_2 = Math.floor(Math.random() * 2 + 1);
+    //         //     if (num_1 ===1) {
+    //         //         if (num_2 === 1) {
+    //         //             child.position.x = MainScene.people.positionPlaneMesh_2.position.x + Math.random() * Math.abs(MainScene.people.positionPlaneMesh_2.scale.x)*5;
+    //         //             child.position.z = MainScene.people.positionPlaneMesh_2.position.z + Math.random() * Math.abs(MainScene.people.positionPlaneMesh_2.scale.z)*10;
+    //         //         }
+    //         //         else{
+    //         //             child.position.x = MainScene.people.positionPlaneMesh_2.position.x + Math.random() * Math.abs(MainScene.people.positionPlaneMesh_2.scale.x)*5;
+    //         //             child.position.z = MainScene.people.positionPlaneMesh_2.position.z - Math.random() * Math.abs(MainScene.people.positionPlaneMesh_2.scale.z)*10;
+    //         //         }
+    //         //     }
+    //         //     else {
+    //         //         if (num_2 === 1) {
+    //         //             child.position.x = MainScene.people.positionPlaneMesh_2.position.x - Math.random() * Math.abs(MainScene.people.positionPlaneMesh_2.scale.x)*5;
+    //         //             child.position.z = MainScene.people.positionPlaneMesh_2.position.z + Math.random() * Math.abs(MainScene.people.positionPlaneMesh_2.scale.z)*10;
+    //         //         }
+    //         //         else{
+    //         //             child.position.x = MainScene.people.positionPlaneMesh_2.position.x - Math.random() * Math.abs(MainScene.people.positionPlaneMesh_2.scale.x)*5;
+    //         //             child.position.z = MainScene.people.positionPlaneMesh_2.position.z - Math.random() * Math.abs(MainScene.people.positionPlaneMesh_2.scale.z)*10;
+    //         //         }
+    //         //     }
+    //         // });
+    //         // MainScene.people.groupBend.forEach(child => {
+    //         //     child.visible = true;
+    //         //     child.position.y = -8.5;
+    //         //     var num_1 = Math.floor(Math.random() * 2 + 1);
+    //         //     var num_2 = Math.floor(Math.random() * 2 + 1);
+    //         //     if (num_1 ===1) {
+    //         //         if (num_2 === 1) {
+    //         //             child.position.x = MainScene.people.positionPlaneMesh_3.position.x + Math.random() * Math.abs(MainScene.people.positionPlaneMesh_3.scale.x)*5;
+    //         //             child.position.z = MainScene.people.positionPlaneMesh_3.position.z + Math.random() * Math.abs(MainScene.people.positionPlaneMesh_3.scale.z)*10;
+    //         //         }
+    //         //         else{
+    //         //             child.position.x = MainScene.people.positionPlaneMesh_3.position.x + Math.random() * Math.abs(MainScene.people.positionPlaneMesh_3.scale.x)*5;
+    //         //             child.position.z = MainScene.people.positionPlaneMesh_3.position.z - Math.random() * Math.abs(MainScene.people.positionPlaneMesh_3.scale.z)*10;
+    //         //         }
+    //         //     }
+    //         //     else {
+    //         //         if (num_2 === 1) {
+    //         //             child.position.x = MainScene.people.positionPlaneMesh_3.position.x - Math.random() * Math.abs(MainScene.people.positionPlaneMesh_3.scale.x)*5;
+    //         //             child.position.z = MainScene.people.positionPlaneMesh_3.position.z + Math.random() * Math.abs(MainScene.people.positionPlaneMesh_3.scale.z)*10;
+    //         //         }
+    //         //         else{
+    //         //             child.position.x = MainScene.people.positionPlaneMesh_3.position.x - Math.random() * Math.abs(MainScene.people.positionPlaneMesh_3.scale.x)*5;
+    //         //             child.position.z = MainScene.people.positionPlaneMesh_3.position.z - Math.random() * Math.abs(MainScene.people.positionPlaneMesh_3.scale.z)*10;
+    //         //         }
+    //         //     }
+    //         // });
+    //         // MainScene.people.groupCrawl.forEach(child => {
+    //         //     child.visible = true;
+    //         //     child.position.y = -8.5;
+    //         //     var num_1 = Math.floor(Math.random() * 2 + 1);
+    //         //     var num_2 = Math.floor(Math.random() * 2 + 1);
+    //         //     if (num_1 ===1) {
+    //         //         if (num_2 === 1) {
+    //         //             child.position.x = MainScene.people.positionPlaneMesh_4.position.x + Math.random() * Math.abs(MainScene.people.positionPlaneMesh_4.scale.x)*5;
+    //         //             child.position.z = MainScene.people.positionPlaneMesh_4.position.z + Math.random() * Math.abs(MainScene.people.positionPlaneMesh_4.scale.z)*10;
+    //         //         }
+    //         //         else{
+    //         //             child.position.x = MainScene.people.positionPlaneMesh_4.position.x + Math.random() * Math.abs(MainScene.people.positionPlaneMesh_4.scale.x)*5;
+    //         //             child.position.z = MainScene.people.positionPlaneMesh_4.position.z - Math.random() * Math.abs(MainScene.people.positionPlaneMesh_4.scale.z)*10;
+    //         //         }
+    //         //     }
+    //         //     else {
+    //         //         if (num_2 === 1) {
+    //         //             child.position.x = MainScene.people.positionPlaneMesh_4.position.x - Math.random() * Math.abs(MainScene.people.positionPlaneMesh_4.scale.x)*5;
+    //         //             child.position.z = MainScene.people.positionPlaneMesh_4.position.z + Math.random() * Math.abs(MainScene.people.positionPlaneMesh_4.scale.z)*10;
+    //         //         }
+    //         //         else{
+    //         //             child.position.x = MainScene.people.positionPlaneMesh_4.position.x - Math.random() * Math.abs(MainScene.people.positionPlaneMesh_4.scale.x)*5;
+    //         //             child.position.z = MainScene.people.positionPlaneMesh_4.position.z - Math.random() * Math.abs(MainScene.people.positionPlaneMesh_4.scale.z)*10;
+    //         //         }
+    //         //     }
+    //         // });
+    //         // MainScene.people.groupIdle.forEach(child => {
+    //         //     child.visible = true;
+    //         //     child.position.y = -8.5;
+    //         //     var num_1 = Math.floor(Math.random() * 2 + 1);
+    //         //     var num_2 = Math.floor(Math.random() * 2 + 1);
+    //         //     if (num_1 ===1) {
+    //         //         if (num_2 === 1) {
+    //         //             child.position.x = MainScene.people.positionPlaneMesh_5.position.x + Math.random() * Math.abs(MainScene.people.positionPlaneMesh_5.scale.x)*5;
+    //         //             child.position.z = MainScene.people.positionPlaneMesh_5.position.z + Math.random() * Math.abs(MainScene.people.positionPlaneMesh_5.scale.z)*10;
+    //         //         }
+    //         //         else{
+    //         //             child.position.x = MainScene.people.positionPlaneMesh_5.position.x + Math.random() * Math.abs(MainScene.people.positionPlaneMesh_5.scale.x)*5;
+    //         //             child.position.z = MainScene.people.positionPlaneMesh_5.position.z - Math.random() * Math.abs(MainScene.people.positionPlaneMesh_5.scale.z)*10;
+    //         //         }
+    //         //     }
+    //         //     else {
+    //         //         if (num_2 === 1) {
+    //         //             child.position.x = MainScene.people.positionPlaneMesh_5.position.x - Math.random() * Math.abs(MainScene.people.positionPlaneMesh_5.scale.x)*5;
+    //         //             child.position.z = MainScene.people.positionPlaneMesh_5.position.z + Math.random() * Math.abs(MainScene.people.positionPlaneMesh_5.scale.z)*10;
+    //         //         }
+    //         //         else{
+    //         //             child.position.x = MainScene.people.positionPlaneMesh_5.position.x - Math.random() * Math.abs(MainScene.people.positionPlaneMesh_5.scale.x)*5;
+    //         //             child.position.z = MainScene.people.positionPlaneMesh_5.position.z - Math.random() * Math.abs(MainScene.people.positionPlaneMesh_5.scale.z)*10;
+    //         //         }
+    //         //     }
+    //         // });
+    //     }
+    // });
 
+    // $('fireman').addEventListener('click',function (event)
+    // {
+    //     //MainScene.Test.init(MainScene);//debug专用
+    //
+    //     MainScene.active = true;
+    //     MainScene.isfiremanclick=true;
+    //     MainScene.camControlOver.autoRotate = false;
+    //
+    //     $("fireman").style.display = "none";
+    //     //$('escapeTimePanel').style.display = "none";
+    //     $('pause').style.display = "inline-block";
+    //     //消防员出现之后就是跟随视角
+    //     $("cancelFollow").style.display = "inline-block";
+    //     $("startRun").style.display = "none";
+    //     $('OrbitView').click();
+    //     $('bottom-menu').style.display = "none";
+    //
+    //     $('illustration-title').innerHTML = "<center>\n" +
+    //         "        <h5>灭火器使用说明</h5>\n" +
+    //         "    </center>"
+    //     $('illustration-context').innerHTML = "<center>\n" +
+    //         "        <p style=\"font-size: 14px\">身距火源约两米，先摇瓶身后拔销</p>\n" +
+    //         "        <p style=\"font-size: 14px\">身成弓步腿出力，下压开关把粉喷</p>\n" +
+    //         "        <p style=\"font-size: 14px\">喷时对准火焰根，余火不留防复燃</p>\n" +
+    //         "        <a href=\"https://www.iqiyi.com/w_19rs6bmc8d.html\" target='_blank'>点击可观看使用教学视频</a>\n" +
+    //         "    </center>";
+    //
+    // });
 
-        $('freeView').click();
-        if(!MainScene.isEdit){
-            $("startRun").style.display="none";
-            $("floor-menu").style.display = "none";
-            $('View').style.display = "none";
-            $('transformSmoke').style.display = "none";
-            $("fire-menu").style.display = "none";
-            $("switch").style.display="inline-block";
-            $('createPersonBtn').textContent="返回";
-            $('illustration-context').innerHTML = "您已进入人群编辑页面，请通过拖动屏幕上的坐标轴使其成半透明效果，以选择人群位置，点击切换按钮可以缩放人群区域面积。在编辑完毕后，请点击“返回”以退出编辑模式"
-
-            var number=Number($('people-number').textContent);
-            MainScene.number=number;
-            Utils.loading(1000);
-            //MainScene.Path.createNav(MainScene);
-            Utils.loading(500);
-            MainScene.addPeople();
-            //MainScene.smoke.smokeStart(MainScene);
-
-            MainScene.camera.position.set(50, 80, 240);//原x为150 450
-            MainScene.camera.lookAt(50, 0, 240);
-            MainScene.globalPlane.constant = 17;
-            MainScene.globalPlane.set(new THREE.Vector3(0, -1, 0), 17);
-            MainScene.isEdit = true;
-
-            MainScene.extinguisherControl_1.attach(MainScene.people.positionPlaneMesh_1);
-            MainScene.extinguisherControl_1.visible = true;
-            MainScene.people.positionPlaneMesh_1.visible=true;
-            MainScene.extinguisherControl_2.attach(MainScene.people.positionPlaneMesh_2);
-            MainScene.extinguisherControl_2.visible = true;
-            MainScene.people.positionPlaneMesh_2.visible=true;
-            MainScene.extinguisherControl_3.attach(MainScene.people.positionPlaneMesh_3);
-            MainScene.extinguisherControl_3.visible = true;
-            MainScene.people.positionPlaneMesh_3.visible=true;
-            MainScene.extinguisherControl_4.attach(MainScene.people.positionPlaneMesh_4);
-            MainScene.extinguisherControl_4.visible = true;
-            MainScene.people.positionPlaneMesh_4.visible=true;
-            MainScene.extinguisherControl_5.attach(MainScene.people.positionPlaneMesh_5);
-            MainScene.extinguisherControl_5.visible = true;
-            MainScene.people.positionPlaneMesh_5.visible=true;
-
-        } else{
-            $("startRun").style.display="inline-block";
-            $("floor-menu").style.display="none";
-            $('transformSmoke').style.display = "block";
-            $('View').style.display = "inline-block";
-            $("fire-menu").style.display = "none";
-            $("switch").style.display="none";
-            $('createPersonBtn').textContent="编辑人群";
-            $('illustration-context').innerHTML = "<p>您已成功选取人群排布</p>" + "<p>若想编辑烟雾请点击“编辑烟雾”,否则点击“开始模拟”</p>";
-
-            //音效
-            var audioLoader = new THREE.AudioLoader();
-            audioLoader.load('audio/noisy.wav',function( buffer ) {
-                MainScene.noisySound.setBuffer( buffer );
-                MainScene.noisySound.setLoop(true);
-                MainScene.noisySound.setVolume(0.5);
-                MainScene.noisySound.play();
-            });
-            /*人物分布测试用
-            console.log(MainScene.people.positionPlaneMesh_1.position.x, MainScene.people.positionPlaneMesh_1.position.z, Math.abs(MainScene.people.positionPlaneMesh_1.scale.x * 5), Math.abs(MainScene.people.positionPlaneMesh_1.scale.z * 10));
-            console.log(MainScene.people.positionPlaneMesh_2.position.x, MainScene.people.positionPlaneMesh_2.position.z, Math.abs(MainScene.people.positionPlaneMesh_2.scale.x * 5), Math.abs(MainScene.people.positionPlaneMesh_2.scale.z * 10));
-            console.log(MainScene.people.positionPlaneMesh_3.position.x, MainScene.people.positionPlaneMesh_3.position.z, Math.abs(MainScene.people.positionPlaneMesh_3.scale.x * 5), Math.abs(MainScene.people.positionPlaneMesh_3.scale.z * 10));
-            console.log(MainScene.people.positionPlaneMesh_4.position.x, MainScene.people.positionPlaneMesh_4.position.z, Math.abs(MainScene.people.positionPlaneMesh_4.scale.x * 5), Math.abs(MainScene.people.positionPlaneMesh_4.scale.z * 10));
-            console.log(MainScene.people.positionPlaneMesh_5.position.x, MainScene.people.positionPlaneMesh_5.position.z, Math.abs(MainScene.people.positionPlaneMesh_5.scale.x * 5), Math.abs(MainScene.people.positionPlaneMesh_5.scale.z * 10));
-            */
-            MainScene.camera.position.set(60,3,146);
-            MainScene.camera.rotation.set(-2.8,0.7,2.9);
-            //MainScene.camera.lookAt(50, 0, 240);
-            MainScene.globalPlane.constant = 17;
-            MainScene.globalPlane.set(new THREE.Vector3(0, -1, 0), 17);
-            //MainScene.globalPlane.constant=100000;
-            MainScene.isEdit = false;
-            MainScene.extinguisherControl_1.attach();
-            MainScene.extinguisherControl_1.visible = false;
-            MainScene.people.positionPlaneMesh_1.visible=false;
-            MainScene.extinguisherControl_2.attach();
-            MainScene.extinguisherControl_2.visible = false;
-            MainScene.people.positionPlaneMesh_2.visible=false;
-            MainScene.extinguisherControl_3.attach();
-            MainScene.extinguisherControl_3.visible = false;
-            MainScene.people.positionPlaneMesh_3.visible=false;
-            MainScene.extinguisherControl_4.attach();
-            MainScene.extinguisherControl_4.visible = false;
-            MainScene.people.positionPlaneMesh_4.visible=false;
-            MainScene.extinguisherControl_5.attach();
-            MainScene.extinguisherControl_5.visible = false;
-            MainScene.people.positionPlaneMesh_5.visible=false;
-
-            // MainScene.people.groupRun.forEach(child => {
-            //     child.visible = true;
-            //     child.position.y = -8.5;
-            //     var num_1 = Math.floor(Math.random() * 2 + 1);
-            //     var num_2 = Math.floor(Math.random() * 2 + 1);
-            //     if (num_1 ===1) {
-            //         if (num_2 === 1) {
-            //             child.position.x = MainScene.people.positionPlaneMesh_1.position.x + Math.random() * Math.abs(MainScene.people.positionPlaneMesh_1.scale.x)*5;
-            //             child.position.z = MainScene.people.positionPlaneMesh_1.position.z + Math.random() * Math.abs(MainScene.people.positionPlaneMesh_1.scale.z)*10;
-            //         }
-            //         else{
-            //             child.position.x = MainScene.people.positionPlaneMesh_1.position.x + Math.random() * Math.abs(MainScene.people.positionPlaneMesh_1.scale.x)*5;
-            //             child.position.z = MainScene.people.positionPlaneMesh_1.position.z - Math.random() * Math.abs(MainScene.people.positionPlaneMesh_1.scale.z)*10;
-            //         }
-            //     }
-            //     else {
-            //         if (num_2 === 1) {
-            //             child.position.x = MainScene.people.positionPlaneMesh_1.position.x - Math.random() * Math.abs(MainScene.people.positionPlaneMesh_1.scale.x)*5;
-            //             child.position.z = MainScene.people.positionPlaneMesh_1.position.z + Math.random() * Math.abs(MainScene.people.positionPlaneMesh_1.scale.z)*10;
-            //         }
-            //         else{
-            //             child.position.x = MainScene.people.positionPlaneMesh_1.position.x - Math.random() * Math.abs(MainScene.people.positionPlaneMesh_1.scale.x)*5;
-            //             child.position.z = MainScene.people.positionPlaneMesh_1.position.z - Math.random() * Math.abs(MainScene.people.positionPlaneMesh_1.scale.z)*10;
-            //         }
-            //     }
-            // });
-            // MainScene.people.groupWalk.forEach(child => {
-            //     child.visible = true;
-            //     child.position.y = -8.5;
-            //     var num_1 = Math.floor(Math.random() * 2 + 1);
-            //     var num_2 = Math.floor(Math.random() * 2 + 1);
-            //     if (num_1 ===1) {
-            //         if (num_2 === 1) {
-            //             child.position.x = MainScene.people.positionPlaneMesh_2.position.x + Math.random() * Math.abs(MainScene.people.positionPlaneMesh_2.scale.x)*5;
-            //             child.position.z = MainScene.people.positionPlaneMesh_2.position.z + Math.random() * Math.abs(MainScene.people.positionPlaneMesh_2.scale.z)*10;
-            //         }
-            //         else{
-            //             child.position.x = MainScene.people.positionPlaneMesh_2.position.x + Math.random() * Math.abs(MainScene.people.positionPlaneMesh_2.scale.x)*5;
-            //             child.position.z = MainScene.people.positionPlaneMesh_2.position.z - Math.random() * Math.abs(MainScene.people.positionPlaneMesh_2.scale.z)*10;
-            //         }
-            //     }
-            //     else {
-            //         if (num_2 === 1) {
-            //             child.position.x = MainScene.people.positionPlaneMesh_2.position.x - Math.random() * Math.abs(MainScene.people.positionPlaneMesh_2.scale.x)*5;
-            //             child.position.z = MainScene.people.positionPlaneMesh_2.position.z + Math.random() * Math.abs(MainScene.people.positionPlaneMesh_2.scale.z)*10;
-            //         }
-            //         else{
-            //             child.position.x = MainScene.people.positionPlaneMesh_2.position.x - Math.random() * Math.abs(MainScene.people.positionPlaneMesh_2.scale.x)*5;
-            //             child.position.z = MainScene.people.positionPlaneMesh_2.position.z - Math.random() * Math.abs(MainScene.people.positionPlaneMesh_2.scale.z)*10;
-            //         }
-            //     }
-            // });
-            // MainScene.people.groupBend.forEach(child => {
-            //     child.visible = true;
-            //     child.position.y = -8.5;
-            //     var num_1 = Math.floor(Math.random() * 2 + 1);
-            //     var num_2 = Math.floor(Math.random() * 2 + 1);
-            //     if (num_1 ===1) {
-            //         if (num_2 === 1) {
-            //             child.position.x = MainScene.people.positionPlaneMesh_3.position.x + Math.random() * Math.abs(MainScene.people.positionPlaneMesh_3.scale.x)*5;
-            //             child.position.z = MainScene.people.positionPlaneMesh_3.position.z + Math.random() * Math.abs(MainScene.people.positionPlaneMesh_3.scale.z)*10;
-            //         }
-            //         else{
-            //             child.position.x = MainScene.people.positionPlaneMesh_3.position.x + Math.random() * Math.abs(MainScene.people.positionPlaneMesh_3.scale.x)*5;
-            //             child.position.z = MainScene.people.positionPlaneMesh_3.position.z - Math.random() * Math.abs(MainScene.people.positionPlaneMesh_3.scale.z)*10;
-            //         }
-            //     }
-            //     else {
-            //         if (num_2 === 1) {
-            //             child.position.x = MainScene.people.positionPlaneMesh_3.position.x - Math.random() * Math.abs(MainScene.people.positionPlaneMesh_3.scale.x)*5;
-            //             child.position.z = MainScene.people.positionPlaneMesh_3.position.z + Math.random() * Math.abs(MainScene.people.positionPlaneMesh_3.scale.z)*10;
-            //         }
-            //         else{
-            //             child.position.x = MainScene.people.positionPlaneMesh_3.position.x - Math.random() * Math.abs(MainScene.people.positionPlaneMesh_3.scale.x)*5;
-            //             child.position.z = MainScene.people.positionPlaneMesh_3.position.z - Math.random() * Math.abs(MainScene.people.positionPlaneMesh_3.scale.z)*10;
-            //         }
-            //     }
-            // });
-            // MainScene.people.groupCrawl.forEach(child => {
-            //     child.visible = true;
-            //     child.position.y = -8.5;
-            //     var num_1 = Math.floor(Math.random() * 2 + 1);
-            //     var num_2 = Math.floor(Math.random() * 2 + 1);
-            //     if (num_1 ===1) {
-            //         if (num_2 === 1) {
-            //             child.position.x = MainScene.people.positionPlaneMesh_4.position.x + Math.random() * Math.abs(MainScene.people.positionPlaneMesh_4.scale.x)*5;
-            //             child.position.z = MainScene.people.positionPlaneMesh_4.position.z + Math.random() * Math.abs(MainScene.people.positionPlaneMesh_4.scale.z)*10;
-            //         }
-            //         else{
-            //             child.position.x = MainScene.people.positionPlaneMesh_4.position.x + Math.random() * Math.abs(MainScene.people.positionPlaneMesh_4.scale.x)*5;
-            //             child.position.z = MainScene.people.positionPlaneMesh_4.position.z - Math.random() * Math.abs(MainScene.people.positionPlaneMesh_4.scale.z)*10;
-            //         }
-            //     }
-            //     else {
-            //         if (num_2 === 1) {
-            //             child.position.x = MainScene.people.positionPlaneMesh_4.position.x - Math.random() * Math.abs(MainScene.people.positionPlaneMesh_4.scale.x)*5;
-            //             child.position.z = MainScene.people.positionPlaneMesh_4.position.z + Math.random() * Math.abs(MainScene.people.positionPlaneMesh_4.scale.z)*10;
-            //         }
-            //         else{
-            //             child.position.x = MainScene.people.positionPlaneMesh_4.position.x - Math.random() * Math.abs(MainScene.people.positionPlaneMesh_4.scale.x)*5;
-            //             child.position.z = MainScene.people.positionPlaneMesh_4.position.z - Math.random() * Math.abs(MainScene.people.positionPlaneMesh_4.scale.z)*10;
-            //         }
-            //     }
-            // });
-            // MainScene.people.groupIdle.forEach(child => {
-            //     child.visible = true;
-            //     child.position.y = -8.5;
-            //     var num_1 = Math.floor(Math.random() * 2 + 1);
-            //     var num_2 = Math.floor(Math.random() * 2 + 1);
-            //     if (num_1 ===1) {
-            //         if (num_2 === 1) {
-            //             child.position.x = MainScene.people.positionPlaneMesh_5.position.x + Math.random() * Math.abs(MainScene.people.positionPlaneMesh_5.scale.x)*5;
-            //             child.position.z = MainScene.people.positionPlaneMesh_5.position.z + Math.random() * Math.abs(MainScene.people.positionPlaneMesh_5.scale.z)*10;
-            //         }
-            //         else{
-            //             child.position.x = MainScene.people.positionPlaneMesh_5.position.x + Math.random() * Math.abs(MainScene.people.positionPlaneMesh_5.scale.x)*5;
-            //             child.position.z = MainScene.people.positionPlaneMesh_5.position.z - Math.random() * Math.abs(MainScene.people.positionPlaneMesh_5.scale.z)*10;
-            //         }
-            //     }
-            //     else {
-            //         if (num_2 === 1) {
-            //             child.position.x = MainScene.people.positionPlaneMesh_5.position.x - Math.random() * Math.abs(MainScene.people.positionPlaneMesh_5.scale.x)*5;
-            //             child.position.z = MainScene.people.positionPlaneMesh_5.position.z + Math.random() * Math.abs(MainScene.people.positionPlaneMesh_5.scale.z)*10;
-            //         }
-            //         else{
-            //             child.position.x = MainScene.people.positionPlaneMesh_5.position.x - Math.random() * Math.abs(MainScene.people.positionPlaneMesh_5.scale.x)*5;
-            //             child.position.z = MainScene.people.positionPlaneMesh_5.position.z - Math.random() * Math.abs(MainScene.people.positionPlaneMesh_5.scale.z)*10;
-            //         }
-            //     }
-            // });
-        }
-    });
-
-    $('fireman').addEventListener('click',function (event)
-    {
-        //MainScene.Test.init(MainScene);//debug专用
-
-        MainScene.active = true;
-        MainScene.isfiremanclick=true;
-        MainScene.camControlOver.autoRotate = false;
-
-        $("fireman").style.display = "none";
-        //$('escapeTimePanel').style.display = "none";
-        $('pause').style.display = "inline-block";
-        //消防员出现之后就是跟随视角
-        $("cancelFollow").style.display = "inline-block";
-        $("startRun").style.display = "none";
-        $('OrbitView').click();
-        $('bottom-menu').style.display = "none";
-
-        $('illustration-title').innerHTML = "<center>\n" +
-            "        <h5>灭火器使用说明</h5>\n" +
-            "    </center>"
-        $('illustration-context').innerHTML = "<center>\n" +
-            "        <p style=\"font-size: 14px\">身距火源约两米，先摇瓶身后拔销</p>\n" +
-            "        <p style=\"font-size: 14px\">身成弓步腿出力，下压开关把粉喷</p>\n" +
-            "        <p style=\"font-size: 14px\">喷时对准火焰根，余火不留防复燃</p>\n" +
-            "        <a href=\"https://www.iqiyi.com/w_19rs6bmc8d.html\" target='_blank'>点击可观看使用教学视频</a>\n" +
-            "    </center>";
-
-    });
-
-    $('floor1').addEventListener('click',function (event)
-    {
-        MainScene.camera.position.set(55,-1,163);
-        MainScene.currentFloor = "floor1";
-        MainScene.camera.rotation.set(-2.8,0.4,3);
-    });
-
-    $('floor2').addEventListener('click',function (event)
-    {
-        MainScene.camera.position.set(52,-11,203);
-        MainScene.currentFloor = "floor2";
-        MainScene.camera.rotation.set(-2.8,0.4,3);
-    });
+    // $('floor1').addEventListener('click',function (event)
+    // {
+    //     MainScene.camera.position.set(55,-1,163);
+    //     MainScene.currentFloor = "floor1";
+    //     MainScene.camera.rotation.set(-2.8,0.4,3);
+    // });
+    //
+    // $('floor2').addEventListener('click',function (event)
+    // {
+    //     MainScene.camera.position.set(52,-11,203);
+    //     MainScene.currentFloor = "floor2";
+    //     MainScene.camera.rotation.set(-2.8,0.4,3);
+    // });
 
     // $('createPersonBtn').addEventListener('click',function(event)
     // {
@@ -532,86 +528,86 @@ Interaction.prototype.fuc3 = function (MainScene)
 
         }
     });
-    $('cancelFollow').addEventListener('click',function (event) {
-        if(MainScene.isOverView){
-            MainScene.isOverView = false;
-            $('cancelFollow').innerText = "跟随消防员";
-            MainScene.camControl.lat = -26;
-            MainScene.camControl.lon = -166;
-        }
-        else{
-            MainScene.isOverView = true;
-            $('cancelFollow').innerText = "取消跟随"
-        }
-    });
+    // $('cancelFollow').addEventListener('click',function (event) {
+    //     if(MainScene.isOverView){
+    //         MainScene.isOverView = false;
+    //         $('cancelFollow').innerText = "跟随消防员";
+    //         MainScene.camControl.lat = -26;
+    //         MainScene.camControl.lon = -166;
+    //     }
+    //     else{
+    //         MainScene.isOverView = true;
+    //         $('cancelFollow').innerText = "取消跟随"
+    //     }
+    // });
+    //
+    // $('toNo1').addEventListener('click',function(event)
+    // {
+    //     MainScene.smoke.positionBallMesh.position.x=MainScene.smoke.firePointArr[0].firePosition.x;
+    //     MainScene.smoke.positionBallMesh.position.z=MainScene.smoke.firePointArr[0].firePosition.z;
+    //
+    // });
+    // $('toNo2').addEventListener('click',function(event)
+    // {
+    //     MainScene.smoke.positionBallMesh.position.x=MainScene.smoke.firePointArr[1].firePosition.x;
+    //     MainScene.smoke.positionBallMesh.position.z=MainScene.smoke.firePointArr[1].firePosition.z;
+    // });
+    // $('toNo3').addEventListener('click',function(event)
+    // {
+    //     MainScene.smoke.positionBallMesh.position.x=MainScene.smoke.firePointArr[2].firePosition.x;
+    //     MainScene.smoke.positionBallMesh.position.z=MainScene.smoke.firePointArr[2].firePosition.z;
+    // });
+    // $('toNo4').addEventListener('click',function(event)
+    // {
+    //     MainScene.smoke.positionBallMesh.position.x=MainScene.smoke.firePointArr[3].firePosition.x;
+    //     MainScene.smoke.positionBallMesh.position.z=MainScene.smoke.firePointArr[3].firePosition.z;
+    // });
+    // $('toNo5').addEventListener('click',function(event)
+    // {
+    //     MainScene.smoke.positionBallMesh.position.x=MainScene.smoke.firePointArr[4].firePosition.x;
+    //     MainScene.smoke.positionBallMesh.position.z=MainScene.smoke.firePointArr[4].firePosition.z;
+    // });
 
-    $('toNo1').addEventListener('click',function(event)
-    {
-        MainScene.smoke.positionBallMesh.position.x=MainScene.smoke.firePointArr[0].firePosition.x;
-        MainScene.smoke.positionBallMesh.position.z=MainScene.smoke.firePointArr[0].firePosition.z;
-
-    });
-    $('toNo2').addEventListener('click',function(event)
-    {
-        MainScene.smoke.positionBallMesh.position.x=MainScene.smoke.firePointArr[1].firePosition.x;
-        MainScene.smoke.positionBallMesh.position.z=MainScene.smoke.firePointArr[1].firePosition.z;
-    });
-    $('toNo3').addEventListener('click',function(event)
-    {
-        MainScene.smoke.positionBallMesh.position.x=MainScene.smoke.firePointArr[2].firePosition.x;
-        MainScene.smoke.positionBallMesh.position.z=MainScene.smoke.firePointArr[2].firePosition.z;
-    });
-    $('toNo4').addEventListener('click',function(event)
-    {
-        MainScene.smoke.positionBallMesh.position.x=MainScene.smoke.firePointArr[3].firePosition.x;
-        MainScene.smoke.positionBallMesh.position.z=MainScene.smoke.firePointArr[3].firePosition.z;
-    });
-    $('toNo5').addEventListener('click',function(event)
-    {
-        MainScene.smoke.positionBallMesh.position.x=MainScene.smoke.firePointArr[4].firePosition.x;
-        MainScene.smoke.positionBallMesh.position.z=MainScene.smoke.firePointArr[4].firePosition.z;
-    });
-
-    $('OrbitView').addEventListener('change',function ()
-    {
-        MainScene.Cameracontroller.active=false;
-        MainScene.isOverView = true;
-    });
-    $('freeView').addEventListener('change',function () {
-        MainScene.Cameracontroller.active=true;
-        MainScene.isOverView = false;
-        MainScene.camera.position.set(397,29,42);
-        MainScene.camControl.lat = -30;
-        MainScene.camControl.lon = 337;
-    });
-    $('pause').addEventListener('click',function () {
-        MainScene.active = false;
-        $('continue').style.display = "block";
-        $('pause').style.display = "none";
-    });
-    $('continue').addEventListener('click',function () {
-        MainScene.active = true;
-        $('continue').style.display = "none";
-        $('pause').style.display = "block";
-    });
-    $('switch').addEventListener('click',function () {
-        if( document.getElementById('switch').textContent==="切换至缩放"){
-            $('switch').textContent="切换至平移";
-            MainScene.extinguisherControl_1.setMode('scale');
-            MainScene.extinguisherControl_2.setMode('scale');
-            MainScene.extinguisherControl_3.setMode('scale');
-            MainScene.extinguisherControl_4.setMode('scale');
-            MainScene.extinguisherControl_5.setMode('scale');
-        }
-        else{
-            $('switch').textContent="切换至缩放";
-            MainScene.extinguisherControl_1.setMode('translate');
-            MainScene.extinguisherControl_2.setMode('translate');
-            MainScene.extinguisherControl_3.setMode('translate');
-            MainScene.extinguisherControl_4.setMode('translate');
-            MainScene.extinguisherControl_5.setMode('translate');
-        }
-    });
+    // $('OrbitView').addEventListener('change',function ()
+    // {
+    //     MainScene.Cameracontroller.active=false;
+    //     MainScene.isOverView = true;
+    // });
+    // $('freeView').addEventListener('change',function () {
+    //     MainScene.Cameracontroller.active=true;
+    //     MainScene.isOverView = false;
+    //     MainScene.camera.position.set(397,29,42);
+    //     MainScene.camControl.lat = -30;
+    //     MainScene.camControl.lon = 337;
+    // });
+    // $('pause').addEventListener('click',function () {
+    //     MainScene.active = false;
+    //     $('continue').style.display = "block";
+    //     $('pause').style.display = "none";
+    // });
+    // $('continue').addEventListener('click',function () {
+    //     MainScene.active = true;
+    //     $('continue').style.display = "none";
+    //     $('pause').style.display = "block";
+    // });
+    // $('switch').addEventListener('click',function () {
+    //     if( document.getElementById('switch').textContent==="切换至缩放"){
+    //         $('switch').textContent="切换至平移";
+    //         MainScene.extinguisherControl_1.setMode('scale');
+    //         MainScene.extinguisherControl_2.setMode('scale');
+    //         MainScene.extinguisherControl_3.setMode('scale');
+    //         MainScene.extinguisherControl_4.setMode('scale');
+    //         MainScene.extinguisherControl_5.setMode('scale');
+    //     }
+    //     else{
+    //         $('switch').textContent="切换至缩放";
+    //         MainScene.extinguisherControl_1.setMode('translate');
+    //         MainScene.extinguisherControl_2.setMode('translate');
+    //         MainScene.extinguisherControl_3.setMode('translate');
+    //         MainScene.extinguisherControl_4.setMode('translate');
+    //         MainScene.extinguisherControl_5.setMode('translate');
+    //     }
+    // });
 //region 点击坐标测试
     window.addEventListener('mousemove', onMouseMove, false);
 
