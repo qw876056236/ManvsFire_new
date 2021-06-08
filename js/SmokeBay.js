@@ -180,6 +180,9 @@ var SmokeBay = function(){
     this.neiborBay = [];//相邻防烟分区 0 xlast 1 xnext 2 zlast 3 znext
     this.neiborBayNum = 0;
 
+    //烟雾层高度是否正常
+    this.isRegular = false;
+
 
     //着火时有烟气输入时设置的值
     this.isFire = false;//是否是着火点所在区域
@@ -559,6 +562,13 @@ SmokeBay.prototype.rankByDistance = function(x,z)
 }
 
 SmokeBay.prototype.setJetSmoke = function(firePos){
+    var h = this.smokeh;
+    if(!this.isRegular){
+        if(this.smokeh>0.5)
+            h = 0.5;
+        else
+            this.isRegular = true;
+    }
     if(this.isFire){
         if(this.xmax-this.xmin>this.zmax-this.zmin){
             var lr = Math.min(this.smoker,firePos.x-this.xmin);
@@ -572,12 +582,12 @@ SmokeBay.prototype.setJetSmoke = function(firePos){
 
         /*this.jetSmokeArr[0].h = Math.max(this.smokeh ,0.5) * smokeAnimation.scaleFactor;
         this.jetSmokeArr[1].h = Math.max(this.smokeh ,0.5) * smokeAnimation.scaleFactor;*/
-        this.jetSmokeArr[0].h = this.smokeh * smokeAnimation.scaleFactor;
-        this.jetSmokeArr[1].h = this.smokeh * smokeAnimation.scaleFactor;
+        this.jetSmokeArr[0].h = h * smokeAnimation.scaleFactor;
+        this.jetSmokeArr[1].h = h * smokeAnimation.scaleFactor;
     }else{
         this.jetSmokeArr[0].FLOATING_INTERVAL = this.smoker / smokeAnimation.velocity * 20;
         //this.jetSmokeArr[0].h = Math.max(this.smokeh ,0.5) * smokeAnimation.scaleFactor;
-        this.jetSmokeArr[0].h = this.smokeh * smokeAnimation.scaleFactor;
+        this.jetSmokeArr[0].h = h * smokeAnimation.scaleFactor;
     }
 }
 

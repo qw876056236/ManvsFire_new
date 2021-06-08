@@ -183,15 +183,15 @@ smokeAnimation.prototype.update = function (deltaTime,control) {
         if(this.dir==0 || this.dir==1){
             //var z = Math.min(Math.max(mesh.position.z + this.randFlyZ * timeScale, this.minZ), this.maxZ);
             if(this.dir ==0)
-                mesh.position.set(mesh.position.x + smokeAnimation.velocity * timeScale, mesh.position.y, mesh.position.z);
+                mesh.position.set(mesh.position.x + smokeAnimation.velocity * timeScale, this.maxY-control.h/smokeAnimation.scaleFactor/2, mesh.position.z);
             else
-                mesh.position.set(mesh.position.x - smokeAnimation.velocity * timeScale, mesh.position.y, mesh.position.z);
+                mesh.position.set(mesh.position.x - smokeAnimation.velocity * timeScale, this.maxY-control.h/smokeAnimation.scaleFactor/2, mesh.position.z);
         }else if(this.dir==2 || this.dir==3){
             //var x = Math.min(Math.max(mesh.position.x + this.randFlyX * timeScale, this.minX), this.maxX);
             if(this.dir ==2)
-                mesh.position.set(mesh.position.x , mesh.position.y, mesh.position.z + smokeAnimation.velocity * timeScale);
+                mesh.position.set(mesh.position.x , this.maxY-control.h/smokeAnimation.scaleFactor/2, mesh.position.z + smokeAnimation.velocity * timeScale);
             else
-                mesh.position.set(mesh.position.x , mesh.position.y, mesh.position.z - smokeAnimation.velocity * timeScale);
+                mesh.position.set(mesh.position.x , this.maxY-control.h/smokeAnimation.scaleFactor/2, mesh.position.z - smokeAnimation.velocity * timeScale);
         }
 
         //this.instance.setOpacity(0.1);
