@@ -257,7 +257,6 @@ smokeAnimation.prototype.reset = function (control) {
         this.instance.getMesh().position.set(this.minX+Math.random()*(this.maxX-this.minX), this.maxY-control.h/smokeAnimation.scaleFactor/2, control.pos.z);
     this.instance.setFlowRatio(1);
     this.instance.setOpacity(0);
-    this.initPos = new THREE.Vector3(10,10,10);
     this.scaleFactor = 0.8;
 };
 

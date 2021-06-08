@@ -85,12 +85,12 @@ Interaction.prototype.fuc2 = function (_this)
         document.getElementById("floor-menu").style.display = "inline-block";
 
         window.testFlag=12;
-        window.crowd.obj.visible=true;
+        //window.crowd.obj.visible=true;
         //alert(123)
         //灯光设置
-        _this.directionalLight.forEach((light)=>{_this.scene.remove(light)});
+        /*_this.directionalLight.forEach((light)=>{_this.scene.remove(light)});
         _this.scene.add(_this.ambientLight);
-        _this.emergencyLightArr.forEach((light)=>{_this.scene.add(light)})
+        _this.emergencyLightArr.forEach((light)=>{_this.scene.add(light)})*/
         //音效设置
         var audioLoader = new THREE.AudioLoader();
         audioLoader.load( 'audio/siren.wav', function( buffer ) {

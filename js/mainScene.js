@@ -225,6 +225,7 @@ mainScene.prototype.setScene = function()
     this.renderer.autoClear = true;    //todo 不声明的话默认为true,原demo为false, 与start.animate 中renderer.clear()对应
     this.renderer.setSize( window.innerWidth, window.innerHeight );
     this.renderer.setClearColor( 0xbbd0d9 );
+    //this.renderer.setClearColor( 0xffffff );
     this.renderer.setPixelRatio( window.devicePixelRatio );
     document.getElementById("WebGL-output").appendChild(this.renderer.domElement);
 
@@ -403,10 +404,10 @@ mainScene.prototype.setScene = function()
 
     //开始进行人群设置
 
-    let crowd=new Crowd();
+    /*let crowd=new Crowd();
     crowd.obj.visible=false;
     this.scene.add(crowd.obj);
-    window.crowd=crowd;
+    window.crowd=crowd;*/
     //完成人群设置
 
 

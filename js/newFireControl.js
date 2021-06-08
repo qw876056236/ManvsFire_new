@@ -17,6 +17,7 @@ var fireControl = function ()
     this.finished = false;
     this.pos = new THREE.Vector3(0,0,0);
     this.scene = null;
+    this.interval = 10;
 
     //-----------物理量-----------
     this.roangle=0;
@@ -112,10 +113,12 @@ fireControl.prototype.update = function (deltaTime)
     if(this.finished) {
         let timeScale = this.params.TimeScale;
         this.spawnTime += deltaTime * timeScale;
-        if (this.spawnTime > 10) {
-            while (this.spawnTime > 10)
-                this.spawnTime -= 10;
+        if (this.spawnTime > this.interval) {
+            while (this.spawnTime > this.interval){
+                this.spawnTime -= this.interval;
+            }
             this.spawnNewFlame();
+
         }
         for (let i = 0; i < this.objs.length; i++) {
             if (this.objs[i].isDie()) {

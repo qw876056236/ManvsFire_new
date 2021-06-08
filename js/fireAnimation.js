@@ -178,18 +178,26 @@ fireAnimation.prototype.update = function (deltaTime) {
             this.posX = mesh.position.x;
             this.posY = mesh.position.y;
             this.posZ = mesh.position.z;
+            this.scaleX = mesh.scale.x;
             this.instance.setFlowRatio(0.5);
         }
-        //mesh.position.set(mesh.position.x + this.randFlyX * timeScale, this.posY + this.currentTime / 100 * fireAnimation.TIME_SCALE, mesh.position.z + this.randFlyZ * timeScale);
-        mesh.position.setY(this.posY + this.currentTime / 6000 / fireAnimation.TIME_SCALE);
-        mesh.position.setX(this.posX+(this.initPos.x-mesh.position.x)*this.currentTime / 24000/ fireAnimation.TIME_SCALE);
-        mesh.position.setZ(this.posZ+(this.initPos.z-mesh.position.z)*this.currentTime / 24000 / fireAnimation.TIME_SCALE);
         if (this.currentTime > fireAnimation.IDLE_INTERVAL - 5000) {
             this.instance.setOpacity((1 - (this.currentTime - (fireAnimation.IDLE_INTERVAL - 5000)) / 5000) * 1);
         }
+        //mesh.position.set(mesh.position.x + this.randFlyX * timeScale, this.posY + this.currentTime / 100 * fireAnimation.TIME_SCALE, mesh.position.z + this.randFlyZ * timeScale);
+        mesh.position.setY(this.posY + this.currentTime / 6000 / fireAnimation.TIME_SCALE);
+        mesh.position.setX(this.posX+(this.initPos.x-mesh.position.x)*this.currentTime / 24000 / fireAnimation.TIME_SCALE);
+        mesh.position.setZ(this.posZ+(this.initPos.z-mesh.position.z)*this.currentTime / 24000 / fireAnimation.TIME_SCALE);
+
         //let scale = mesh.scale.x + 0.015 * timeScale * fireAnimation.SCALE;
         let scale = mesh.scale.x - 0.01 * timeScale * fireAnimation.SCALE;
+
+        //备用方案
+        /*mesh.position.setX(this.posX+(this.initPos.x-mesh.position.x)*this.currentTime / 7000 / fireAnimation.TIME_SCALE);
+        mesh.position.setZ(this.posZ+(this.initPos.z-mesh.position.z)*this.currentTime / 7000 / fireAnimation.TIME_SCALE);
+        let scale = this.scaleX * (1 - this.currentTime / fireAnimation.IDLE_INTERVAL);*/
         mesh.scale.set(scale, scale, scale);
+
     }
     this.setColor();
     this.instance.update(deltaTime * timeScale * this.animationTimeRatio);
