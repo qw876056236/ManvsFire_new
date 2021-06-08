@@ -48,7 +48,7 @@ SmokeFloor.prototype.init = function(xmin,xmax,ymin,ymax,zmin,zmax){
     this.h = this.ymax - this.ymin;
     this.S = (this.xmax-this.xmin) * (this.zmax-this.zmin);
     this.V = this.S * this.h;
-    this.jetVolume = this.hCS * this.S;
+    this.jetVolume = this.hCS * this.S/12;
     for(let i=0;i<this.smokeBayArr.length;++i)
         this.exhuastV += this.smokeBayArr[i].exhaustVel * this.smokeBayArr[i].S;
 }
@@ -78,7 +78,7 @@ SmokeFloor.prototype.compute = function(dt,_this){
         for(let i=0;i<this.smokeBayArr.length;++i)
             if(this.smokeBayArr[i].smoker >= this.smokeBayArr[i].maxr)
                 ++fullBayNum;
-        if(fullBayNum == this.smokeBayArr.length){
+        if(fullBayNum === this.smokeBayArr.length -1){
             this.stage = 2;
             this.smokeVolume = Volume;
             this.exhaustVolume += exhuastVolume;
