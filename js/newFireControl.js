@@ -33,14 +33,24 @@ var fireControl = function ()
     //读取用户的设置
     this.Zh = 0;//火源基部到顶棚高度
     this.D = 1;//火源有效直径
-    this.Cy = 99.96;
+
+    //石墨粉参数
+    /*this.Cy = 99.96;
     this.Sy = 0;
     this.Hy = 0.39;
     this.Ny = 0;
     this.Oy = 0;
     this.Wy = 0;
-    this.calValue = 32600;//热值 单位kj/kg  j/g
+    this.calValue = 32600;//热值 单位kj/kg  j/g*/
 
+    //聚氨酯参数（行李）
+    this.Cy = 38.18;
+    this.Sy = 0;
+    this.Hy = 43.03;
+    this.Ny = 6.06;
+    this.Oy = 12.73;
+    this.Wy = 0;
+    this.calValue = 30000;
     //着火时计算出来的量
     this.V0 = 0;//理论空气量
 
@@ -142,4 +152,5 @@ fireControl.prototype.update = function (deltaTime)
     this.Qc = this.QcFactor * this.Q;
     //this.fireManager.controlSheet.high = this.L;
     this.B = this.Q / this.ice / this.calValue;
+    console.log(this.B);
 }

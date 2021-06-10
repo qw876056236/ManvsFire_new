@@ -276,7 +276,7 @@ Smoke.prototype.update = function(_this)
             smokeFloor.smokeBayArr.forEach(function(smokeBay){
                 self.nowVolume += smokeBay.sumVolume;
             })
-        }else if(smokeFloor.stage==2)
+        }else
             self.nowVolume += smokeFloor.smokeVolume;
 
     })
