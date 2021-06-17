@@ -171,6 +171,7 @@ mainScene.prototype.start = function()
     function animate()
     {
         self.delta = self.clock.getDelta();
+        self.elapsedTime = self.clock.getElapsedTime();
 
         if(self.isEdit)
         {
@@ -183,7 +184,7 @@ mainScene.prototype.start = function()
         {
             //self.water.update();    //todo debug here
 
-            self.fire.update(20);
+            self.fire.update(20,self);
 
             self.smoke.update(self);
 

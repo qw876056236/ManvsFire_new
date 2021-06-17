@@ -22,8 +22,9 @@ var fireControl = function ()
     //-----------物理量-----------
     this.roangle=0;
 
+    this.Qt = 50000//最大热释放速率 单位kw kj/s
     this.Q = 10000;//热释放速率 单位kw kj/s
-    this.QFactor = 100//火灾增长系数 单位kw/s2
+    this.QFactor = 0.5//火灾增长系数 单位kw/s2
     this.Qc = 0;//对流热释放速率
     //可由用户设置的常数
     this.QcFactor = 0.7//对流热释放速率份数
@@ -50,7 +51,7 @@ var fireControl = function ()
     this.Ny = 6.06;
     this.Oy = 12.73;
     this.Wy = 0;
-    this.calValue = 30000;
+    this.calValue = 19000;
     //着火时计算出来的量
     this.V0 = 0;//理论空气量
 
@@ -118,7 +119,7 @@ fireControl.prototype.set = function(firePos)
     this.pos.set(firePos.x,firePos.y+0.3,firePos.z);
 }
 
-fireControl.prototype.update = function (deltaTime)
+fireControl.prototype.update = function (deltaTime,_this)
 {
     if(this.finished) {
         let timeScale = this.params.TimeScale;
@@ -149,8 +150,9 @@ fireControl.prototype.update = function (deltaTime)
     this.L = L > 0 ? L : 0;
     var Zv = -1.02*this.D + 0.083*Math.pow(this.Q,2/5);
     this.Zv = Zv > 0 ? Zv : 0;
+    //this.Q = Math.min(this.Qt,this.QFactor*_this.elapsedTime*_this.elapsedTime);
     this.Qc = this.QcFactor * this.Q;
     //this.fireManager.controlSheet.high = this.L;
     this.B = this.Q / this.ice / this.calValue;
-    console.log(this.B);
+    //console.log(this.B);
 }

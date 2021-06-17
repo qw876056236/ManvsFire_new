@@ -207,7 +207,7 @@ var SmokeBay = function(){
     this.inArr = false;//是否在floor的arr里
 
     //用户实时设置的值
-    this.exhaustVel = 0.5;//排烟速度
+    this.exhaustVel = 0;//排烟速度
 }
 
 SmokeBay.prototype.init = function(xmin,xmax,ymin,ymax,zmin,zmax,xstep,zstep){
@@ -451,7 +451,7 @@ SmokeBay.prototype.compute = function(smokeFloor,dt){
                 r = Math.abs(this.inPos[this.inBayIndex].z - smokeFloor.firePos.z) + this.smoker;
             this.smokev = 0.195 * Math.pow(smokeFloor.fire.Qc/(smokeFloor.fire.Zh-smokeFloor.fire.Zv)/smokeFloor.fire.QcFactor,1/3) / Math.pow(r/(smokeFloor.fire.Zh-smokeFloor.fire.Zv),5/6);
         }*/
-        this.smokev = 0.8;
+        this.smokev = 0.6;
 
         this.smoker += this.smokev * dt;
         //console.log(this.smokev);
