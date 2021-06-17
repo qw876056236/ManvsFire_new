@@ -28,7 +28,7 @@ var fireControl = function ()
     this.Qc = 0;//对流热释放速率
     //可由用户设置的常数
     this.QcFactor = 0.7//对流热释放速率份数
-    this.ice = 0.9;//不完全燃烧系数
+    this.ice = 1;//不完全燃烧系数
     this.eac = 1.3;//过剩空气系数
 
     //读取用户的设置
@@ -151,7 +151,7 @@ fireControl.prototype.update = function (deltaTime,_this)
     var Zv = -1.02*this.D + 0.083*Math.pow(this.Q,2/5);
     this.Zv = Zv > 0 ? Zv : 0;
     //this.Q = Math.min(this.Qt,this.QFactor*_this.elapsedTime*_this.elapsedTime);
-    this.Qc = this.QcFactor * this.Q;
+    this.Qc = this.QcFactor * this.Q * (0.8+Math.random()*0.4);
     //this.fireManager.controlSheet.high = this.L;
     this.B = this.Q / this.ice / this.calValue;
     //console.log(this.B);

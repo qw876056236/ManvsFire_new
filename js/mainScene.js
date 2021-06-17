@@ -83,6 +83,10 @@ var mainScene = function()
 
     this.pMesh = null;//点击坐标测试球体
 
+    this.allTime = 0;
+
+    this.smokeH = [];
+
 
     //控制参数
 
@@ -191,6 +195,8 @@ mainScene.prototype.start = function()
             //self.Fireman.update(self);
 
             //self.people.update(self);
+
+            self.record();
 
         }
         self.pMesh.position.set(document.getElementById("x").value,document.getElementById("y").value,document.getElementById("z").value);
@@ -418,4 +424,16 @@ mainScene.prototype.setScene = function()
 mainScene.prototype.addPeople = function ()
 {
     this.people.init(this);
+}
+
+mainScene.prototype.record = function (){
+    this.allTime += this.delta;
+    if(this.allTime>1){
+        this.allTime -= 1;
+        if(this.smoke.smokeFloorArr[this.smoke.fireFloorIndex].stage==1){
+            this.smokeH.push(this.smoke.smokeFloorArr[this.smoke.fireFloorIndex].smokeBayArr[0].smokeh.toFixed(3)+"\n");
+        }else if(this.smoke.smokeFloorArr[this.smoke.fireFloorIndex].stage==2){
+            this.smokeH.push(this.smoke.smokeFloorArr[this.smoke.fireFloorIndex].smokeh.toFixed(3)+"\n");
+        }
+    }
 }

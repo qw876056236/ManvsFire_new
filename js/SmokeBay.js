@@ -451,7 +451,7 @@ SmokeBay.prototype.compute = function(smokeFloor,dt){
                 r = Math.abs(this.inPos[this.inBayIndex].z - smokeFloor.firePos.z) + this.smoker;
             this.smokev = 0.195 * Math.pow(smokeFloor.fire.Qc/(smokeFloor.fire.Zh-smokeFloor.fire.Zv)/smokeFloor.fire.QcFactor,1/3) / Math.pow(r/(smokeFloor.fire.Zh-smokeFloor.fire.Zv),5/6);
         }*/
-        this.smokev = 0.6;
+        this.smokev = 0.5+0.2*Math.random();
 
         this.smoker += this.smokev * dt;
         //console.log(this.smokev);

@@ -33,6 +33,11 @@ Interaction.prototype.fuc1 = function (_this)
         _this.freeViewControl.autoRotate=false;
     });
 
+    document.getElementById('record').addEventListener('click',function (event) {
+        var blob = new Blob(_this.smokeH,{type: "text/csv,charset=UTF-8",endings: "native"});
+        document.getElementById("download").href = window.URL.createObjectURL(blob);
+    });
+
     // document.getElementById('floor1').addEventListener('click',function(event)
     // {
     //     _this.camera.position.set(397,29,42);
