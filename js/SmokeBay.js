@@ -76,7 +76,7 @@ SmokeFloor.prototype.compute = function(dt,_this){
     {
         var fullBayNum = 0;//smoker>=maxr的防烟分区的数量
         for(let i=0;i<this.smokeBayArr.length;++i)
-            if(this.smokeBayArr[i].smoker >= this.smokeBayArr[i].maxr)
+            if(this.smokeBayArr[i].isFull)
                 ++fullBayNum;
         if(fullBayNum == this.smokeBayArr.length){
             this.stage = 2;
@@ -187,7 +187,7 @@ var SmokeBay = function(){
     //着火时有烟气输入时设置的值
     this.isFire = false;//是否是着火点所在区域
     this.isFloor = false;//是否在着火点所在楼层
-    this.maxr = 0;//这一防火分区r最大值
+    this.maxr = [];//这一防火分区r最大值
 
     this.indexArr = [];
 
@@ -201,7 +201,9 @@ var SmokeBay = function(){
     this.smoker = 0;
     this.smokeh = 0;
     this.smokev = 0;
+    this.isFull = false;
 
+    this.addVolume = 0;
     this.jetOutVolume = 0;//顶棚射流阶段输出烟雾量
 
     this.inArr = false;//是否在floor的arr里
@@ -252,17 +254,18 @@ SmokeBay.prototype.getVolume = function(smokeFloor,dt,_this){
         if(this.isFire)
         {
             var exhaustVolume = this.exhaustVel * this.S * dt / 60 * this.sumVolume / this.V;
-            this.sumVolume += smokeFloor.generateVolume - exhaustVolume;
-            if(this.sumVolume>0){
+            this.addVolume = smokeFloor.generateVolume - exhaustVolume
+            var sumVol = this.sumVolume + this.addVolume;
+            if(sumVol>0){
                 smokeFloor.smokeVolume = smokeFloor.smokeVolume - exhaustVolume;
                 smokeFloor.exhaustVolume += exhaustVolume;
             }
             else{
-                smokeFloor.smokeVolume = smokeFloor.smokeVolume - smokeFloor.generateVolume;
-                smokeFloor.exhaustVolume += exhaustVolume;
+                smokeFloor.smokeVolume = smokeFloor.smokeVolume - sumVol;
+                smokeFloor.exhaustVolume += sumVol;
             }
 
-            this.sumVolume = this.sumVolume>0 ? this.sumVolume : 0;
+            this.sumVolume = sumVol>0 ? sumVol : 0;
             //console.log(smokeFloor.generateVolume);
             //console.log(this.exhaustVel);
             //console.log(this.S);
@@ -278,9 +281,9 @@ SmokeBay.prototype.getVolume = function(smokeFloor,dt,_this){
                         this.jetSmokeArr.push(new smokeControl());
                         this.jetSmokeArr[0].init(this.inPos[i],i,this,_this);
                         if(i==0 || i==1)
-                            this.maxr = this.xmax-this.xmin;
+                            this.maxr[0] = this.xmax-this.xmin;
                         if(i==2 || i==3)
-                            this.maxr = this.zmax-this.zmin;
+                            this.maxr[0] = this.zmax-this.zmin;
                         //设置烟气单元的最大最小r
                         for(let j=0;j<this.smokeUnitArr.length;++j)
                         {
@@ -301,17 +304,18 @@ SmokeBay.prototype.getVolume = function(smokeFloor,dt,_this){
             if(this.inBayIndex >=0)
             {
                 var exhaustVolume = this.exhaustVel * this.S * dt / 60 * this.sumVolume / this.V;
-                this.sumVolume += this.neiborBay[this.inBayIndex].jetOutVolume - exhaustVolume;
-                if(this.sumVolume>0){
+                this.addVolume = this.neiborBay[this.inBayIndex].jetOutVolume - exhaustVolume;
+                var sumVol = this.sumVolume + this.addVolume;
+                if(sumVol>0){
                     smokeFloor.smokeVolume = smokeFloor.smokeVolume - exhaustVolume;
                     smokeFloor.exhaustVolume += exhaustVolume;
                 }
                 else{
-                    smokeFloor.smokeVolume = smokeFloor.smokeVolume - this.neiborBay[this.inBayIndex].jetOutVolume;
-                    smokeFloor.exhaustVolume += exhaustVolume;
+                    smokeFloor.smokeVolume = smokeFloor.smokeVolume - this.sumVolume;
+                    smokeFloor.exhaustVolume += this.sumVolume;
                 }
 
-                this.sumVolume = this.sumVolume>0 ? this.sumVolume : 0;
+                this.sumVolume = sumVol>0 ? sumVol : 0;
             }
         }
     }
@@ -431,11 +435,19 @@ SmokeBay.prototype.getVolume = function(smokeFloor,dt,_this){
 }*/
 
 SmokeBay.prototype.compute = function(smokeFloor,dt){
+    var self = this;
     if(this.sumVolume<=0)
     {
         this.smokeh = 0;
     }
-    if(this.smoker<this.maxr)
+    if(!this.isFull){
+        this.isFull = true;
+        this.maxr.forEach(function(r){
+            if(self.smoker<r)
+                self.isFull = false;
+        })
+    }
+    if(!this.isFull)
     {
         //顶棚射流阶段，计算顶棚射流速
         /*if(this.isFire && smokeFloor.isInTurning)
@@ -469,39 +481,56 @@ SmokeBay.prototype.compute = function(smokeFloor,dt){
         //是否在火羽流转向区内
         if(smokeFloor.isInTurning && this.smoker>0.15*(smokeFloor.fire.Zh-smokeFloor.fire.Zv))
             smokeFloor.isInTurning = false;
-        //是否全覆盖
-        if(this.smoker<this.maxr)
+
+        var xProp = (Math.min(this.smoker,smokeFloor.firePos.x-this.xmin)+Math.min(this.smoker,this.xmax-smokeFloor.firePos.x)) / (this.xmax-this.xmin);
+        var zProp = (Math.min(this.smoker,smokeFloor.firePos.z-this.zmin)+Math.min(this.smoker,this.zmax-smokeFloor.firePos.z)) / (this.zmax-this.zmin);
+        this.smokeh = this.sumVolume / (xProp * zProp * this.S);
+        //是否蔓延到防烟分区边界
+        if(this.smoker<this.maxr[0] && this.smoker<this.maxr[1])
         {
-            //是
             //计算顶棚射流烟气厚度
-            var xProp = (Math.min(this.smoker,smokeFloor.firePos.x-this.xmin)+Math.min(this.smoker,this.xmax-smokeFloor.firePos.x)) / (this.xmax-this.xmin);
-            var zProp = (Math.min(this.smoker,smokeFloor.firePos.z-this.zmin)+Math.min(this.smoker,this.zmax-smokeFloor.firePos.z)) / (this.zmax-this.zmin);
-            this.smokeh = this.sumVolume / (xProp * zProp * this.S);
+
         }
         else{
-            //计算烟雾厚度
-            this.smokeh = this.sumVolume / this.S;
             //是否溢出
             if(this.smokeh>this.hCS)
             {
-                this.smokeh = this.hCS;
-                this.jetOutVolume = (this.sumVolume - this.S * this.hCS) / this.neiborBayNum;
-                this.sumVolume = this.S * this.hCS;
+                if(this.addVolume>0){
+                    this.jetOutVolume = this.addVolume * (0.7+0.1*Math.random());
+                    this.jetOutVolume = Math.min(this.jetOutVolume,xProp * zProp * this.S *(this.smokeh-this.hCS));
+                    if(!this.isFull)
+                        this.jetOutVolume = this.jetOutVolume/2;
+                }else{
+                    this.jetOutVolume = 0;
+                }
+                var dh = this.jetOutVolume / (xProp * zProp * this.S);
+                this.sumVolume -= this.jetOutVolume;
+                this.jetOutVolume = this.jetOutVolume / this.neiborBayNum;
+                this.smokeh -= dh;
             }
         }
+        //console.log(this.smokeh);
     }
     else{
-        if(this.smoker<this.maxr)
-            this.smokeh = this.sumVolume * this.maxr / this.smoker / this.S;
+        if(this.smoker<this.maxr[0])
+            this.smokeh = this.sumVolume * this.maxr[0] / this.smoker / this.S;
         else{
             //计算烟雾厚度
             this.smokeh = this.sumVolume / this.S;
             //是否溢出
             if(this.smokeh>this.hCS)
             {
-                this.smokeh = this.hCS;
-                this.jetOutVolume = (this.sumVolume - this.S * this.hCS) / (this.neiborBayNum-1);
-                this.sumVolume = this.S * this.hCS;
+                if(this.addVolume>0){
+                    this.jetOutVolume = this.addVolume * (0.95+0.1*Math.random());
+                    this.jetOutVolume = Math.min(this.jetOutVolume,this.S *(this.smokeh-this.hCS));
+                }else{
+                    this.jetOutVolume = 0;
+                }
+
+                var dh = this.jetOutVolume / this.S;
+                this.sumVolume -= this.jetOutVolume;
+                this.jetOutVolume = this.jetOutVolume / (this.neiborBayNum-1);
+                this.smokeh -= dh;
             }
         }
     }
@@ -564,8 +593,8 @@ SmokeBay.prototype.rankByDistance = function(x,z)
 SmokeBay.prototype.setJetSmoke = function(firePos){
     var h = this.smokeh;
     if(!this.isRegular){
-        if(this.smokeh>0.5)
-            h = 0.5;
+        if(this.smokeh>1)
+            h = 1;
         else
             this.isRegular = true;
     }

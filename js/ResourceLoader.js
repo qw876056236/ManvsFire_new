@@ -138,7 +138,7 @@ Resourceload.prototype.loadGeometry=function(scene){
     function test()
     {
         $("#loadTime")[0].innerText = "实时建筑数量:"+scope.object.children.length;
-        console.log(scope.object.children.length);
+        //console.log(scope.object.children.length);
         scope.count++;
         scope.sum += scope.object.children.length;
         $("#avg")[0].innerText = "平均建筑数量:"+parseInt(scope.sum/scope.count);

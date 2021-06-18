@@ -139,7 +139,7 @@ mainScene.prototype.init = function()
     //region场景加载
     this.underground.init(this);
     this.resourceLoader.init(this);
-    console.log(this.resourceLoader);
+    //console.log(this.resourceLoader);
     //endregion
 
     //regiog消防员加载
