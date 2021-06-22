@@ -85,6 +85,8 @@ var mainScene = function()
 
     this.allTime = 0;
 
+    this.fireTime = 0;
+
     this.smokeH = [];
 
 
@@ -428,10 +430,10 @@ mainScene.prototype.addPeople = function ()
 
 mainScene.prototype.record = function (){
     this.allTime += this.delta;
-    if(this.allTime>1){
-        this.allTime -= 1;
+    if(this.allTime>5){
+        this.allTime -= 5;
         if(this.smoke.smokeFloorArr[this.smoke.fireFloorIndex].stage==1){
-            this.smokeH.push(this.smoke.smokeFloorArr[this.smoke.fireFloorIndex].smokeBayArr[0].smokeh.toFixed(3)+"\n");
+            this.smokeH.push(this.smoke.smokeFloorArr[this.smoke.fireFloorIndex].smokeBayArr[1].smokeh.toFixed(3)+"\n");
         }else if(this.smoke.smokeFloorArr[this.smoke.fireFloorIndex].stage==2){
             this.smokeH.push(this.smoke.smokeFloorArr[this.smoke.fireFloorIndex].smokeh.toFixed(3)+"\n");
         }

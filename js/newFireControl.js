@@ -22,7 +22,7 @@ var fireControl = function ()
     //-----------物理量-----------
     this.roangle=0;
 
-    this.Qt = 50000//最大热释放速率 单位kw kj/s
+    this.Qt = 10000//平均/最大热释放速率 单位kw kj/s
     this.Q = 10000;//热释放速率 单位kw kj/s
     this.QFactor = 0.5//火灾增长系数 单位kw/s2
     this.Qc = 0;//对流热释放速率
@@ -151,7 +151,14 @@ fireControl.prototype.update = function (deltaTime,_this)
     var Zv = -1.02*this.D + 0.083*Math.pow(this.Q,2/5);
     this.Zv = Zv > 0 ? Zv : 0;
     //this.Q = Math.min(this.Qt,this.QFactor*_this.elapsedTime*_this.elapsedTime);
-    this.Qc = this.QcFactor * this.Q * (0.8+Math.random()*0.4);
+    //每隔1s再重新计算一次Q
+    _this.fireTime += _this.delta;
+    if(_this.fireTime>5){
+        this.fireTime -= 5;
+        this.Q = this.Qt * (0.8 + Math.random()*0.4);
+    }
+    //this.Q = this.Qt * (0.8+Math.random()*0.4);
+    this.Qc = this.QcFactor * this.Q;
     //this.fireManager.controlSheet.high = this.L;
     this.B = this.Q / this.ice / this.calValue;
     //console.log(this.B);
