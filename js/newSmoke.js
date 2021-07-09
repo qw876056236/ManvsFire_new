@@ -8,7 +8,7 @@ var Smoke = function()
     this.vx = 1;
     this.vz = 1;
     this.vy = 100;
-    this.step = 0.002;
+    this.step = 0.01;
     this.smokeUnitArrf1 = [];
     this.smokeUnitArrf2 = [];
     this.smokeFloorArr = [];
@@ -48,12 +48,14 @@ Smoke.prototype.init = function(_this)
     //地下二层防烟分区设置
     var smokeFloor = new SmokeFloor();
     var smokeBay = new SmokeBay();
-    smokeBay.init(44.8,56.8,-13.4,-10.3,176,280,4,4);
+    //smokeBay.init(44.8,56.8,-13.4,-10.3,176,280,4,4);
+    smokeBay.init(45,57,-13.4,-10.3,176,280,4,4);
     //joint
     smokeFloor.smokeBayArr.push(smokeBay);
 
     smokeBay = new SmokeBay();
-    smokeBay.init(44.8,56.8,-13.4,-10.3,280,366,4,4);
+    //smokeBay.init(44.8,56.8,-13.4,-10.3,280,366,4,4);
+    smokeBay.init(45,57,-13.4,-10.3,280,366,4,4);
     smokeFloor.smokeBayArr.push(smokeBay);
 
     smokeFloor.smokeBayArr[0].neiborBay[0] = null;

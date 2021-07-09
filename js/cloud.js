@@ -1,3 +1,4 @@
+smokeTexture = new THREE.TextureLoader().load('./textures/Smoke-Element.png');
 var cloud = function () {
     this.material = null;
     this.mesh = null;
@@ -12,7 +13,7 @@ var cloud = function () {
 cloud.prototype.init = function (radius)
 {
     //火球的生成
-    this.material = new THREE.ShaderMaterial({
+    /*this.material = new THREE.ShaderMaterial({
         uniforms: {
             time: {
                 type: "f",
@@ -45,7 +46,22 @@ cloud.prototype.init = function (radius)
         transparent: true
     });
     this.mesh = new THREE.Mesh(new THREE.IcosahedronGeometry(radius, 3), this.material);
+    this.mesh.position.set(0,0,0);*/
+    var geom=new THREE.Geometry();//创建烟雾团
+    //创建烟雾素材
+    this.material=new THREE.SpriteMaterial({
+        //size:6,
+        transparent:true,
+        opacity:0,
+        map:smokeTexture,
+        sizeAttenuation:true,
+        depthWrite:false,
+        color:0xffffff,
+    });
+    //geom.vertices.push(new THREE.Vector3(0,0,0));
+    this.mesh=new THREE.Sprite(this.material);
     this.mesh.position.set(0,0,0);
+
 
 }
 
@@ -53,7 +69,7 @@ cloud.prototype.init = function (radius)
 cloud.prototype.setColor = function (prop)
 {
     //给火球上色
-    if (prop.colDark != null) {
+    /*if (prop.colDark != null) {
         if (typeof prop.colDark === 'string') {
             this.material.uniforms['colDark'].value = Utils.hexToVec3(prop.colDark);
         }
@@ -76,23 +92,24 @@ cloud.prototype.setColor = function (prop)
         else {
             this.material.uniforms['colLight'].value = prop.colLight;
         }
-    }
+    }*/
 };
 
 cloud.prototype.setOpacity = function (value) {
-    this.material.uniforms['opacity'].value = value;
+    //this.material.uniforms['opacity'].value = value;
+    this.material.opacity = value;
 };
 
 cloud.prototype.setDetail = function (value) {
-    this.material.uniforms['detail'].value = value;
+    //this.material.uniforms['detail'].value = value;
 };
 
 cloud.prototype.update = function (timeDiff) {
-    this.material.uniforms['time'].value += .0005 * timeDiff * this.flowRatio;
+    //this.material.uniforms['time'].value += .0005 * timeDiff * this.flowRatio;
 };
 
 cloud.prototype.setFlowRatio = function (val) {
-    this.flowRatio = val;
+    //this.flowRatio = val;
 };
 
 cloud.prototype.getMesh = function () {

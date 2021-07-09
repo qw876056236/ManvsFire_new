@@ -1,6 +1,6 @@
 var smokeAnimation = function () {
     smokeAnimation.scale = 1;
-    smokeAnimation.scaleFactor = 0.05;
+    smokeAnimation.scaleFactor = 1.4;//0.05
     smokeAnimation.STATE_BEFORE_START = 0;
     /*fireAnimation.STATE_SPAWN = 1;
     fireAnimation.STATE_SPAWN_DOWN = 2;
@@ -168,7 +168,7 @@ smokeAnimation.prototype.update = function (deltaTime,control) {
             //mesh.position.set(0,20,50*Math.random());
             this.initPos = true;
         }*/
-        this.instance.setOpacity(this.currentTime/smokeAnimation.BEFORE_INTERVAL * 0.7);
+        this.instance.setOpacity(this.currentTime/smokeAnimation.BEFORE_INTERVAL * this.maxOpacity);
         //console.log(this.currentTime);
         //mesh.opacity = 0.1;
 
@@ -183,15 +183,15 @@ smokeAnimation.prototype.update = function (deltaTime,control) {
         if(this.dir==0 || this.dir==1){
             //var z = Math.min(Math.max(mesh.position.z + this.randFlyZ * timeScale, this.minZ), this.maxZ);
             if(this.dir ==0)
-                mesh.position.set(mesh.position.x + smokeAnimation.velocity * timeScale, this.maxY-control.h/smokeAnimation.scaleFactor/2, mesh.position.z);
+                mesh.position.set(mesh.position.x + smokeAnimation.velocity * timeScale * (0.9+0.2*Math.random()), this.maxY-control.h/smokeAnimation.scaleFactor/2, mesh.position.z);
             else
-                mesh.position.set(mesh.position.x - smokeAnimation.velocity * timeScale, this.maxY-control.h/smokeAnimation.scaleFactor/2, mesh.position.z);
+                mesh.position.set(mesh.position.x - smokeAnimation.velocity * timeScale * (0.9+0.2*Math.random()), this.maxY-control.h/smokeAnimation.scaleFactor/2, mesh.position.z);
         }else if(this.dir==2 || this.dir==3){
             //var x = Math.min(Math.max(mesh.position.x + this.randFlyX * timeScale, this.minX), this.maxX);
             if(this.dir ==2)
-                mesh.position.set(mesh.position.x , this.maxY-control.h/smokeAnimation.scaleFactor/2, mesh.position.z + smokeAnimation.velocity * timeScale);
+                mesh.position.set(mesh.position.x , this.maxY-control.h/smokeAnimation.scaleFactor/2, mesh.position.z + smokeAnimation.velocity * timeScale) * (0.9+0.2*Math.random());
             else
-                mesh.position.set(mesh.position.x , this.maxY-control.h/smokeAnimation.scaleFactor/2, mesh.position.z - smokeAnimation.velocity * timeScale);
+                mesh.position.set(mesh.position.x , this.maxY-control.h/smokeAnimation.scaleFactor/2, mesh.position.z - smokeAnimation.velocity * timeScale) * (0.9+0.2*Math.random());
         }
 
         //this.instance.setOpacity(0.1);
@@ -239,6 +239,9 @@ smokeAnimation.prototype.setInPolling = function (val) {
 smokeAnimation.prototype.reset = function (control) {
     this.randFlyX = Math.random() * 0.1 - 0.05;
     this.randFlyZ = Math.random() * 0.1 - 0.05;
+    this.maxOpacity = 0.5 + 0.2 * Math.random();
+    //this.instance.getMesh().rotation.set(2*Math.PI*Math.random(),2*Math.PI*Math.random(),2*Math.PI*Math.random());
+    this.instance.getMesh().rotation.set(Math.PI*(-0.01+0.02*Math.random()),2*Math.PI*Math.random(),Math.PI*(-0.01+0.02*Math.random()));
     this.posX = -1;
     this.currentTime = 0;
     this.timeCount = 0;
@@ -246,7 +249,7 @@ smokeAnimation.prototype.reset = function (control) {
     this.isInPooling = false;
     this.currentState = smokeAnimation.STATE_BEFORE_START;
     this.colorTransitionRandom = (Math.random() * 2000 - 1000) * smokeAnimation.scale;
-    this.instance.getMesh().scale.set(0.1, control.h, 0.1);
+    this.instance.getMesh().scale.set(4+2*Math.random(), control.h, 4+2*Math.random());
     if(this.dir == 0)
         this.instance.getMesh().position.set(control.pos.x, this.maxY-control.h/smokeAnimation.scaleFactor/2, this.minZ+Math.random()*(this.maxZ-this.minZ));
     else if(this.dir == 1)

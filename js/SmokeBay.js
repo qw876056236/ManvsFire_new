@@ -592,12 +592,12 @@ SmokeBay.prototype.rankByDistance = function(x,z)
 
 SmokeBay.prototype.setJetSmoke = function(firePos){
     var h = this.smokeh;
-    if(!this.isRegular){
+    /*if(!this.isRegular){
         if(this.smokeh>1)
             h = 1;
         else
             this.isRegular = true;
-    }
+    }*/
     if(this.isFire){
         if(this.xmax-this.xmin>this.zmax-this.zmin){
             var lr = Math.min(this.smoker,firePos.x-this.xmin);
@@ -644,6 +644,9 @@ SmokeBay.prototype.update = function(smokeFloor,dt,_this){
             if(smokeFloor.stage==1){
                 this.setJetSmoke(smokeFloor.firePos);
                 this.jetSmokeArr.forEach(jet=>jet.update(20));
+                /*this.smokeh = 3.1;
+                for(let i=0;i<this.smokeUnitArr.length;++i)
+                    this.smokeUnitArr[i].update(this,smokeFloor.stage,_this);*/
                 //this.smokeUnitArr.forEach(smokeUnit=>smokeUnit.update(self,smokeFloor.stage,_this));
             }else{
                 for(let i=0;i<this.smokeUnitArr.length;++i)
@@ -688,7 +691,7 @@ var SmokeUnit = function()
     this.S = 0;
 };
 
-SmokeUnit.prototype.createCloud = function(_this){
+/*SmokeUnit.prototype.createCloud = function(_this){
     var material = new THREE.ShaderMaterial({
         uniforms: {
             time: {
@@ -740,6 +743,45 @@ SmokeUnit.prototype.createCloud = function(_this){
         //geom.vertices.push(particle);
     }
     cloud.scale.setY(this.h * smokeAnimation.scaleFactor + 0.01);
+    cloud.position.set(this.pos.x,this.pos.y-this.h/2,this.pos.z);
+    _this.scene.add(cloud);
+    this.cloudArr.push(cloud);
+}*/
+
+SmokeUnit.prototype.createCloud = function(_this){
+    var geom=new THREE.Geometry();//创建烟雾团
+    //创建烟雾素材
+    var material=new THREE.SpriteMaterial({
+        //size:6,
+        transparent:true,
+        opacity:0,
+        map:smokeTexture,
+        sizeAttenuation:true,
+        depthWrite:false,
+        color:0xffffff,
+    });
+    //geom.vertices.push(new THREE.Vector3(0,0,0));
+    //var geometry = new THREE.IcosahedronGeometry(Math.random()*5+8, 3);
+    var cloud = new THREE.Group();
+    for(var i=0;i<3;i++){
+        for(var j=0;j<3;j++)
+        {
+            //创建烟雾片
+            var mesh = new THREE.Sprite(material);
+            mesh.position.set(-1.3+i*1.3,0,-1.3+j*1.3);
+            mesh.scale.set(4+2*Math.random(),1,4+2*Math.random());
+            mesh.rotation.set(Math.PI*(-0.01+0.02*Math.random()),2*Math.PI*Math.random(),Math.PI*(-0.01+0.02*Math.random()));
+            mesh.material.opacity = 0.5+Math.random()*0.2;
+            //将烟雾片一片片加入到geom中
+            cloud.add(mesh);
+        }
+        //创建烟雾片
+        //var particle=new THREE.Vector3(Math.random()*6-6/2,0,Math.random()*6-6/2);
+        //将烟雾片一片片加入到geom中
+        //geom.vertices.push(particle);
+    }
+    cloud.scale.setY(this.h * smokeAnimation.scaleFactor + 0.01);
+    cloud.rotation.set(0,2*Math.PI*Math.random(),0);
     cloud.position.set(this.pos.x,this.pos.y-this.h/2,this.pos.z);
     _this.scene.add(cloud);
     this.cloudArr.push(cloud);
