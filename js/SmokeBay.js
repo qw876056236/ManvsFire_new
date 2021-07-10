@@ -592,12 +592,12 @@ SmokeBay.prototype.rankByDistance = function(x,z)
 
 SmokeBay.prototype.setJetSmoke = function(firePos){
     var h = this.smokeh;
-    /*if(!this.isRegular){
+    if(!this.isRegular){
         if(this.smokeh>1)
             h = 1;
         else
             this.isRegular = true;
-    }*/
+    }
     if(this.isFire){
         if(this.xmax-this.xmin>this.zmax-this.zmin){
             var lr = Math.min(this.smoker,firePos.x-this.xmin);
