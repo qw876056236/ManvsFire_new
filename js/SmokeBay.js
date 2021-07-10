@@ -180,6 +180,8 @@ var SmokeBay = function(){
     this.neiborBay = [];//相邻防烟分区 0 xlast 1 xnext 2 zlast 3 znext
     this.neiborBayNum = 0;
 
+    this.rotateT = 0;
+
     //烟雾层高度是否正常
     this.isRegular = false;
 
@@ -238,6 +240,7 @@ SmokeBay.prototype.init = function(xmin,xmax,ymin,ymax,zmin,zmax,xstep,zstep){
             smokeUnit.i = i;
             smokeUnit.j = j;
             smokeUnit.S = xstep * zstep;
+            smokeUnit.rotateDir = Math.random()>0.5 ? 0: 1;
             this.smokeUnitArr.push(smokeUnit);
         }
     for(let i=0;i<this.jointArr.length;++i)
@@ -644,11 +647,16 @@ SmokeBay.prototype.update = function(smokeFloor,dt,_this){
             if(smokeFloor.stage==1){
                 this.setJetSmoke(smokeFloor.firePos);
                 this.jetSmokeArr.forEach(jet=>jet.update(20));
-                /*this.smokeh = 3.1;
-                for(let i=0;i<this.smokeUnitArr.length;++i)
-                    this.smokeUnitArr[i].update(this,smokeFloor.stage,_this);*/
                 //this.smokeUnitArr.forEach(smokeUnit=>smokeUnit.update(self,smokeFloor.stage,_this));
             }else{
+                //定时改变旋转方向
+                this.rotateT++;
+                if(this.rotateT>200){
+                    this.rotateT -= 200;
+                    for(let i=0;i<this.smokeUnitArr.length;++i)
+                        this.smokeUnitArr[i].rotateDir = Math.random()>0.5 ? 0 : 1;
+                }
+
                 for(let i=0;i<this.smokeUnitArr.length;++i)
                     this.smokeUnitArr[i].update(this,smokeFloor.stage,_this);
                 //if(!this.isFire)
@@ -689,6 +697,7 @@ var SmokeUnit = function()
     this.j = 0;
     this.index = -1;
     this.S = 0;
+    this.rotateDir = 0;
 };
 
 /*SmokeUnit.prototype.createCloud = function(_this){
@@ -771,7 +780,7 @@ SmokeUnit.prototype.createCloud = function(_this){
             mesh.position.set(-1.3+i*1.3,0,-1.3+j*1.3);
             mesh.scale.set(4+2*Math.random(),1,4+2*Math.random());
             mesh.rotation.set(Math.PI*(-0.01+0.02*Math.random()),2*Math.PI*Math.random(),Math.PI*(-0.01+0.02*Math.random()));
-            mesh.material.opacity = 0.5+Math.random()*0.2;
+            mesh.material.opacity = 1+Math.random()*0.2;
             //将烟雾片一片片加入到geom中
             cloud.add(mesh);
         }
@@ -796,7 +805,10 @@ SmokeUnit.prototype.update = function(smokeBay,stage,_this)
     if(this.cloudArr[0])
     {
         //smoke.step += 0.00005;
-        this.cloudArr[0].rotation.y += _this.smoke.step;
+        if(this.rotateDir==0)
+            this.cloudArr[0].rotation.y += _this.smoke.step * (0.8+0.4*Math.random());
+        else
+            this.cloudArr[0].rotation.y -= _this.smoke.step * (0.8+0.4*Math.random());
         this.cloudArr[0].scale.setY(this.h * smokeAnimation.scaleFactor);
         this.cloudArr[0].position.setY(this.pos.y-this.h/2);
         /*this.cloudArr[0].children.forEach(function(cloud){
