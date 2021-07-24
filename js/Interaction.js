@@ -86,7 +86,7 @@ Interaction.prototype.fuc2 = function (_this)
         document.getElementById("startRun").style.display = "none";
         document.getElementById("transformSmoke").style.display = "none";
         document.getElementById("createPersonBtn").style.display = "none";
-        document.getElementById("fireman").style.display = "inline-block";
+        //document.getElementById("fireman").style.display = "inline-block";
         document.getElementById("floor-menu").style.display = "inline-block";
 
         window.testFlag=12;
@@ -113,11 +113,11 @@ Interaction.prototype.fuc2 = function (_this)
         _this.globalPlane.set(new THREE.Vector3(0, -1, 0), 17);
         _this.smoke.firePos = _this.smoke.positionBallMesh.position;
         _this.smoke.positionBallMesh.visible=false;
-        _this.people.positionPlaneMesh_1.visible=false;
+        /*_this.people.positionPlaneMesh_1.visible=false;
         _this.people.positionPlaneMesh_2.visible=false;
         _this.people.positionPlaneMesh_3.visible=false;
         _this.people.positionPlaneMesh_4.visible=false;
-        _this.people.positionPlaneMesh_5.visible=false;
+        _this.people.positionPlaneMesh_5.visible=false;*/
         _this.smoke.clock.start();
         //_this.smoke.cloudRank();
         //fire必须在smoke之前set
@@ -145,7 +145,7 @@ Interaction.prototype.fuc2 = function (_this)
                     $('#illustration-context').html("<br/>产烟总量： " + Math.round(_this.smoke.smokeVolume) + "m<sup>3</sup>"
                         + "<br/>排烟总量： " + Math.round(_this.smoke.exhaustVolume) + "m<sup>3</sup>"
                         + "<br/>火场内烟量： " + Math.round(_this.smoke.nowVolume) + "m<sup>3</sup>"
-                        + "<br/>火场剩余人数： " + _this.number + "人");
+                        /*+ "<br/>火场剩余人数： " + _this.number + "人"*/);
 
                 } else {
                     clearInterval(timeEscape);

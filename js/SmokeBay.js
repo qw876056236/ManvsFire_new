@@ -211,7 +211,7 @@ var SmokeBay = function(){
     this.inArr = false;//是否在floor的arr里
 
     //用户实时设置的值
-    this.exhaustVel = 0;//排烟速度
+    this.exhaustVel = 0.5;//排烟速度
 }
 
 SmokeBay.prototype.init = function(xmin,xmax,ymin,ymax,zmin,zmax,xstep,zstep){
