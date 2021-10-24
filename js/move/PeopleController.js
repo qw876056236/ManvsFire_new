@@ -238,6 +238,52 @@ class PeopleController{
         }
     }
 }
+function chack(p1, p2, grid){
+    var dx = p1[0]-p2[0];
+    var dy = p1[1]-p2[1]; 
+    var x,y,minx,miny,maxx,maxy = 0;
+    if (Math.abs(dx) > Math.abs(dy)){
+        for (var i = 1; i <= Math.abs(dx); i++){
+            x = p1[0] + i;
+            miny = parseInt(p1[1] + i * dy / dx);
+            maxy = Math.ceil(p1[1] + i * dy / dx);
+            if (!grid.isWalkableAt(x, miny) && !grid.isWalkableAt(x, maxy)){     
+                return false;
+            }
+        }
+        return true;
+    }
+    else {
+        for (var i = 1; i <= Math.abs(dy); i++){
+            y = p1[1] + i;
+            minx = parseInt(p1[0] + i * dx / dy);
+            maxx = Math.ceil(p1[0] + i * dx / dy);
+            if (!grid.isWalkableAt(minx, y) && !grid.isWalkableAt(maxx, y)){
+                return false;
+            }
+        }
+        return true;
+    }
+};
+
+function newpath(path, grid){
+    var i = 0;
+    var Pop = path[i];
+    var Newpath = [Pop];
+    var len = path.length - 1;
+    if (len < 3){
+        return path;
+    }
+    else{
+        for (i = 0; i <= len - 2; i++){
+            if (!chack(Newpath[0], path[i + 2], grid)){
+                Newpath.unshift(path[i + 1]);
+            }
+        }
+        Newpath.unshift(path[i + 1]);
+        return Newpath.reverse();
+    }
+};
 class SameFloorPF{
     model;
     obstacle;
@@ -274,6 +320,7 @@ class SameFloorPF{
         }else{
             var grid=this.grid.clone();
             var path = this.finder.findPath(x1,z1,x2,z2,grid);
+            path = newpath(path, grid);
             for(var i=0;i<path.length;i++){
                 path[i].splice(1,0,this.model.position.y);
                 path[i][0]+=this.xMin;

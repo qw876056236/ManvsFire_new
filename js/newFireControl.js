@@ -102,13 +102,25 @@ fireControl.prototype.spawnNewFlame = function ()
         this.objs[i].instance.setColor(this.currentCol);
         this.objs[i].reset();
     }
-    else {
-        let temp = new fire();
-        temp.init(Math.random() * 5 + 8)
-        let obj = new fireAnimation();
-        obj.init(temp, (Math.random() * 2 - 1)*0.5, (Math.random() * 2 - 1)*0.5, (Math.random() * 0.4 + 0.35) / 4, Math.random() * 0.4 + 0.3,this.pos);
-        obj.instance.setColor(this.currentCol);
-        this.objs.push(obj);
+    else {  
+        if (Math.random() > 0.2)
+        {
+            let temp = new fire();
+            temp.init(Math.random() * 5 + 8)
+            let obj = new fireAnimation();
+            obj.init(temp, (Math.random() * 2 - 1)*0.5, (Math.random() * 2 - 1)*0.5, (Math.random() * 0.4 + 0.35) / 4, Math.random() * 0.4 + 0.3,this.pos);
+            obj.instance.setColor(this.currentCol);
+            this.objs.push(obj);
+        }
+        else{
+            let temp = new fire();
+            temp.init(Math.random() * 3 + 6)
+            let obj = new transAnimation();
+            obj.init(temp, (Math.random() * 2 - 1)*0.5, (Math.random() * 2 - 1)*0.5, (Math.random() * 0.4 + 0.35) / 4, Math.random() * 0.4 + 0.3,this.pos);
+            obj.instance.setColor(this.currentCol);
+            this.objs.push(obj);
+        }
+        
         this.scene.add(this.objs[i].instance.getMesh());
     }
 }

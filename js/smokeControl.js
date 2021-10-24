@@ -17,7 +17,7 @@ var smokeControl = function ()
     this.finished = false;
 
     this.objs = [];
-
+    this.edge = 0;
     this.FLOATING_INTERVAL = 0;
     this.h = 0;
     this.direction = 0;

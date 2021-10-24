@@ -341,7 +341,6 @@ SmokeBay.prototype.getVolume = function(smokeFloor,dt,_this){
 
 
 };
-
 /*SmokeBay.prototype.compute = function(dt,volume){
     this.sumVolume = 0;
     var addVolume = [];
@@ -437,6 +436,7 @@ SmokeBay.prototype.getVolume = function(smokeFloor,dt,_this){
 
 }*/
 
+
 SmokeBay.prototype.compute = function(smokeFloor,dt){
     var self = this;
     if(this.sumVolume<=0)
@@ -452,7 +452,7 @@ SmokeBay.prototype.compute = function(smokeFloor,dt){
     }
     if(!this.isFull)
     {
-        //顶棚射流阶段，计算顶棚射流速
+              //顶棚射流阶段，计算顶棚射流速
         /*if(this.isFire && smokeFloor.isInTurning)
             this.smokev = 0.96 * Math.pow(smokeFloor.fire.Qc/(smokeFloor.fire.Zh-smokeFloor.fire.Zv)/smokeFloor.fire.QcFactor,1/3);
         else if(this.isFire)
@@ -478,7 +478,7 @@ SmokeBay.prototype.compute = function(smokeFloor,dt){
     //console.log("Vy: ",smokeFloor.Vy);
     //console.log("smokev: ",this.smokev);
     //console.log("smoker: ",this.smoker);
-
+  
     if(this.isFire)
     {
         //是否在火羽流转向区内
@@ -595,6 +595,8 @@ SmokeBay.prototype.rankByDistance = function(x,z)
 
 SmokeBay.prototype.setJetSmoke = function(firePos){
     var h = this.smokeh;
+    var Ledge = 0;
+    var Redge = 0;
     if(!this.isRegular){
         if(this.smokeh>1)
             h = 1;
@@ -605,13 +607,30 @@ SmokeBay.prototype.setJetSmoke = function(firePos){
         if(this.xmax-this.xmin>this.zmax-this.zmin){
             var lr = Math.min(this.smoker,firePos.x-this.xmin);
             var rr = Math.min(this.smoker,this.xmax - firePos.x);
+            if(this.smoker > lr)
+                Ledge = this.smoker;
+                if(this.smoker >= lr / 0.8)
+                    Ledge = lr / 0.8;
+            if(this.smoker > rr)
+                Redge = this.smoker;
+                if(this.smoker >= rr / 0.8)
+                    Ledge = rr / 0.8;
         }else{
             var lr = Math.min(this.smoker,firePos.z-this.zmin);
             var rr = Math.min(this.smoker,this.zmax - firePos.z);
+            if(this.smoker > lr)
+                Ledge = this.smoker;
+                if(this.smoker >= lr / 0.8)
+                    Ledge = lr / 0.8;
+            if(this.smoker > rr)
+                Redge = this.smoker;
+                if(this.smoker >= rr / 0.8)
+                    Ledge = rr / 0.8;
         }
         this.jetSmokeArr[0].FLOATING_INTERVAL = lr / smokeAnimation.velocity * 20;
         this.jetSmokeArr[1].FLOATING_INTERVAL = rr / smokeAnimation.velocity * 20;
-
+        this.jetSmokeArr[0].edge = Ledge / smokeAnimation.velocity * 20;
+        this.jetSmokeArr[1].edge = Redge / smokeAnimation.velocity * 20;
         /*this.jetSmokeArr[0].h = Math.max(this.smokeh ,0.5) * smokeAnimation.scaleFactor;
         this.jetSmokeArr[1].h = Math.max(this.smokeh ,0.5) * smokeAnimation.scaleFactor;*/
         this.jetSmokeArr[0].h = h * smokeAnimation.scaleFactor;
@@ -757,6 +776,7 @@ var SmokeUnit = function()
     this.cloudArr.push(cloud);
 }*/
 
+
 SmokeUnit.prototype.createCloud = function(_this){
     var geom=new THREE.Geometry();//创建烟雾团
     //创建烟雾素材
@@ -814,8 +834,9 @@ SmokeUnit.prototype.update = function(smokeBay,stage,_this)
         /*this.cloudArr[0].children.forEach(function(cloud){
             cloud.scale.setY(this.h * smokeAnimation.scaleFactor);
         })*/
+
     }
-    /*if(this.h>smokeBay.jetH && this.h<smokeBay.h)
+/*if(this.h>smokeBay.jetH && this.h<smokeBay.h)
     {
         if(!this.cloudArr[1])
         {
