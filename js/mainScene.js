@@ -212,6 +212,8 @@ mainScene.prototype.start = function()
         self.renderer.clear();
         self.renderer.setViewport(0, 0, window.innerWidth, window.innerHeight);
         self.renderer.render(self.scene, self.camera);
+
+        console.log(self.fire.Cy);
     }
 }
 

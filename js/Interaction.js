@@ -482,7 +482,9 @@ Interaction.prototype.fuc3 = function (MainScene)
             $('View').style.display = "none";
             $("fire-menu").style.display = "inline-block";
             $("switch").style.display="none";
+            $('editSmoke').style.display = "inline-block";
             $('transformSmoke').textContent="返回";
+            $('transformSmoke').style.top = "85%";
             $('illustration-context').innerHTML = "您已进入烟雾编辑页面，请通过拖动屏幕上的坐标轴至“红色标识”下方并使其成半透明效果，以选择起火位置，或者直接点选“火灾情景”按钮进行选择。在选择完毕后，请点击“返回”以退出编辑模式"
 
             MainScene.camera.position.set(50, 200, 240);//原x为150 450
@@ -494,7 +496,7 @@ Interaction.prototype.fuc3 = function (MainScene)
             MainScene.control.visible = true;
             // MainScene.fire.Te1Material.visible=false;
             // MainScene.fire.Te2Material.visible=false;
-            MainScene.fire.fireManager.target.visible=true;
+            //MainScene.fire.fireManager.target.visible=true;
 
             MainScene.smoke.positionBallMesh.visible=true;
             MainScene.smokeEditor.points.forEach(function(item){
@@ -510,9 +512,16 @@ Interaction.prototype.fuc3 = function (MainScene)
             $('View').style.display = "inline-block";
             $("fire-menu").style.display = "none";
             $("transformSmoke").style.display="inline-block";
+            $('editSmoke').style.display = "none";
             $('transformSmoke').textContent="编辑烟雾";
+            $('transformSmoke').style.top = "60%";
             $("switch").style.display="none";
             $('illustration-context').innerHTML = "<p>您已成功选取起火点位置</p>" + "<p>若想模拟火灾请点击“开始模拟”</p>";
+
+            MainScene.fire.Cy = $("C-rate").value;
+            MainScene.fire.Hy = $("H-rate").value;
+            MainScene.fire.Ny = $("N-rate").value;
+            MainScene.fire.Oy = $("O-rate").value;
 
             MainScene.camera.position.set(60,3,146);
             MainScene.camera.rotation.set(-2.8,0.7,2.9);
@@ -526,7 +535,7 @@ Interaction.prototype.fuc3 = function (MainScene)
             MainScene.control.visible = false;
             // MainScene.fire.Te1Material.visible=false;
             // MainScene.fire.Te2Material.visible=false;
-            MainScene.fire.fireManager.target.visible=false;
+            //MainScene.fire.fireManager.target.visible=false;
 
             MainScene.smoke.positionBallMesh.visible=false;
             MainScene.smokeEditor.points.forEach(function(item){
