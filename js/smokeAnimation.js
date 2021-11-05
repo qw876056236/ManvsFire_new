@@ -21,7 +21,8 @@ var smokeAnimation = function () {
     smokeAnimation.IDLE_INTERVAL = 3000 * smokeAnimation.scale ;
 
     smokeAnimation.velocity = 0.05;
-
+    
+    smokeAnimation.edge = 0;
 
     this.params = {
         /*LightColor2 : '#ff8700',
@@ -37,7 +38,8 @@ var smokeAnimation = function () {
         ParticleSpread : 1,
         ParticleColor : '#ffb400',
         InvertedBackground : false,
-        ShowGrid : true
+        ShowGrid : true,
+        Polling : false,
     };
 
 }
@@ -60,7 +62,8 @@ smokeAnimation.prototype.init = function(instance, control, yRatio, animationTim
         this.animationTimeRatio = animationTimeRatio;
         this.inPos = false;
         this.dir = control.direction;
-        this.reset(control);
+        this.params.Polling = this.
+        reset(control);
     }
 
 smokeAnimation.prototype.setColor = function () {
@@ -118,21 +121,36 @@ smokeAnimation.prototype.setColor = function () {
 smokeAnimation.prototype.updateState = function (deltaTime,control) {
     var cTime = this.currentTime + deltaTime;
     if (this.currentState === smokeAnimation.STATE_BEFORE_START) {
+        this.instance.setOpacity((this.currentTime / smokeAnimation.BEFORE_INTERVAL + 1) / 2 * this.maxOpacity);
         if (cTime > smokeAnimation.BEFORE_INTERVAL) {
             cTime -= smokeAnimation.BEFORE_INTERVAL;
             this.currentState = smokeAnimation.STATE_FLOATING;
         }
     }
     else if (this.currentState === smokeAnimation.STATE_FLOATING) {
-        if (cTime > control.FLOATING_INTERVAL) {
-            /*this.randFlyX += Math.random() * 0.2;
-            this.randFlyZ += Math.random() * 0.2;*/
-            cTime -= control.FLOATING_INTERVAL;
-            this.posX = -1;
-            this.currentState = smokeAnimation.STATE_IDLE;
+        if(control.edge > 0){
+            this.instance.setOpacity(this.maxOpacity);
+            if(this.currentTime > control.edge * 0.8)
+                this.instance.setOpacity((1.2 - this.currentTime/control.edge)*this.maxOpacity)
+            if (cTime > control.edge) {
+                cTime -= control.edge;
+                this.posX = -1;
+                this.currentState = smokeAnimation.STATE_IDLE;
+            }
         }
+        else{
+            if(this.currentTime > control.FLOATING_INTERVAL * 0.8)
+                this.instance.setOpacity((1.2 - this.currentTime/control.FLOATING_INTERVAL)*this.maxOpacity);
+            if (cTime > control.FLOATING_INTERVAL) {
+                cTime -= control.FLOATING_INTERVAL;
+                this.posX = -1;
+                this.currentState = smokeAnimation.STATE_IDLE;
+            }
+        }
+        
     }
     else if (this.currentState === smokeAnimation.STATE_IDLE) {
+        this.instance.setOpacity(0.2 - this.currentTime / control.IDLE_INTERVALaw);
         if (cTime > smokeAnimation.IDLE_INTERVAL) {
             this.isObjDie = true;
         }
@@ -140,9 +158,24 @@ smokeAnimation.prototype.updateState = function (deltaTime,control) {
     this.currentTime = cTime;
 };
 
+function wave(time){
+    x = time % 16
+    if(x < 4){
+        return x * x / 16 - 1;
+    }else if(x < 8){
+        return (-1 * (-4 / x) * (-4 / x) + 1) * 4 / 3;
+    }else if(x < 12){
+        return (-1 * x * x + 64) / 80 + 1
+    }else{
+        return (1 / x - 1 / 12) * 48
+    }
+}
+
 smokeAnimation.prototype.update = function (deltaTime,control) {
-    if (this.isObjDie)
+    if (this.isObjDie){
         return;
+    }
+  
     let mesh = this.instance.getMesh();
     let timeScale = this.params.TimeScale;
     this.updateState(deltaTime * timeScale,control);
@@ -168,7 +201,8 @@ smokeAnimation.prototype.update = function (deltaTime,control) {
             //mesh.position.set(0,20,50*Math.random());
             this.initPos = true;
         }*/
-        this.instance.setOpacity(this.currentTime/smokeAnimation.BEFORE_INTERVAL * this.maxOpacity);
+        //this.instance.setOpacity(this.maxOpacity);
+        
         //console.log(this.currentTime);
         //mesh.opacity = 0.1;
 
@@ -178,8 +212,9 @@ smokeAnimation.prototype.update = function (deltaTime,control) {
             this.posX = mesh.position.x;
             this.posY = mesh.position.y;
             this.posZ = mesh.position.z;
-            this.instance.setFlowRatio(0.5);
+           // this.instance.setFlowRatio(0.5);
         }
+        //this.instance.setOpacity(0);
         if(this.dir==0 || this.dir==1){
             //var z = Math.min(Math.max(mesh.position.z + this.randFlyZ * timeScale, this.minZ), this.maxZ);
             if(this.dir ==0)
@@ -189,9 +224,9 @@ smokeAnimation.prototype.update = function (deltaTime,control) {
         }else if(this.dir==2 || this.dir==3){
             //var x = Math.min(Math.max(mesh.position.x + this.randFlyX * timeScale, this.minX), this.maxX);
             if(this.dir ==2)
-                mesh.position.set(mesh.position.x , this.maxY-control.h/smokeAnimation.scaleFactor/2, mesh.position.z + smokeAnimation.velocity * timeScale) * (0.9+0.2*Math.random());
+                mesh.position.set(mesh.position.x + 0.3 * wave(this.timeCount/deltaTime/10) * smokeAnimation.velocity * timeScale, this.maxY-control.h/smokeAnimation.scaleFactor/2, mesh.position.z + smokeAnimation.velocity * timeScale) * (0.9+0.2*Math.random());
             else
-                mesh.position.set(mesh.position.x , this.maxY-control.h/smokeAnimation.scaleFactor/2, mesh.position.z - smokeAnimation.velocity * timeScale) * (0.9+0.2*Math.random());
+                mesh.position.set(mesh.position.x + 0.3 * wave(this.timeCount/deltaTime/10) * smokeAnimation.velocity * timeScale, this.maxY-control.h/smokeAnimation.scaleFactor/2, mesh.position.z - smokeAnimation.velocity * timeScale) * (0.9+0.2*Math.random());
         }
         //mesh.rotation.set(mesh.rotation.x+1,mesh.rotation.y+1,0);
         //旋转无用？
@@ -217,13 +252,13 @@ smokeAnimation.prototype.update = function (deltaTime,control) {
         /*if (this.currentTime > smokeAnimation.IDLE_INTERVAL - 5000) {
             this.instance.setOpacity(1 - (this.currentTime - (smokeAnimation.IDLE_INTERVAL - 5000)) / 5000);
         }*/
-        this.instance.setOpacity((1-this.currentTime/smokeAnimation.IDLE_INTERVAL) * this.maxOpacity);
+        //this.instance.setOpacity((1-this.currentTime/smokeAnimation.IDLE_INTERVAL) * this.maxOpacity);
         let scale = mesh.scale.x - 0.002 * timeScale * smokeAnimation.scaleFactor;
         mesh.scale.set(scale, scale, scale);
     }
     this.setColor();
-    mesh.scale.setY(control.h);
-    this.instance.update(deltaTime * timeScale * this.animationTimeRatio);
+    mesh.scale.setY(control.h * (wave(this.timeCount/deltaTime/5) + 2) / 3 + 0.3);
+    //this.instance.update(deltaTime * timeScale * this.animationTimeRatio);
 };
 
 smokeAnimation.prototype.isDie = function () {
@@ -257,10 +292,10 @@ smokeAnimation.prototype.reset = function (control) {
     else if(this.dir == 1)
         this.instance.getMesh().position.set(control.pos.x, this.maxY-control.h/smokeAnimation.scaleFactor/2, this.minZ+Math.random()*(this.maxZ-this.minZ));
     else if(this.dir == 2)
-        this.instance.getMesh().position.set(this.minX+Math.random()*(this.maxX-this.minX), this.maxY-control.h/smokeAnimation.scaleFactor/2, control.pos.z);
+        this.instance.getMesh().position.set(this.minX+Math.random()*(this.maxX-this.minX), this.maxY-control.h/smokeAnimation.scaleFactor/2, control.pos.z+Math.random());
     else if(this.dir == 3)
-        this.instance.getMesh().position.set(this.minX+Math.random()*(this.maxX-this.minX), this.maxY-control.h/smokeAnimation.scaleFactor/2, control.pos.z);
-    this.instance.setFlowRatio(1);
+        this.instance.getMesh().position.set(this.minX+Math.random()*(this.maxX-this.minX), this.maxY-control.h/smokeAnimation.scaleFactor/2, control.pos.z-Math.random());
+    //this.instance.setFlowRatio(1);
     this.instance.setOpacity(0);
     this.scaleFactor = 0.8;
 };
