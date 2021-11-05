@@ -84,7 +84,7 @@ smokeControl.prototype.spawnNewFlame = function ()
     }
     else {
         let temp = new cloud();
-        temp.init(Math.random() * 5 + 8)
+        temp.init(1)
         let obj = new smokeAnimation();
         obj.init(temp, this, Math.random() * 0.4 + 0.35, Math.random() * 0.4 + 0.3);
         obj.instance.setColor(this.currentCol);

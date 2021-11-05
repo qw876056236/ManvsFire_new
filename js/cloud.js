@@ -1,3 +1,7 @@
+/*var video = document.createElement('video');
+video.src = './textures/1.mp4'; // 设置视频地址
+video.autoplay = "autoplay";
+var smokeTexture = new THREE.VideoTexture(video)*/
 smokeTexture = new THREE.TextureLoader().load('./textures/Smoke-Element.png');
 var cloud = function () {
     this.material = null;

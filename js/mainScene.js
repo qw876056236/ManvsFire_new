@@ -232,10 +232,11 @@ mainScene.prototype.setScene = function()
     this.playerControl=new PlayerControl(this);//通过鼠标键盘或者手机触屏控制相机
     this.playerControl.init();
 
-    this.renderer = new THREE.WebGLRenderer( { antialias: true } );
+    this.renderer = new THREE.WebGLRenderer( { antialias: true, alpha: true } );
     this.renderer.autoClear = true;    //todo 不声明的话默认为true,原demo为false, 与start.animate 中renderer.clear()对应
     this.renderer.setSize( window.innerWidth, window.innerHeight );
     this.renderer.setClearColor( 0xbbd0d9 );
+    this.renderer.setClearAlpha(0);
     //this.renderer.setClearColor( 0xffffff );
     this.renderer.setPixelRatio( window.devicePixelRatio );
     document.getElementById("WebGL-output").appendChild(this.renderer.domElement);
