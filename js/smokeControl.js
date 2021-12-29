@@ -29,6 +29,7 @@ var smokeControl = function ()
     this.zmin = 0;
     this.zmax = 0;
     this.scene = null;
+    this.T = 20;//发射粒子间隔
 }
 
 smokeControl.prototype.init = function (pos,dir,bay,_this)
@@ -98,9 +99,9 @@ smokeControl.prototype.update = function (deltaTime)
     if(this.finished) {
         let timeScale = this.params.TimeScale;
         this.spawnTime += deltaTime * timeScale;
-        if (this.spawnTime > 20) {
-            while (this.spawnTime > 20)
-                this.spawnTime -= 20;
+        if (this.spawnTime > this.T) {
+            while (this.spawnTime > this.T)
+                this.spawnTime -= this.T;
             this.spawnNewFlame();
         }
         for (let i = 0; i < this.objs.length; i++) {

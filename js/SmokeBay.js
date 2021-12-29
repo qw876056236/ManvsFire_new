@@ -283,6 +283,8 @@ SmokeBay.prototype.getVolume = function(smokeFloor,dt,_this){
                         this.inBayIndex = i;
                         this.jetSmokeArr.push(new smokeControl());
                         this.jetSmokeArr[0].init(this.inPos[i],i,this,_this);
+                        //这里对T做了简化的设置，后面还需修改
+                        //this.jetSmokeArr[0].T = 20;
                         if(i==0 || i==1)
                             this.maxr[0] = this.xmax-this.xmin;
                         if(i==2 || i==3)
