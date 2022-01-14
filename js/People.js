@@ -23,7 +23,7 @@ var num;
 
 People.prototype.init = function (_this) {
     let self = this;
-    let multi =0/// _this.number;
+    let multi = _this.number;
     var surplus = multi % 109;
     multi = Math.floor(multi / 109);
     _this.isFinishLoadCharactor = false;
@@ -33,6 +33,7 @@ People.prototype.init = function (_this) {
     this.groupBend = [];
     this.groupCrawl = [];
     this.groupIdle = [];
+    this.groupPM = [];
     this.cameraPerspective = new THREE.PerspectiveCamera( 50,  this.aspect, 10, 1000 );
     loadBlendMeshWithPromise(_this);
     this.positionPlaneGeometry_1=new THREE.PlaneGeometry(10,20);
@@ -489,6 +490,8 @@ People.prototype.init = function (_this) {
                 self.groupRun.push(newMesh.scene);
                 _this.scene.add(newMesh.scene);
 
+                self.groupPM.push(new PeopleManager(newMesh.scene));
+
             }
         });
 
@@ -681,6 +684,7 @@ People.prototype.init = function (_this) {
                 self.groupRun.push(newMesh.scene);
                 _this.scene.add(newMesh.scene);
 
+                self.groupPM.push(new PeopleManager(newMesh.scene));
             }
         });
 
@@ -772,6 +776,7 @@ People.prototype.init = function (_this) {
                 self.groupRun.push(newMesh.scene);
                 // _this.scene.add(newMesh.scene);
 
+                self.groupPM.push(new PeopleManager(newMesh.scene));
             }
         });
 
@@ -852,6 +857,7 @@ People.prototype.init = function (_this) {
                 self.groupRun.push(newMesh.scene);
                 // _this.scene.add(newMesh.scene);
 
+                self.groupPM.push(new PeopleManager(newMesh.scene));
             }
         });
 
@@ -1060,6 +1066,7 @@ People.prototype.init = function (_this) {
                 self.groupWalk.push(newMesh.scene);
                 _this.scene.add(newMesh.scene);
 
+                self.groupPM.push(new PeopleManager(newMesh.scene));
             }
         });
 
@@ -1252,6 +1259,7 @@ People.prototype.init = function (_this) {
                 self.groupWalk.push(newMesh.scene);
                 _this.scene.add(newMesh.scene);
 
+                self.groupPM.push(new PeopleManager(newMesh.scene));
             }
         });
 
@@ -1327,6 +1335,7 @@ People.prototype.init = function (_this) {
                 self.groupWalk.push(newMesh.scene);
                 // _this.scene.add(newMesh.scene);
 
+                self.groupPM.push(new PeopleManager(newMesh.scene));
             }
         });
 
@@ -1535,6 +1544,7 @@ People.prototype.init = function (_this) {
                 self.groupBend.push(newMesh.scene);
                 _this.scene.add(newMesh.scene);
 
+                self.groupPM.push(new PeopleManager(newMesh.scene));
             }
         });
 
@@ -1726,6 +1736,8 @@ People.prototype.init = function (_this) {
 
                 self.groupBend.push(newMesh.scene);
                 _this.scene.add(newMesh.scene);
+
+                self.groupPM.push(new PeopleManager(newMesh.scene));
             }
         });
 
@@ -1802,6 +1814,7 @@ People.prototype.init = function (_this) {
                 self.groupBend.push(newMesh.scene);
                 // _this.scene.add(newMesh.scene);
 
+                self.groupPM.push(new PeopleManager(newMesh.scene));
             }
         });
 
@@ -2011,6 +2024,7 @@ People.prototype.init = function (_this) {
                 self.groupCrawl.push(newMesh.scene);
                 _this.scene.add(newMesh.scene);
 
+                self.groupPM.push(new PeopleManager(newMesh.scene));
             }
         });
 
@@ -2202,6 +2216,7 @@ People.prototype.init = function (_this) {
                 self.groupCrawl.push(newMesh.scene);
                 _this.scene.add(newMesh.scene);
 
+                self.groupPM.push(new PeopleManager(newMesh.scene));
             }
         });
 
@@ -2296,6 +2311,7 @@ People.prototype.init = function (_this) {
                 self.groupCrawl.push(newMesh.scene);
                 // _this.scene.add(newMesh.scene);
 
+                self.groupPM.push(new PeopleManager(newMesh.scene));
             }
         });
 
@@ -2380,6 +2396,7 @@ People.prototype.init = function (_this) {
                 self.groupCrawl.push(newMesh.scene);
                 // _this.scene.add(newMesh.scene);
 
+                self.groupPM.push(new PeopleManager(newMesh.scene));
             }
         });
 
@@ -2454,6 +2471,7 @@ People.prototype.init = function (_this) {
                 self.groupIdle.push(newMesh.scene);
                 _this.scene.add(newMesh.scene);
 
+                self.groupPM.push(new PeopleManager(newMesh.scene));
             }
         });
 
@@ -2545,6 +2563,7 @@ People.prototype.init = function (_this) {
                 self.groupIdle.push(newMesh.scene);
                 _this.scene.add(newMesh.scene);
 
+                self.groupPM.push(new PeopleManager(newMesh.scene));
             }
         });
 
@@ -2625,6 +2644,7 @@ People.prototype.init = function (_this) {
                 self.groupIdle.push(newMesh.scene);
                 // _this.scene.add(newMesh.scene);
 
+                self.groupPM.push(new PeopleManager(newMesh.scene));
             }
         });
 
@@ -2833,6 +2853,7 @@ People.prototype.init = function (_this) {
                 self.groupIdle.push(newMesh.scene);
                 // _this.scene.add(newMesh.scene);
 
+                self.groupPM.push(new PeopleManager(newMesh.scene));
             }
         });
 
@@ -3024,6 +3045,7 @@ People.prototype.init = function (_this) {
                 self.groupIdle.push(newMesh.scene);
                 // _this.scene.add(newMesh.scene);
 
+                self.groupPM.push(new PeopleManager(newMesh.scene));
             }
         });
 
@@ -3326,6 +3348,7 @@ People.prototype.update = function (_this)
 {
     this.isfinishedloadchar(_this);
     this.ifstartRun(_this);
+    this.groupPM.forEach(pm => pm.update(_this.delta));
 };
 
 // function animate() {

@@ -290,136 +290,137 @@ Interaction.prototype.fuc3 = function (MainScene)
             MainScene.extinguisherControl_5.visible = false;
             MainScene.people.positionPlaneMesh_5.visible=false;
 
-            // MainScene.people.groupRun.forEach(child => {
-            //     child.visible = true;
-            //     child.position.y = -8.5;
-            //     var num_1 = Math.floor(Math.random() * 2 + 1);
-            //     var num_2 = Math.floor(Math.random() * 2 + 1);
-            //     if (num_1 ===1) {
-            //         if (num_2 === 1) {
-            //             child.position.x = MainScene.people.positionPlaneMesh_1.position.x + Math.random() * Math.abs(MainScene.people.positionPlaneMesh_1.scale.x)*5;
-            //             child.position.z = MainScene.people.positionPlaneMesh_1.position.z + Math.random() * Math.abs(MainScene.people.positionPlaneMesh_1.scale.z)*10;
-            //         }
-            //         else{
-            //             child.position.x = MainScene.people.positionPlaneMesh_1.position.x + Math.random() * Math.abs(MainScene.people.positionPlaneMesh_1.scale.x)*5;
-            //             child.position.z = MainScene.people.positionPlaneMesh_1.position.z - Math.random() * Math.abs(MainScene.people.positionPlaneMesh_1.scale.z)*10;
-            //         }
-            //     }
-            //     else {
-            //         if (num_2 === 1) {
-            //             child.position.x = MainScene.people.positionPlaneMesh_1.position.x - Math.random() * Math.abs(MainScene.people.positionPlaneMesh_1.scale.x)*5;
-            //             child.position.z = MainScene.people.positionPlaneMesh_1.position.z + Math.random() * Math.abs(MainScene.people.positionPlaneMesh_1.scale.z)*10;
-            //         }
-            //         else{
-            //             child.position.x = MainScene.people.positionPlaneMesh_1.position.x - Math.random() * Math.abs(MainScene.people.positionPlaneMesh_1.scale.x)*5;
-            //             child.position.z = MainScene.people.positionPlaneMesh_1.position.z - Math.random() * Math.abs(MainScene.people.positionPlaneMesh_1.scale.z)*10;
-            //         }
-            //     }
-            // });
-            // MainScene.people.groupWalk.forEach(child => {
-            //     child.visible = true;
-            //     child.position.y = -8.5;
-            //     var num_1 = Math.floor(Math.random() * 2 + 1);
-            //     var num_2 = Math.floor(Math.random() * 2 + 1);
-            //     if (num_1 ===1) {
-            //         if (num_2 === 1) {
-            //             child.position.x = MainScene.people.positionPlaneMesh_2.position.x + Math.random() * Math.abs(MainScene.people.positionPlaneMesh_2.scale.x)*5;
-            //             child.position.z = MainScene.people.positionPlaneMesh_2.position.z + Math.random() * Math.abs(MainScene.people.positionPlaneMesh_2.scale.z)*10;
-            //         }
-            //         else{
-            //             child.position.x = MainScene.people.positionPlaneMesh_2.position.x + Math.random() * Math.abs(MainScene.people.positionPlaneMesh_2.scale.x)*5;
-            //             child.position.z = MainScene.people.positionPlaneMesh_2.position.z - Math.random() * Math.abs(MainScene.people.positionPlaneMesh_2.scale.z)*10;
-            //         }
-            //     }
-            //     else {
-            //         if (num_2 === 1) {
-            //             child.position.x = MainScene.people.positionPlaneMesh_2.position.x - Math.random() * Math.abs(MainScene.people.positionPlaneMesh_2.scale.x)*5;
-            //             child.position.z = MainScene.people.positionPlaneMesh_2.position.z + Math.random() * Math.abs(MainScene.people.positionPlaneMesh_2.scale.z)*10;
-            //         }
-            //         else{
-            //             child.position.x = MainScene.people.positionPlaneMesh_2.position.x - Math.random() * Math.abs(MainScene.people.positionPlaneMesh_2.scale.x)*5;
-            //             child.position.z = MainScene.people.positionPlaneMesh_2.position.z - Math.random() * Math.abs(MainScene.people.positionPlaneMesh_2.scale.z)*10;
-            //         }
-            //     }
-            // });
-            // MainScene.people.groupBend.forEach(child => {
-            //     child.visible = true;
-            //     child.position.y = -8.5;
-            //     var num_1 = Math.floor(Math.random() * 2 + 1);
-            //     var num_2 = Math.floor(Math.random() * 2 + 1);
-            //     if (num_1 ===1) {
-            //         if (num_2 === 1) {
-            //             child.position.x = MainScene.people.positionPlaneMesh_3.position.x + Math.random() * Math.abs(MainScene.people.positionPlaneMesh_3.scale.x)*5;
-            //             child.position.z = MainScene.people.positionPlaneMesh_3.position.z + Math.random() * Math.abs(MainScene.people.positionPlaneMesh_3.scale.z)*10;
-            //         }
-            //         else{
-            //             child.position.x = MainScene.people.positionPlaneMesh_3.position.x + Math.random() * Math.abs(MainScene.people.positionPlaneMesh_3.scale.x)*5;
-            //             child.position.z = MainScene.people.positionPlaneMesh_3.position.z - Math.random() * Math.abs(MainScene.people.positionPlaneMesh_3.scale.z)*10;
-            //         }
-            //     }
-            //     else {
-            //         if (num_2 === 1) {
-            //             child.position.x = MainScene.people.positionPlaneMesh_3.position.x - Math.random() * Math.abs(MainScene.people.positionPlaneMesh_3.scale.x)*5;
-            //             child.position.z = MainScene.people.positionPlaneMesh_3.position.z + Math.random() * Math.abs(MainScene.people.positionPlaneMesh_3.scale.z)*10;
-            //         }
-            //         else{
-            //             child.position.x = MainScene.people.positionPlaneMesh_3.position.x - Math.random() * Math.abs(MainScene.people.positionPlaneMesh_3.scale.x)*5;
-            //             child.position.z = MainScene.people.positionPlaneMesh_3.position.z - Math.random() * Math.abs(MainScene.people.positionPlaneMesh_3.scale.z)*10;
-            //         }
-            //     }
-            // });
-            // MainScene.people.groupCrawl.forEach(child => {
-            //     child.visible = true;
-            //     child.position.y = -8.5;
-            //     var num_1 = Math.floor(Math.random() * 2 + 1);
-            //     var num_2 = Math.floor(Math.random() * 2 + 1);
-            //     if (num_1 ===1) {
-            //         if (num_2 === 1) {
-            //             child.position.x = MainScene.people.positionPlaneMesh_4.position.x + Math.random() * Math.abs(MainScene.people.positionPlaneMesh_4.scale.x)*5;
-            //             child.position.z = MainScene.people.positionPlaneMesh_4.position.z + Math.random() * Math.abs(MainScene.people.positionPlaneMesh_4.scale.z)*10;
-            //         }
-            //         else{
-            //             child.position.x = MainScene.people.positionPlaneMesh_4.position.x + Math.random() * Math.abs(MainScene.people.positionPlaneMesh_4.scale.x)*5;
-            //             child.position.z = MainScene.people.positionPlaneMesh_4.position.z - Math.random() * Math.abs(MainScene.people.positionPlaneMesh_4.scale.z)*10;
-            //         }
-            //     }
-            //     else {
-            //         if (num_2 === 1) {
-            //             child.position.x = MainScene.people.positionPlaneMesh_4.position.x - Math.random() * Math.abs(MainScene.people.positionPlaneMesh_4.scale.x)*5;
-            //             child.position.z = MainScene.people.positionPlaneMesh_4.position.z + Math.random() * Math.abs(MainScene.people.positionPlaneMesh_4.scale.z)*10;
-            //         }
-            //         else{
-            //             child.position.x = MainScene.people.positionPlaneMesh_4.position.x - Math.random() * Math.abs(MainScene.people.positionPlaneMesh_4.scale.x)*5;
-            //             child.position.z = MainScene.people.positionPlaneMesh_4.position.z - Math.random() * Math.abs(MainScene.people.positionPlaneMesh_4.scale.z)*10;
-            //         }
-            //     }
-            // });
-            // MainScene.people.groupIdle.forEach(child => {
-            //     child.visible = true;
-            //     child.position.y = -8.5;
-            //     var num_1 = Math.floor(Math.random() * 2 + 1);
-            //     var num_2 = Math.floor(Math.random() * 2 + 1);
-            //     if (num_1 ===1) {
-            //         if (num_2 === 1) {
-            //             child.position.x = MainScene.people.positionPlaneMesh_5.position.x + Math.random() * Math.abs(MainScene.people.positionPlaneMesh_5.scale.x)*5;
-            //             child.position.z = MainScene.people.positionPlaneMesh_5.position.z + Math.random() * Math.abs(MainScene.people.positionPlaneMesh_5.scale.z)*10;
-            //         }
-            //         else{
-            //             child.position.x = MainScene.people.positionPlaneMesh_5.position.x + Math.random() * Math.abs(MainScene.people.positionPlaneMesh_5.scale.x)*5;
-            //             child.position.z = MainScene.people.positionPlaneMesh_5.position.z - Math.random() * Math.abs(MainScene.people.positionPlaneMesh_5.scale.z)*10;
-            //         }
-            //     }
-            //     else {
-            //         if (num_2 === 1) {
-            //             child.position.x = MainScene.people.positionPlaneMesh_5.position.x - Math.random() * Math.abs(MainScene.people.positionPlaneMesh_5.scale.x)*5;
-            //             child.position.z = MainScene.people.positionPlaneMesh_5.position.z + Math.random() * Math.abs(MainScene.people.positionPlaneMesh_5.scale.z)*10;
-            //         }
-            //         else{
-            //             child.position.x = MainScene.people.positionPlaneMesh_5.position.x - Math.random() * Math.abs(MainScene.people.positionPlaneMesh_5.scale.x)*5;
-            //             child.position.z = MainScene.people.positionPlaneMesh_5.position.z - Math.random() * Math.abs(MainScene.people.positionPlaneMesh_5.scale.z)*10;
-            //         }
-            //     }
-            // });
+            MainScene.people.groupRun.forEach(child => {
+                child.visible = true;
+                child.position.y = -8.5;
+                var num_1 = Math.floor(Math.random() * 2 + 1);
+                var num_2 = Math.floor(Math.random() * 2 + 1);
+                if (num_1 ===1) {
+                    if (num_2 === 1) {
+                        child.position.x = MainScene.people.positionPlaneMesh_1.position.x + Math.random() * Math.abs(MainScene.people.positionPlaneMesh_1.scale.x)*5;
+                        child.position.z = MainScene.people.positionPlaneMesh_1.position.z + Math.random() * Math.abs(MainScene.people.positionPlaneMesh_1.scale.z)*10;
+                    }
+                    else{
+                        child.position.x = MainScene.people.positionPlaneMesh_1.position.x + Math.random() * Math.abs(MainScene.people.positionPlaneMesh_1.scale.x)*5;
+                        child.position.z = MainScene.people.positionPlaneMesh_1.position.z - Math.random() * Math.abs(MainScene.people.positionPlaneMesh_1.scale.z)*10;
+                    }
+                }
+                else {
+                    if (num_2 === 1) {
+                        child.position.x = MainScene.people.positionPlaneMesh_1.position.x - Math.random() * Math.abs(MainScene.people.positionPlaneMesh_1.scale.x)*5;
+                        child.position.z = MainScene.people.positionPlaneMesh_1.position.z + Math.random() * Math.abs(MainScene.people.positionPlaneMesh_1.scale.z)*10;
+                    }
+                    else{
+                        child.position.x = MainScene.people.positionPlaneMesh_1.position.x - Math.random() * Math.abs(MainScene.people.positionPlaneMesh_1.scale.x)*5;
+                        child.position.z = MainScene.people.positionPlaneMesh_1.position.z - Math.random() * Math.abs(MainScene.people.positionPlaneMesh_1.scale.z)*10;
+                    }
+                }
+            });
+            MainScene.people.groupWalk.forEach(child => {
+                child.visible = true;
+                child.position.y = -8.5;
+                var num_1 = Math.floor(Math.random() * 2 + 1);
+                var num_2 = Math.floor(Math.random() * 2 + 1);
+                if (num_1 ===1) {
+                    if (num_2 === 1) {
+                        child.position.x = MainScene.people.positionPlaneMesh_2.position.x + Math.random() * Math.abs(MainScene.people.positionPlaneMesh_2.scale.x)*5;
+                        child.position.z = MainScene.people.positionPlaneMesh_2.position.z + Math.random() * Math.abs(MainScene.people.positionPlaneMesh_2.scale.z)*10;
+                    }
+                    else{
+                        child.position.x = MainScene.people.positionPlaneMesh_2.position.x + Math.random() * Math.abs(MainScene.people.positionPlaneMesh_2.scale.x)*5;
+                        child.position.z = MainScene.people.positionPlaneMesh_2.position.z - Math.random() * Math.abs(MainScene.people.positionPlaneMesh_2.scale.z)*10;
+                    }
+                }
+                else {
+                    if (num_2 === 1) {
+                        child.position.x = MainScene.people.positionPlaneMesh_2.position.x - Math.random() * Math.abs(MainScene.people.positionPlaneMesh_2.scale.x)*5;
+                        child.position.z = MainScene.people.positionPlaneMesh_2.position.z + Math.random() * Math.abs(MainScene.people.positionPlaneMesh_2.scale.z)*10;
+                    }
+                    else{
+                        child.position.x = MainScene.people.positionPlaneMesh_2.position.x - Math.random() * Math.abs(MainScene.people.positionPlaneMesh_2.scale.x)*5;
+                        child.position.z = MainScene.people.positionPlaneMesh_2.position.z - Math.random() * Math.abs(MainScene.people.positionPlaneMesh_2.scale.z)*10;
+                    }
+                }
+            });
+            MainScene.people.groupBend.forEach(child => {
+                child.visible = true;
+                child.position.y = -8.5;
+                var num_1 = Math.floor(Math.random() * 2 + 1);
+                var num_2 = Math.floor(Math.random() * 2 + 1);
+                if (num_1 ===1) {
+                    if (num_2 === 1) {
+                        child.position.x = MainScene.people.positionPlaneMesh_3.position.x + Math.random() * Math.abs(MainScene.people.positionPlaneMesh_3.scale.x)*5;
+                        child.position.z = MainScene.people.positionPlaneMesh_3.position.z + Math.random() * Math.abs(MainScene.people.positionPlaneMesh_3.scale.z)*10;
+                    }
+                    else{
+                        child.position.x = MainScene.people.positionPlaneMesh_3.position.x + Math.random() * Math.abs(MainScene.people.positionPlaneMesh_3.scale.x)*5;
+                        child.position.z = MainScene.people.positionPlaneMesh_3.position.z - Math.random() * Math.abs(MainScene.people.positionPlaneMesh_3.scale.z)*10;
+                    }
+                }
+                else {
+                    if (num_2 === 1) {
+                        child.position.x = MainScene.people.positionPlaneMesh_3.position.x - Math.random() * Math.abs(MainScene.people.positionPlaneMesh_3.scale.x)*5;
+                        child.position.z = MainScene.people.positionPlaneMesh_3.position.z + Math.random() * Math.abs(MainScene.people.positionPlaneMesh_3.scale.z)*10;
+                    }
+                    else{
+                        child.position.x = MainScene.people.positionPlaneMesh_3.position.x - Math.random() * Math.abs(MainScene.people.positionPlaneMesh_3.scale.x)*5;
+                        child.position.z = MainScene.people.positionPlaneMesh_3.position.z - Math.random() * Math.abs(MainScene.people.positionPlaneMesh_3.scale.z)*10;
+                    }
+                }
+            });
+            MainScene.people.groupCrawl.forEach(child => {
+                child.visible = true;
+                child.position.y = -8.5;
+                var num_1 = Math.floor(Math.random() * 2 + 1);
+                var num_2 = Math.floor(Math.random() * 2 + 1);
+                if (num_1 ===1) {
+                    if (num_2 === 1) {
+                        child.position.x = MainScene.people.positionPlaneMesh_4.position.x + Math.random() * Math.abs(MainScene.people.positionPlaneMesh_4.scale.x)*5;
+                        child.position.z = MainScene.people.positionPlaneMesh_4.position.z + Math.random() * Math.abs(MainScene.people.positionPlaneMesh_4.scale.z)*10;
+                    }
+                    else{
+                        child.position.x = MainScene.people.positionPlaneMesh_4.position.x + Math.random() * Math.abs(MainScene.people.positionPlaneMesh_4.scale.x)*5;
+                        child.position.z = MainScene.people.positionPlaneMesh_4.position.z - Math.random() * Math.abs(MainScene.people.positionPlaneMesh_4.scale.z)*10;
+                    }
+                }
+                else {
+                    if (num_2 === 1) {
+                        child.position.x = MainScene.people.positionPlaneMesh_4.position.x - Math.random() * Math.abs(MainScene.people.positionPlaneMesh_4.scale.x)*5;
+                        child.position.z = MainScene.people.positionPlaneMesh_4.position.z + Math.random() * Math.abs(MainScene.people.positionPlaneMesh_4.scale.z)*10;
+                    }
+                    else{
+                        child.position.x = MainScene.people.positionPlaneMesh_4.position.x - Math.random() * Math.abs(MainScene.people.positionPlaneMesh_4.scale.x)*5;
+                        child.position.z = MainScene.people.positionPlaneMesh_4.position.z - Math.random() * Math.abs(MainScene.people.positionPlaneMesh_4.scale.z)*10;
+                    }
+                }
+            });
+            MainScene.people.groupIdle.forEach(child => {
+                child.visible = true;
+                child.position.y = -8.5;
+                var num_1 = Math.floor(Math.random() * 2 + 1);
+                var num_2 = Math.floor(Math.random() * 2 + 1);
+                if (num_1 ===1) {
+                    if (num_2 === 1) {
+                        child.position.x = MainScene.people.positionPlaneMesh_5.position.x + Math.random() * Math.abs(MainScene.people.positionPlaneMesh_5.scale.x)*5;
+                        child.position.z = MainScene.people.positionPlaneMesh_5.position.z + Math.random() * Math.abs(MainScene.people.positionPlaneMesh_5.scale.z)*10;
+                    }
+                    else{
+                        child.position.x = MainScene.people.positionPlaneMesh_5.position.x + Math.random() * Math.abs(MainScene.people.positionPlaneMesh_5.scale.x)*5;
+                        child.position.z = MainScene.people.positionPlaneMesh_5.position.z - Math.random() * Math.abs(MainScene.people.positionPlaneMesh_5.scale.z)*10;
+                    }
+                }
+                else {
+                    if (num_2 === 1) {
+                        child.position.x = MainScene.people.positionPlaneMesh_5.position.x - Math.random() * Math.abs(MainScene.people.positionPlaneMesh_5.scale.x)*5;
+                        child.position.z = MainScene.people.positionPlaneMesh_5.position.z + Math.random() * Math.abs(MainScene.people.positionPlaneMesh_5.scale.z)*10;
+                    }
+                    else{
+                        child.position.x = MainScene.people.positionPlaneMesh_5.position.x - Math.random() * Math.abs(MainScene.people.positionPlaneMesh_5.scale.x)*5;
+                        child.position.z = MainScene.people.positionPlaneMesh_5.position.z - Math.random() * Math.abs(MainScene.people.positionPlaneMesh_5.scale.z)*10;
+                    }
+                }
+            });
+            MainScene.people.groupPM.forEach(pm => pm.init());
         }
     });
 

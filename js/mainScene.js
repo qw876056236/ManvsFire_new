@@ -196,7 +196,7 @@ mainScene.prototype.start = function()
 
             //self.Fireman.update(self);
 
-            //self.people.update(self);
+            self.people.update(self);
 
             self.record();
 
@@ -212,8 +212,6 @@ mainScene.prototype.start = function()
         self.renderer.clear();
         self.renderer.setViewport(0, 0, window.innerWidth, window.innerHeight);
         self.renderer.render(self.scene, self.camera);
-
-        console.log(self.fire.Cy);
     }
 }
 
@@ -429,6 +427,16 @@ mainScene.prototype.setScene = function()
 mainScene.prototype.addPeople = function ()
 {
     this.people.init(this);
+    console.log(this.people.groupBend);
+    console.log(this.people.groupCrawl);
+    console.log(this.people.groupIdle);
+    console.log(this.people.groupRun);
+    console.log(this.people.groupWalk);
+    console.log(this.people.groupPM);
+    /*this.people.groupCrawl.forEach(s => s.visible = false);
+    this.people.groupIdle.forEach(s => s.visible = false);
+    this.people.groupRun.forEach(s => s.visible = false);
+    this.people.groupWalk.forEach(s => s.visible = false);*/
 }
 
 mainScene.prototype.record = function (){
