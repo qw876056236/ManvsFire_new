@@ -1,5 +1,6 @@
 export {mainScene};
 import {Crowd} from "./move/Crowd.js";
+import {PeopleController} from "./move/PeopleController.js";
 var mainScene = function()
 {
         this.stats = initStats();
@@ -70,6 +71,8 @@ var mainScene = function()
     this.smokeEditor = new SmokeEditor();//烟雾编辑器
 
     this.sign = new Sign();//标志牌
+
+    this.ant = new Ant();
 
     this.globalPlane = null;
 
@@ -217,6 +220,7 @@ mainScene.prototype.start = function()
 
 mainScene.prototype.setScene = function()
 {
+    var self = this;
     //region 基础场景
     this.camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 0.1, 2000000);
     this.camera.position.set(60,3,146);
@@ -414,11 +418,34 @@ mainScene.prototype.setScene = function()
 
     //开始进行人群设置
 
-    /*let crowd=new Crowd();
+   /* let crowd=new Crowd();
     crowd.obj.visible=false;
     this.scene.add(crowd.obj);
-    window.crowd=crowd;*/
+    window.crowd=crowd;
+    console.log(crowd);*/
     //完成人群设置
+
+    /*寻路网格初始化*/
+    var loader = new THREE.XHRLoader(THREE.DefaultLoadingManager);
+    loader.load("grid.json", function(str){//dataTexture
+        var grid0=JSON.parse(str).grid;
+        loader.load("grid_1.json", function(str1){//dataTexture
+            var grid1=JSON.parse(str1).grid;//"./Model/avatar/male_run.glb",
+            var pc = new PeopleController();
+            pc.init({
+                    myMain:new InstancedGroup(1,//人数
+                    [],//这些mesh的网格应该一致
+                    true//有动画
+                    ),
+                    obstacle0:grid0,
+                    obstacle1:grid1,
+                    people_index:1
+                });
+            console.log(pc.floor1.grid)
+            self.ant.init_pheromone_floor1(pc.floor1.grid);
+        });
+    });
+
 
 
 //endregion

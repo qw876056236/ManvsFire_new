@@ -223,13 +223,13 @@ Interaction.prototype.fuc3 = function (MainScene)
             MainScene.camera.position.set(50, 80, 240);//原x为150 450
             MainScene.camera.lookAt(50, 0, 240);
             MainScene.globalPlane.constant = 17;
-            MainScene.globalPlane.set(new THREE.Vector3(0, -1, 0), 17);
+            MainScene.globalPlane.set(new THREE.Vector3(0, -1, 0), -5.5);
             MainScene.isEdit = true;
 
             MainScene.extinguisherControl_1.attach(MainScene.people.positionPlaneMesh_1);
             MainScene.extinguisherControl_1.visible = true;
             MainScene.people.positionPlaneMesh_1.visible=true;
-            MainScene.extinguisherControl_2.attach(MainScene.people.positionPlaneMesh_2);
+            /*MainScene.extinguisherControl_2.attach(MainScene.people.positionPlaneMesh_2);
             MainScene.extinguisherControl_2.visible = true;
             MainScene.people.positionPlaneMesh_2.visible=true;
             MainScene.extinguisherControl_3.attach(MainScene.people.positionPlaneMesh_3);
@@ -240,7 +240,7 @@ Interaction.prototype.fuc3 = function (MainScene)
             MainScene.people.positionPlaneMesh_4.visible=true;
             MainScene.extinguisherControl_5.attach(MainScene.people.positionPlaneMesh_5);
             MainScene.extinguisherControl_5.visible = true;
-            MainScene.people.positionPlaneMesh_5.visible=true;
+            MainScene.people.positionPlaneMesh_5.visible=true;*/
 
         } else{
             $("startRun").style.display="inline-block";

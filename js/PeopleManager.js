@@ -3,21 +3,23 @@ var PeopleManager = function(scene){
     this.nextPosition = new THREE.Vector3(0,0,0);
     this.speed = 1;
     this.isArrive = false;
+    this.xMin = -39;
+    this.zMin = 112;
 }
 
 PeopleManager.prototype.init = function(){
-    this.nextPosition.x = this.scene.position.x;
+    this.nextPosition.x = Math.round(this.scene.position.x);
     this.nextPosition.y = this.scene.position.y;
-    this.nextPosition.z = this.scene.position.z;
+    this.nextPosition.z = Math.round(this.scene.position.z);
 }
 
-PeopleManager.prototype.update = function(delta){
+PeopleManager.prototype.update = function(_this){
     if(!this.isArrive){
         if(this.isArriveNext()){
-            this.getNextPositionTest();
+            this.getNextPosition(_this);
         }
         //向nextPosition走去
-        this.walkToNextPosition(delta);
+        this.walkToNextPosition(_this.delta);
     }
 }
 
@@ -32,8 +34,10 @@ PeopleManager.prototype.isArriveNext = function(){
         return false;
 }
 
-PeopleManager.prototype.getNextPosition = function(){
-
+PeopleManager.prototype.getNextPosition = function(_this){
+    var pos = _this.ant.step([this.nextPosition.x-this.xMin,this.nextPosition.z-this.zMin]);
+    this.nextPosition.x = pos[0] + this.xMin;
+    this.nextPosition.z = pos[1] + this.zMin;
 }
 
 PeopleManager.prototype.getNextPositionTest = function(){

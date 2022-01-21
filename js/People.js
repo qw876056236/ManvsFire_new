@@ -25,7 +25,7 @@ People.prototype.init = function (_this) {
     let self = this;
     let multi = _this.number;
     var surplus = multi % 109;
-    multi = Math.floor(multi / 109);
+    //multi = Math.floor(multi / 109);
     _this.isFinishLoadCharactor = false;
     _this.isStartRun = false;
     this.groupRun = [];
@@ -47,8 +47,10 @@ People.prototype.init = function (_this) {
     this.positionPlaneGeometry_5=new THREE.PlaneGeometry(10,20);
     this.positionPlaneMaterial_5=new THREE.MeshPhongMaterial({color:0xA52A2A, opacity:0.5, transparent:true});
     this.positionPlaneMesh_1=new THREE.Mesh(this.positionPlaneGeometry_1,this.positionPlaneMaterial_1);
-    this.positionPlaneMesh_1.position.set(51,-8.5,261);
+    //this.positionPlaneMesh_1.position.set(51,-8.5,261);
+    this.positionPlaneMesh_1.position.set(51,-8.5,260);
     this.positionPlaneMesh_1.rotation.x = -0.5 * Math.PI;
+    this.positionPlaneMesh_1.scale.z = 10;
     this.positionPlaneMesh_2=new THREE.Mesh(this.positionPlaneGeometry_2,this.positionPlaneMaterial_2);
     this.positionPlaneMesh_2.position.set(51,-8.5,241);
     this.positionPlaneMesh_2.rotation.x = -0.5 * Math.PI;
@@ -56,7 +58,8 @@ People.prototype.init = function (_this) {
     this.positionPlaneMesh_3.position.set(51,-8.5,222);
     this.positionPlaneMesh_3.rotation.x = -0.5 * Math.PI;
     this.positionPlaneMesh_4=new THREE.Mesh(this.positionPlaneGeometry_4,this.positionPlaneMaterial_4);
-    this.positionPlaneMesh_4.position.set(51,-8.5,197);
+    //this.positionPlaneMesh_4.position.set(51,-8.5,197);
+    this.positionPlaneMesh_4.position.set(51,-8.5,290);
     this.positionPlaneMesh_4.rotation.x = -0.5 * Math.PI;
     this.positionPlaneMesh_5=new THREE.Mesh(this.positionPlaneGeometry_5,this.positionPlaneMaterial_5);
     this.positionPlaneMesh_5.position.set(51,-8.5,170);
@@ -104,6 +107,22 @@ People.prototype.init = function (_this) {
         var modelURL16 = "./Model/avatar/childMale_idle.glb";
         var modelURL17 = "./Model/avatar/female_idle.glb";
         var modelURL18 = "./Model/avatar/male_idle.glb";
+
+        /*var proportion = [0.1,  0.1,  0.02, 0.03,   //run
+                          0.1,  0.1,  0.1,          //walk
+                          0,    0,    0,            //bend
+                          0.1,  0.1,  0.02, 0.03,   //crawl
+                          0.02, 0.03, 0,    0.05,         //idle
+                          ]*/
+        var proportion = [0.4,  0.4,  0.1, 0.1,   //run
+            0,  0,  0,          //walk
+            0,    0,    0,            //bend
+            0,  0,  0, 0,   //crawl
+            0, 0, 0,    0,         //idle
+        ]
+        surplus = 0;
+        proportion.forEach(n => surplus += Math.round(multi*n));
+        surplus = multi - surplus;
 
 
         var arr = new Array();
@@ -288,16 +307,17 @@ People.prototype.init = function (_this) {
             return clone;
         };
 
+        //Run 10
         var promiseAll = Promise.all(arr).then((data) => {
 
             var temp, number;
-            if(surplus>=0&&surplus<=10){
+            /*if(surplus>=0&&surplus<=10){
                 number = multi * 10 + surplus;
             }
             else {
                 number = multi * 10 + 10;
-            }
-            // number = multi;
+            }*/
+            number = Math.round(multi*proportion[0]);
             for (var i = 0; i < number; i++) {
 
                 temp = i % 31;
@@ -495,10 +515,11 @@ People.prototype.init = function (_this) {
             }
         });
 
+        //Run 10
         var promiseAll1 = Promise.all(arr1).then((data) => {
 
             var temp, number;
-            if(surplus>=10&&surplus<=20){
+            /*if(surplus>=10&&surplus<=20){
                 number = multi * 10 + surplus - 10;
             }
             else if(surplus < 10){
@@ -506,8 +527,8 @@ People.prototype.init = function (_this) {
             }
             else {
                 number = multi *10 + 10;
-            }
-            // number = multi;
+            }*/
+            number = Math.round(multi*proportion[1]);
             for (var i = 0; i < number; i++) {
                 temp = i % 39;
                 var newMesh, textureURL;
@@ -688,10 +709,11 @@ People.prototype.init = function (_this) {
             }
         });
 
+        //Run 1
         var promiseAll2 = Promise.all(arr2).then((data) => {
 
             var temp, number;
-            if(surplus>=20&&surplus<=21){
+            /*if(surplus>=20&&surplus<=21){
                 number = multi + surplus - 20;
             }
             else if(surplus < 20){
@@ -699,8 +721,8 @@ People.prototype.init = function (_this) {
             }
             else {
                 number = multi + 1;
-            }
-            // number = multi;
+            }*/
+            number = Math.round(multi*proportion[2]);
             for (var i = 0; i < number; i++) {
                 temp = i % 2;
                 var newMesh, textureURL, textureURL1;
@@ -780,10 +802,11 @@ People.prototype.init = function (_this) {
             }
         });
 
+        //Run 1
         var promiseAll3 = Promise.all(arr3).then((data) => {
 
             var temp, number;
-            if(surplus>=21&&surplus<=22){
+            /*if(surplus>=21&&surplus<=22){
                 number = multi + surplus - 21;
             }
             else if(surplus < 21){
@@ -791,8 +814,8 @@ People.prototype.init = function (_this) {
             }
             else {
                 number = multi+ 1;
-            }
-            // number = multi;
+            }*/
+            number = Math.round(multi*proportion[3]);
             for (var i = 0; i < number; i++) {
                 temp = i % 2;
                 var newMesh, textureURL;
@@ -861,10 +884,11 @@ People.prototype.init = function (_this) {
             }
         });
 
+        //Walk 10
         var promiseAll4 = Promise.all(arr4).then((data) => {
 
             var temp, number;
-            if(surplus>=22&&surplus<=32){
+            /*if(surplus>=22&&surplus<=32){
                 number = multi * 10 + surplus - 22;
             }
             else if(surplus < 22){
@@ -872,8 +896,8 @@ People.prototype.init = function (_this) {
             }
             else {
                 number = multi *10 + 10;
-            }
-            // number = multi;
+            }*/
+            number = Math.round(multi*proportion[4]);
             for (var i = 0; i < number; i++) {
                 temp = i % 31;
                 var newMesh, textureURL, textureURL1;
@@ -1070,10 +1094,11 @@ People.prototype.init = function (_this) {
             }
         });
 
+        //Walk 10
         var promiseAll5 = Promise.all(arr5).then((data) => {
 
             var temp, number;
-            if(surplus>=32&&surplus<=42){
+            /*if(surplus>=32&&surplus<=42){
                 number = multi * 10 + surplus - 32;
             }
             else if(surplus < 32){
@@ -1081,8 +1106,8 @@ People.prototype.init = function (_this) {
             }
             else {
                 number = multi *10 + 10;
-            }
-            // number = multi;
+            }*/
+            number = Math.round(multi*proportion[5]);
             for (var i = 0; i < number; i++) {
                 temp = i % 39;
                 var newMesh, textureURL;
@@ -1263,10 +1288,11 @@ People.prototype.init = function (_this) {
             }
         });
 
+        //Walk 1
         var promiseAll6 = Promise.all(arr6).then((data) => {
 
             var temp, number;
-            if(surplus>=42&&surplus<=43){
+            /*if(surplus>=42&&surplus<=43){
                 number = multi + surplus - 42;
             }
             else if(surplus < 42){
@@ -1274,8 +1300,8 @@ People.prototype.init = function (_this) {
             }
             else {
                 number = multi + 1;
-            }
-            // number = multi;
+            }*/
+            number = Math.round(multi*proportion[6]);
             for (var i = 0; i < number; i++) {
                 temp = i % 2;
                 var newMesh, textureURL;
@@ -1339,10 +1365,11 @@ People.prototype.init = function (_this) {
             }
         });
 
+        //Bend 10
         var promiseAll7 = Promise.all(arr7).then((data) => {
 
             var temp, number;
-            if(surplus>=43&&surplus<=53){
+            /*if(surplus>=43&&surplus<=53){
                 number = multi * 10 + surplus - 43;
             }
             else if(surplus < 43){
@@ -1350,8 +1377,8 @@ People.prototype.init = function (_this) {
             }
             else {
                 number = multi * 10 + 10;
-            }
-            // number = multi;
+            }*/
+            number = Math.round(multi*proportion[7]);
             for (var i = 0; i < number; i++) {
                 temp = i % 31;
                 var newMesh, textureURL, textureURL1;
@@ -1548,10 +1575,11 @@ People.prototype.init = function (_this) {
             }
         });
 
+        //Bend 10
         var promiseAll8 = Promise.all(arr8).then((data) => {
 
             var temp, number;
-            if(surplus>=53&&surplus<=63){
+            /*if(surplus>=53&&surplus<=63){
                 number = multi * 10 + surplus - 53;
             }
             else if(surplus < 53){
@@ -1559,8 +1587,8 @@ People.prototype.init = function (_this) {
             }
             else {
                 number = multi * 10 + 10;
-            }
-            // number = multi;
+            }*/
+            number = Math.round(multi*proportion[8]);
             for (var i = 0; i < number; i++) {
                 temp = i % 39;
                 var newMesh, textureURL;
@@ -1741,10 +1769,11 @@ People.prototype.init = function (_this) {
             }
         });
 
+        //Bend 1
         var promiseAll9 = Promise.all(arr9).then((data) => {
 
             var temp, number;
-            if(surplus>=63&&surplus<=64){
+            /*if(surplus>=63&&surplus<=64){
                 number = multi + surplus - 63;
             }
             else if(surplus < 63){
@@ -1752,8 +1781,8 @@ People.prototype.init = function (_this) {
             }
             else {
                 number = multi + 1;
-            }
-            // number = multi;
+            }*/
+            number = Math.round(multi*proportion[9]);
             for (var i = 0; i < number; i++) {
                 temp = i % 2;
                 var newMesh, textureURL;
@@ -1818,10 +1847,11 @@ People.prototype.init = function (_this) {
             }
         });
 
+        //Crawl 10
         var promiseAll10 = Promise.all(arr10).then((data) => {
 
             var temp, number;
-            if(surplus>=64&&surplus<=74){
+            /*if(surplus>=64&&surplus<=74){
                 number = multi * 10 + surplus - 64;
             }
             else if(surplus < 64){
@@ -1829,8 +1859,8 @@ People.prototype.init = function (_this) {
             }
             else {
                 number = multi * 10 + 10;
-            }
-            // number = multi;
+            }*/
+            number = Math.round(multi*proportion[10]);
             for (var i = 0; i < number; i++) {
 
                 temp = i % 31;
@@ -2028,10 +2058,11 @@ People.prototype.init = function (_this) {
             }
         });
 
+        //Crawl 10
         var promiseAll11 = Promise.all(arr11).then((data) => {
 
             var temp, number;
-            if(surplus>=74&&surplus<=84){
+            /*if(surplus>=74&&surplus<=84){
                 number = multi * 10 + surplus - 78;
             }
             else if(surplus < 74){
@@ -2039,8 +2070,8 @@ People.prototype.init = function (_this) {
             }
             else {
                 number = multi * 10 + 10;
-            }
-            // number = multi;
+            }*/
+            number = Math.round(multi*proportion[11]);
             for (var i = 0; i < number; i++) {
                 temp = i % 39;
                 var newMesh, textureURL;
@@ -2220,10 +2251,11 @@ People.prototype.init = function (_this) {
             }
         });
 
+        //Crawl 1
         var promiseAll12 = Promise.all(arr12).then((data) => {
 
             var temp, number;
-            if(surplus>=84&&surplus<=85){
+            /*if(surplus>=84&&surplus<=85){
                 number = multi + surplus - 84;
             }
             else if(surplus < 84){
@@ -2231,8 +2263,8 @@ People.prototype.init = function (_this) {
             }
             else {
                 number = multi + 1;
-            }
-            // number = multi;
+            }*/
+            number = Math.round(multi*proportion[12]);
             for (var i = 0; i < number; i++) {
                 temp = i % 2;
                 var newMesh, textureURL, textureURL1;
@@ -2315,11 +2347,11 @@ People.prototype.init = function (_this) {
             }
         });
 
+        //Crawl 1
         var promiseAll13 = Promise.all(arr13).then((data) => {
 
             var temp, number;
-            number = multi;
-            if(surplus>=85&&surplus<=86){
+            /*if(surplus>=85&&surplus<=86){
                 number = multi + surplus - 85;
             }
             else if(surplus < 85){
@@ -2327,8 +2359,8 @@ People.prototype.init = function (_this) {
             }
             else {
                 number = multi + 1;
-            }
-            // number = multi;
+            }*/
+            number = Math.round(multi*proportion[13]);
             for (var i = 0; i < number; i++) {
                 temp = i % 2;
                 var newMesh, textureURL;
@@ -2386,8 +2418,8 @@ People.prototype.init = function (_this) {
                 newMesh.scene.children[0].children[3].material = material;
 
                 // 调用动画
-                _this.isFinishLoadCharactor = true;
-                _this.isStartRun = true;
+                /*_this.isFinishLoadCharactor = true;
+                _this.isStartRun = true;*/
                 meshMixer = new THREE.AnimationMixer(newMesh.scene);
                 self.action = meshMixer.clipAction(newMesh.animations[0]);
                 self.mixerArr.push(meshMixer);
@@ -2400,10 +2432,11 @@ People.prototype.init = function (_this) {
             }
         });
 
+        //Idle 1
         var promiseAll14 = Promise.all(arr14).then((data) => {
 
             var temp, number;
-            if(surplus>=86&&surplus<=87){
+            /*if(surplus>=86&&surplus<=87){
                 number = multi + surplus - 86;
             }
             else if(surplus < 86){
@@ -2411,8 +2444,8 @@ People.prototype.init = function (_this) {
             }
             else {
                 number = multi + 1;
-            }
-            // number = multi;
+            }*/
+            number = Math.round(multi*proportion[14]);
             for (var i = 0; i < number; i++) {
                 temp = i % 2;
                 var newMesh, textureURL;
@@ -2475,10 +2508,11 @@ People.prototype.init = function (_this) {
             }
         });
 
+        //Idle 1
         var promiseAll15 = Promise.all(arr15).then((data) => {
 
             var temp, number;
-            if(surplus>=87&&surplus<=88){
+            /*if(surplus>=87&&surplus<=88){
                 number = multi + surplus - 87;
             }
             else if(surplus < 87){
@@ -2486,8 +2520,8 @@ People.prototype.init = function (_this) {
             }
             else {
                 number = multi + 1;
-            }
-            // number = multi;
+            }*/
+            number = Math.round(multi*proportion[15]);
             for (var i = 0; i < number; i++) {
                 temp = i % 2;
                 var newMesh, textureURL, textureURL1;
@@ -2567,10 +2601,11 @@ People.prototype.init = function (_this) {
             }
         });
 
+        //Idle 1
         var promiseAll16 = Promise.all(arr16).then((data) => {
 
             var temp, number;
-            if(surplus>=88&&surplus<=89){
+            /*if(surplus>=88&&surplus<=89){
                 number = multi + surplus - 88;
             }
             else if(surplus < 88){
@@ -2578,8 +2613,8 @@ People.prototype.init = function (_this) {
             }
             else {
                 number = multi+ 1;
-            }
-            // number = multi;
+            }*/
+            number = Math.round(multi*proportion[16]);
             for (var i = 0; i < number; i++) {
                 temp = i % 2;
                 var newMesh, textureURL;
@@ -2648,10 +2683,11 @@ People.prototype.init = function (_this) {
             }
         });
 
+        //Idle 10
         var promiseAll17 = Promise.all(arr17).then((data) => {
 
             var temp, number;
-            if(surplus>=89&&surplus<=99){
+            /*if(surplus>=89&&surplus<=99){
                 number = multi * 10 + surplus - 89;
             }
             else if(surplus < 89){
@@ -2659,8 +2695,8 @@ People.prototype.init = function (_this) {
             }
             else {
                 number = multi * 10 + 10;
-            }
-            // number = multi;
+            }*/
+            number = Math.round(multi*proportion[17]);
             for (var i = 0; i < number; i++) {
 
                 temp = i % 31;
@@ -2857,10 +2893,11 @@ People.prototype.init = function (_this) {
             }
         });
 
+        //Idle 10
         var promiseAll18 = Promise.all(arr18).then((data) => {
 
             var temp, number;
-            if(surplus>=99&&surplus<=109){
+            /*if(surplus>=99&&surplus<=109){
                 number = multi * 10 + surplus - 99;
             }
             else if(surplus < 99){
@@ -2868,8 +2905,8 @@ People.prototype.init = function (_this) {
             }
             else {
                 number = multi * 10 + 10;
-            }
-            // number = multi;
+            }*/
+            number = surplus;
             for (var i = 0; i < number; i++) {
                 temp = i % 39;
                 var newMesh, textureURL;
@@ -3049,12 +3086,15 @@ People.prototype.init = function (_this) {
             }
         });
 
+        _this.isFinishLoadCharactor = true;
+        _this.isStartRun = true;
+
     }
 
 };
 
 People.prototype.setPosition = function (newMesh) {
-    console.log(1111);
+    /*console.log(1111);
     var num = Math.floor(Math.random()*16+1); // 16块随机区域对应（1-16）的随机整数
     var num1 = Math.floor(Math.random() * 2 + 1);
     var num2 = Math.floor(Math.random() * 2 + 1);
@@ -3279,7 +3319,7 @@ People.prototype.setPosition = function (newMesh) {
                 }
             }
             break;
-    }
+    }*/
 }
 
 //动画随机速度，除去速度为0的情况
@@ -3348,7 +3388,7 @@ People.prototype.update = function (_this)
 {
     this.isfinishedloadchar(_this);
     this.ifstartRun(_this);
-    this.groupPM.forEach(pm => pm.update(_this.delta));
+    this.groupPM.forEach(pm => pm.update(_this));
 };
 
 // function animate() {
