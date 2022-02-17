@@ -141,8 +141,10 @@ SmokeFloor.prototype.update = function(dt,_this){
         while(arr.length>0)
         {
             arr[0].neiborBay.forEach(function(smokeBay){
-                if(smokeBay && !smokeBay.inArr)
+                if(smokeBay && !smokeBay.inArr){
                     arr.push(smokeBay);
+                    smokeBay.inArr = true;
+                }
             })
             arr[0].update(this,dt,_this);
             arr.shift();

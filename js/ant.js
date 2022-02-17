@@ -28,7 +28,6 @@ Ant.prototype.init_pheromone_floor1 = function(grid){//针对地下一层的信�
             if(j>80 && j <= 99 && grid.nodes[i][j].walkable)
                 //if(grid.nodes[i][j].walkable)
                 this.pheromone[j][i] = this.normal;
-    console.log(this.pheromone);
 }
 
 Ant.prototype.find_path = function(leader, end){

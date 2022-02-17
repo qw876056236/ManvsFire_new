@@ -1,8 +1,8 @@
 var PeopleManager = function(scene){
     this.scene = scene;
-    this.nextPosition = new THREE.Vector3(0,0,0);
+    this.nextPosition = new THREE.Vector3(Math.round(this.scene.position.x),this.scene.position.y,Math.round(this.scene.position.z));
     this.speed = 1;
-    this.isArrive = false;
+    this.isExit = false;
     this.xMin = -39;
     this.zMin = 112;
 }
@@ -14,21 +14,31 @@ PeopleManager.prototype.init = function(){
 }
 
 PeopleManager.prototype.update = function(_this){
-    if(!this.isArrive){
-        if(this.isArriveNext()){
+    if(!this.isExit){
+        if(this.isArrive(this.nextPosition)){
             this.getNextPosition(_this);
         }
         //向nextPosition走去
         this.walkToNextPosition(_this.delta);
+        this.isArriveExit(_this);
     }
 }
 
-PeopleManager.prototype.isArrive = function(){
-
+PeopleManager.prototype.isArriveExit = function(_this){
+    for(var i=0;i<_this.exitPosArr.length;++i){
+        if(this.isArrive(_this.exitPosArr[i])){
+            this.isExit = true;
+            break;
+        }
+    }
+    if(this.isExit){
+        this.scene.visible = false;
+        _this.number--;
+    }
 }
 
-PeopleManager.prototype.isArriveNext = function(){
-    if(this.scene.position.distanceTo(this.nextPosition)<=0.1)
+PeopleManager.prototype.isArrive = function(pos){
+    if(this.scene.position.distanceTo(pos)<=0.1)
         return true;
     else
         return false;

@@ -477,7 +477,7 @@ People.prototype.init = function (_this) {
                 rThigh2.scale(new THREE.Vector3(thighRandom, thighRandom, 1));
 
                 //动态人群位置
-                self.setPosition (newMesh);
+                self.setPosition (newMesh,self.positionPlaneMesh_1);
 
                 // 将模型的材质附在newMesh上
                 var loader = new THREE.TextureLoader();
@@ -681,7 +681,7 @@ People.prototype.init = function (_this) {
                 lThigh20.scale(new THREE.Vector3(thighRandom, thighRandom, 1));
 
                 //动态人群位置
-                self.setPosition (newMesh);
+                self.setPosition (newMesh,self.positionPlaneMesh_1);
 
                 // 将模型的材质附在newMesh上
                 var loader = new THREE.TextureLoader();
@@ -765,7 +765,7 @@ People.prototype.init = function (_this) {
                 rThigh2.scale(new THREE.Vector3(thighRandom, thighRandom, 1));
 
                 //动态人群位置
-                self.setPosition (newMesh);
+                self.setPosition (newMesh,self.positionPlaneMesh_1);
 
                 // 将模型的材质附在newMesh上
                 var loader = new THREE.TextureLoader();
@@ -856,7 +856,7 @@ People.prototype.init = function (_this) {
                 rThigh2.scale(new THREE.Vector3(thighRandom, thighRandom, 1));
 
                 //动态人群位置
-                self.setPosition (newMesh);
+                self.setPosition (newMesh,self.positionPlaneMesh_1);
 
                 // 将模型的材质附在newMesh上
                 var loader = new THREE.TextureLoader();
@@ -1057,7 +1057,7 @@ People.prototype.init = function (_this) {
                 rThigh2.scale(new THREE.Vector3(thighRandom, thighRandom, 1));
 
                 //动态人群位置
-                self.setPosition (newMesh);
+                self.setPosition (newMesh,self.positionPlaneMesh_2);
 
                 // 将模型的材质附在newMesh上
                 var loader = new THREE.TextureLoader();
@@ -1260,7 +1260,7 @@ People.prototype.init = function (_this) {
                 lThigh20.scale(new THREE.Vector3(thighRandom, thighRandom, 1));
 
                 //动态人群位置
-                self.setPosition (newMesh);
+                self.setPosition (newMesh,self.positionPlaneMesh_2);
 
                 // 将模型的材质附在newMesh上
                 var loader = new THREE.TextureLoader();
@@ -1337,7 +1337,7 @@ People.prototype.init = function (_this) {
                 hip.scale(new THREE.Vector3(upperRandom3, upperRandom3, 1));
 
                 //动态人群位置
-                self.setPosition (newMesh);
+                self.setPosition (newMesh,self.positionPlaneMesh_2);
 
                 // 将模型的材质附在newMesh上
                 var loader = new THREE.TextureLoader();
@@ -1538,7 +1538,7 @@ People.prototype.init = function (_this) {
                 rThigh2.scale(new THREE.Vector3(thighRandom, thighRandom, 1));
 
                 //动态人群位置
-                self.setPosition (newMesh);
+                self.setPosition (newMesh,self.positionPlaneMesh_3);
 
                 // 将模型的材质附在newMesh上
                 var loader = new THREE.TextureLoader();
@@ -1741,7 +1741,7 @@ People.prototype.init = function (_this) {
                 lThigh20.scale(new THREE.Vector3(thighRandom, thighRandom, 1));
 
                 //动态人群位置
-                self.setPosition (newMesh);
+                self.setPosition (newMesh,self.positionPlaneMesh_3);
 
                 // 将模型的材质附在newMesh上
                 var loader = new THREE.TextureLoader();
@@ -1819,7 +1819,7 @@ People.prototype.init = function (_this) {
 
 
                 //动态人群位置
-                self.setPosition (newMesh);
+                self.setPosition (newMesh,self.positionPlaneMesh_3);
 
                 // 将模型的材质附在newMesh上
                 var loader = new THREE.TextureLoader();
@@ -1999,7 +1999,7 @@ People.prototype.init = function (_this) {
                 newMesh.scene.rotation.set(0, Math.PI*4/5, 0);
 
                 //动态人群位置
-                self.setPosition (newMesh);
+                self.setPosition (newMesh,self.positionPlaneMesh_4);
 
                 // 将模型的材质附在newMesh上
                 var loader = new THREE.TextureLoader();
@@ -2223,7 +2223,7 @@ People.prototype.init = function (_this) {
                 lThigh20.scale(new THREE.Vector3(thighRandom, thighRandom, 1));
 
                 //动态人群位置
-                self.setPosition (newMesh);
+                self.setPosition (newMesh,self.positionPlaneMesh_4);
 
                 // 将模型的材质附在newMesh上
                 var loader = new THREE.TextureLoader();
@@ -2308,9 +2308,7 @@ People.prototype.init = function (_this) {
                 rThigh2.scale(new THREE.Vector3(thighRandom, thighRandom, 1));
 
                 //动态人群位置
-                var distance = Math.random() * 17;
-                var distance1 = Math.random() * 26;
-                newMesh.scene.position.set(distance+43, -8.5, distance1+197);
+                self.setPosition (newMesh,self.positionPlaneMesh_4);
 
                 // 将模型的材质附在newMesh上
                 var loader = new THREE.TextureLoader();
@@ -2380,7 +2378,7 @@ People.prototype.init = function (_this) {
                 newMesh.scene.rotation.set(0, Math.PI*4/5, 0);
 
                 //动态人群位置
-                self.setPosition (newMesh);
+                self.setPosition (newMesh,self.positionPlaneMesh_4);
 
                 //人物骨骼参数化
                 var headRandom =1 +  Math.random()/number;
@@ -2480,7 +2478,7 @@ People.prototype.init = function (_this) {
                 hip.scale(new THREE.Vector3(upperRandom3, upperRandom3, 1));
 
                 //动态人群位置
-                self.setPosition (newMesh);
+                self.setPosition (newMesh,self.positionPlaneMesh_5);
 
                 // 将模型的材质附在newMesh上
                 var loader = new THREE.TextureLoader();
@@ -2564,7 +2562,7 @@ People.prototype.init = function (_this) {
                 rThigh2.scale(new THREE.Vector3(thighRandom, thighRandom, 1));
 
                 //动态人群位置
-                self.setPosition (newMesh);
+                self.setPosition (newMesh,self.positionPlaneMesh_5);
 
                 // 将模型的材质附在newMesh上
                 var loader = new THREE.TextureLoader();
@@ -2655,7 +2653,7 @@ People.prototype.init = function (_this) {
                 rThigh2.scale(new THREE.Vector3(thighRandom, thighRandom, 1));
 
                 //动态人群位置
-                self.setPosition (newMesh);
+                self.setPosition (newMesh,self.positionPlaneMesh_5);
 
                 // 将模型的材质附在newMesh上
                 var loader = new THREE.TextureLoader();
@@ -2856,7 +2854,7 @@ People.prototype.init = function (_this) {
                 rThigh2.scale(new THREE.Vector3(thighRandom, thighRandom, 1));
 
                 //动态人群位置
-                self.setPosition (newMesh);
+                self.setPosition (newMesh,self.positionPlaneMesh_5);
 
                 // 将模型的材质附在newMesh上
                 var loader = new THREE.TextureLoader();
@@ -3058,7 +3056,7 @@ People.prototype.init = function (_this) {
                 lThigh20.scale(new THREE.Vector3(thighRandom, thighRandom, 1));
 
                 //动态人群位置
-                self.setPosition (newMesh);
+                self.setPosition (newMesh,self.positionPlaneMesh_5);
 
                 // 将模型的材质附在newMesh上
                 var loader = new THREE.TextureLoader();
@@ -3093,7 +3091,10 @@ People.prototype.init = function (_this) {
 
 };
 
-People.prototype.setPosition = function (newMesh) {
+People.prototype.setPosition = function (newMesh,positionMesh) {
+    newMesh.scene.position.x = positionMesh.position.x + (Math.random()-0.5) * Math.abs(positionMesh.scale.x)*10;
+    newMesh.scene.position.z = positionMesh.position.z + (Math.random()-0.5) * Math.abs(positionMesh.scale.z)*20;
+    newMesh.scene.position.y = -8.5;
     /*console.log(1111);
     var num = Math.floor(Math.random()*16+1); // 16块随机区域对应（1-16）的随机整数
     var num1 = Math.floor(Math.random() * 2 + 1);

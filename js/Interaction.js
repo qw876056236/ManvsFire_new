@@ -89,6 +89,10 @@ Interaction.prototype.fuc2 = function (_this)
         document.getElementById("fireman").style.display = "inline-block";
         document.getElementById("floor-menu").style.display = "inline-block";
 
+        _this.addPeople();
+        /*Utils.loading(1000);
+        _this.people.groupPM.forEach(pm => pm.init());*/
+
         window.testFlag=12;
         //window.crowd.obj.visible=true;
         //alert(123)
@@ -121,8 +125,14 @@ Interaction.prototype.fuc2 = function (_this)
         _this.smoke.clock.start();
         //_this.smoke.cloudRank();
         //fire必须在smoke之前set
+        _this.smoke.positionBallMesh.position.set(50,-8.3,210)
         _this.fire.set(_this.smoke.positionBallMesh.position);
         _this.smoke.set(_this.fire,_this);
+        //设置着火点位置为不可走
+        for(var x=0;x<3;x++)
+            for(var z=0;z<3;z++){
+                _this.ant.set_block([_this.smoke.positionBallMesh.position.x+38+x,_this.smoke.positionBallMesh.position.z-113+z]);
+            }
         _this.isStartRun = true;
         _this.smoke.isStartSmoke = true;
         _this.active = true;
@@ -195,14 +205,12 @@ Interaction.prototype.fuc3 = function (MainScene)
 
     $('createPersonBtn').addEventListener('click',function (event)
     {
-        $('person-slider').style.display = 'none';
-        $('people-number').style.display = 'none';
-        $('people-text').style.display = 'none';
         $('Menu').style.display = 'block';
 
 
         $('freeView').click();
         if(!MainScene.isEdit){
+            $('createPerson').style.display = "inline-block";
             $("startRun").style.display="none";
             $("floor-menu").style.display = "none";
             $('View').style.display = "none";
@@ -212,12 +220,10 @@ Interaction.prototype.fuc3 = function (MainScene)
             $('createPersonBtn').textContent="返回";
             $('illustration-context').innerHTML = "您已进入人群编辑页面，请通过拖动屏幕上的坐标轴使其成半透明效果，以选择人群位置，点击切换按钮可以缩放人群区域面积。在编辑完毕后，请点击“返回”以退出编辑模式"
 
-            var number=Number($('people-number').textContent);
-            MainScene.number=number;
-            Utils.loading(1000);
+
+            //Utils.loading(1000);
             //MainScene.Path.createNav(MainScene);
-            Utils.loading(500);
-            MainScene.addPeople();
+            //Utils.loading(500);
             //MainScene.smoke.smokeStart(MainScene);
 
             MainScene.camera.position.set(50, 80, 240);//原x为150 450
@@ -249,8 +255,12 @@ Interaction.prototype.fuc3 = function (MainScene)
             $('View').style.display = "inline-block";
             $("fire-menu").style.display = "none";
             $("switch").style.display="none";
+            $('createPerson').style.display = "none";
             $('createPersonBtn').textContent="编辑人群";
             $('illustration-context').innerHTML = "<p>您已成功选取人群排布</p>" + "<p>若想编辑烟雾请点击“编辑烟雾”,否则点击“开始模拟”</p>";
+
+            var number=Number($('people-number').textContent);
+            MainScene.number=number;
 
             //音效
             var audioLoader = new THREE.AudioLoader();
@@ -267,8 +277,8 @@ Interaction.prototype.fuc3 = function (MainScene)
             console.log(MainScene.people.positionPlaneMesh_4.position.x, MainScene.people.positionPlaneMesh_4.position.z, Math.abs(MainScene.people.positionPlaneMesh_4.scale.x * 5), Math.abs(MainScene.people.positionPlaneMesh_4.scale.z * 10));
             console.log(MainScene.people.positionPlaneMesh_5.position.x, MainScene.people.positionPlaneMesh_5.position.z, Math.abs(MainScene.people.positionPlaneMesh_5.scale.x * 5), Math.abs(MainScene.people.positionPlaneMesh_5.scale.z * 10));
             */
-            MainScene.camera.position.set(60,3,146);
-            MainScene.camera.rotation.set(-2.8,0.7,2.9);
+            MainScene.camera.position.set(58,-2.7,167);
+            MainScene.camera.rotation.set(-2.8,0.3,3);
             //MainScene.camera.lookAt(50, 0, 240);
             MainScene.globalPlane.constant = 17;
             MainScene.globalPlane.set(new THREE.Vector3(0, -1, 0), 17);
@@ -290,137 +300,6 @@ Interaction.prototype.fuc3 = function (MainScene)
             MainScene.extinguisherControl_5.visible = false;
             MainScene.people.positionPlaneMesh_5.visible=false;
 
-            MainScene.people.groupRun.forEach(child => {
-                child.visible = true;
-                child.position.y = -8.5;
-                var num_1 = Math.floor(Math.random() * 2 + 1);
-                var num_2 = Math.floor(Math.random() * 2 + 1);
-                if (num_1 ===1) {
-                    if (num_2 === 1) {
-                        child.position.x = MainScene.people.positionPlaneMesh_1.position.x + Math.random() * Math.abs(MainScene.people.positionPlaneMesh_1.scale.x)*5;
-                        child.position.z = MainScene.people.positionPlaneMesh_1.position.z + Math.random() * Math.abs(MainScene.people.positionPlaneMesh_1.scale.z)*10;
-                    }
-                    else{
-                        child.position.x = MainScene.people.positionPlaneMesh_1.position.x + Math.random() * Math.abs(MainScene.people.positionPlaneMesh_1.scale.x)*5;
-                        child.position.z = MainScene.people.positionPlaneMesh_1.position.z - Math.random() * Math.abs(MainScene.people.positionPlaneMesh_1.scale.z)*10;
-                    }
-                }
-                else {
-                    if (num_2 === 1) {
-                        child.position.x = MainScene.people.positionPlaneMesh_1.position.x - Math.random() * Math.abs(MainScene.people.positionPlaneMesh_1.scale.x)*5;
-                        child.position.z = MainScene.people.positionPlaneMesh_1.position.z + Math.random() * Math.abs(MainScene.people.positionPlaneMesh_1.scale.z)*10;
-                    }
-                    else{
-                        child.position.x = MainScene.people.positionPlaneMesh_1.position.x - Math.random() * Math.abs(MainScene.people.positionPlaneMesh_1.scale.x)*5;
-                        child.position.z = MainScene.people.positionPlaneMesh_1.position.z - Math.random() * Math.abs(MainScene.people.positionPlaneMesh_1.scale.z)*10;
-                    }
-                }
-            });
-            MainScene.people.groupWalk.forEach(child => {
-                child.visible = true;
-                child.position.y = -8.5;
-                var num_1 = Math.floor(Math.random() * 2 + 1);
-                var num_2 = Math.floor(Math.random() * 2 + 1);
-                if (num_1 ===1) {
-                    if (num_2 === 1) {
-                        child.position.x = MainScene.people.positionPlaneMesh_2.position.x + Math.random() * Math.abs(MainScene.people.positionPlaneMesh_2.scale.x)*5;
-                        child.position.z = MainScene.people.positionPlaneMesh_2.position.z + Math.random() * Math.abs(MainScene.people.positionPlaneMesh_2.scale.z)*10;
-                    }
-                    else{
-                        child.position.x = MainScene.people.positionPlaneMesh_2.position.x + Math.random() * Math.abs(MainScene.people.positionPlaneMesh_2.scale.x)*5;
-                        child.position.z = MainScene.people.positionPlaneMesh_2.position.z - Math.random() * Math.abs(MainScene.people.positionPlaneMesh_2.scale.z)*10;
-                    }
-                }
-                else {
-                    if (num_2 === 1) {
-                        child.position.x = MainScene.people.positionPlaneMesh_2.position.x - Math.random() * Math.abs(MainScene.people.positionPlaneMesh_2.scale.x)*5;
-                        child.position.z = MainScene.people.positionPlaneMesh_2.position.z + Math.random() * Math.abs(MainScene.people.positionPlaneMesh_2.scale.z)*10;
-                    }
-                    else{
-                        child.position.x = MainScene.people.positionPlaneMesh_2.position.x - Math.random() * Math.abs(MainScene.people.positionPlaneMesh_2.scale.x)*5;
-                        child.position.z = MainScene.people.positionPlaneMesh_2.position.z - Math.random() * Math.abs(MainScene.people.positionPlaneMesh_2.scale.z)*10;
-                    }
-                }
-            });
-            MainScene.people.groupBend.forEach(child => {
-                child.visible = true;
-                child.position.y = -8.5;
-                var num_1 = Math.floor(Math.random() * 2 + 1);
-                var num_2 = Math.floor(Math.random() * 2 + 1);
-                if (num_1 ===1) {
-                    if (num_2 === 1) {
-                        child.position.x = MainScene.people.positionPlaneMesh_3.position.x + Math.random() * Math.abs(MainScene.people.positionPlaneMesh_3.scale.x)*5;
-                        child.position.z = MainScene.people.positionPlaneMesh_3.position.z + Math.random() * Math.abs(MainScene.people.positionPlaneMesh_3.scale.z)*10;
-                    }
-                    else{
-                        child.position.x = MainScene.people.positionPlaneMesh_3.position.x + Math.random() * Math.abs(MainScene.people.positionPlaneMesh_3.scale.x)*5;
-                        child.position.z = MainScene.people.positionPlaneMesh_3.position.z - Math.random() * Math.abs(MainScene.people.positionPlaneMesh_3.scale.z)*10;
-                    }
-                }
-                else {
-                    if (num_2 === 1) {
-                        child.position.x = MainScene.people.positionPlaneMesh_3.position.x - Math.random() * Math.abs(MainScene.people.positionPlaneMesh_3.scale.x)*5;
-                        child.position.z = MainScene.people.positionPlaneMesh_3.position.z + Math.random() * Math.abs(MainScene.people.positionPlaneMesh_3.scale.z)*10;
-                    }
-                    else{
-                        child.position.x = MainScene.people.positionPlaneMesh_3.position.x - Math.random() * Math.abs(MainScene.people.positionPlaneMesh_3.scale.x)*5;
-                        child.position.z = MainScene.people.positionPlaneMesh_3.position.z - Math.random() * Math.abs(MainScene.people.positionPlaneMesh_3.scale.z)*10;
-                    }
-                }
-            });
-            MainScene.people.groupCrawl.forEach(child => {
-                child.visible = true;
-                child.position.y = -8.5;
-                var num_1 = Math.floor(Math.random() * 2 + 1);
-                var num_2 = Math.floor(Math.random() * 2 + 1);
-                if (num_1 ===1) {
-                    if (num_2 === 1) {
-                        child.position.x = MainScene.people.positionPlaneMesh_4.position.x + Math.random() * Math.abs(MainScene.people.positionPlaneMesh_4.scale.x)*5;
-                        child.position.z = MainScene.people.positionPlaneMesh_4.position.z + Math.random() * Math.abs(MainScene.people.positionPlaneMesh_4.scale.z)*10;
-                    }
-                    else{
-                        child.position.x = MainScene.people.positionPlaneMesh_4.position.x + Math.random() * Math.abs(MainScene.people.positionPlaneMesh_4.scale.x)*5;
-                        child.position.z = MainScene.people.positionPlaneMesh_4.position.z - Math.random() * Math.abs(MainScene.people.positionPlaneMesh_4.scale.z)*10;
-                    }
-                }
-                else {
-                    if (num_2 === 1) {
-                        child.position.x = MainScene.people.positionPlaneMesh_4.position.x - Math.random() * Math.abs(MainScene.people.positionPlaneMesh_4.scale.x)*5;
-                        child.position.z = MainScene.people.positionPlaneMesh_4.position.z + Math.random() * Math.abs(MainScene.people.positionPlaneMesh_4.scale.z)*10;
-                    }
-                    else{
-                        child.position.x = MainScene.people.positionPlaneMesh_4.position.x - Math.random() * Math.abs(MainScene.people.positionPlaneMesh_4.scale.x)*5;
-                        child.position.z = MainScene.people.positionPlaneMesh_4.position.z - Math.random() * Math.abs(MainScene.people.positionPlaneMesh_4.scale.z)*10;
-                    }
-                }
-            });
-            MainScene.people.groupIdle.forEach(child => {
-                child.visible = true;
-                child.position.y = -8.5;
-                var num_1 = Math.floor(Math.random() * 2 + 1);
-                var num_2 = Math.floor(Math.random() * 2 + 1);
-                if (num_1 ===1) {
-                    if (num_2 === 1) {
-                        child.position.x = MainScene.people.positionPlaneMesh_5.position.x + Math.random() * Math.abs(MainScene.people.positionPlaneMesh_5.scale.x)*5;
-                        child.position.z = MainScene.people.positionPlaneMesh_5.position.z + Math.random() * Math.abs(MainScene.people.positionPlaneMesh_5.scale.z)*10;
-                    }
-                    else{
-                        child.position.x = MainScene.people.positionPlaneMesh_5.position.x + Math.random() * Math.abs(MainScene.people.positionPlaneMesh_5.scale.x)*5;
-                        child.position.z = MainScene.people.positionPlaneMesh_5.position.z - Math.random() * Math.abs(MainScene.people.positionPlaneMesh_5.scale.z)*10;
-                    }
-                }
-                else {
-                    if (num_2 === 1) {
-                        child.position.x = MainScene.people.positionPlaneMesh_5.position.x - Math.random() * Math.abs(MainScene.people.positionPlaneMesh_5.scale.x)*5;
-                        child.position.z = MainScene.people.positionPlaneMesh_5.position.z + Math.random() * Math.abs(MainScene.people.positionPlaneMesh_5.scale.z)*10;
-                    }
-                    else{
-                        child.position.x = MainScene.people.positionPlaneMesh_5.position.x - Math.random() * Math.abs(MainScene.people.positionPlaneMesh_5.scale.x)*5;
-                        child.position.z = MainScene.people.positionPlaneMesh_5.position.z - Math.random() * Math.abs(MainScene.people.positionPlaneMesh_5.scale.z)*10;
-                    }
-                }
-            });
-            MainScene.people.groupPM.forEach(pm => pm.init());
         }
     });
 
@@ -524,8 +403,8 @@ Interaction.prototype.fuc3 = function (MainScene)
             MainScene.fire.Ny = $("N-rate").value;
             MainScene.fire.Oy = $("O-rate").value;
 
-            MainScene.camera.position.set(60,3,146);
-            MainScene.camera.rotation.set(-2.8,0.7,2.9);
+            MainScene.camera.position.set(58,-2.7,167);
+            MainScene.camera.rotation.set(-2.8,0.3,3);
             //MainScene.camera.lookAt(50, 0, 240);
             MainScene.globalPlane.constant = 17;
             MainScene.globalPlane.set(new THREE.Vector3(0, -1, 0), 17);

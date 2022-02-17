@@ -79,9 +79,11 @@ Smoke.prototype.init = function(_this)
     smokeBay.init(41.2,61.2,-8.4,-5,160,220,5,5);
     smokeFloor.smokeBayArr.push(smokeBay);
 
+    smokeBay = new SmokeBay();
     smokeBay.init(41.2,61.2,-8.4,-5,220,300,5,5);
     smokeFloor.smokeBayArr.push(smokeBay);
 
+    smokeBay = new SmokeBay();
     smokeBay.init(41.2,61.2,-8.4,-5,300,380,5,5);
     smokeFloor.smokeBayArr.push(smokeBay);
 
