@@ -131,6 +131,10 @@ mainScene.prototype.init = function()
     //this.Path.init(this);
     //endregion
 
+    //region 人群
+    this.people.init(this);
+    //endregion
+
     //region 烟雾
     this.smoke.init(this);
     //endregion
@@ -462,7 +466,7 @@ mainScene.prototype.setScene = function()
 
 mainScene.prototype.addPeople = function ()
 {
-    this.people.init(this);
+    this.people.load(this);
     console.log(this.people.groupBend);
     console.log(this.people.groupCrawl);
     console.log(this.people.groupIdle);

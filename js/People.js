@@ -21,21 +21,9 @@ var fear = 0;//Agent恐慌度，0-1
 var vt;//当前速度
 var num;
 
-People.prototype.init = function (_this) {
-    let self = this;
-    let multi = _this.number;
-    var surplus = multi % 109;
-    //multi = Math.floor(multi / 109);
-    _this.isFinishLoadCharactor = false;
-    _this.isStartRun = false;
-    this.groupRun = [];
-    this.groupWalk = [];
-    this.groupBend = [];
-    this.groupCrawl = [];
-    this.groupIdle = [];
-    this.groupPM = [];
+People.prototype.init = function(_this){
     this.cameraPerspective = new THREE.PerspectiveCamera( 50,  this.aspect, 10, 1000 );
-    loadBlendMeshWithPromise(_this);
+    //人物位置编辑相关组件
     this.positionPlaneGeometry_1=new THREE.PlaneGeometry(10,20);
     this.positionPlaneMaterial_1=new THREE.MeshPhongMaterial({color:0xff0000, opacity:0.5, transparent:true});
     this.positionPlaneGeometry_2=new THREE.PlaneGeometry(10,20);
@@ -50,7 +38,7 @@ People.prototype.init = function (_this) {
     //this.positionPlaneMesh_1.position.set(51,-8.5,261);
     this.positionPlaneMesh_1.position.set(51,-8.5,260);
     this.positionPlaneMesh_1.rotation.x = -0.5 * Math.PI;
-    this.positionPlaneMesh_1.scale.z = 10;
+    this.positionPlaneMesh_1.scale.y = 10;
     this.positionPlaneMesh_2=new THREE.Mesh(this.positionPlaneGeometry_2,this.positionPlaneMaterial_2);
     this.positionPlaneMesh_2.position.set(51,-8.5,241);
     this.positionPlaneMesh_2.rotation.x = -0.5 * Math.PI;
@@ -76,6 +64,23 @@ People.prototype.init = function (_this) {
     this.positionPlaneMesh_4.visible = false;
     _this.scene.add(this.positionPlaneMesh_5);
     this.positionPlaneMesh_5.visible = false;
+}
+
+People.prototype.load = function (_this) {
+    let self = this;
+    let multi = _this.number;
+    var surplus = multi % 109;
+    //multi = Math.floor(multi / 109);
+    _this.isFinishLoadCharactor = false;
+    _this.isStartRun = false;
+    this.groupRun = [];
+    this.groupWalk = [];
+    this.groupBend = [];
+    this.groupCrawl = [];
+    this.groupIdle = [];
+    this.groupPM = [];
+
+    loadBlendMeshWithPromise(_this);
 
     function loadBlendMeshWithPromise(_this) {
         var loadModelPromise = function (modelurl) {
@@ -3093,7 +3098,7 @@ People.prototype.init = function (_this) {
 
 People.prototype.setPosition = function (newMesh,positionMesh) {
     newMesh.scene.position.x = positionMesh.position.x + (Math.random()-0.5) * Math.abs(positionMesh.scale.x)*10;
-    newMesh.scene.position.z = positionMesh.position.z + (Math.random()-0.5) * Math.abs(positionMesh.scale.z)*20;
+    newMesh.scene.position.z = positionMesh.position.z + (Math.random()-0.5) * Math.abs(positionMesh.scale.y)*20;
     newMesh.scene.position.y = -8.5;
     /*console.log(1111);
     var num = Math.floor(Math.random()*16+1); // 16块随机区域对应（1-16）的随机整数
