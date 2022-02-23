@@ -153,7 +153,7 @@ Ant.prototype.Random = function(ends, begin){
                     return [begin[0] + 1, begin[1] - 1];
                 default:
                     console.log("random error!")
-                    return                                                                                                                                                                                                                                                                                                                                                                                                                                                                 begin;
+                    return begin;                                                                                                                                                                                                                                                                                                                                                                                                                                                                begin;
             }
       };
 }
@@ -186,33 +186,112 @@ orientation为朝向，数值设置如下
  6 | 7 | 8
 移动方向由以上数字表示
 */
-Ant.prototype.step_d = function(begin, orientation){//根据信息素浓度，计算下一步位置（允许对角）
-    var ends = this.get_steps(begin);
+Ant.prototype.get_ends = function(begin, orientation){
+    ends = this.get_steps(begin)
     switch(orientation){
         case 1:
-            ends[4] = 0; ends[5] = 0; ends[6] = 0; ends[7] = 0; ends[8] = 0;
+            ends[2] = 0; ends[4] = 0; ends[5] = 0; ends[6] = 0; ends[7] = 0;
             break;
         case 2:
-            ends[2] = 0; ends[3] = 0; ends[5] = 0; ends[7] = 0; ends[8] = 0;
+            ends[3] = 0; ends[4] = 0; ends[5] = 0; ends[6] = 0; ends[7] = 0;
             break;
         case 3:
-            ends[1] = 0; ends[2] = 0; ends[4] = 0; ends[6] = 0; ends[7] = 0;
+            ends[0] = 0; ends[3] = 0; ends[5] = 0; ends[6] = 0; ends[7] = 0;
             break;
         case 4:
-            ends[1] = 0; ends[2] = 0; ends[3] = 0; ends[4] = 0; ends[5] = 0;
+            ends[1] = 0; ends[2] = 0; ends[4] = 0; ends[6] = 0; ends[7] = 0;
+            break;
+        case 5:
+            ends[0] = 0; ends[1] = 0; ends[3] = 0; ends[5] = 0; ends[6] = 0;
+            break;
+        case 6:
+            ends[0] = 0; ends[1] = 0; ends[2] = 0; ends[4] = 0; ends[7] = 0;
+            break;
+        case 7:
+            ends[0] = 0; ends[1] = 0; ends[2] = 0; ends[3] = 0; ends[4] = 0;
+            break;
+        case 8:
+            ends[0] = 0; ends[1] = 0; ends[2] = 0; ends[3] = 0; ends[5] = 0;
             break;
         default:
-            console.log("no orientation")
             break;
     }
-    return this.Random(ends, begin);
+    return ends
+}
+Ant.prototype.sum = function(data){
+    var n = 0;
+    for(var i = 0; i < data.length; i++)
+        n += data[i];
+    return n;
+}
+
+Ant.prototype.expend = function(begin, ends, range){
+    if(range == 0) 
+        return ends
+    if(range >= 1){
+        var new_end =  new Array(ends.length).fill(0);
+        var d = 1 / 2
+        for(var i = 0; i < ends.length; i++){
+            if(ends[i] > 0)
+                switch(i + 1){
+                    case 1:
+                        new_begin = [begin[0] - 1, begin[1] + 1];
+                        var new_ends = this.expend(new_begin, this.get_ends(new_begin, i+1), range - 1);
+                        new_end[i] = ends[i] + d * 1 / 3 * this.sum(new_ends);
+                        break;
+                    case 2:
+                        new_begin = [begin[0], begin[1] + 1];
+                        var new_ends = this.expend(new_begin, this.get_ends(new_begin, i+1), range - 1);
+                        new_end[i] = new_ends[i] + d * 1 / 3 * this.sum(new_ends);
+                        break;
+                    case 3:
+                        new_begin = [begin[0] + 1, begin[1] + 1];
+                        var new_ends = this.expend(new_begin, this.get_ends(new_begin, i+1), range - 1);
+                        new_end[i] = new_ends[i] + d * 1 / 3 * this.sum(new_ends);
+                        break;
+                    case 4:
+                        new_begin = [begin[0] - 1, begin[1]];
+                        var new_ends = this.expend(new_begin, this.get_ends(new_begin, i+1), range - 1);
+                        new_end[i] = new_ends[i] + d * 1 / 3 * this.sum(new_ends);
+                        break;
+                    case 5:
+                        new_begin = [begin[0] + 1, begin[1]];
+                        var new_ends = this.expend(new_begin, this.get_ends(new_begin, i+1), range - 1);
+                        new_end[i] = new_ends[i] + d * 1 / 3 * this.sum(new_ends);
+                        break;
+                    case 6:
+                        new_begin = [begin[0] - 1, begin[1] - 1];
+                        var new_ends = this.expend(new_begin, this.get_ends(new_begin, i+1), range - 1);
+                        new_end[i] = new_ends[i] + d * 1 / 3 * this.sum(new_ends);
+                        break;
+                    case 7:
+                        new_begin = [begin[0], begin[1] - 1];
+                        var new_ends = this.expend(new_begin, this.get_ends(new_begin, i+1), range - 1);
+                        new_end[i] = new_ends[i] + d * 1 / 3 * this.sum(new_ends);
+                        break;
+                    case 8:
+                        new_begin = [begin[0] + 1, begin[1] - 1];
+                        var new_ends = this.expend(new_begin, this.get_ends(new_begin, i+1), range - 1);
+                        new_end[i] = new_ends[i] + d * 1 / 3 * this.sum(new_ends);
+                        break;
+                    default:
+                        console.log("expend_range"+range+" error!")
+                        break;
+                }
+        }
+        return new_end
+    }
+    else{
+        console.log('range error');
+        return ends;
+    }
 }
 
 Ant.prototype.step = function(begin, orientation = 0, trace = 0){//移动，是否遗留信息素，遗留的信息素是否扩散
     if(trace)//如果遗留信息素，则将当前位置当作一个指示牌，并添加信息素（如果只在当前位置添加信息素，则将范围设置为0）
         this.add_signs(begin, 0);
     if(this.diagonal)
-        return this.step_d(begin, orientation);
+        return this.Random(this.expend(begin, this.get_ends(begin, orientation), 0, 0), begin);
     else
         return this.step_no(begin, orientation);
 }
