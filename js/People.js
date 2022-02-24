@@ -151,16 +151,25 @@ People.prototype.load = function (_this) {
         var arr18 = new Array();
 
 
+
         for (num = 0; num < 31; num++) {
 
             arr[num] = loadModelPromise(modelURL);
 
         }
+        arr[31] = loadModelPromise(modelURL4);
+        arr[32] = loadModelPromise(modelURL7);
+        arr[33] = loadModelPromise(modelURL10);
+        arr[34] = loadModelPromise(modelURL17);
         for (num = 0; num < 39; num++) {
 
             arr1[num] = loadModelPromise(modelURL1);
 
         }
+        arr1[39] = loadModelPromise(modelURL5);
+        arr1[40] = loadModelPromise(modelURL8);
+        arr1[41] = loadModelPromise(modelURL11);
+        arr1[42] = loadModelPromise(modelURL18);
         for (num = 0; num < 2; num++) {
 
             arr2[num] = loadModelPromise(modelURL2);
@@ -312,6 +321,54 @@ People.prototype.load = function (_this) {
             return clone;
         };
 
+        const cloneGltfWithAllAnimation = (gltf,...rest) => {
+            var animations = new Array();
+            gltf.animations.forEach(animation => animations.push(animation))
+            for(var i=0;i<rest.length;i++){
+                rest[i].animations.forEach(animation => animations.push(animation));
+            }
+            const clone = {
+                animations: animations,
+                scene: gltf.scene.clone(true)
+            };
+            const skinnedMeshes = {};
+            gltf.scene.traverse((node) => {
+                if (ForceGetProperty(node, "isSkinnedMesh")) {
+                    skinnedMeshes[node.uuid] = node;
+                }
+            });
+            // console.log(skinnedMeshes);
+            const cloneBones = {};
+            const cloneSkinnedMeshes = {};
+            clone.scene.traverse((node) => {
+                if (ForceGetProperty(node, "isBone")) {
+                    cloneBones[node.name] = node;
+                }
+                if (ForceGetProperty(node, "isSkinnedMesh")) {
+                    cloneSkinnedMeshes[node.uuid] = node;
+                }
+            });
+            // console.log(cloneBones);
+            // console.log(cloneSkinnedMeshes);
+            for (let uuid in cloneSkinnedMeshes) {
+                const cloneSkinnedMesh = cloneSkinnedMeshes[uuid];
+                // console.log(cloneSkinnedMeshes);
+                const skinnedMesh = skinnedMeshes[cloneSkinnedMesh._sourceMeshUuid];
+                if (skinnedMesh === null) {
+                    continue;
+                }
+                // console.log(skinnedMesh);
+                const skeleton = skinnedMesh.skeleton;
+                const orderedCloneBones = [];
+                for (let i = 0; i < skeleton.bones.length; ++i) {
+                    const cloneBone = cloneBones[skeleton.bones[i].name];
+                    orderedCloneBones.push(cloneBone);
+                }
+                cloneSkinnedMesh.bind(new THREE.Skeleton(orderedCloneBones, skeleton.boneInverses), cloneSkinnedMesh.matrixWorld);
+            }
+            return clone;
+        };
+
         //Run 10
         var promiseAll = Promise.all(arr).then((data) => {
 
@@ -327,7 +384,8 @@ People.prototype.load = function (_this) {
 
                 temp = i % 31;
                 var newMesh, textureURL, textureURL1;
-                newMesh = cloneGltf(data[temp]);
+                newMesh = cloneGltfWithAllAnimation(data[temp],data[31],data[32],data[33],data[34]);
+                //newMesh = cloneGltf(data[temp]);
 
                 //贴图参数化
                 if (temp === 0) {
@@ -515,7 +573,7 @@ People.prototype.load = function (_this) {
                 self.groupRun.push(newMesh.scene);
                 _this.scene.add(newMesh.scene);
 
-                self.groupPM.push(new PeopleManager(newMesh.scene));
+                self.groupPM.push(new PeopleManager(newMesh,meshMixer));
 
             }
         });
@@ -537,7 +595,8 @@ People.prototype.load = function (_this) {
             for (var i = 0; i < number; i++) {
                 temp = i % 39;
                 var newMesh, textureURL;
-                newMesh = cloneGltf(data[temp]);
+                //newMesh = cloneGltf(data[temp]);
+                newMesh = cloneGltfWithAllAnimation(data[temp],data[39],data[40],data[41],data[42]);
 
                 //贴图参数化
                 if (temp === 0) {
@@ -710,7 +769,7 @@ People.prototype.load = function (_this) {
                 self.groupRun.push(newMesh.scene);
                 _this.scene.add(newMesh.scene);
 
-                self.groupPM.push(new PeopleManager(newMesh.scene));
+                self.groupPM.push(new PeopleManager(newMesh,meshMixer));
             }
         });
 
@@ -803,7 +862,7 @@ People.prototype.load = function (_this) {
                 self.groupRun.push(newMesh.scene);
                 // _this.scene.add(newMesh.scene);
 
-                self.groupPM.push(new PeopleManager(newMesh.scene));
+                self.groupPM.push(new PeopleManager(newMesh,meshMixer));
             }
         });
 
@@ -885,7 +944,7 @@ People.prototype.load = function (_this) {
                 self.groupRun.push(newMesh.scene);
                 // _this.scene.add(newMesh.scene);
 
-                self.groupPM.push(new PeopleManager(newMesh.scene));
+                self.groupPM.push(new PeopleManager(newMesh,meshMixer));
             }
         });
 
@@ -3362,10 +3421,12 @@ People.prototype.isfinishedloadchar = function (_this)
 {
     if(_this.isFinishLoadCharactor)
     {
-        for(let i=0; i<_this.people.mixerArr.length;i++)
+        /*for(let i=0; i<_this.people.mixerArr.length;i++)
         {
-            _this.people.mixerArr[i].update(_this.delta);
-        }
+            //_this.people.mixerArr[i].update(_this.delta);
+
+        }*/
+        this.groupPM.forEach(pm => pm.mixer.update(_this.delta));
     }
 };
 
