@@ -8,13 +8,11 @@ var Ant = function(){
 
 var Grid = function(){
     this.ph = 0;
-    this.if_people = false;
+    this.people_number = 0;
     this.trace_step = 0;
     this.isfire = false;
     this.fear = 0;
-    this.A = 0;
-    this.orientation = 0;
-    this.speed = 0;
+    this.A_number = 0;
 }
 
 Ant.prototype.init_pheromone = function(grid){//初始化信息素矩阵，将不可走的路径设置为0，其他的为normal
@@ -296,24 +294,31 @@ Ant.prototype.expend = function(begin, ends, range){
     }
 }
 
-Ant.prototype.step = function(begin, orientation = 0, trace = 0){//移动，是否遗留信息素（遗留几步）
-    this.pheromone[begin[0]][begin[1]].if_people = true;
-    this.pheromone[begin[0]][begin[1]].orientation = orientation;
+Ant.prototype.step = function(_this, begin, orientation = 0, trace = 0){//移动，是否遗留信息素（遗留几步）
+    this.pheromone[begin[0]][begin[1]].people_number += 1;
+    if(_this.form >= 1)
+        this.pheromone[begin[0]][begin[1]].A_number += 1;
+    this.pheromone[begin[0]][begin[1]].fear += _this.fear;
     this.volatilize();
     var ends = this.expend(begin, this.get_ends(begin, orientation), 0, 0);
-    if(trace){//如果遗留信息素，则将当前位置当作一个指示牌，并添加信息素（如果只在当前位置添加信息素，则将范围设置为0）
+    if(trace){
         this.pheromone[begin[0]][begin[1]].ph += 1;
         this.pheromone[begin[0]][begin[1]].trace_step += 4;
     }
     if(this.diagonal)
         var end = this.Random(ends, begin);
     else
-        var end = this.step_no(begin, orientation);
+        var end = this.step_no(begin, orientation);//存在问题
 
-    this.pheromone[begin[0]][begin[1]].if_people = false;
-    this.pheromone[end[0]][end[1]].if_people = true;
-    this.pheromone[begin[0]][begin[1]].fear = 0;this.pheromone[begin[0]][begin[1]].A = 0;this.pheromone[begin[0]][begin[1]].orientation = 0;this.pheromone[begin[0]][begin[1]].speed = 0;
-    this.pheromone[end[0]][end[1]].fear = 0;this.pheromone[end[0]][end[1]].A = 0;this.pheromone[end[0]][end[1]].orientation = 0;this.pheromone[end[0]][end[1]].speed = 0;
+    this.pheromone[begin[0]][begin[1]].people_number -= 1;
+    if(_this.form >= 1){
+        this.pheromone[begin[0]][begin[1]].A_number -= 1;
+        this.pheromone[end[0]][end[1]].A_number += 1;
+    }
+    this.pheromone[begin[0]][begin[1]].fear -= _this.fear;    
+    this.pheromone[end[0]][end[1]].people_number += 1;
+    this.pheromone[end[0]][end[1]].fear += _this.fear;
+    //加入_this.orientation的设置，将人物的移动方向记录下来，计算下一步时可以进行加权
     return end;
 }
 
@@ -330,61 +335,58 @@ Ant.prototype.volatilize = function(){
 
 Ant.prototype.countspeed = function(people, range = 2, speed = 1){//速度衰减算法，需要输入期望速度作为初速度
     var De = 0.54, a = 0.266;
-    var n = 1;
+    var n = 0;
     
     for(var x = people[0]- range; x < people[0] + range; x++){
         for(var y = people[1]- range; y < people[1] + range; y++){
-            try{var if_people = this.pheromone[x][y].if_people;if(if_people==undefined)if_people = false;}catch{var if_people = false;}
-            if(if_people)
-                n += 1;
+            try{var number = this.pheromone[x][y].people_number;if(number==undefined)number = 0;}catch{var number = 0;}
+            n += number;
+            console.log(number)
         }
     }
             
     var D = n / (range + 1) / (range + 1);
+    //console.log(D)
     if(D > 3.8)
         speed = 0;
     else if(D > 0.54)
         speed = (1 - a * D) /(1 - a * De) * speed;
-    //console.log(people[0])
-    this.pheromone[people[0]][people[1]].speed = speed
+
     return speed;
 }
 
 Ant.prototype.countA = function(people, range = 2, a = 1){//计算警觉度
-    var A = 0, L = 0, h = 0, n = 1;
+    var A = 0, L = 0, h = 0, n = 0;
     var u1 = 1; u2 = 1; u3 = 1;//权重需要设定
 
     for(var x = people[0]- range; x < people[0] + range; x++){
         for(var y = people[1]- range; y < people[1] + range; y++){
-            try{var if_people = this.pheromone[x][y].if_people;if(if_people==undefined)if_people = false;}catch{var if_people = false;}
-            if(if_people)
-                n += 1;
+            try{var A = this.pheromone[x][y].A_number;if(A_number==undefined)A_number = 0;}catch{var A_number = 0;}
+            n += A;
             try{var isfire = this.pheromone[x][y].isfire;if(isfire==undefined)isfire = false;}catch{var isfire = false;}
             if(isfire)
-                n += 1;
+                L = 1;
         }
     }
         
     h = 1;//需要烟雾厚度
 
     A = a * (u1 * L + u2 * h + u3 * n);
-    this.pheromone[people[0]][people[1]].A = A;
     return A
 }
 
 Ant.prototype.countfear = function(people, me, range = 2, r = 1){//计算恐慌度
-    var Fear = 0, n = 1, p = 0;
+    var Fear = 0, n = 0, p = 0;
     for(var x = people[0]- range; x < people[0] + range; x++){
         for(var y = people[1]- range; y < people[1] + range; y++){
-            try{var A = this.pheromone[x][y].A;if(if_people==undefined)A = 0;}catch{var A = 0;}
-            if(A > 1)//临界值需要更改
-                n += 1;
+            try{var number = this.pheromone[x][y].people_number;if(number==undefined)number = 0;}catch{var number = 0;}
+            n += number;
             try{var other_p = this.pheromone[x][y].fear;if(other_p==undefined)other_p = 0;}catch{var other_p = 0;}
             p += other_p;
         }
     }
          
-    Fear = me + (n - 1) * (p / n) / (n * r)
-    this.pheromone[people[0]][people[1]].fear = Fear;
+    Fear = (me + (n - 1) * (p / n)) / (n * r)
+
     return Fear
 }

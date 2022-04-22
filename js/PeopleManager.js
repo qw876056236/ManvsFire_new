@@ -1,7 +1,6 @@
 var PeopleManager = function(mesh,mixer){
     this.mesh = mesh;
     this.nextPosition = new THREE.Vector3(Math.round(this.mesh.scene.position.x),this.mesh.scene.position.y,Math.round(this.mesh.scene.position.z));
-    this.speed = 1;
     this.isExit = false;
     this.xMin = -39;
     this.zMin = 112;
@@ -9,6 +8,10 @@ var PeopleManager = function(mesh,mixer){
     this.actionState = 0;
     this.path = [];
     this.my_fear = 0;
+    this.fear = 0;
+    this.A = 0;
+    this.orientation = 0;
+    this.speed = 1;
     this.form = 0;//初始为0进行随机移动，警觉度到达一定值后设为1进入逃跑状态，恐慌度达到一定程度设为2进入惊慌状态
 }
 
@@ -18,27 +21,31 @@ PeopleManager.prototype.init = function(){
     this.nextPosition.z = Math.round(this.mesh.scene.position.z);
 }
 
-PeopleManager.prototype.coutnMyFear = function(_this){
-    var u1 = 1; u2 = 1; u3 = 1;//权重值需要从新设定
+PeopleManager.prototype.countMyFear = function(_this){
+    var u1 = 1; u2 = 0.01; u3 = 1;//权重值需要从新设定
     var v = _this.ant.countspeed([this.nextPosition.x-this.xMin,this.nextPosition.z-this.zMin]);
-    var t = _this.currentEscapeTime;//获取时间
+    var t = Math.LOG10E*Math.log(_this.currentEscapeTime);//获取时间,更改对数函数，前面缓慢后面快
     var d = Math.max(Math.abs(this.nextPosition.x - _this.fire.pos.x), Math.abs(this.nextPosition.x - _this.fire.pos.z));
-    var ve = this.speed;//期望逃生速度,需要更改获取是老人还是其他的
+    var ve = 1;//期望逃生速度,需要更改获取是老人还是其他的
     this.my_fear = u1 * (1 - v/ve) + u2 * t + u3 / d;
+    this.speed = v;
+    //console.log(this.speed)
 }
 
 PeopleManager.prototype.update = function(_this){
     if(!this.isExit){
-        this.coutnMyFear(_this)
+        this.countMyFear(_this)
         if(this.form == 0){
-            if(_this.ant.countA([this.nextPosition.x-this.xMin,this.nextPosition.z-this.zMin]) > 1)//临界值需要改，同时在Ant的countA里面改
+            this.A = _this.ant.countA([this.nextPosition.x-this.xMin,this.nextPosition.z-this.zMin]);
+            if(this.A > 1)//临界值需要改，同时在Ant的countA里面改
                 this.form = 1;
         }else if(this.form == 1){
-            if(_this.ant.countfear([this.nextPosition.x-this.xMin,this.nextPosition.z-this.zMin], this.my_fear) > 1.4)//临界值可能需要更改
+            this.fear = _this.ant.countfear([this.nextPosition.x-this.xMin,this.nextPosition.z-this.zMin], this.my_fear)
+            if(this.fear > 1.4)//临界值可能需要更改
                 this.form = 2;
         }else{
-            console.log(2)
-            if(_this.ant.countfear([this.nextPosition.x-this.xMin,this.nextPosition.z-this.zMin], this.my_fear) <= 1.4)//临界值可能需要更改
+            this.fear = _this.ant.countfear([this.nextPosition.x-this.xMin,this.nextPosition.z-this.zMin], this.my_fear)
+            if(this.fear <= 1.4)//临界值可能需要更改
                 this.form = 1;
         }
 
@@ -83,7 +90,7 @@ PeopleManager.prototype.isArrive = function(pos){
 }
 
 PeopleManager.prototype.getNextPosition = function(_this){
-    var pos = _this.ant.step([this.nextPosition.x-this.xMin,this.nextPosition.z-this.zMin]);
+    var pos = _this.ant.step(this, [this.nextPosition.x-this.xMin,this.nextPosition.z-this.zMin]);
     this.nextPosition.x = pos[0] + this.xMin;
     this.nextPosition.z = pos[1] + this.zMin;
 }
