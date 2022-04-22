@@ -7,6 +7,9 @@ var PeopleManager = function(mesh,mixer){
     this.zMin = 112;
     this.mixer = mixer;
     this.actionState = 0;
+    this.path = [];
+    this.my_fear = 0;
+    this.form = 0;//初始为0进行随机移动，警觉度到达一定值后设为1进入逃跑状态，恐慌度达到一定程度设为2进入惊慌状态
 }
 
 PeopleManager.prototype.init = function(){
@@ -15,10 +18,41 @@ PeopleManager.prototype.init = function(){
     this.nextPosition.z = Math.round(this.mesh.scene.position.z);
 }
 
+PeopleManager.prototype.coutnMyFear = function(_this){
+    var u1 = 1; u2 = 1; u3 = 1;//权重值需要从新设定
+    var v = _this.ant.countspeed([this.nextPosition.x-this.xMin,this.nextPosition.z-this.zMin]);
+    var t = _this.currentEscapeTime;//获取时间
+    var d = Math.max(Math.abs(this.nextPosition.x - _this.fire.pos.x), Math.abs(this.nextPosition.x - _this.fire.pos.z));
+    var ve = this.speed;//期望逃生速度,需要更改获取是老人还是其他的
+    this.my_fear = u1 * (1 - v/ve) + u2 * t + u3 / d;
+}
+
 PeopleManager.prototype.update = function(_this){
     if(!this.isExit){
+        this.coutnMyFear(_this)
+        if(this.form == 0){
+            if(_this.ant.countA([this.nextPosition.x-this.xMin,this.nextPosition.z-this.zMin]) > 1)//临界值需要改，同时在Ant的countA里面改
+                this.form = 1;
+        }else if(this.form == 1){
+            if(_this.ant.countfear([this.nextPosition.x-this.xMin,this.nextPosition.z-this.zMin], this.my_fear) > 1.4)//临界值可能需要更改
+                this.form = 2;
+        }else{
+            console.log(2)
+            if(_this.ant.countfear([this.nextPosition.x-this.xMin,this.nextPosition.z-this.zMin], this.my_fear) <= 1.4)//临界值可能需要更改
+                this.form = 1;
+        }
+
         if(this.isArrive(this.nextPosition)){
-            this.getNextPosition(_this);
+            if(this.form == 0)
+                this.getNextPosition(_this)//之后改为getNextPositionTest,现在那个函数有问题
+            else if(this.form == 1){
+                this.getNextPosition(_this);
+                // if(this.path.length == 0)
+                //     this.getpath()//TO DO
+                // this.getNextPositionNormal(_this)//TO DO
+            }
+            else if(this.form == 2)
+                this.getNextPosition(_this);
             //动作切换test
             this.animationSwitch();
         }
