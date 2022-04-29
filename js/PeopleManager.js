@@ -7,6 +7,8 @@ var PeopleManager = function(mesh,mixer){
     this.mixer = mixer;
     this.actionState = 0;
     this.path = [];
+    this.finder;
+    this.steps = 0;// 记录走到A*路径上的第几步
     this.my_fear = 0;
     this.fear = 0;
     this.A = 0;
@@ -22,7 +24,7 @@ PeopleManager.prototype.init = function(){
 }
 
 PeopleManager.prototype.countMyFear = function(_this){
-    var u1 = 1; u2 = 0.01; u3 = 1;//权重值需要从新设定
+    var u1 = 1; u2 = 1; u3 = 1;//权重值需要从新设定
     var v = _this.ant.countspeed([this.nextPosition.x-this.xMin,this.nextPosition.z-this.zMin]);
     var t = Math.LOG10E*Math.log(_this.currentEscapeTime);//获取时间,更改对数函数，前面缓慢后面快
     var d = Math.max(Math.abs(this.nextPosition.x - _this.fire.pos.x), Math.abs(this.nextPosition.x - _this.fire.pos.z));
@@ -37,13 +39,14 @@ PeopleManager.prototype.update = function(_this){
         this.countMyFear(_this)
         if(this.form == 0){
             this.A = _this.ant.countA([this.nextPosition.x-this.xMin,this.nextPosition.z-this.zMin]);
-            if(this.A > 1)//临界值需要改，同时在Ant的countA里面改
+            if(this.A >= 1)//临界值需要改，同时在Ant的countA里面改
                 this.form = 1;
         }else if(this.form == 1){
             this.fear = _this.ant.countfear([this.nextPosition.x-this.xMin,this.nextPosition.z-this.zMin], this.my_fear)
             if(this.fear > 1.4)//临界值可能需要更改
                 this.form = 2;
         }else{
+            console.log(2)
             this.fear = _this.ant.countfear([this.nextPosition.x-this.xMin,this.nextPosition.z-this.zMin], this.my_fear)
             if(this.fear <= 1.4)//临界值可能需要更改
                 this.form = 1;
@@ -51,17 +54,13 @@ PeopleManager.prototype.update = function(_this){
 
         if(this.isArrive(this.nextPosition)){
             if(this.form == 0)
-                this.getNextPosition(_this)//之后改为getNextPositionTest,现在那个函数有问题
-            else if(this.form == 1){
-                this.getNextPosition(_this);
-                // if(this.path.length == 0)
-                //     this.getpath()//TO DO
-                // this.getNextPositionNormal(_this)//TO DO
-            }
+                this.getNextPositionRandom()//之后改为getNextPositionTest,现在那个函数有问题
+            else if(this.form == 1)
+                this.getNextPositionPath(_this);
             else if(this.form == 2)
                 this.getNextPosition(_this);
             //动作切换test
-            this.animationSwitch();
+            // this.animationSwitch();
         }
         //向nextPosition走去
         this.walkToNextPosition(_this.delta);
@@ -79,7 +78,9 @@ PeopleManager.prototype.isArriveExit = function(_this){
     if(this.isExit){
         this.mesh.scene.visible = false;
         _this.number--;
+        // console.log(1)
     }
+    
 }
 
 PeopleManager.prototype.isArrive = function(pos){
@@ -95,10 +96,37 @@ PeopleManager.prototype.getNextPosition = function(_this){
     this.nextPosition.z = pos[1] + this.zMin;
 }
 
-PeopleManager.prototype.getNextPositionTest = function(){
-    this.nextPosition.x = this.mesh.scene.position.x + (Math.random()>0.5 ? -1 : 1) * Math.random() * 10;
+PeopleManager.prototype.getNextPositionRandom = function(){
+
+    this.nextPosition.x = this.nextPosition.x + Math.floor((Math.random()>0.5 ? -1 : 1) * (Math.random() * 2 + 1));
     //this.nextPosition.y = this.scene.position.y + (Math.random()>0.5 ? -1 : 1) * Math.random() * 10;
-    this.nextPosition.z = this.mesh.scene.position.z + (Math.random()>0.5 ? -1 : 1) * Math.random() * 10;
+    this.nextPosition.z = this.nextPosition.z + Math.floor((Math.random()>0.5 ? -1 : 1) * (Math.random() * 2 + 1));
+}
+
+PeopleManager.prototype.getNextPositionPath = function(_this){
+    this.finder = new PF.BiAStarFinder({
+        allowDiagonal: true,//允许对角线
+        dontCrossCorners: false,//不要拐弯?
+        heuristic: PF.Heuristic["manhattan"],//启发式["曼哈顿"]
+        weight: 1
+    });
+    // console.log([this.nextPosition.x-this.xMin,this.nextPosition.z-this.zMin, _this.exitPosArr[0].x-this.xMin,  _this.exitPosArr[0].z-this.zMin])
+    var n = 0, d = 0, c = 0;
+    for(var i = 0; i < _this.exitPosArr.length; i++){//直接选择直线距离最短的点作为寻路的终点,之后可以改为选择最短路径
+        d = this.nextPosition.distanceTo( _this.exitPosArr[i])
+        if(n > d || n == 0){
+            n = d;
+            c = i;
+        }    
+    }
+    if(this.path.length <= this.steps)
+        this.path = this.finder.findPath(this.nextPosition.x-this.xMin,this.nextPosition.z-this.zMin, _this.exitPosArr[c].x-this.xMin, _this.exitPosArr[c].z-this.zMin, _this.ant.PathFindeM)       
+    if(this.path.length > this.steps){
+        this.nextPosition.x = this.path[this.steps][0]+this.xMin
+        this.nextPosition.z = this.path[this.steps][1]+this.zMin
+        this.steps++
+    }else
+        this.getNextPositionRandom()
 }
 
 PeopleManager.prototype.walkToNextPosition = function(delta){
@@ -176,3 +204,4 @@ PeopleManager.prototype.setWeight=function (action, weight) {
     action.setEffectiveTimeScale(num / 3);//值越大速度越快，默认为1，0时动画停止
     action.setEffectiveWeight(weight);
 }
+      

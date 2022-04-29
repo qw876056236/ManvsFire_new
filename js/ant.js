@@ -4,6 +4,7 @@ var Ant = function(){
     this.ph_path = 1;//最优路径信息素
     this.ph_sign = 1;//指示牌信息素
     this.diagonal = true;//是否允许对角移动
+    this.PathFindeM;this.finder;
 }
 
 var Grid = function(){
@@ -24,6 +25,7 @@ Ant.prototype.init_pheromone = function(grid){//初始化信息素矩阵，将�
             if(grid.nodes[i][j].walkable)
                 this.pheromone[i][j].ph = this.normal;
     // console.log(this.pheromone);
+    this.PathFindeM = grid;
 }
 
 Ant.prototype.init_pheromone_floor1 = function(grid){//针对地下一层的信息素矩阵初始化
@@ -35,17 +37,9 @@ Ant.prototype.init_pheromone_floor1 = function(grid){//针对地下一层的信�
             if(j>80 && j <= 99 && grid.nodes[i][j].walkable)
                 //if(grid.nodes[i][j].walkable)
                 this.pheromone[j][i].ph = this.normal;
+    this.PathFindeM = grid;
 }
 
-Ant.prototype.find_path = function(leader, end){
-    var finder = new PF.BiAStarFinder({
-        allowDiagonal: this.diagonal,//允许对角线
-        dontCrossCorners: false,//不要拐弯?
-        heuristic: PF.Heuristic["manhattan"],//启发式["曼哈顿"]
-        weight: 1
-    });
-    return finder.findPath(leader[0], leader[1], end[0], end[1], this.pheromone);
-}
 
 Ant.prototype.set_block = function(point){
     this.pheromone[point[0]][point[1]].ph = 0;
@@ -341,7 +335,7 @@ Ant.prototype.countspeed = function(people, range = 2, speed = 1){//速度衰减
         for(var y = people[1]- range; y < people[1] + range; y++){
             try{var number = this.pheromone[x][y].people_number;if(number==undefined)number = 0;}catch{var number = 0;}
             n += number;
-            console.log(number)
+            //console.log(number)
         }
     }
             
