@@ -54,12 +54,12 @@ PeopleManager.prototype.update = function(_this){
 
         if(this.isArrive(this.nextPosition)){
             if(this.form == 0)
-                this.getNextPositionRandom()//之后改为getNextPositionTest,现在那个函数有问题
+                this.getNextPositionBySigns()//之后改为getNextPositionTest,现在那个函数有问题
             else if(this.form == 1)
                 this.getNextPositionPath(_this);
             else if(this.form == 2)
                 this.getNextPosition(_this);
-            //动作切换test
+            // 动作切换test
             // this.animationSwitch();
         }
         //向nextPosition走去
@@ -96,11 +96,16 @@ PeopleManager.prototype.getNextPosition = function(_this){
     this.nextPosition.z = pos[1] + this.zMin;
 }
 
-PeopleManager.prototype.getNextPositionRandom = function(){
+PeopleManager.prototype.getNextPositionBySigns = function(){
+    var pos = _this.ant.GoBySigns([this.nextPosition.x-this.xMin,this.nextPosition.z-this.zMin], 2);
+    this.nextPosition.x = pos[0] + this.xMin;
+    this.nextPosition.z = pos[1] + this.zMin;
+}
 
+PeopleManager.prototype.getNextPositionRandom = function(){
     this.nextPosition.x = this.nextPosition.x + Math.floor((Math.random()>0.5 ? -1 : 1) * (Math.random() * 2 + 1));
-    //this.nextPosition.y = this.scene.position.y + (Math.random()>0.5 ? -1 : 1) * Math.random() * 10;
     this.nextPosition.z = this.nextPosition.z + Math.floor((Math.random()>0.5 ? -1 : 1) * (Math.random() * 2 + 1));
+    // this.nextPosition.y = this.scene.position.y + (Math.random()>0.5 ? -1 : 1) * Math.random() * 10;
 }
 
 PeopleManager.prototype.getNextPositionPath = function(_this){

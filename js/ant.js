@@ -8,12 +8,16 @@ var Ant = function(){
 }
 
 var Grid = function(){
-    this.ph = 0;
-    this.people_number = 0;
-    this.trace_step = 0;
-    this.isfire = false;
-    this.fear = 0;
-    this.A_number = 0;
+    this.ph = 0;// 信息素浓度
+    this.people_number = 0;// 记录当前格子中的人数
+    this.trace_step = 0;// 人物遗留信息素衰减使用
+
+    this.isfire = false;// 是否着火，计算A时使用
+    this.fear = 0;// 记录总的恐惧度用于计算人物自身的恐惧度
+    this.A_number = 0;// 记录总的A用于计算人物自身的A
+
+    this.issign = 0;
+    this.sign_orientation = 0;
 }
 
 Ant.prototype.init_pheromone = function(grid){//初始化信息素矩阵，将不可走的路径设置为0，其他的为normal
@@ -40,6 +44,44 @@ Ant.prototype.init_pheromone_floor1 = function(grid){//针对地下一层的信�
     this.PathFindeM = grid;
 }
 
+Ant.prototype.init_sign = function(signs){
+    for(var i = 0; i < signs.length; i++){
+        if(signs[i][3] > -10){// 处于地下一层
+            if(signs[i][0] == 0){
+                this.add_signs([Math.round(signs[i][2])+39,Math.round(signs[i][4])-112], 2)// 将指示牌信息素加入矩阵
+                this.pheromone[Math.round(signs[i][2])+39][Math.round(signs[i][4])-112].issign = 2;
+            }else if(signs[i][0] == 5){
+                this.add_signs([Math.round(signs[i][2])+39,Math.round(signs[i][4])-112], 2)// 将指示牌信息素加入矩阵
+                this.pheromone[Math.round(signs[i][2])+39][Math.round(signs[i][4])-112].issign = 1;
+                if(signs[i][1] == 5)
+                    this.pheromone[Math.round(signs[i][2])+39][Math.round(signs[i][4])-112].sign_orientation = 4;
+                else if(signs[i][1] == 6)
+                    this.pheromone[Math.round(signs[i][2])+39][Math.round(signs[i][4])-112].sign_orientation = 5;
+                else if(signs[i][1] == 7)
+                    this.pheromone[Math.round(signs[i][2])+39][Math.round(signs[i][4])-112].sign_orientation = 7;
+            }else{
+                this.add_signs([Math.round(signs[i][2])+39,Math.round(signs[i][4])-112], 3)// 将指示牌信息素加入矩阵
+                this.pheromone[Math.round(signs[i][2])+39][Math.round(signs[i][4])-112].issign = 1;
+                if(signs[i][1] == 1){
+                    if(signs[i][0] == 1)
+                        this.pheromone[Math.round(signs[i][2])+39][Math.round(signs[i][4])-112].sign_orientation = 2;
+                    else if(signs[i][0] == 2)
+                        this.pheromone[Math.round(signs[i][2])+39][Math.round(signs[i][4])-112].sign_orientation = 7;
+                    else if(signs[i][0] > 2)
+                        this.pheromone[Math.round(signs[i][2])+39][Math.round(signs[i][4])-112].issign = 2;    
+                }else if(signs[i][1] == 2){
+                    if(signs[i][0] == 1)
+                        this.pheromone[Math.round(signs[i][2])+39][Math.round(signs[i][4])-112].sign_orientation = 7;
+                    else if(signs[i][0] == 2)
+                        this.pheromone[Math.round(signs[i][2])+39][Math.round(signs[i][4])-112].sign_orientation = 2;
+                    else if(signs[i][0] > 2)
+                        this.pheromone[Math.round(signs[i][2])+39][Math.round(signs[i][4])-112].issign = 2;    
+                }else if(signs[i][0] == 2 && signs[i][1] == 4)
+                    this.pheromone[Math.round(signs[i][2])+39][Math.round(signs[i][4])-112].sign_orientation = 4;
+            }
+        }
+    }
+}
 
 Ant.prototype.set_block = function(point){
     this.pheromone[point[0]][point[1]].ph = 0;
@@ -383,4 +425,36 @@ Ant.prototype.countfear = function(people, me, range = 2, r = 1){//计算恐慌�
     Fear = (me + (n - 1) * (p / n)) / (n * r)
 
     return Fear
+}
+
+Ant.prototype.GoBySigns = function(people, range = 2){
+    var end = people;
+    var change = false;
+    for(var x = people[0]- range; x < people[0] + range; x++){
+        for(var y = people[1]- range; y < people[1] + range; y++){
+            try{var if_sign = this.pheromone[x][y].issign;if(if_sign==undefined)if_sign = 0;}catch{var if_sign = 0;}
+            if(if_sign == 1 && !change){
+                switch(this.pheromone[x][y].sign_orientation){
+                    case 2:
+                        end[1] += 1;
+                    case 4:
+                        end[0] -= 1;
+                    case 5:
+                        end[0] += 1;
+                    case 7:
+                        end[1] -= 1;
+                }
+                change = true;
+            }else if(if_sign == 2 && !change){
+                if(x > 0) end[0] += 1; else end[0] -= 1;
+                if(y > 0) end[1] += 1; else end[1] -= 1;
+                change = true;
+            }
+        }
+    }
+    if(!change){
+        end[0] += Math.floor((Math.random()>0.5 ? -1 : 1) * (Math.random() * 2 + 1));
+        end[1] += Math.floor((Math.random()>0.5 ? -1 : 1) * (Math.random() * 2 + 1));
+    }
+    return end;
 }

@@ -449,6 +449,8 @@ mainScene.prototype.setScene = function()
                 });
             console.log(pc.floor1.grid)
             self.ant.init_pheromone_floor1(pc.floor1.grid);
+            console.log(self.sign.signInitArr)
+            self.ant.init_sign(self.sign.signInitArr);
         });
     });
 
