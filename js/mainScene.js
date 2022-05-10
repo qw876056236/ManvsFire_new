@@ -94,6 +94,7 @@ var mainScene = function()
 
     this.smokeH = [];
 
+    this.viewFrustum = new THREE.Frustum();
 
     //控制参数
 
@@ -188,6 +189,9 @@ mainScene.prototype.start = function()
         self.delta = self.clock.getDelta();
         self.elapsedTime = self.clock.getElapsedTime();
 
+        //更新相机视锥体
+        self.updateViewFrustum();
+
         if(self.isEdit)
         {
             self.smokeEditor.update(self);
@@ -228,7 +232,7 @@ mainScene.prototype.setScene = function()
 {
     var self = this;
     //region 基础场景
-    this.camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 0.1, 2000000);
+    this.camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 0.1, 500);
     this.camera.position.set(58,-2.7,167);
     this.camera.rotation.set(-2.8,0.3,3);
 
@@ -479,6 +483,19 @@ mainScene.prototype.addPeople = function ()
     this.people.groupIdle.forEach(s => s.visible = false);
     this.people.groupRun.forEach(s => s.visible = false);
     this.people.groupWalk.forEach(s => s.visible = false);*/
+}
+
+mainScene.prototype.updateViewFrustum = function(){
+    var self = this;
+    var far = self.camera.far;
+    if(self.camera.position.y<-5)
+        self.camera.far = 75;
+    else
+        self.camera.far = 150;
+    self.camera.updateProjectionMatrix();
+    self.viewFrustum.setFromProjectionMatrix(new THREE.Matrix4().multiplyMatrices(self.camera.projectionMatrix,self.camera.matrixWorldInverse));
+    self.camera.far = far;
+    self.camera.updateProjectionMatrix();
 }
 
 mainScene.prototype.record = function (){

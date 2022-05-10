@@ -36,6 +36,7 @@ PeopleManager.prototype.countMyFear = function(_this){
 
 PeopleManager.prototype.update = function(_this){
     if(!this.isExit){
+        this.frustumCulling(_this);
         this.countMyFear(_this)
         if(this.form == 0){
             this.A = _this.ant.countA([this.nextPosition.x-this.xMin,this.nextPosition.z-this.zMin]);
@@ -169,6 +170,25 @@ PeopleManager.prototype.walkToNextPosition = function(delta){
         case 2 :this.mesh.scene.rotation.y += 0.7853981633974483;break;//bend
         case 3 :this.mesh.scene.rotation.y += 2.5132741228718345;break;//crawl
         case 1 :this.mesh.scene.rotation.y += 0.8508480103472357;break;//walk
+    }
+}
+
+PeopleManager.prototype.frustumCulling = function(_this){
+    //this.mesh.scene.visible = false;
+    if(_this.viewFrustum.containsPoint(this.mesh.scene.position)){
+        //视锥内的人物设为可见
+        this.mesh.scene.visible = true;
+        this.mesh.scene.matrixWorldNeedsUpdate = false;
+        if(_this.camera.position.distanceTo(this.mesh.scene.position)<50){
+            //与摄像机距离小于50的播放动画
+            this.mesh.scene.visible = true;
+            this.mesh.scene.matrixAutoUpdate = true;
+            this.mixer.update(_this.delta);
+        }
+    }else{
+        //视锥外人物设为不可见
+        this.mesh.scene.visible = false;
+        this.mesh.scene.matrixAutoUpdate = false;
     }
 }
 
