@@ -40,7 +40,7 @@ PeopleManager.prototype.update = function(_this){
         if(this.form == 0){
             this.A = _this.ant.countA([this.nextPosition.x-this.xMin,this.nextPosition.z-this.zMin]);
             if(this.A >= 1)//临界值需要改，同时在Ant的countA里面改
-                this.form = 1;
+                this.form = 0;
         }else if(this.form == 1){
             this.fear = _this.ant.countfear([this.nextPosition.x-this.xMin,this.nextPosition.z-this.zMin], this.my_fear)
             if(this.fear > 1.4)//临界值可能需要更改
@@ -54,7 +54,7 @@ PeopleManager.prototype.update = function(_this){
 
         if(this.isArrive(this.nextPosition)){
             if(this.form == 0)
-                this.getNextPositionBySigns()//之后改为getNextPositionTest,现在那个函数有问题
+                this.getNextPositionBySigns(_this)//之后改为getNextPositionTest,现在那个函数有问题
             else if(this.form == 1)
                 this.getNextPositionPath(_this);
             else if(this.form == 2)
@@ -96,7 +96,7 @@ PeopleManager.prototype.getNextPosition = function(_this){
     this.nextPosition.z = pos[1] + this.zMin;
 }
 
-PeopleManager.prototype.getNextPositionBySigns = function(){
+PeopleManager.prototype.getNextPositionBySigns = function(_this){
     var pos = _this.ant.GoBySigns([this.nextPosition.x-this.xMin,this.nextPosition.z-this.zMin], 2);
     this.nextPosition.x = pos[0] + this.xMin;
     this.nextPosition.z = pos[1] + this.zMin;

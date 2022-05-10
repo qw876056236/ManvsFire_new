@@ -429,32 +429,78 @@ Ant.prototype.countfear = function(people, me, range = 2, r = 1){//计算恐慌�
 
 Ant.prototype.GoBySigns = function(people, range = 2){
     var end = people;
-    var change = false;
-    for(var x = people[0]- range; x < people[0] + range; x++){
-        for(var y = people[1]- range; y < people[1] + range; y++){
-            try{var if_sign = this.pheromone[x][y].issign;if(if_sign==undefined)if_sign = 0;}catch{var if_sign = 0;}
-            if(if_sign == 1 && !change){
-                switch(this.pheromone[x][y].sign_orientation){
-                    case 2:
-                        end[1] += 1;
-                    case 4:
-                        end[0] -= 1;
-                    case 5:
-                        end[0] += 1;
-                    case 7:
-                        end[1] -= 1;
+    var change = 2 * range + 1;
+    for(var x = -1 * range; x < range; x++){
+        for(var y = -1 * range; y < range; y++){
+            if(x == 0 && y == 0){}
+            else{
+                try{var if_sign = this.pheromone[people[0]+x][people[1]+y].issign;if(if_sign==undefined)if_sign = 0;}catch{var if_sign = 0;}
+                if(if_sign == 2 && change > Math.abs(x) + Math.abs(y)){
+                    if(x > 0) end[0] += 1; else end[0] -= 1;
+                    if(y > 0) end[1] += 1; else end[1] -= 1;
+                    change = Math.abs(x) + Math.abs(y);
+                }else if(if_sign == 1 && change > Math.abs(x) + Math.abs(y)){
+                    switch(this.pheromone[people[0]+x][people[1]+y].sign_orientation){
+                        case 2:
+                            end[1] += 1;
+                            if(x > 0) end[0] += 1; else end[0] -= 1;
+                            break;
+                        case 4:
+                            end[0] -= 1;
+                            if(y > 0) end[1] += 1; else end[1] -= 1;
+                            break;
+                        case 5:
+                            end[0] += 1;
+                            if(y > 0) end[1] += 1; else end[1] -= 1;
+                            break;
+                        case 7:
+                            end[1] -= 1;
+                            if(x > 0) end[0] += 1; else end[0] -= 1;
+                            break;
+                    }
+                    change = Math.abs(x) + Math.abs(y);
                 }
-                change = true;
-            }else if(if_sign == 2 && !change){
-                if(x > 0) end[0] += 1; else end[0] -= 1;
-                if(y > 0) end[1] += 1; else end[1] -= 1;
-                change = true;
             }
         }
     }
-    if(!change){
-        end[0] += Math.floor((Math.random()>0.5 ? -1 : 1) * (Math.random() * 2 + 1));
-        end[1] += Math.floor((Math.random()>0.5 ? -1 : 1) * (Math.random() * 2 + 1));
+    if(change == 2 * range + 1)
+        end = this.Step_random(end)
+    return end;
+}
+
+Ant.prototype.Step_random = function(begin, range=0){
+    if(range==0)
+        range =  Math.floor(Math.random() * 1.99 + 1);
+    var count=[];
+    for(var x = -1 * range; x < range; x++){
+        for(var y = -1 * range; y < range; y++){
+            if(x == 0 && y == 0){}
+            else{
+                try{var if_ph = this.pheromone[begin[0]+x][begin[1]+y].ph;if(if_ph==undefined)if_ph = 0;}catch{var if_ph = 0;}
+                if(if_ph)
+                    count.push([x,y]);
+            }
+        }
+    }
+    console.log(range+'   '+count)
+    var end = begin;
+    if(count.length){
+        var n = Math.floor(Math.random() * (count.length - 0.01));
+        end[0] += count[n][0];
+        end[1] += count[n][1];
     }
     return end;
 }
+
+// Ant.prototype.GoByOrientation = function(begin, orientation){
+//     switch(orientation){
+//         case 2:
+//             begin[1] += 1;
+//         case 4:
+//             begin[0] -= 1;
+//         case 5:
+//             begin[0] += 1;
+//         case 7:
+//             begin[1] -= 1;
+//     }
+// }
