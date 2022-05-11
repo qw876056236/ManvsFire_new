@@ -573,7 +573,9 @@ People.prototype.load = function (_this) {
                 self.groupRun.push(newMesh.scene);
                 _this.scene.add(newMesh.scene);
 
-                self.groupPM.push(new PeopleManager(newMesh,meshMixer));
+                var peoplemanager = new PeopleManager(newMesh,meshMixer);
+                peoplemanager.init(_this);
+                self.groupPM.push(peoplemanager);
 
             }
         });
@@ -769,7 +771,9 @@ People.prototype.load = function (_this) {
                 self.groupRun.push(newMesh.scene);
                 _this.scene.add(newMesh.scene);
 
-                self.groupPM.push(new PeopleManager(newMesh,meshMixer));
+                var peoplemanager = new PeopleManager(newMesh,meshMixer);
+                peoplemanager.init(_this);
+                self.groupPM.push(peoplemanager);
             }
         });
 
@@ -862,7 +866,9 @@ People.prototype.load = function (_this) {
                 self.groupRun.push(newMesh.scene);
                 // _this.scene.add(newMesh.scene);
 
-                self.groupPM.push(new PeopleManager(newMesh,meshMixer));
+                var peoplemanager = new PeopleManager(newMesh,meshMixer);
+                peoplemanager.init(_this);
+                self.groupPM.push(peoplemanager);
             }
         });
 
@@ -944,7 +950,9 @@ People.prototype.load = function (_this) {
                 self.groupRun.push(newMesh.scene);
                 // _this.scene.add(newMesh.scene);
 
-                self.groupPM.push(new PeopleManager(newMesh,meshMixer));
+                var peoplemanager = new PeopleManager(newMesh,meshMixer);
+                peoplemanager.init(_this);
+                self.groupPM.push(peoplemanager);
             }
         });
 
@@ -3417,19 +3425,6 @@ People.prototype.setWeight=function (action, weight) {
     action.setEffectiveWeight(weight);
 }
 
-People.prototype.isfinishedloadchar = function (_this)
-{
-    if(_this.isFinishLoadCharactor)
-    {
-        /*for(let i=0; i<_this.people.mixerArr.length;i++)
-        {
-            //_this.people.mixerArr[i].update(_this.delta);
-
-        }*/
-        this.groupPM.forEach(pm => pm.mixer.update(_this.delta));
-    }
-};
-
 People.prototype.ifstartRun = function (_this)
 {
     let self = this;
@@ -3453,7 +3448,6 @@ People.prototype.ifstartRun = function (_this)
 
 People.prototype.update = function (_this)
 {
-    this.isfinishedloadchar(_this);
     this.ifstartRun(_this);
     this.groupPM.forEach(pm => pm.update(_this));
 };

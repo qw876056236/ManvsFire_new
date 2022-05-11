@@ -21,7 +21,7 @@ var Grid = function(){
 }
 
 Ant.prototype.init_pheromone = function(grid){//初始化信息素矩阵，将不可走的路径设置为0，其他的为normal
-    this.pheromone = new Array(grid.nodes.length).fill(0).map(()=>{
+    this.pheromone = new Array(grid.nodes.length).fill(new Grid()).map(()=>{
         return Array(grid.nodes[0].length).fill(new Grid())
     });
     for(var i = 0; i < grid.nodes.length; i++)
@@ -34,13 +34,19 @@ Ant.prototype.init_pheromone = function(grid){//初始化信息素矩阵，将�
 
 Ant.prototype.init_pheromone_floor1 = function(grid){//针对地下一层的信息素矩阵初始化
     this.pheromone = new Array(grid.nodes[0].length).fill(0).map(()=>{
-        return Array(grid.nodes.length).fill(new Grid())
+        return Array(grid.nodes.length).fill(0)
     });
+
+    for(var x = 0; x < grid.nodes[0].length; x++)
+        for(var y = 0; y < grid.nodes.length; y++)
+            this.pheromone[x][y] = new Grid()
+    
     for(var i = 0; i < grid.nodes.length; i++)
         for(var j = 0; j < grid.nodes[0].length; j++)
             if(j>80 && j <= 99 && grid.nodes[i][j].walkable)
                 //if(grid.nodes[i][j].walkable)
                 this.pheromone[j][i].ph = this.normal;
+                
     this.PathFindeM = grid;
 }
 
@@ -80,6 +86,7 @@ Ant.prototype.init_sign = function(signs){
                     this.pheromone[Math.round(signs[i][2])+39][Math.round(signs[i][4])-112].sign_orientation = 4;
             }
         }
+        console.log(signs[i]+'  '+this.pheromone[Math.round(signs[i][2])+39][Math.round(signs[i][4])-112].sign_orientation)
     }
 }
 
@@ -331,10 +338,6 @@ Ant.prototype.expend = function(begin, ends, range){
 }
 
 Ant.prototype.step = function(_this, begin, orientation = 0, trace = 0){//移动，是否遗留信息素（遗留几步）
-    this.pheromone[begin[0]][begin[1]].people_number += 1;
-    if(_this.form >= 1)
-        this.pheromone[begin[0]][begin[1]].A_number += 1;
-    this.pheromone[begin[0]][begin[1]].fear += _this.fear;
     this.volatilize();
     var ends = this.expend(begin, this.get_ends(begin, orientation), 0, 0);
     if(trace){
@@ -395,13 +398,16 @@ Ant.prototype.countA = function(people, range = 2, a = 1){//计算警觉度
     var A = 0, L = 0, h = 0, n = 0;
     var u1 = 1; u2 = 1; u3 = 1;//权重需要设定
 
-    for(var x = people[0]- range; x < people[0] + range; x++){
-        for(var y = people[1]- range; y < people[1] + range; y++){
-            try{var A = this.pheromone[x][y].A_number;if(A_number==undefined)A_number = 0;}catch{var A_number = 0;}
-            n += A;
-            try{var isfire = this.pheromone[x][y].isfire;if(isfire==undefined)isfire = false;}catch{var isfire = false;}
-            if(isfire)
-                L = 1;
+    for(var x = people[0] - range; x <= people[0] + range; x++){
+        for(var y = people[1] - range; y <= people[1] + range; y++){
+            if(x == 0 && y ==0){}
+            else{
+                try{var A = this.pheromone[x][y].A_number;if(A_number==undefined)A_number = 0;}catch{var A_number = 0;}
+                n += A;
+                try{var isfire = this.pheromone[x][y].isfire;if(isfire==undefined)isfire = false;}catch{var isfire = false;}
+                if(isfire)
+                    L = 1;
+            }
         }
     }
         
@@ -413,8 +419,8 @@ Ant.prototype.countA = function(people, range = 2, a = 1){//计算警觉度
 
 Ant.prototype.countfear = function(people, me, range = 2, r = 1){//计算恐慌度
     var Fear = 0, n = 0, p = 0;
-    for(var x = people[0]- range; x < people[0] + range; x++){
-        for(var y = people[1]- range; y < people[1] + range; y++){
+    for(var x = people[0]- range; x <= people[0] + range; x++){
+        for(var y = people[1]- range; y <= people[1] + range; y++){
             try{var number = this.pheromone[x][y].people_number;if(number==undefined)number = 0;}catch{var number = 0;}
             n += number;
             try{var other_p = this.pheromone[x][y].fear;if(other_p==undefined)other_p = 0;}catch{var other_p = 0;}
@@ -430,8 +436,8 @@ Ant.prototype.countfear = function(people, me, range = 2, r = 1){//计算恐慌�
 Ant.prototype.GoBySigns = function(people, range = 2){
     var end = people;
     var change = 2 * range + 1;
-    for(var x = -1 * range; x < range; x++){
-        for(var y = -1 * range; y < range; y++){
+    for(var x = -1 * range; x <= range; x++){
+        for(var y = -1 * range; y <= range; y++){
             if(x == 0 && y == 0){}
             else{
                 try{var if_sign = this.pheromone[people[0]+x][people[1]+y].issign;if(if_sign==undefined)if_sign = 0;}catch{var if_sign = 0;}
@@ -468,12 +474,12 @@ Ant.prototype.GoBySigns = function(people, range = 2){
     return end;
 }
 
-Ant.prototype.Step_random = function(begin, range=0){
+Ant.prototype.Step_random = function(begin, range=1){
     if(range==0)
         range =  Math.floor(Math.random() * 1.99 + 1);
     var count=[];
-    for(var x = -1 * range; x < range; x++){
-        for(var y = -1 * range; y < range; y++){
+    for(var x = -1 * range; x <= range; x++){
+        for(var y = -1 * range; y <= range; y++){
             if(x == 0 && y == 0){}
             else{
                 try{var if_ph = this.pheromone[begin[0]+x][begin[1]+y].ph;if(if_ph==undefined)if_ph = 0;}catch{var if_ph = 0;}
