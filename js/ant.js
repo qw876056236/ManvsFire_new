@@ -339,10 +339,6 @@ Ant.prototype.expend = function(begin, ends, range){
 
 Ant.prototype.step = function(_this, begin, orientation = 0, trace = 4){//移动，是否遗留信息素（遗留几步）
     var ends = this.expend(begin, this.get_ends(begin, orientation), 0, 0);
-    if(trace){
-        this.pheromone[begin[0]][begin[1]].ph += 1;
-        this.pheromone[begin[0]][begin[1]].trace_step += 4;
-    }
     if(this.diagonal)
         var end = this.Random(ends, begin);
     else
@@ -351,9 +347,9 @@ Ant.prototype.step = function(_this, begin, orientation = 0, trace = 4){//移动
     return end;
 }
 
-Ant.prototype.volatilize = function(trace){
+Ant.prototype.volatilize = function(trace, ph){
     for(var i = 0; i < trace.length; i++)
-        this.pheromone[trace[i][0]][trace[i][1]].ph -= 1 / this.trace_step;
+        this.pheromone[trace[i][0]][trace[i][1]].ph -= ph / this.trace_step;
 }
 
 Ant.prototype.countspeed = function(people, range = 2, speed = 1){//速度衰减算法，需要输入期望速度作为初速度
@@ -415,6 +411,17 @@ Ant.prototype.countfear = function(people, me, range = 2, r = 1){//计算恐慌�
     Fear = (me + (n - 1) * (p / n)) / (n * r)
 
     return Fear
+}
+
+Ant.prototype.countDensity = function(people, range = 2, a = 1){//计算密度
+    var n = 0;
+    for(var x = people[0]- range; x < people[0] + range; x++){
+        for(var y = people[1]- range; y < people[1] + range; y++){
+            try{var A = this.pheromone[x][y].A_number;if(A_number==undefined)A_number = 0;}catch{var A_number = 0;}
+            n += A;
+        }
+    }
+    n = n/Math.pow(2*range+1,2);
 }
 
 Ant.prototype.GoBySigns = function(people, range = 2){

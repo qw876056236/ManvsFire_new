@@ -15,7 +15,8 @@ var PeopleManager = function(mesh,mixer){
     this.orientation = 0;
     this.speed = 1;
     this.trace = [];
-    this.form = 2;//初始为0进行随机移动，警觉度到达一定值后设为1进入逃跑状态，恐慌度达到一定程度设为2进入惊慌状态
+    this.form = 0;//初始为0进行随机移动，警觉度到达一定值后设为1进入逃跑状态理智模式，2为逃生状态惊慌状态，3为拥堵状态
+    this.ph = 1;
 }
 
 PeopleManager.prototype.init = function(_this){
@@ -40,29 +41,55 @@ PeopleManager.prototype.update = function(_this){
     if(!this.isExit){
         this.frustumCulling(_this);
         this.countMyFear(_this)
-        if(this.form == 0){
-            this.A = _this.ant.countA([this.nextPosition.x-this.xMin,this.nextPosition.z-this.zMin]);
-            this.fear = _this.ant.countfear([this.nextPosition.x-this.xMin,this.nextPosition.z-this.zMin], this.my_fear)
-            if(this.A >= 1){//临界值需要改，同时在Ant的countA里面改
-                this.form = 1; 
-                _this.ant.pheromone[this.nextPosition.x-this.xMin][this.nextPosition.z-this.zMin].A_number += 1;         
-                _this.ant.pheromone[this.nextPosition.x-this.xMin][this.nextPosition.z-this.zMin].fear += this.fear;
-            }
-        }else if(this.form == 1){
-            this.fear = _this.ant.countfear([this.nextPosition.x-this.xMin,this.nextPosition.z-this.zMin], this.my_fear)
-            if(this.fear > 1.4)//临界值可能需要更改
-                this.form = 2;   
+        var density = _this.ant.countDensity([this.nextPosition.x-this.xMin,this.nextPosition.z-this.zMin]);
+        if(density>3.8){
+            this.form = 3;
         }else{
-            this.fear = _this.ant.countfear([this.nextPosition.x-this.xMin,this.nextPosition.z-this.zMin], this.my_fear)
-            if(this.fear <= 1.4)//临界值可能需要更改
-                this.form = 1;
+            if(this.form == 0){
+                this.A = _this.ant.countA([this.nextPosition.x-this.xMin,this.nextPosition.z-this.zMin]);
+                if(this.A >= 1){//临界值需要改，同时在Ant的countA里面改
+                    this.form = 1;
+                    this.fear = _this.ant.countfear([this.nextPosition.x-this.xMin,this.nextPosition.z-this.zMin], this.my_fear)
+                    _this.ant.pheromone[this.nextPosition.x-this.xMin][this.nextPosition.z-this.zMin].A_number += 1;
+                    _this.ant.pheromone[this.nextPosition.x-this.xMin][this.nextPosition.z-this.zMin].fear += this.fear;
+                }
+            }else if(this.form == 1){
+                this.fear = _this.ant.countfear([this.nextPosition.x-this.xMin,this.nextPosition.z-this.zMin], this.my_fear)
+                if(this.fear > 1.4)//临界值可能需要更改
+                    this.form = 2;
+            }else if(this.form == 2){
+                this.fear = _this.ant.countfear([this.nextPosition.x-this.xMin,this.nextPosition.z-this.zMin], this.my_fear)
+                if(this.fear <= 1.4)//临界值可能需要更改
+                    this.form = 1;
+            }else if(this.form == 3){
+                this.fear = _this.ant.countfear([this.nextPosition.x-this.xMin,this.nextPosition.z-this.zMin], this.my_fear)
+                if(this.fear <= 1.4)
+                    this.form = 1;
+                else
+                    this.form = 2;
+            }
+        }
+
+
+        if(this.isArriveExit(_this)){
+            //清除网格信息素及恐慌度等属性值
+            for(var i=this.trace.length-1,j=0;i>=0;i--,j++)
+                _this.ant.pheromone[this.trace[i][0]][this.trace[i][1]] -= (1-j/_this.ant.trace_step)*this.ph;
+            _this.ant.pheromone[this.nextPosition.x-this.xMin][this.nextPosition.z-this.zMin].A_number -= 1;
+            _this.ant.pheromone[this.nextPosition.x-this.xMin][this.nextPosition.z-this.zMin].fear -= this.fear;
+
+            this.mesh.scene.visible = false;
+            _this.scene.remove(this.mesh.scene);
+            _this.number--;
+            return;
         }
 
         if(this.isArrive(this.nextPosition)){
+            _this.ant.volatilize(this.trace,this.ph);
             this.trace.push([this.nextPosition.x-this.xMin,this.nextPosition.z-this.zMin]);
             if(this.trace.length > _this.ant.trace_step)
                 this.trace.shift()
-            _this.ant.pheromone[this.nextPosition.x-this.xMin][this.nextPosition.z-this.zMin].ph += 1;
+            _this.ant.pheromone[this.nextPosition.x-this.xMin][this.nextPosition.z-this.zMin].ph += this.ph;
             _this.ant.pheromone[this.nextPosition.x-this.xMin][this.nextPosition.z-this.zMin].A_number -= 1; 
             _this.ant.pheromone[this.nextPosition.x-this.xMin][this.nextPosition.z-this.zMin].fear -= this.fear; 
             if(this.form == 0)
@@ -78,8 +105,8 @@ PeopleManager.prototype.update = function(_this){
             // this.animationSwitch();
         }
         //向nextPosition走去
-        this.walkToNextPosition(_this.delta);
-        this.isArriveExit(_this);
+        if(this.form!=3)
+            this.walkToNextPosition(_this.delta);
     }
 }
 
@@ -87,15 +114,10 @@ PeopleManager.prototype.isArriveExit = function(_this){
     for(var i=0;i<_this.exitPosArr.length;++i){
         if(this.isArrive(_this.exitPosArr[i])){
             this.isExit = true;
-            break;
+            return true;
         }
     }
-    if(this.isExit){
-        this.mesh.scene.visible = false;
-        _this.number--;
-        // console.log(1)
-    }
-    
+    return false;
 }
 
 PeopleManager.prototype.isArrive = function(pos){
@@ -106,14 +128,12 @@ PeopleManager.prototype.isArrive = function(pos){
 }
 
 PeopleManager.prototype.getNextPosition = function(_this){
-    _this.ant.volatilize(this.trace);
     var pos = _this.ant.step(this, [this.nextPosition.x-this.xMin,this.nextPosition.z-this.zMin]);
     this.nextPosition.x = pos[0] + this.xMin;
     this.nextPosition.z = pos[1] + this.zMin;
 }
 
 PeopleManager.prototype.getNextPositionBySigns = function(_this){
-    _this.ant.volatilize(this.trace);
     var pos = _this.ant.GoBySigns([this.nextPosition.x-this.xMin,this.nextPosition.z-this.zMin], 2);
     this.nextPosition.x = pos[0] + this.xMin;
     this.nextPosition.z = pos[1] + this.zMin;
@@ -126,7 +146,6 @@ PeopleManager.prototype.getNextPositionRandom = function(_this){
 }
 
 PeopleManager.prototype.getNextPositionPath = function(_this){
-    _this.ant.volatilize(this.trace);
     if(this.path.length == 0){
         this.finder = new PF.BiAStarFinder({
             allowDiagonal: true,//允许对角线
@@ -151,7 +170,7 @@ PeopleManager.prototype.getNextPositionPath = function(_this){
         this.nextPosition.z = this.path[0][1]+this.zMin
         this.path.shift();
     }else
-        this.getNextPositionRandom()
+        this.getNextPositionRandom(_this)
 }
 
 PeopleManager.prototype.walkToNextPosition = function(delta){
