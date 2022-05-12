@@ -540,7 +540,7 @@ People.prototype.load = function (_this) {
                 rThigh2.scale(new THREE.Vector3(thighRandom, thighRandom, 1));
 
                 //动态人群位置
-                self.setPosition (newMesh,self.positionPlaneMesh_1);
+                self.setPosition (newMesh,self.positionPlaneMesh_1,_this);
 
                 // 将模型的材质附在newMesh上
                 var loader = new THREE.TextureLoader();
@@ -747,7 +747,7 @@ People.prototype.load = function (_this) {
                 lThigh20.scale(new THREE.Vector3(thighRandom, thighRandom, 1));
 
                 //动态人群位置
-                self.setPosition (newMesh,self.positionPlaneMesh_1);
+                self.setPosition (newMesh,self.positionPlaneMesh_1,_this);
 
                 // 将模型的材质附在newMesh上
                 var loader = new THREE.TextureLoader();
@@ -833,7 +833,7 @@ People.prototype.load = function (_this) {
                 rThigh2.scale(new THREE.Vector3(thighRandom, thighRandom, 1));
 
                 //动态人群位置
-                self.setPosition (newMesh,self.positionPlaneMesh_1);
+                self.setPosition (newMesh,self.positionPlaneMesh_1,_this);
 
                 // 将模型的材质附在newMesh上
                 var loader = new THREE.TextureLoader();
@@ -926,7 +926,7 @@ People.prototype.load = function (_this) {
                 rThigh2.scale(new THREE.Vector3(thighRandom, thighRandom, 1));
 
                 //动态人群位置
-                self.setPosition (newMesh,self.positionPlaneMesh_1);
+                self.setPosition (newMesh,self.positionPlaneMesh_1,_this);
 
                 // 将模型的材质附在newMesh上
                 var loader = new THREE.TextureLoader();
@@ -3163,10 +3163,14 @@ People.prototype.load = function (_this) {
 
 };
 
-People.prototype.setPosition = function (newMesh,positionMesh) {
-    newMesh.scene.position.x = positionMesh.position.x + (Math.random()-0.5) * Math.abs(positionMesh.scale.x)*10;
-    newMesh.scene.position.z = positionMesh.position.z + (Math.random()-0.5) * Math.abs(positionMesh.scale.y)*20;
-    newMesh.scene.position.y = -8.5;
+People.prototype.setPosition = function (newMesh,positionMesh,_this) {
+    do{
+        newMesh.scene.position.x = positionMesh.position.x + (Math.random()-0.5) * Math.abs(positionMesh.scale.x)*10;
+        newMesh.scene.position.z = positionMesh.position.z + (Math.random()-0.5) * Math.abs(positionMesh.scale.y)*20;
+        newMesh.scene.position.y = -8.5;
+    }while(_this.ant.pheromone[Math.round(newMesh.scene.position.x)+39][Math.round(newMesh.scene.position.z)-112].ph == 0)
+
+
     /*console.log(1111);
     var num = Math.floor(Math.random()*16+1); // 16块随机区域对应（1-16）的随机整数
     var num1 = Math.floor(Math.random() * 2 + 1);
@@ -3450,6 +3454,7 @@ People.prototype.update = function (_this)
 {
     this.ifstartRun(_this);
     this.groupPM.forEach(pm => pm.update(_this));
+    console.log("..............")
 };
 
 // function animate() {

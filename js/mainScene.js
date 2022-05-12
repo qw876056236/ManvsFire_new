@@ -459,11 +459,11 @@ mainScene.prototype.setScene = function()
     });
 
     /*出口位置设置*/
-    this.exitPosArr = [new THREE.Vector3(62,-8.5,112), new THREE.Vector3(62,-8.5,113),new THREE.Vector3(62,-8.5,114),new THREE.Vector3(62,-8.5,115),new THREE.Vector3(62,-8.5,116),new THREE.Vector3(62,-8.5,117),
-                        new THREE.Vector3(54,-8.5,188),new THREE.Vector3(53,-8.5,188),new THREE.Vector3(52,-8.5,188),new THREE.Vector3(51,-8.5,188),new THREE.Vector3(50,-8.5,188),new THREE.Vector3(49,-8.5,188),
-                        new THREE.Vector3(36,-8.5,190),new THREE.Vector3(36,-8.5,189),new THREE.Vector3(36,-8.5,188),new THREE.Vector3(36,-8.5,187),new THREE.Vector3(36,-8.5,186),new THREE.Vector3(36,-8.5,185),new THREE.Vector3(36,-8.5,184),new THREE.Vector3(36,-8.5,183),
-                        new THREE.Vector3(64,-8.5,266),new THREE.Vector3(64,-8.5,267),new THREE.Vector3(64,-8.5,268),new THREE.Vector3(64,-8.5,269),new THREE.Vector3(64,-8.5,270),new THREE.Vector3(64,-8.5,271),
-                        new THREE.Vector3(47,-8.5,441),new THREE.Vector3(46,-8.5,441),new THREE.Vector3(45,-8.5,441),new THREE.Vector3(44,-8.5,441),new THREE.Vector3(43,-8.5,441),new THREE.Vector3(42,-8.5,441),new THREE.Vector3(41,-8.5,441)];
+    this.exitPosArr = [ new THREE.Vector3(62,-8.5,113),new THREE.Vector3(62,-8.5,114),new THREE.Vector3(62,-8.5,115),new THREE.Vector3(62,-8.5,116),
+                        new THREE.Vector3(53,-8.5,188),new THREE.Vector3(52,-8.5,188),new THREE.Vector3(51,-8.5,188),new THREE.Vector3(50,-8.5,188),
+                        new THREE.Vector3(36,-8.5,190),new THREE.Vector3(36,-8.5,189),new THREE.Vector3(36,-8.5,188),new THREE.Vector3(36,-8.5,187),new THREE.Vector3(36,-8.5,186),new THREE.Vector3(36,-8.5,185),new THREE.Vector3(36,-8.5,184),
+                        new THREE.Vector3(64,-8.5,267),new THREE.Vector3(64,-8.5,268),new THREE.Vector3(64,-8.5,269),new THREE.Vector3(64,-8.5,270),
+                        new THREE.Vector3(46,-8.5,441),new THREE.Vector3(45,-8.5,441),new THREE.Vector3(44,-8.5,441),new THREE.Vector3(43,-8.5,441),new THREE.Vector3(42,-8.5,441)];
 
 
 

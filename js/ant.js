@@ -365,8 +365,8 @@ Ant.prototype.volatilize = function(){
     for(var x = 0; x < this.pheromone.length; x++){
         for(var y = 0; y < this.pheromone[x].length; y++){
             if(this.pheromone[x][y].trace){
-                people.ph -= 0.25
-                people.trace_step -= 1;
+                this.pheromone[x][y].ph -= 0.25
+                this.pheromone[x][y].trace_step -= 1;
             }
         }
     }

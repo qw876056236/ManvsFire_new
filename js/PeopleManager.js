@@ -129,7 +129,7 @@ PeopleManager.prototype.getNextPositionPath = function(_this){
             dontCrossCorners: false,//不要拐弯?
             heuristic: PF.Heuristic["manhattan"],//启发式["曼哈顿"]
             weight: 1
-        });
+        });                
         // console.log([this.nextPosition.x-this.xMin,this.nextPosition.z-this.zMin, _this.exitPosArr[0].x-this.xMin,  _this.exitPosArr[0].z-this.zMin])
         var n = 0, d = 0, c = 0;
         for(var i = 0; i < _this.exitPosArr.length; i++){//直接选择直线距离最短的点作为寻路的终点,之后可以改为选择最短路径
@@ -139,7 +139,7 @@ PeopleManager.prototype.getNextPositionPath = function(_this){
                 c = i;
             }    
         }
-        this.path = this.finder.findPath(this.nextPosition.x-this.xMin,this.nextPosition.z-this.zMin, _this.exitPosArr[c].x-this.xMin, _this.exitPosArr[c].z-this.zMin, _this.ant.PathFindeM)       
+        this.path = this.finder.findPath(this.nextPosition.x-this.xMin,this.nextPosition.z-this.zMin, _this.exitPosArr[c].x-this.xMin, _this.exitPosArr[c].z-this.zMin, _this.ant.PathFindeM.clone());
     }
     if(this.path.length > this.steps){
         this.nextPosition.x = this.path[this.steps][0]+this.xMin
@@ -205,7 +205,6 @@ PeopleManager.prototype.frustumCulling = function(_this){
     }else{
         //视锥外人物设为不可见
         this.mesh.scene.visible = false;
-        this.mesh.scene.matrixAutoUpdate = false;
     }
 }
 
