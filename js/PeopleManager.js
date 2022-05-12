@@ -11,12 +11,14 @@ var PeopleManager = function(mesh,mixer){
     this.steps = 0;// 记录走到A*路径上的第几步
     this.my_fear = 0;// 自身恐慌度
     this.fear = 0;
+    this.preFear = 0;
     this.A = 0;
     this.orientation = 0;
     this.speed = 1;
     this.trace = [];
     this.form = 0;//初始为0进行随机移动，警觉度到达一定值后设为1进入逃跑状态理智模式，2为逃生状态惊慌状态，3为拥堵状态
     this.ph = 1;
+    this.ve = 1;
 }
 
 PeopleManager.prototype.init = function(_this){
@@ -28,7 +30,7 @@ PeopleManager.prototype.init = function(_this){
 
 PeopleManager.prototype.countMyFear = function(_this){
     var u1 = 1; u2 = 1; u3 = 1;//权重值需要从新设定
-    var v = _this.ant.countspeed([this.nextPosition.x-this.xMin,this.nextPosition.z-this.zMin]);
+    var v = _this.ant.countspeed([this.nextPosition.x-this.xMin,this.nextPosition.z-this.zMin],0,this.ve);
     var t = Math.LOG10E*Math.log(_this.currentEscapeTime);//获取时间,更改对数函数，前面缓慢后面快
     var d = Math.max(Math.abs(this.nextPosition.x - _this.fire.pos.x), Math.abs(this.nextPosition.x - _this.fire.pos.z));
     var ve = 1;//期望逃生速度,需要更改获取是老人还是其他的
@@ -52,6 +54,7 @@ PeopleManager.prototype.update = function(_this){
                     this.fear = _this.ant.countfear([this.nextPosition.x-this.xMin,this.nextPosition.z-this.zMin], this.my_fear)
                     _this.ant.pheromone[this.nextPosition.x-this.xMin][this.nextPosition.z-this.zMin].A_number += 1;
                     _this.ant.pheromone[this.nextPosition.x-this.xMin][this.nextPosition.z-this.zMin].fear += this.fear;
+                    this.preFear = this.fear;
                 }
             }else if(this.form == 1){
                 this.fear = _this.ant.countfear([this.nextPosition.x-this.xMin,this.nextPosition.z-this.zMin], this.my_fear)
@@ -75,8 +78,10 @@ PeopleManager.prototype.update = function(_this){
             //清除网格信息素及恐慌度等属性值
             for(var i=this.trace.length-1,j=0;i>=0;i--,j++)
                 _this.ant.pheromone[this.trace[i][0]][this.trace[i][1]] -= (1-j/_this.ant.trace_step)*this.ph;
-            _this.ant.pheromone[this.nextPosition.x-this.xMin][this.nextPosition.z-this.zMin].A_number -= 1;
-            _this.ant.pheromone[this.nextPosition.x-this.xMin][this.nextPosition.z-this.zMin].fear -= this.fear;
+            if(this.form > 0)
+                _this.ant.pheromone[this.nextPosition.x-this.xMin][this.nextPosition.z-this.zMin].A_number -= 1;
+            _this.ant.pheromone[this.nextPosition.x-this.xMin][this.nextPosition.z-this.zMin].fear -= this.preFear;
+            _this.ant.pheromone[this.nextPosition.x-this.xMin][this.nextPosition.z-this.zMin].people_number -= 1;
 
             this.mesh.scene.visible = false;
             _this.scene.remove(this.mesh.scene);
@@ -90,8 +95,10 @@ PeopleManager.prototype.update = function(_this){
             if(this.trace.length > _this.ant.trace_step)
                 this.trace.shift()
             _this.ant.pheromone[this.nextPosition.x-this.xMin][this.nextPosition.z-this.zMin].ph += this.ph;
-            _this.ant.pheromone[this.nextPosition.x-this.xMin][this.nextPosition.z-this.zMin].A_number -= 1; 
-            _this.ant.pheromone[this.nextPosition.x-this.xMin][this.nextPosition.z-this.zMin].fear -= this.fear; 
+            _this.ant.pheromone[this.nextPosition.x-this.xMin][this.nextPosition.z-this.zMin].people_number -= 1;
+            _this.ant.pheromone[this.nextPosition.x-this.xMin][this.nextPosition.z-this.zMin].fear -= this.preFear;
+            if(this.form > 0)
+                _this.ant.pheromone[this.nextPosition.x-this.xMin][this.nextPosition.z-this.zMin].A_number -= 1;
             if(this.form == 0)
                 this.getNextPositionBySigns(_this);
             else if(this.form == 1)
@@ -99,8 +106,11 @@ PeopleManager.prototype.update = function(_this){
             else if(this.form == 2)
                 this.getNextPosition(_this);
 
-            _this.ant.pheromone[this.nextPosition.x-this.xMin][this.nextPosition.z-this.zMin].A_number += 1; 
-            _this.ant.pheromone[this.nextPosition.x-this.xMin][this.nextPosition.z-this.zMin].fear += this.fear; 
+            _this.ant.pheromone[this.nextPosition.x-this.xMin][this.nextPosition.z-this.zMin].people_number += 1;
+            _this.ant.pheromone[this.nextPosition.x-this.xMin][this.nextPosition.z-this.zMin].fear += this.fear;
+            this.preFear = this.fear;
+            if(this.form > 0)
+                _this.ant.pheromone[this.nextPosition.x-this.xMin][this.nextPosition.z-this.zMin].A_number += 1;
             // 动作切换test
             // this.animationSwitch();
         }

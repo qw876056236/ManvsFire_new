@@ -352,10 +352,10 @@ Ant.prototype.volatilize = function(trace, ph){
         this.pheromone[trace[i][0]][trace[i][1]].ph -= ph / this.trace_step;
 }
 
-Ant.prototype.countspeed = function(people, range = 2, speed = 1){//速度衰减算法，需要输入期望速度作为初速度
+Ant.prototype.countspeed = function(people, range = 1, speed = 1){//速度衰减算法，需要输入期望速度作为初速度
     var De = 0.54, a = 0.266;
     var n = 0;
-    
+
     for(var x = people[0]- range; x < people[0] + range; x++){
         for(var y = people[1]- range; y < people[1] + range; y++){
             try{var number = this.pheromone[x][y].people_number;if(number==undefined)number = 0;}catch{var number = 0;}
@@ -371,7 +371,7 @@ Ant.prototype.countspeed = function(people, range = 2, speed = 1){//速度衰减
     else if(D > 0.54)
         speed = (1 - a * D) /(1 - a * De) * speed;
 
-    return speed;
+    return speed>0 ? speed : 0;
 }
 
 Ant.prototype.countA = function(people, range = 2, a = 1){//计算警觉度
@@ -407,18 +407,20 @@ Ant.prototype.countfear = function(people, me, range = 2, r = 1){//计算恐慌�
             p += other_p;
         }
     }
+    if(n==0)
+        return me;
          
-    Fear = (me + (n - 1) * (p / n)) / (n * r)
-
+    Fear = (me + (n - 1) * (p / n)) / (n * r);
     return Fear
 }
 
-Ant.prototype.countDensity = function(people, range = 2, a = 1){//计算密度
+Ant.prototype.countDensity = function(people, range = 0, a = 1){//计算密度
+    var self = this;
     var n = 0;
-    for(var x = people[0]- range; x < people[0] + range; x++){
-        for(var y = people[1]- range; y < people[1] + range; y++){
-            try{var A = this.pheromone[x][y].A_number;if(A_number==undefined)A_number = 0;}catch{var A_number = 0;}
-            n += A;
+    for(var x = people[0]- range; x <= people[0] + range; x++){
+        for(var y = people[1]- range; y <= people[1] + range; y++){
+            try{var number = self.pheromone[x][y].people_number;if(number==undefined)number = 0;}catch{var number = 0;}
+            n += number;
         }
     }
     n = n/Math.pow(2*range+1,2);
