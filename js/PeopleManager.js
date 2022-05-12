@@ -14,7 +14,8 @@ var PeopleManager = function(mesh,mixer){
     this.A = 0;
     this.orientation = 0;
     this.speed = 1;
-    this.form = 0;//初始为0进行随机移动，警觉度到达一定值后设为1进入逃跑状态，恐慌度达到一定程度设为2进入惊慌状态
+    this.trace = [];
+    this.form = 2;//初始为0进行随机移动，警觉度到达一定值后设为1进入逃跑状态，恐慌度达到一定程度设为2进入惊慌状态
 }
 
 PeopleManager.prototype.init = function(_this){
@@ -41,28 +42,38 @@ PeopleManager.prototype.update = function(_this){
         this.countMyFear(_this)
         if(this.form == 0){
             this.A = _this.ant.countA([this.nextPosition.x-this.xMin,this.nextPosition.z-this.zMin]);
-            if(this.A >= 1)//临界值需要改，同时在Ant的countA里面改
-                this.form = 0;
+            this.fear = _this.ant.countfear([this.nextPosition.x-this.xMin,this.nextPosition.z-this.zMin], this.my_fear)
+            if(this.A >= 1){//临界值需要改，同时在Ant的countA里面改
+                this.form = 1; 
+                _this.ant.pheromone[this.nextPosition.x-this.xMin][this.nextPosition.z-this.zMin].A_number += 1;         
+                _this.ant.pheromone[this.nextPosition.x-this.xMin][this.nextPosition.z-this.zMin].fear += this.fear;
+            }
         }else if(this.form == 1){
             this.fear = _this.ant.countfear([this.nextPosition.x-this.xMin,this.nextPosition.z-this.zMin], this.my_fear)
-            _this.ant.pheromone[this.nextPosition.x-this.xMin][this.nextPosition.z-this.zMin].fear += this.fear;
-            if(this.fear > 1.4){//临界值可能需要更改
-                this.form = 2;
-            }    
+            if(this.fear > 1.4)//临界值可能需要更改
+                this.form = 2;   
         }else{
             this.fear = _this.ant.countfear([this.nextPosition.x-this.xMin,this.nextPosition.z-this.zMin], this.my_fear)
-            _this.ant.pheromone[this.nextPosition.x-this.xMin][this.nextPosition.z-this.zMin].fear += this.fear;
             if(this.fear <= 1.4)//临界值可能需要更改
                 this.form = 1;
         }
 
         if(this.isArrive(this.nextPosition)){
+            this.trace.push([this.nextPosition.x-this.xMin,this.nextPosition.z-this.zMin]);
+            if(this.trace.length > _this.ant.trace_step)
+                this.trace.shift()
+            _this.ant.pheromone[this.nextPosition.x-this.xMin][this.nextPosition.z-this.zMin].ph += 1;
+            _this.ant.pheromone[this.nextPosition.x-this.xMin][this.nextPosition.z-this.zMin].A_number -= 1; 
+            _this.ant.pheromone[this.nextPosition.x-this.xMin][this.nextPosition.z-this.zMin].fear -= this.fear; 
             if(this.form == 0)
                 this.getNextPositionBySigns(_this);
             else if(this.form == 1)
                 this.getNextPositionPath(_this);  
             else if(this.form == 2)
                 this.getNextPosition(_this);
+
+            _this.ant.pheromone[this.nextPosition.x-this.xMin][this.nextPosition.z-this.zMin].A_number += 1; 
+            _this.ant.pheromone[this.nextPosition.x-this.xMin][this.nextPosition.z-this.zMin].fear += this.fear; 
             // 动作切换test
             // this.animationSwitch();
         }
@@ -95,35 +106,28 @@ PeopleManager.prototype.isArrive = function(pos){
 }
 
 PeopleManager.prototype.getNextPosition = function(_this){
+    _this.ant.volatilize(this.trace);
     var pos = _this.ant.step(this, [this.nextPosition.x-this.xMin,this.nextPosition.z-this.zMin]);
     this.nextPosition.x = pos[0] + this.xMin;
     this.nextPosition.z = pos[1] + this.zMin;
 }
 
 PeopleManager.prototype.getNextPositionBySigns = function(_this){
-    _this.ant.volatilize();
+    _this.ant.volatilize(this.trace);
     var pos = _this.ant.GoBySigns([this.nextPosition.x-this.xMin,this.nextPosition.z-this.zMin], 2);
     this.nextPosition.x = pos[0] + this.xMin;
     this.nextPosition.z = pos[1] + this.zMin;
-    _this.ant.pheromone[this.nextPosition.x-this.xMin][this.nextPosition.z-this.zMin].ph += 1;
-    _this.ant.pheromone[this.nextPosition.x-this.xMin][this.nextPosition.z-this.zMin].trace += 4;
 }
 
 PeopleManager.prototype.getNextPositionRandom = function(_this){
-    _this.ant.volatilize();
-    _this.ant.pheromone[this.nextPosition.x-this.xMin][this.nextPosition.z-this.zMin].fear -= this.fear;
     var pos = _this.ant.Step_random([this.nextPosition.x-this.xMin,this.nextPosition.z-this.zMin]);
     this.nextPosition.x = pos[0] + this.xMin;
     this.nextPosition.z = pos[1] + this.zMin;
-    _this.ant.pheromone[this.nextPosition.x-this.xMin][this.nextPosition.z-this.zMin].fear += this.fear;
-    _this.ant.pheromone[this.nextPosition.x-this.xMin][this.nextPosition.z-this.zMin].ph += 1;
-    _this.ant.pheromone[this.nextPosition.x-this.xMin][this.nextPosition.z-this.zMin].trace += 4;
 }
 
 PeopleManager.prototype.getNextPositionPath = function(_this){
-    _this.ant.volatilize();
-    _this.ant.pheromone[this.nextPosition.x-this.xMin][this.nextPosition.z-this.zMin].fear -= this.fear;
-    if(this.path.length <= this.steps){
+    _this.ant.volatilize(this.trace);
+    if(this.path.length == 0){
         this.finder = new PF.BiAStarFinder({
             allowDiagonal: true,//允许对角线
             dontCrossCorners: false,//不要拐弯?
@@ -140,14 +144,12 @@ PeopleManager.prototype.getNextPositionPath = function(_this){
             }    
         }
         this.path = this.finder.findPath(this.nextPosition.x-this.xMin,this.nextPosition.z-this.zMin, _this.exitPosArr[c].x-this.xMin, _this.exitPosArr[c].z-this.zMin, _this.ant.PathFindeM.clone());
+        this.path.shift();
     }
-    if(this.path.length > this.steps){
-        this.nextPosition.x = this.path[this.steps][0]+this.xMin
-        this.nextPosition.z = this.path[this.steps][1]+this.zMin
-        this.steps++
-        _this.ant.pheromone[this.nextPosition.x-this.xMin][this.nextPosition.z-this.zMin].fear += this.fear;
-        _this.ant.pheromone[this.nextPosition.x-this.xMin][this.nextPosition.z-this.zMin].ph += 1;
-        _this.ant.pheromone[this.nextPosition.x-this.xMin][this.nextPosition.z-this.zMin].trace += 4;
+    if(this.path.length > 0){
+        this.nextPosition.x = this.path[0][0]+this.xMin
+        this.nextPosition.z = this.path[0][1]+this.zMin
+        this.path.shift();
     }else
         this.getNextPositionRandom()
 }

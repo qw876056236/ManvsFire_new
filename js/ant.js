@@ -5,12 +5,12 @@ var Ant = function(){
     this.ph_sign = 1;//指示牌信息素
     this.diagonal = true;//是否允许对角移动
     this.PathFindeM;this.finder;
+    this.trace_step = 4;
 }
 
 var Grid = function(){
     this.ph = 0;// 信息素浓度
     this.people_number = 0;// 记录当前格子中的人数
-    this.trace_step = 0;// 人物遗留信息素衰减使用
 
     this.isfire = false;// 是否着火，计算A时使用
     this.fear = 0;// 记录总的恐惧度用于计算人物自身的恐惧度
@@ -337,8 +337,7 @@ Ant.prototype.expend = function(begin, ends, range){
     }
 }
 
-Ant.prototype.step = function(_this, begin, orientation = 0, trace = 0){//移动，是否遗留信息素（遗留几步）
-    this.volatilize();
+Ant.prototype.step = function(_this, begin, orientation = 0, trace = 4){//移动，是否遗留信息素（遗留几步）
     var ends = this.expend(begin, this.get_ends(begin, orientation), 0, 0);
     if(trace){
         this.pheromone[begin[0]][begin[1]].ph += 1;
@@ -348,28 +347,13 @@ Ant.prototype.step = function(_this, begin, orientation = 0, trace = 0){//移动
         var end = this.Random(ends, begin);
     else
         var end = this.step_no(begin, orientation);//存在问题
-
-    this.pheromone[begin[0]][begin[1]].people_number -= 1;
-    if(_this.form >= 1){
-        this.pheromone[begin[0]][begin[1]].A_number -= 1;
-        this.pheromone[end[0]][end[1]].A_number += 1;
-    }
-    this.pheromone[begin[0]][begin[1]].fear -= _this.fear;    
-    this.pheromone[end[0]][end[1]].people_number += 1;
-    this.pheromone[end[0]][end[1]].fear += _this.fear;
     //加入_this.orientation的设置，将人物的移动方向记录下来，计算下一步时可以进行加权
     return end;
 }
 
-Ant.prototype.volatilize = function(){
-    for(var x = 0; x < this.pheromone.length; x++){
-        for(var y = 0; y < this.pheromone[x].length; y++){
-            if(this.pheromone[x][y].trace){
-                this.pheromone[x][y].ph -= 0.25
-                this.pheromone[x][y].trace_step -= 1;
-            }
-        }
-    }
+Ant.prototype.volatilize = function(trace){
+    for(var i = 0; i < trace.length; i++)
+        this.pheromone[trace[i][0]][trace[i][1]].ph -= 1 / this.trace_step;
 }
 
 Ant.prototype.countspeed = function(people, range = 2, speed = 1){//速度衰减算法，需要输入期望速度作为初速度
