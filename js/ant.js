@@ -50,14 +50,14 @@ Ant.prototype.init_pheromone_floor1 = function(grid){//针对地下一层的信�
     this.PathFindeM = grid;
 }
 
-Ant.prototype.init_sign = function(signs){
+Ant.prototype.init_sign = function(signs, exitPosArr){
     for(var i = 0; i < signs.length; i++){
         if(signs[i][3] > -10){// 处于地下一层
             if(signs[i][0] == 0){
-                this.add_signs([Math.round(signs[i][2])+39,Math.round(signs[i][4])-112], 2)// 将指示牌信息素加入矩阵
+                //this.add_signs([Math.round(signs[i][2])+39,Math.round(signs[i][4])-112], 2)// 将指示牌信息素加入矩阵
                 this.pheromone[Math.round(signs[i][2])+39][Math.round(signs[i][4])-112].issign = 2;
             }else if(signs[i][0] == 5){
-                this.add_signs([Math.round(signs[i][2])+39,Math.round(signs[i][4])-112], 2)// 将指示牌信息素加入矩阵
+                //this.add_signs([Math.round(signs[i][2])+39,Math.round(signs[i][4])-112], 2)// 将指示牌信息素加入矩阵
                 this.pheromone[Math.round(signs[i][2])+39][Math.round(signs[i][4])-112].issign = 1;
                 if(signs[i][1] == 5)
                     this.pheromone[Math.round(signs[i][2])+39][Math.round(signs[i][4])-112].sign_orientation = 4;
@@ -66,27 +66,49 @@ Ant.prototype.init_sign = function(signs){
                 else if(signs[i][1] == 7)
                     this.pheromone[Math.round(signs[i][2])+39][Math.round(signs[i][4])-112].sign_orientation = 7;
             }else{
-                this.add_signs([Math.round(signs[i][2])+39,Math.round(signs[i][4])-112], 3)// 将指示牌信息素加入矩阵
-                this.pheromone[Math.round(signs[i][2])+39][Math.round(signs[i][4])-112].issign = 1;
+                //this.add_signs([Math.round(signs[i][2])+39,Math.round(signs[i][4])-112], 3)// 将指示牌信息素加入矩阵
                 if(signs[i][1] == 1){
-                    if(signs[i][0] == 1)
-                        this.pheromone[Math.round(signs[i][2])+39][Math.round(signs[i][4])-112].sign_orientation = 2;
-                    else if(signs[i][0] == 2)
-                        this.pheromone[Math.round(signs[i][2])+39][Math.round(signs[i][4])-112].sign_orientation = 7;
-                    else if(signs[i][0] > 2)
-                        this.pheromone[Math.round(signs[i][2])+39][Math.round(signs[i][4])-112].issign = 2;    
+                    if(signs[i][0] == 1){
+                        this.pheromone[Math.round(signs[i][2])+39 +1][Math.round(signs[i][4])-112].issign = 1;
+                        this.pheromone[Math.round(signs[i][2])+39 +1][Math.round(signs[i][4])-112].sign_orientation = 2;
+                    }else if(signs[i][0] == 2){
+                        this.pheromone[Math.round(signs[i][2])+39 +1][Math.round(signs[i][4])-112].issign = 1;
+                        this.pheromone[Math.round(signs[i][2])+39 +1][Math.round(signs[i][4])-112].sign_orientation = 7;
+                    }
+                    else if(signs[i][0] == 3){
+                        this.pheromone[Math.round(signs[i][2])+39 +1][Math.round(signs[i][4])-112 +1].issign = 1;
+                        this.pheromone[Math.round(signs[i][2])+39 +1][Math.round(signs[i][4])-112 +1].sign_orientation = 4;
+                    }else if(signs[i][0] == 4){
+                        this.pheromone[Math.round(signs[i][2])+39 +1][Math.round(signs[i][4])-112 -1].issign = 1;
+                        this.pheromone[Math.round(signs[i][2])+39 +1][Math.round(signs[i][4])-112 -1].sign_orientation = 4;
+                    }
                 }else if(signs[i][1] == 2){
-                    if(signs[i][0] == 1)
-                        this.pheromone[Math.round(signs[i][2])+39][Math.round(signs[i][4])-112].sign_orientation = 7;
-                    else if(signs[i][0] == 2)
-                        this.pheromone[Math.round(signs[i][2])+39][Math.round(signs[i][4])-112].sign_orientation = 2;
-                    else if(signs[i][0] > 2)
-                        this.pheromone[Math.round(signs[i][2])+39][Math.round(signs[i][4])-112].issign = 2;    
-                }else if(signs[i][0] == 2 && signs[i][1] == 4)
+                   if(signs[i][0] == 1){
+                        this.pheromone[Math.round(signs[i][2])+39 +1][Math.round(signs[i][4])-112].issign = 1;
+                        this.pheromone[Math.round(signs[i][2])+39 +1][Math.round(signs[i][4])-112].sign_orientation = 2;
+                    }else if(signs[i][0] == 2){
+                        this.pheromone[Math.round(signs[i][2])+39 +1][Math.round(signs[i][4])-112].issign = 1;
+                        this.pheromone[Math.round(signs[i][2])+39 +1][Math.round(signs[i][4])-112].sign_orientation = 7;
+                    }
+                    else if(signs[i][0] == 3){
+                        this.pheromone[Math.round(signs[i][2])+39 +1][Math.round(signs[i][4])-112 +1].issign = 1;
+                        this.pheromone[Math.round(signs[i][2])+39 +1][Math.round(signs[i][4])-112 +1].sign_orientation = 4;
+                    }else if(signs[i][0] == 4){
+                        this.pheromone[Math.round(signs[i][2])+39 +1][Math.round(signs[i][4])-112 -1].issign = 1;
+                        this.pheromone[Math.round(signs[i][2])+39 +1][Math.round(signs[i][4])-112 -1].sign_orientation = 4;
+                    }    
+                }else if(signs[i][0] == 2 && signs[i][1] == 4){
+                    this.pheromone[Math.round(signs[i][2])+39][Math.round(signs[i][4])-112 +1].issign = 1;
                     this.pheromone[Math.round(signs[i][2])+39][Math.round(signs[i][4])-112].sign_orientation = 4;
+                }
             }
         }
-        console.log(signs[i]+'  '+this.pheromone[Math.round(signs[i][2])+39][Math.round(signs[i][4])-112].sign_orientation)
+    }
+    for(var i = 0; i < exitPosArr.length; i++){
+        if(exitPosArr[i][1] > -10){// 处于地下一层
+            this.add_signs([Math.round(exitPosArr[i][0])+39,Math.round(exitPosArr[i][2])-112], 3)// 将指示牌信息素加入矩阵
+            this.pheromone[Math.round(exitPosArr[i][0])+39][Math.round(exitPosArr[i][2])-112].issign = 2;
+        }
     }
 }
 
@@ -426,48 +448,175 @@ Ant.prototype.countDensity = function(people, range = 0, a = 1){//计算密度
     n = n/Math.pow(2*range+1,2);
 }
 
-Ant.prototype.GoBySigns = function(people, range = 2){
-    var end = people;
-    var change = 2 * range + 1;
-    for(var x = -1 * range; x <= range; x++){
-        for(var y = -1 * range; y <= range; y++){
-            if(x == 0 && y == 0){}
-            else{
-                try{var if_sign = this.pheromone[people[0]+x][people[1]+y].issign;if(if_sign==undefined)if_sign = 0;}catch{var if_sign = 0;}
-                if(if_sign == 2 && change > Math.abs(x) + Math.abs(y)){
-                    if(x > 0) end[0] += 1; else end[0] -= 1;
-                    if(y > 0) end[1] += 1; else end[1] -= 1;
-                    change = Math.abs(x) + Math.abs(y);
-                }else if(if_sign == 1 && change > Math.abs(x) + Math.abs(y)){
-                    switch(this.pheromone[people[0]+x][people[1]+y].sign_orientation){
-                        case 2:
-                            end[1] += 1;
-                            if(x > 0) end[0] += 1; else end[0] -= 1;
-                            break;
-                        case 4:
-                            end[0] -= 1;
-                            if(y > 0) end[1] += 1; else end[1] -= 1;
-                            break;
-                        case 5:
-                            end[0] += 1;
-                            if(y > 0) end[1] += 1; else end[1] -= 1;
-                            break;
-                        case 7:
-                            end[1] -= 1;
-                            if(x > 0) end[0] += 1; else end[0] -= 1;
-                            break;
+Ant.prototype.GoBySigns = function(people, _this, range = 3){
+    var end = people
+    var path = [];
+    switch(_this.ore){
+        case 2:
+            for(var y = 1; y <= range; y++){
+                for(var x = -1 * range; x <= range; x++){
+                    try{var if_sign = this.pheromone[people[0]+x][people[1]+y].issign;if(if_sign==undefined)if_sign = 0;}catch{var if_sign = 0;}
+                    if(if_sign > 0){end[0] += x; end[1] += y;}
+                    if(if_sign == 2){
+                        path = this.Walktoward(people, end);
+                    }else if(if_sign == 1){
+                        try{var ore = this.pheromone[people[0]+x][people[1]+y].orientation;if(ore==undefined)ore = 0;}catch{var ore = 0;}
+                        _this.ore = ore;
+                        path = this.Walktoward(people, end, ore);
                     }
-                    change = Math.abs(x) + Math.abs(y);
                 }
             }
+            break;
+        case 7:
+            for(var y = -1; y >= -1 * range; y--){
+                for(var x = -1 * range; x <= range; x++){
+                    try{var if_sign = this.pheromone[people[0]+x][people[1]+y].issign;if(if_sign==undefined)if_sign = 0;}catch{var if_sign = 0;}
+                    if(if_sign > 0){end[0] += x; end[1] += y;}
+                    if(if_sign == 2){
+                        path = this.Walktoward(people, end);
+                    }else if(if_sign == 1){
+                        try{var ore = this.pheromone[people[0]+x][people[1]+y].orientation;if(ore==undefined)ore = 0;}catch{var ore = 0;}
+                        _this.ore = ore;
+                        path = this.Walktoward(people, end, ore);
+                    }
+                }
+            }
+            break;
+        case 4:
+            for(var x = -1; x >= -1 * range; x--){
+                for(var y = -1 * range; y <= range; y++){
+                    try{var if_sign = this.pheromone[people[0]+x][people[1]+y].issign;if(if_sign==undefined)if_sign = 0;}catch{var if_sign = 0;}
+                    if(if_sign > 0){end[0] += x; end[1] += y;}
+                    if(if_sign == 2){
+                        path = this.Walktoward(people, end);
+                    }else if(if_sign == 1){
+                        try{var ore = this.pheromone[people[0]+x][people[1]+y].orientation;if(ore==undefined)ore = 0;}catch{var ore = 0;}
+                        _this.ore = ore;
+                        path = this.Walktoward(people, end, ore);
+                    }
+                }
+            }
+            break;
+        case 5:
+            for(var x = 1; x <= range; x++){
+                for(var y = -1 * range; y <= range; y++){
+                    try{var if_sign = this.pheromone[people[0]+x][people[1]+y].issign;if(if_sign==undefined)if_sign = 0;}catch{var if_sign = 0;}
+                    if(if_sign > 0){end[0] += x; end[1] += y;}
+                    if(if_sign == 2){
+                        path = this.Walktoward(people, end);
+                    }else if(if_sign == 1){
+                        try{var ore = this.pheromone[people[0]+x][people[1]+y].orientation;if(ore==undefined)ore = 0;}catch{var ore = 0;}
+                        _this.ore = ore;
+                        path = this.Walktoward(people, end, ore);
+                    }
+                }
+            }
+            break;
+        default:
+            for(var x = 0; x >=  -1 * range; x--){
+                for(var y = 0; y >= -1 * range; y--){
+                    if(x != 0 || y != 0){
+                        try{var if_sign = this.pheromone[people[0]+x][people[1]+y].issign;if(if_sign==undefined)if_sign = 0;}catch{var if_sign = 0;}
+                        if(if_sign > 0){end[0] += x; end[1] += y;}
+                        if(if_sign == 2){
+                            path = this.Walktoward(people, end);
+                        }else if(if_sign == 1){
+                            try{var ore = this.pheromone[people[0]+x][people[1]+y].orientation;if(ore==undefined)ore = 0;}catch{var ore = 0;}
+                            if(ore == 4 || ore == 7){
+                                _this.ore = ore;
+                                path = this.Walktoward(people, end, ore);
+                            }
+                        }
+                    }
+                }
+            }
+            for(var x = 0; x >=  -1 * range; x--){
+                for(var y = 0; y <= range; y++){
+                    if(x != 0 || y != 0){
+                        try{var if_sign = this.pheromone[people[0]+x][people[1]+y].issign;if(if_sign==undefined)if_sign = 0;}catch{var if_sign = 0;}
+                        if(if_sign > 0){end[0] += x; end[1] += y;}
+                        if(if_sign == 2){
+                            path = this.Walktoward(people, end);
+                        }else if(if_sign == 1){
+                            try{var ore = this.pheromone[people[0]+x][people[1]+y].orientation;if(ore==undefined)ore = 0;}catch{var ore = 0;}
+                            if(ore == 2 || ore == 4){
+                                _this.ore = ore;
+                                path = this.Walktoward(people, end, ore);
+                            }
+                        }
+                    }
+                }
+            }
+            for(var x = 0; x <= range; x++){
+                for(var y = 0; y <= range; y++){
+                    if(x != 0 || y != 0){
+                        try{var if_sign = this.pheromone[people[0]+x][people[1]+y].issign;if(if_sign==undefined)if_sign = 0;}catch{var if_sign = 0;}
+                        if(if_sign > 0){end[0] += x; end[1] += y;}
+                        if(if_sign == 2){
+                            path = this.Walktoward(people, end);
+                        }else if(if_sign == 1){
+                            try{var ore = this.pheromone[people[0]+x][people[1]+y].orientation;if(ore==undefined)ore = 0;}catch{var ore = 0;}
+                            if(ore == 2 || ore == 5){
+                                _this.ore = ore;
+                                path = this.Walktoward(people, end, ore);
+                            }
+                        }
+                    }
+                }
+            }
+            for(var x = 0; x <= range; x++){
+                for(var y = 0; y >= -1 * range; y--){
+                    if(x != 0 || y != 0){
+                        try{var if_sign = this.pheromone[people[0]+x][people[1]+y].issign;if(if_sign==undefined)if_sign = 0;}catch{var if_sign = 0;}
+                        if(if_sign > 0){end[0] += x; end[1] += y;}
+                        if(if_sign == 2){
+                            path = this.Walktoward(people, end);
+                        }else if(if_sign == 1){
+                            try{var ore = this.pheromone[people[0]+x][people[1]+y].orientation;if(ore==undefined)ore = 0;}catch{var ore = 0;}
+                            if(ore == 5 || ore == 7){
+                                _this.ore = ore;
+                                path = this.Walktoward(people, end, ore);
+                            }
+                        }
+                    }
+                }
+            }
+            break;          
+    }
+    if(path.length == 0){
+        switch(_this.ore){
+            case 2:
+                end[1] += 1;
+                path.push(end);
+                break;
+            case 7:
+                end[1] -= 1;
+                path.push(end);
+                break;
+            case 5:
+                end[0] += 1;
+                path.push(end);
+                break;
+            case 4:
+                end[0] -= 1;
+                path.push(end);
+                break;
+            default:
+                path = this.Step_random(people, _this,);
+                break;
         }
     }
-    if(change == 2 * range + 1)
-        end = this.Step_random(end)
-    return end;
+    return path;
 }
 
-Ant.prototype.Step_random = function(begin, range=1){
+Ant.prototype.Walktoward = function(begin, end, ore=0){// 添加绕过障碍物的方法
+    var path = []
+
+    path.push(end)
+    return path
+}
+
+Ant.prototype.Step_random = function(begin, _this, range=1){
     if(range==0)
         range =  Math.floor(Math.random() * 1.99 + 1);
     var count=[];
@@ -476,17 +625,54 @@ Ant.prototype.Step_random = function(begin, range=1){
             if(x == 0 && y == 0){}
             else{
                 try{var if_ph = this.pheromone[begin[0]+x][begin[1]+y].ph;if(if_ph==undefined)if_ph = 0;}catch{var if_ph = 0;}
+                switch(_this.ore){
+                    case 1:
+                        if(x > 0 && y < 0) if_ph = 0;
+                        break;
+                    case 2:
+                        if(y < 0) if_ph = 0;
+                        break;
+                    case 3:
+                        if(x < 0 && y < 0) if_ph = 0;
+                        break;
+                    case 4:
+                        if(x > 0) if_ph = 0;
+                        break;
+                    case 5:
+                        if(x < 0) if_ph = 0;
+                        break;
+                    case 6:
+                        if(x > 0 && y > 0) if_ph = 0;
+                        break;
+                    case 7:
+                        if(y > 0) if_ph = 0;
+                        break;
+                    case 8:
+                        if(x < 0 && y > 0) if_ph = 0;
+                        break;
+                }
                 if(if_ph)
                     count.push([x,y]);
             }
         }
     }
-    console.log(range+'   '+count)
     var end = begin;
     if(count.length){
         var n = Math.floor(Math.random() * (count.length - 0.01));
         end[0] += count[n][0];
         end[1] += count[n][1];
+        if(count[n][0] > 0)
+            if(count[n][1] > 0) _this.ore = 3;
+            else if(count[n][1] < 0) _this.ore = 8;
+            else _this.ore = 5;
+        else if(count[n][0] < 0)
+            if(count[n][1] > 0) _this.ore = 1;
+            else if(count[n][1] < 0) _this.ore = 6;
+            else _this.ore = 4;
+        else
+            if(count[n][1] > 0) _this.ore = 2;
+            else if(count[n][1] < 0) _this.ore = 7;
+            else _this.ore = 0;
     }
     return end;
 }

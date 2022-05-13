@@ -19,6 +19,8 @@ var PeopleManager = function(mesh,mixer){
     this.form = 0;//初始为0进行随机移动，警觉度到达一定值后设为1进入逃跑状态理智模式，2为逃生状态惊慌状态，3为拥堵状态
     this.ph = 1;
     this.ve = 1;
+    this.ore = 0;
+    this.before = [];
 }
 
 PeopleManager.prototype.init = function(_this){
@@ -50,7 +52,8 @@ PeopleManager.prototype.update = function(_this){
             if(this.form == 0){
                 this.A = _this.ant.countA([this.nextPosition.x-this.xMin,this.nextPosition.z-this.zMin]);
                 if(this.A >= 1){//临界值需要改，同时在Ant的countA里面改
-                    this.form = 1;
+                    this.form = 0;
+                    this.path.length = 0;
                     this.fear = _this.ant.countfear([this.nextPosition.x-this.xMin,this.nextPosition.z-this.zMin], this.my_fear)
                     _this.ant.pheromone[this.nextPosition.x-this.xMin][this.nextPosition.z-this.zMin].A_number += 1;
                     _this.ant.pheromone[this.nextPosition.x-this.xMin][this.nextPosition.z-this.zMin].fear += this.fear;
@@ -77,7 +80,7 @@ PeopleManager.prototype.update = function(_this){
         if(this.isArriveExit(_this)){
             //清除网格信息素及恐慌度等属性值
             for(var i=this.trace.length-1,j=0;i>=0;i--,j++)
-                _this.ant.pheromone[this.trace[i][0]][this.trace[i][1]] -= (1-j/_this.ant.trace_step)*this.ph;
+                _this.ant.pheromone[this.trace[i][0]][this.trace[i][1]].ph -= (1-j/_this.ant.trace_step)*this.ph;
             if(this.form > 0)
                 _this.ant.pheromone[this.nextPosition.x-this.xMin][this.nextPosition.z-this.zMin].A_number -= 1;
             _this.ant.pheromone[this.nextPosition.x-this.xMin][this.nextPosition.z-this.zMin].fear -= this.preFear;
@@ -138,19 +141,34 @@ PeopleManager.prototype.isArrive = function(pos){
 }
 
 PeopleManager.prototype.getNextPosition = function(_this){
+    for(var i=this.trace.length-1,j=0;i>=0;i--,j++)
+        _this.ant.pheromone[this.trace[i][0]][this.trace[i][1]].ph -= (1-j/_this.ant.trace_step)*this.ph;
     var pos = _this.ant.step(this, [this.nextPosition.x-this.xMin,this.nextPosition.z-this.zMin]);
     this.nextPosition.x = pos[0] + this.xMin;
     this.nextPosition.z = pos[1] + this.zMin;
+    for(var i=this.trace.length-1,j=0;i>=0;i--,j++)
+        _this.ant.pheromone[this.trace[i][0]][this.trace[i][1]].ph += (1-j/_this.ant.trace_step)*this.ph;
 }
 
 PeopleManager.prototype.getNextPositionBySigns = function(_this){
-    var pos = _this.ant.GoBySigns([this.nextPosition.x-this.xMin,this.nextPosition.z-this.zMin], 2);
-    this.nextPosition.x = pos[0] + this.xMin;
-    this.nextPosition.z = pos[1] + this.zMin;
+    if(this.path.length){
+        this.nextPosition.x = this.path[0][0]+this.xMin
+        this.nextPosition.z = this.path[0][1]+this.zMin
+        this.path.shift();
+    }else{
+        this.path = _this.ant.GoBySigns([this.nextPosition.x-this.xMin,this.nextPosition.z-this.zMin], this);
+        if(this.path.length){
+            this.nextPosition.x = this.path[0][0]+this.xMin
+            this.nextPosition.z = this.path[0][1]+this.zMin
+            this.path.shift();
+        }else
+            this.getNextPositionRandom(_this)
+    }
+
 }
 
 PeopleManager.prototype.getNextPositionRandom = function(_this){
-    var pos = _this.ant.Step_random([this.nextPosition.x-this.xMin,this.nextPosition.z-this.zMin]);
+    var pos = _this.ant.Step_random([this.nextPosition.x-this.xMin,this.nextPosition.z-this.zMin], this, 1);
     this.nextPosition.x = pos[0] + this.xMin;
     this.nextPosition.z = pos[1] + this.zMin;
 }
