@@ -21,6 +21,7 @@ var PeopleManager = function(mesh,mixer){
     this.ve = 1;
     this.ore = 0;
     this.before = [];
+    this.F = Math.random();
 }
 
 PeopleManager.prototype.init = function(_this){
@@ -102,11 +103,15 @@ PeopleManager.prototype.update = function(_this){
             _this.ant.pheromone[this.nextPosition.x-this.xMin][this.nextPosition.z-this.zMin].fear -= this.preFear;
             if(this.form > 0)
                 _this.ant.pheromone[this.nextPosition.x-this.xMin][this.nextPosition.z-this.zMin].A_number -= 1;
+
             if(this.form == 0)
-                this.getNextPositionBySigns(_this);
-            else if(this.form == 1)
-                this.getNextPositionPath(_this);  
-            else if(this.form == 2)
+                this.getNextPositionRandom(_this);
+            else if(this.form == 1){
+                if(this.F>0.8)//临界值可能需要修改
+                    this.getNextPositionPath(_this);
+                else
+                    this.getNextPositionBySigns(_this);
+            }else if(this.form == 2)
                 this.getNextPosition(_this);
 
             _this.ant.pheromone[this.nextPosition.x-this.xMin][this.nextPosition.z-this.zMin].people_number += 1;
