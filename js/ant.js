@@ -446,6 +446,7 @@ Ant.prototype.countDensity = function(people, range = 0, a = 1){//计算密度
         }
     }
     n = n/Math.pow(2*range+1,2);
+    return n;
 }
 
 Ant.prototype.GoBySigns = function(people, _this, range = 2){
@@ -603,6 +604,7 @@ Ant.prototype.GoBySigns = function(people, _this, range = 2){
                 else path.push(this.Step_random(people, _this, 1));
             default:
                 path.push(this.Step_random(people, _this, 1));
+                break;
         }
     }
     return path;
