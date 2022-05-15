@@ -448,7 +448,7 @@ Ant.prototype.countDensity = function(people, range = 0, a = 1){//计算密度
     n = n/Math.pow(2*range+1,2);
 }
 
-Ant.prototype.GoBySigns = function(people, _this, range = 3){
+Ant.prototype.GoBySigns = function(people, _this, range = 2){
     var end = people
     var path = [];
     switch(_this.ore){
@@ -458,11 +458,11 @@ Ant.prototype.GoBySigns = function(people, _this, range = 3){
                     try{var if_sign = this.pheromone[people[0]+x][people[1]+y].issign;if(if_sign==undefined)if_sign = 0;}catch{var if_sign = 0;}
                     if(if_sign > 0){end[0] += x; end[1] += y;}
                     if(if_sign == 2){
-                        path = this.Walktoward(people, end);
+                        path = this.Walktoward(people, end, _this);
                     }else if(if_sign == 1){
                         try{var ore = this.pheromone[people[0]+x][people[1]+y].orientation;if(ore==undefined)ore = 0;}catch{var ore = 0;}
                         _this.ore = ore;
-                        path = this.Walktoward(people, end, ore);
+                        path = this.Walktoward(people, end, _this);
                     }
                 }
             }
@@ -473,11 +473,11 @@ Ant.prototype.GoBySigns = function(people, _this, range = 3){
                     try{var if_sign = this.pheromone[people[0]+x][people[1]+y].issign;if(if_sign==undefined)if_sign = 0;}catch{var if_sign = 0;}
                     if(if_sign > 0){end[0] += x; end[1] += y;}
                     if(if_sign == 2){
-                        path = this.Walktoward(people, end);
+                        path = this.Walktoward(people, end, _this);
                     }else if(if_sign == 1){
                         try{var ore = this.pheromone[people[0]+x][people[1]+y].orientation;if(ore==undefined)ore = 0;}catch{var ore = 0;}
                         _this.ore = ore;
-                        path = this.Walktoward(people, end, ore);
+                        path = this.Walktoward(people, end, _this);
                     }
                 }
             }
@@ -488,11 +488,11 @@ Ant.prototype.GoBySigns = function(people, _this, range = 3){
                     try{var if_sign = this.pheromone[people[0]+x][people[1]+y].issign;if(if_sign==undefined)if_sign = 0;}catch{var if_sign = 0;}
                     if(if_sign > 0){end[0] += x; end[1] += y;}
                     if(if_sign == 2){
-                        path = this.Walktoward(people, end);
+                        path = this.Walktoward(people, end, _this);
                     }else if(if_sign == 1){
                         try{var ore = this.pheromone[people[0]+x][people[1]+y].orientation;if(ore==undefined)ore = 0;}catch{var ore = 0;}
                         _this.ore = ore;
-                        path = this.Walktoward(people, end, ore);
+                        path = this.Walktoward(people, end, _this);
                     }
                 }
             }
@@ -503,11 +503,11 @@ Ant.prototype.GoBySigns = function(people, _this, range = 3){
                     try{var if_sign = this.pheromone[people[0]+x][people[1]+y].issign;if(if_sign==undefined)if_sign = 0;}catch{var if_sign = 0;}
                     if(if_sign > 0){end[0] += x; end[1] += y;}
                     if(if_sign == 2){
-                        path = this.Walktoward(people, end);
+                        path = this.Walktoward(people, end, _this);
                     }else if(if_sign == 1){
                         try{var ore = this.pheromone[people[0]+x][people[1]+y].orientation;if(ore==undefined)ore = 0;}catch{var ore = 0;}
                         _this.ore = ore;
-                        path = this.Walktoward(people, end, ore);
+                        path = this.Walktoward(people, end, _this);
                     }
                 }
             }
@@ -519,12 +519,12 @@ Ant.prototype.GoBySigns = function(people, _this, range = 3){
                         try{var if_sign = this.pheromone[people[0]+x][people[1]+y].issign;if(if_sign==undefined)if_sign = 0;}catch{var if_sign = 0;}
                         if(if_sign > 0){end[0] += x; end[1] += y;}
                         if(if_sign == 2){
-                            path = this.Walktoward(people, end);
+                            path = this.Walktoward(people, end, _this);
                         }else if(if_sign == 1){
                             try{var ore = this.pheromone[people[0]+x][people[1]+y].orientation;if(ore==undefined)ore = 0;}catch{var ore = 0;}
                             if(ore == 4 || ore == 7){
                                 _this.ore = ore;
-                                path = this.Walktoward(people, end, ore);
+                                path = this.Walktoward(people, end, _this);
                             }
                         }
                     }
@@ -536,12 +536,12 @@ Ant.prototype.GoBySigns = function(people, _this, range = 3){
                         try{var if_sign = this.pheromone[people[0]+x][people[1]+y].issign;if(if_sign==undefined)if_sign = 0;}catch{var if_sign = 0;}
                         if(if_sign > 0){end[0] += x; end[1] += y;}
                         if(if_sign == 2){
-                            path = this.Walktoward(people, end);
+                            path = this.Walktoward(people, end, _this);
                         }else if(if_sign == 1){
                             try{var ore = this.pheromone[people[0]+x][people[1]+y].orientation;if(ore==undefined)ore = 0;}catch{var ore = 0;}
                             if(ore == 2 || ore == 4){
                                 _this.ore = ore;
-                                path = this.Walktoward(people, end, ore);
+                                path = this.Walktoward(people, end, _this);
                             }
                         }
                     }
@@ -553,12 +553,12 @@ Ant.prototype.GoBySigns = function(people, _this, range = 3){
                         try{var if_sign = this.pheromone[people[0]+x][people[1]+y].issign;if(if_sign==undefined)if_sign = 0;}catch{var if_sign = 0;}
                         if(if_sign > 0){end[0] += x; end[1] += y;}
                         if(if_sign == 2){
-                            path = this.Walktoward(people, end);
+                            path = this.Walktoward(people, end, _this);
                         }else if(if_sign == 1){
                             try{var ore = this.pheromone[people[0]+x][people[1]+y].orientation;if(ore==undefined)ore = 0;}catch{var ore = 0;}
                             if(ore == 2 || ore == 5){
                                 _this.ore = ore;
-                                path = this.Walktoward(people, end, ore);
+                                path = this.Walktoward(people, end, _this);
                             }
                         }
                     }
@@ -570,12 +570,12 @@ Ant.prototype.GoBySigns = function(people, _this, range = 3){
                         try{var if_sign = this.pheromone[people[0]+x][people[1]+y].issign;if(if_sign==undefined)if_sign = 0;}catch{var if_sign = 0;}
                         if(if_sign > 0){end[0] += x; end[1] += y;}
                         if(if_sign == 2){
-                            path = this.Walktoward(people, end);
+                            path = this.Walktoward(people, end, _this);
                         }else if(if_sign == 1){
                             try{var ore = this.pheromone[people[0]+x][people[1]+y].orientation;if(ore==undefined)ore = 0;}catch{var ore = 0;}
                             if(ore == 5 || ore == 7){
                                 _this.ore = ore;
-                                path = this.Walktoward(people, end, ore);
+                                path = this.Walktoward(people, end, _this);
                             }
                         }
                     }
@@ -586,33 +586,65 @@ Ant.prototype.GoBySigns = function(people, _this, range = 3){
     if(path.length == 0){
         switch(_this.ore){
             case 2:
-                end[1] += 1;
-                path.push(end);
-                break;
+                try{var ph = this.pheromone[people[0]][people[1]+1].ph;if(ph==undefined)ph = 0;}catch{var ph = 0;}
+                if(ph) path.push([people[0], people[1]+1])
+                else path.push(this.Step_random(people, _this, 1));
             case 7:
-                end[1] -= 1;
-                path.push(end);
-                break;
-            case 5:
-                end[0] += 1;
-                path.push(end);
-                break;
+                try{var ph = this.pheromone[people[0]][people[1]-1].ph;if(ph==undefined)ph = 0;}catch{var ph = 0;}
+                if(ph) path.push([people[0], people[1]-1])
+                else path.push(this.Step_random(people, _this, 1));
             case 4:
-                end[0] -= 1;
-                path.push(end);
-                break;
+                try{var ph = this.pheromone[people[0]-1][people[1]].ph;if(ph==undefined)ph = 0;}catch{var ph = 0;}
+                if(ph) path.push([people[0]-1, people[1]])
+                else path.push(this.Step_random(people, _this, 1));
+            case 5:
+                try{var ph = this.pheromone[people[0]+1][people[1]].ph;if(ph==undefined)ph = 0;}catch{var ph = 0;}
+                if(ph) path.push([people[0]+1, people[1]])
+                else path.push(this.Step_random(people, _this, 1));
             default:
-                path = this.Step_random(people, _this,);
-                break;
+                path.push(this.Step_random(people, _this, 1));
         }
     }
     return path;
 }
 
-Ant.prototype.Walktoward = function(begin, end, ore=0){// 添加绕过障碍物的方法
-    var path = []
+Ant.prototype.Walktoward = function(people, end, _this){// 添加绕过障碍物的方法
+    var path = [];
+    var ore = _this.ore;
+    do{
+        try{var ph = this.pheromone[people[0]+(people[0]-end[0])/(Math.abs(people[0]-end[0]))][people[1]+(people[1]-end[1])/(Math.abs(people[1]-end[1]))].ph;if(ph==undefined)ph = 0;}catch{var ph = 0;};
+        if(ph) path.push([people[0]+(people[0]-end[0])/(Math.abs(people[0]-end[0])), people[1]+(people[1]-end[1])/(Math.abs(people[1]-end[1]))]);
+        else{
+            switch(ore){
+                case 5:
+                    try{var ph = this.pheromone[people[0]+1][people[1]].ph;if(ph==undefined)ph = 0;}catch{var ph = 0;};
+                    if(ph) path.push([people[0]+1, people[1]]);
+                    else path.push(this.Step_random(people, _this, 1));
+                case 4:
+                    try{var ph = this.pheromone[people[0]-1][people[1]].ph;if(ph==undefined)ph = 0;}catch{var ph = 0;};
+                    if(ph) path.push([people[0]-1, people[1]]);
+                    else path.push(this.Step_random(people, _this, 1));
+                case 2:
+                    try{var ph = this.pheromone[people[0]][people[1]+1].ph;if(ph==undefined)ph = 0;}catch{var ph = 0;};
+                    if(ph) path.push([people[0], people[1]+1]);
+                    else path.push(this.Step_random(people, _this, 1));
+                case 7:
+                    try{var ph = this.pheromone[people[0]][people[1]-1].ph;if(ph==undefined)ph = 0;}catch{var ph = 0;};
+                    if(ph) path.push([people[0], people[1]-1]);
+                    else path.push(this.Step_random(people, _this, 1));
+                default:
+                    if(Math.random() >= 0.5)
+                        try{var ph = this.pheromone[people[0]+(people[0]-end[0])/(Math.abs(people[0]-end[0]))][people[1]].ph;if(ph==undefined)ph = 0;}catch{var ph = 0;};
+                        if(ph) path.push([people[0]+(people[0]-end[0])/(Math.abs(people[0]-end[0])), people[1]]);
+                        else {
+                            try{var ph = this.pheromone[people[0]][people[1]+(people[1]-end[1])/(Math.abs(people[1]-end[1]))].ph;if(ph==undefined)ph = 0;}catch{var ph = 0;};
+                            if(ph) path.push([people[0], people[1]+(people[1]-end[1])/(Math.abs(people[1]-end[1]))]);
+                            else path.push(this.Step_random(people, _this, 1));
+                        }
+            }
+        }
+    }while(people[0] != end[0] && people[1] != end[1])
 
-    path.push(end)
     return path
 }
 
