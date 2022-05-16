@@ -84,29 +84,29 @@ Ant.prototype.init_sign = function(signs, exitPosArr){
                     }
                 }else if(signs[i][1] == 2){
                    if(signs[i][0] == 1){
-                        this.pheromone[Math.round(signs[i][2])+39 +1][Math.round(signs[i][4])-112].issign = 1;
-                        this.pheromone[Math.round(signs[i][2])+39 +1][Math.round(signs[i][4])-112].sign_orientation = 2;
+                        this.pheromone[Math.round(signs[i][2])+39 -1][Math.round(signs[i][4])-112].issign = 1;
+                        this.pheromone[Math.round(signs[i][2])+39 -1][Math.round(signs[i][4])-112].sign_orientation = 2;
                     }else if(signs[i][0] == 2){
-                        this.pheromone[Math.round(signs[i][2])+39 +1][Math.round(signs[i][4])-112].issign = 1;
-                        this.pheromone[Math.round(signs[i][2])+39 +1][Math.round(signs[i][4])-112].sign_orientation = 7;
+                        this.pheromone[Math.round(signs[i][2])+39 -1][Math.round(signs[i][4])-112].issign = 1;
+                        this.pheromone[Math.round(signs[i][2])+39 -1][Math.round(signs[i][4])-112].sign_orientation = 7;
                     }
                     else if(signs[i][0] == 3){
-                        this.pheromone[Math.round(signs[i][2])+39 +1][Math.round(signs[i][4])-112 +1].issign = 1;
-                        this.pheromone[Math.round(signs[i][2])+39 +1][Math.round(signs[i][4])-112 +1].sign_orientation = 4;
+                        this.pheromone[Math.round(signs[i][2])+39 -1][Math.round(signs[i][4])-112 -1].issign = 1;
+                        this.pheromone[Math.round(signs[i][2])+39 -1][Math.round(signs[i][4])-112 -1].sign_orientation = 5;
                     }else if(signs[i][0] == 4){
-                        this.pheromone[Math.round(signs[i][2])+39 +1][Math.round(signs[i][4])-112 -1].issign = 1;
-                        this.pheromone[Math.round(signs[i][2])+39 +1][Math.round(signs[i][4])-112 -1].sign_orientation = 4;
+                        this.pheromone[Math.round(signs[i][2])+39 -1][Math.round(signs[i][4])-112 +1].issign = 1;
+                        this.pheromone[Math.round(signs[i][2])+39 -1][Math.round(signs[i][4])-112 +1].sign_orientation = 5;
                     }    
                 }else if(signs[i][0] == 2 && signs[i][1] == 4){
                     this.pheromone[Math.round(signs[i][2])+39][Math.round(signs[i][4])-112 +1].issign = 1;
-                    this.pheromone[Math.round(signs[i][2])+39][Math.round(signs[i][4])-112].sign_orientation = 4;
+                    this.pheromone[Math.round(signs[i][2])+39][Math.round(signs[i][4])-112 +1].sign_orientation = 4;
                 }
             }
         }
     }
     for(var i = 0; i < exitPosArr.length; i++){
         if(exitPosArr[i][1] > -10){// 处于地下一层
-            this.add_signs([Math.round(exitPosArr[i][0])+39,Math.round(exitPosArr[i][2])-112], 3)// 将指示牌信息素加入矩阵
+            //this.add_signs([Math.round(exitPosArr[i][0])+39,Math.round(exitPosArr[i][2])-112], 3)// 将指示牌信息素加入矩阵
             this.pheromone[Math.round(exitPosArr[i][0])+39][Math.round(exitPosArr[i][2])-112].issign = 2;
         }
     }
@@ -450,7 +450,8 @@ Ant.prototype.countDensity = function(people, range = 0, a = 1){//计算密度
 }
 
 Ant.prototype.GoBySigns = function(people, _this, range = 2){
-    var end = people
+    var end = [0,0];
+    end[0] = people[0]; end[1] = people[1];
     var path = [];
     switch(_this.ore){
         case 2:
@@ -615,34 +616,64 @@ Ant.prototype.Walktoward = function(people, end, _this){// 添加绕过障碍物
     var ore = _this.ore;
     do{
         try{var ph = this.pheromone[people[0]+(people[0]-end[0])/(Math.abs(people[0]-end[0]))][people[1]+(people[1]-end[1])/(Math.abs(people[1]-end[1]))].ph;if(ph==undefined)ph = 0;}catch{var ph = 0;};
-        if(ph) path.push([people[0]+(people[0]-end[0])/(Math.abs(people[0]-end[0])), people[1]+(people[1]-end[1])/(Math.abs(people[1]-end[1]))]);
-        else{
+        if(ph) {
+            path.push([people[0]+(people[0]-end[0])/(Math.abs(people[0]-end[0])), people[1]+(people[1]-end[1])/(Math.abs(people[1]-end[1]))]);
+            people[0]+=(people[0]-end[0])/(Math.abs(people[0]-end[0]));
+            people[1]+=(people[1]-end[1])/(Math.abs(people[1]-end[1]));
+        }else{
             switch(ore){
                 case 5:
                     try{var ph = this.pheromone[people[0]+1][people[1]].ph;if(ph==undefined)ph = 0;}catch{var ph = 0;};
-                    if(ph) path.push([people[0]+1, people[1]]);
-                    else path.push(this.Step_random(people, _this, 1));
+                    if(ph){
+                        path.push([people[0]+1, people[1]]);
+                        people[0]+=1;
+                    }
+                    else
+                        people = end;
+                    break;
                 case 4:
                     try{var ph = this.pheromone[people[0]-1][people[1]].ph;if(ph==undefined)ph = 0;}catch{var ph = 0;};
-                    if(ph) path.push([people[0]-1, people[1]]);
-                    else path.push(this.Step_random(people, _this, 1));
+                    if(ph){
+                        path.push([people[0]-1, people[1]]);
+                        people[0]-=1;
+                    }
+                    else
+                        people = end;
+                    break;
                 case 2:
                     try{var ph = this.pheromone[people[0]][people[1]+1].ph;if(ph==undefined)ph = 0;}catch{var ph = 0;};
-                    if(ph) path.push([people[0], people[1]+1]);
-                    else path.push(this.Step_random(people, _this, 1));
+                    if(ph){
+                        path.push([people[0], people[1]+1]);
+                        people[1]+=1;
+                    }
+                    else
+                        people = end;
+                    break;
                 case 7:
                     try{var ph = this.pheromone[people[0]][people[1]-1].ph;if(ph==undefined)ph = 0;}catch{var ph = 0;};
-                    if(ph) path.push([people[0], people[1]-1]);
-                    else path.push(this.Step_random(people, _this, 1));
+                    if(ph){
+                        path.push([people[0], people[1]-1]);
+                        people[1]-=1;
+                    }
+                    else
+                        people = end;
+                    break;
                 default:
-                    if(Math.random() >= 0.5)
-                        try{var ph = this.pheromone[people[0]+(people[0]-end[0])/(Math.abs(people[0]-end[0]))][people[1]].ph;if(ph==undefined)ph = 0;}catch{var ph = 0;};
-                        if(ph) path.push([people[0]+(people[0]-end[0])/(Math.abs(people[0]-end[0])), people[1]]);
+                        try{var ph = this.pheromone[people[0]+(people[1]-end[1])/(Math.abs(people[1]-end[1]))][people[1]].ph;if(ph==undefined)ph = 0;}catch{var ph = 0;};
+                        if(ph) {
+                            people[0] += (people[0]-end[0])/(Math.abs(people[0]-end[0]));
+                            path.push([people[0]+(people[0]-end[0])/(Math.abs(people[0]-end[0])), people[1]]);
+                        }
                         else {
                             try{var ph = this.pheromone[people[0]][people[1]+(people[1]-end[1])/(Math.abs(people[1]-end[1]))].ph;if(ph==undefined)ph = 0;}catch{var ph = 0;};
-                            if(ph) path.push([people[0], people[1]+(people[1]-end[1])/(Math.abs(people[1]-end[1]))]);
-                            else path.push(this.Step_random(people, _this, 1));
+                            if(ph) {
+                                people[1] += (people[1]-end[1])/(Math.abs(people[1]-end[1]));
+                                path.push([people[0], people[1]+(people[1]-end[1])/(Math.abs(people[1]-end[1]))]);
+                            }
+                            else
+                                people = end;
                         }
+                    break;    
             }
         }
     }while(people[0] != end[0] && people[1] != end[1])
@@ -690,7 +721,8 @@ Ant.prototype.Step_random = function(begin, _this, range=1){
             }
         }
     }
-    var end = begin;
+    var end = [0,0];
+    end[0] = begin[0]; end[1] = begin[1];
     if(count.length){
         var n = Math.floor(Math.random() * (count.length - 0.01));
         end[0] += count[n][0];
@@ -709,6 +741,31 @@ Ant.prototype.Step_random = function(begin, _this, range=1){
             else _this.ore = 0;
     }
     return end;
+}
+
+Ant.prototype.Stuck = function(_this, people){
+    var end = []
+    var count = []
+    for(var j = 1; j >= -1; j--){
+        for(var i = -1; i <= 1; i++){
+            if(i != 0 && j != 0){
+                try{var ph = this.pheromone[people[0]+i][people[1]+j].ph;if(ph==undefined)ph = 0;}catch{var ph = 0;};
+                try{var people_number = this.pheromone[people[0]+i][people[1]+j].people_number;if(people_number==undefined)people_number = 1;}catch{var people_number = 1;};
+                if(ph && people_number == 0){end.push([i, j]); count.push([i, j])} 
+                else end.push([0,0]);
+            }     
+        }
+    }
+        
+    if(count.length)
+        if(_this.ore && end[_this.ore-1] != [0,0])
+            return[people[0]+end[_this.ore-1][0], people[1]+end[_this.ore-1][1]];
+        else{
+            var n = Math.floor(Math.random() * (count.length - 0.01));
+            return [people[0]+count[n][0], people[1]+count[n][1]];
+        }
+    else
+        return [people[0], people[1]]
 }
 
 // Ant.prototype.GoByOrientation = function(begin, orientation){

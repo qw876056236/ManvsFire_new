@@ -16,7 +16,7 @@ var PeopleManager = function(mesh,mixer){
     this.orientation = 0;
     this.speed = 1;
     this.trace = [];
-    this.form = 0;//初始为0进行随机移动，警觉度到达一定值后设为1进入逃跑状态理智模式，2为逃生状态惊慌状态，3为拥堵状态
+    this.form = 1;//初始为0进行随机移动，警觉度到达一定值后设为1进入逃跑状态理智模式，2为逃生状态惊慌状态，3为拥堵状态
     this.ph = 1;
     this.ve = 1;
     this.ore = 0;
@@ -53,7 +53,7 @@ PeopleManager.prototype.update = function(_this){
             if(this.form == 0){
                 this.A = _this.ant.countA([this.nextPosition.x-this.xMin,this.nextPosition.z-this.zMin]);
                 if(this.A >= 1){//临界值需要改，同时在Ant的countA里面改
-                    this.form = 0;
+                    this.form = 1;
                     this.path.length = 0;
                     this.fear = _this.ant.countfear([this.nextPosition.x-this.xMin,this.nextPosition.z-this.zMin], this.my_fear)
                     _this.ant.pheromone[this.nextPosition.x-this.xMin][this.nextPosition.z-this.zMin].A_number += 1;
@@ -107,12 +107,15 @@ PeopleManager.prototype.update = function(_this){
             if(this.form == 0)
                 this.getNextPositionRandom(_this);
             else if(this.form == 1){
-                if(this.F>0.8)//临界值可能需要修改
+                if(this.F>1)//临界值可能需要修改
                     this.getNextPositionPath(_this);
                 else
                     this.getNextPositionBySigns(_this);
             }else if(this.form == 2)
                 this.getNextPosition(_this);
+            else if(this.form == 3)
+                this.getNextPositionStuck(_this);
+
 
             _this.ant.pheromone[this.nextPosition.x-this.xMin][this.nextPosition.z-this.zMin].people_number += 1;
             _this.ant.pheromone[this.nextPosition.x-this.xMin][this.nextPosition.z-this.zMin].fear += this.fear;
@@ -153,6 +156,12 @@ PeopleManager.prototype.getNextPosition = function(_this){
     this.nextPosition.z = pos[1] + this.zMin;
     for(var i=this.trace.length-1,j=0;i>=0;i--,j++)
         _this.ant.pheromone[this.trace[i][0]][this.trace[i][1]].ph += (1-j/_this.ant.trace_step)*this.ph;
+}
+
+PeopleManager.prototype.getNextPositionStuck = function(_this){
+    var pos = _this.ant.Stuck(this, [this.nextPosition.x-this.xMin,this.nextPosition.z-this.zMin]);
+    this.nextPosition.x = pos[0] + this.xMin;
+    this.nextPosition.z = pos[1] + this.zMin;
 }
 
 PeopleManager.prototype.getNextPositionBySigns = function(_this){
