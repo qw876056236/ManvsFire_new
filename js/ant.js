@@ -455,53 +455,73 @@ Ant.prototype.GoBySigns = function(people, _this, range = 2){
     var path = [];
     switch(_this.ore){
         case 2:
+            outside:
             for(var y = 1; y <= range; y++)
-                for(var x = -1 * range; x <= range; x++)
-                    path = this.Find_sign(people, _this, x, y);
+                for(var x = -1 * range; x <= range; x++){
+                    if(x != 0){
+                        path = this.Find_sign(people, _this, x, y);
+                        if(path.length) break outside;
+                    }
+
+                }
+                    
             break;
         case 7:
+            outside:
             for(var y = -1; y >= -1 * range; y--)
                 for(var x = -1 * range; x <= range; x++)
-                    path = this.Find_sign(people, _this, x, y);
+                    if(x != 0){
+                        path = this.Find_sign(people, _this, x, y);
+                        if(path.length) break outside;
+                    }
             break;
         case 4:
+            outside:
             for(var x = -1; x >= -1 * range; x--)
                 for(var y = -1 * range; y <= range; y++)
-                    path = this.Find_sign(people, _this, x, y);
+                    if(y != 0){
+                        path = this.Find_sign(people, _this, x, y);
+                        if(path.length) break outside;
+                    }
             break;
         case 5:
+            outside:
             for(var x = 1; x <= range; x++)
                 for(var y = -1 * range; y <= range; y++)
-                    path = this.Find_sign(people, _this, x, y);
+                    if(y != 0){
+                        path = this.Find_sign(people, _this, x, y);
+                        if(path.length) break outside;
+                    }
             break;
         default:
             var x1 = range - 1;
             var y1 = range - 1;
             var x2 = range + 1;
             var y2 = range + 1;
+            outside:
             while(x1 >= 0 && y1 >= 0 && path == 0){
                 for(var x = x2 - 1; x >= x1; x--){
-                    path = this.Find_sign(people, _this, x, y);
-                    if(path.length != 0) break;
+                    path = this.Find_sign(people, _this, x - range, y2 - range);
+                    if(path.length != 0) break outside;
                 }  
                 for(var y = y2 - 1; y >= y1; y--){
-                    path = this.Find_sign(people, _this, x, y);
-                    if(path.length != 0) break;
+                    path = this.Find_sign(people, _this, x1 - range, y - range);
+                    if(path.length != 0) break outside;
                 }
                 for(var x = x1 + 1; x <= x2; x++){
-                    path = this.Find_sign(people, _this, x, y);
-                    if(path.length != 0) break;
+                    path = this.Find_sign(people, _this, x - range, y1 - range);
+                    if(path.length != 0) break outside;
                 }
                 for(var y = y1 + 1; y <= y2; y++){
-                    path = this.Find_sign(people, _this, x, y);
-                    if(path.length != 0) break;
+                    path = this.Find_sign(people, _this, x2 - range, y - range);
+                    if(path.length != 0) break outside;
                 }
                 x1--;
                 x2++;
                 y1--;
                 y2++;
             }
-           
+        break;   
     }
     if(path.length == 0){
         switch(_this.ore){
@@ -626,7 +646,7 @@ Ant.prototype.Walktoward = function(people, end, _this){// 添加绕过障碍物
                         people = end;
                     break;
                 default:
-                        try{var ph = this.pheromone[people[0]+(people[1]-end[1])/(Math.abs(people[1]-end[1]))][people[1]].ph;if(ph==undefined)ph = 0;}catch{var ph = 0;};
+                        try{var ph = this.pheromone[people[0]+(people[0]-end[0])/(Math.abs(people[0]-end[0]))][people[1]].ph;if(ph==undefined)ph = 0;}catch{var ph = 0;};
                         if(ph) {
                             people[0] += (people[0]-end[0])/(Math.abs(people[0]-end[0]));
                             path.push([people[0]+(people[0]-end[0])/(Math.abs(people[0]-end[0])), people[1]]);
