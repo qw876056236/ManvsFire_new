@@ -455,135 +455,53 @@ Ant.prototype.GoBySigns = function(people, _this, range = 2){
     var path = [];
     switch(_this.ore){
         case 2:
-            for(var y = 1; y <= range; y++){
-                for(var x = -1 * range; x <= range; x++){
-                    try{var if_sign = this.pheromone[people[0]+x][people[1]+y].issign;if(if_sign==undefined)if_sign = 0;}catch{var if_sign = 0;}
-                    if(if_sign > 0){end[0] += x; end[1] += y;}
-                    if(if_sign == 2){
-                        path = this.Walktoward(people, end, _this);
-                    }else if(if_sign == 1){
-                        try{var ore = this.pheromone[people[0]+x][people[1]+y].orientation;if(ore==undefined)ore = 0;}catch{var ore = 0;}
-                        _this.ore = ore;
-                        path = this.Walktoward(people, end, _this);
-                    }
-                }
-            }
+            for(var y = 1; y <= range; y++)
+                for(var x = -1 * range; x <= range; x++)
+                    path = this.Find_sign(people, _this, x, y);
             break;
         case 7:
-            for(var y = -1; y >= -1 * range; y--){
-                for(var x = -1 * range; x <= range; x++){
-                    try{var if_sign = this.pheromone[people[0]+x][people[1]+y].issign;if(if_sign==undefined)if_sign = 0;}catch{var if_sign = 0;}
-                    if(if_sign > 0){end[0] += x; end[1] += y;}
-                    if(if_sign == 2){
-                        path = this.Walktoward(people, end, _this);
-                    }else if(if_sign == 1){
-                        try{var ore = this.pheromone[people[0]+x][people[1]+y].orientation;if(ore==undefined)ore = 0;}catch{var ore = 0;}
-                        _this.ore = ore;
-                        path = this.Walktoward(people, end, _this);
-                    }
-                }
-            }
+            for(var y = -1; y >= -1 * range; y--)
+                for(var x = -1 * range; x <= range; x++)
+                    path = this.Find_sign(people, _this, x, y);
             break;
         case 4:
-            for(var x = -1; x >= -1 * range; x--){
-                for(var y = -1 * range; y <= range; y++){
-                    try{var if_sign = this.pheromone[people[0]+x][people[1]+y].issign;if(if_sign==undefined)if_sign = 0;}catch{var if_sign = 0;}
-                    if(if_sign > 0){end[0] += x; end[1] += y;}
-                    if(if_sign == 2){
-                        path = this.Walktoward(people, end, _this);
-                    }else if(if_sign == 1){
-                        try{var ore = this.pheromone[people[0]+x][people[1]+y].orientation;if(ore==undefined)ore = 0;}catch{var ore = 0;}
-                        _this.ore = ore;
-                        path = this.Walktoward(people, end, _this);
-                    }
-                }
-            }
+            for(var x = -1; x >= -1 * range; x--)
+                for(var y = -1 * range; y <= range; y++)
+                    path = this.Find_sign(people, _this, x, y);
             break;
         case 5:
-            for(var x = 1; x <= range; x++){
-                for(var y = -1 * range; y <= range; y++){
-                    try{var if_sign = this.pheromone[people[0]+x][people[1]+y].issign;if(if_sign==undefined)if_sign = 0;}catch{var if_sign = 0;}
-                    if(if_sign > 0){end[0] += x; end[1] += y;}
-                    if(if_sign == 2){
-                        path = this.Walktoward(people, end, _this);
-                    }else if(if_sign == 1){
-                        try{var ore = this.pheromone[people[0]+x][people[1]+y].orientation;if(ore==undefined)ore = 0;}catch{var ore = 0;}
-                        _this.ore = ore;
-                        path = this.Walktoward(people, end, _this);
-                    }
-                }
-            }
+            for(var x = 1; x <= range; x++)
+                for(var y = -1 * range; y <= range; y++)
+                    path = this.Find_sign(people, _this, x, y);
             break;
         default:
-            for(var x = 0; x >=  -1 * range; x--){
-                for(var y = 0; y >= -1 * range; y--){
-                    if(x != 0 || y != 0){
-                        try{var if_sign = this.pheromone[people[0]+x][people[1]+y].issign;if(if_sign==undefined)if_sign = 0;}catch{var if_sign = 0;}
-                        if(if_sign > 0){end[0] += x; end[1] += y;}
-                        if(if_sign == 2){
-                            path = this.Walktoward(people, end, _this);
-                        }else if(if_sign == 1){
-                            try{var ore = this.pheromone[people[0]+x][people[1]+y].orientation;if(ore==undefined)ore = 0;}catch{var ore = 0;}
-                            if(ore == 4 || ore == 7){
-                                _this.ore = ore;
-                                path = this.Walktoward(people, end, _this);
-                            }
-                        }
-                    }
+            var x1 = range - 1;
+            var y1 = range - 1;
+            var x2 = range + 1;
+            var y2 = range + 1;
+            while(x1 >= 0 && y1 >= 0 && path == 0){
+                for(var x = x2 - 1; x >= x1; x--){
+                    path = this.Find_sign(people, _this, x, y);
+                    if(path.length != 0) break;
+                }  
+                for(var y = y2 - 1; y >= y1; y--){
+                    path = this.Find_sign(people, _this, x, y);
+                    if(path.length != 0) break;
                 }
-            }
-            for(var x = 0; x >=  -1 * range; x--){
-                for(var y = 0; y <= range; y++){
-                    if(x != 0 || y != 0){
-                        try{var if_sign = this.pheromone[people[0]+x][people[1]+y].issign;if(if_sign==undefined)if_sign = 0;}catch{var if_sign = 0;}
-                        if(if_sign > 0){end[0] += x; end[1] += y;}
-                        if(if_sign == 2){
-                            path = this.Walktoward(people, end, _this);
-                        }else if(if_sign == 1){
-                            try{var ore = this.pheromone[people[0]+x][people[1]+y].orientation;if(ore==undefined)ore = 0;}catch{var ore = 0;}
-                            if(ore == 2 || ore == 4){
-                                _this.ore = ore;
-                                path = this.Walktoward(people, end, _this);
-                            }
-                        }
-                    }
+                for(var x = x1 + 1; x <= x2; x++){
+                    path = this.Find_sign(people, _this, x, y);
+                    if(path.length != 0) break;
                 }
-            }
-            for(var x = 0; x <= range; x++){
-                for(var y = 0; y <= range; y++){
-                    if(x != 0 || y != 0){
-                        try{var if_sign = this.pheromone[people[0]+x][people[1]+y].issign;if(if_sign==undefined)if_sign = 0;}catch{var if_sign = 0;}
-                        if(if_sign > 0){end[0] += x; end[1] += y;}
-                        if(if_sign == 2){
-                            path = this.Walktoward(people, end, _this);
-                        }else if(if_sign == 1){
-                            try{var ore = this.pheromone[people[0]+x][people[1]+y].orientation;if(ore==undefined)ore = 0;}catch{var ore = 0;}
-                            if(ore == 2 || ore == 5){
-                                _this.ore = ore;
-                                path = this.Walktoward(people, end, _this);
-                            }
-                        }
-                    }
+                for(var y = y1 + 1; y <= y2; y++){
+                    path = this.Find_sign(people, _this, x, y);
+                    if(path.length != 0) break;
                 }
+                x1--;
+                x2++;
+                y1--;
+                y2++;
             }
-            for(var x = 0; x <= range; x++){
-                for(var y = 0; y >= -1 * range; y--){
-                    if(x != 0 || y != 0){
-                        try{var if_sign = this.pheromone[people[0]+x][people[1]+y].issign;if(if_sign==undefined)if_sign = 0;}catch{var if_sign = 0;}
-                        if(if_sign > 0){end[0] += x; end[1] += y;}
-                        if(if_sign == 2){
-                            path = this.Walktoward(people, end, _this);
-                        }else if(if_sign == 1){
-                            try{var ore = this.pheromone[people[0]+x][people[1]+y].orientation;if(ore==undefined)ore = 0;}catch{var ore = 0;}
-                            if(ore == 5 || ore == 7){
-                                _this.ore = ore;
-                                path = this.Walktoward(people, end, _this);
-                            }
-                        }
-                    }
-                }
-            }
-            break;          
+           
     }
     if(path.length == 0){
         switch(_this.ore){
@@ -606,6 +524,55 @@ Ant.prototype.GoBySigns = function(people, _this, range = 2){
             default:
                 path.push(this.Step_random(people, _this, 1));
                 break;
+        }
+    }
+    return path;
+}
+
+Ant.prototype.Find_sign = function(people, _this, x, y){
+    var path = [];
+    var end = [0, 0];
+    end[0] = people[0]; end[1] = people[1]
+    try{var if_sign = this.pheromone[people[0]+x][people[1]+y].issign;if(if_sign==undefined)if_sign = 0;}catch{var if_sign = 0;}
+    if(if_sign > 0){end[0] += x; end[1] += y;}
+    if(if_sign == 2){
+        path = this.Walktoward(people, end, _this);
+    }else if(if_sign == 1){
+        try{var ore = this.pheromone[people[0]+x][people[1]+y].orientation;if(ore==undefined)ore = 0;}catch{var ore = 0;}
+        if(_this.ore == ore)
+            path = this.Walktoward(people, end, _this);
+        else{
+            _this.ore = ore;
+            switch(ore){
+                case 2:
+                    try{var ph = this.pheromone[people[0]][people[1]+1].ph;if(ph==undefined)ph = 0;}catch{var ph = 0;};
+                    if(ph)
+                        path.push([people[0], people[1]+1]);
+                    else
+                        path.push(this.Step_random(people, _this))
+                    break;
+                case 7:
+                    try{var ph = this.pheromone[people[0]][people[1]-1].ph;if(ph==undefined)ph = 0;}catch{var ph = 0;};
+                    if(ph)
+                        path.push([people[0], people[1]-1]);
+                    else
+                        path.push(this.Step_random(people, _this))
+                    break;
+                case 4:
+                    try{var ph = this.pheromone[people[0]-1][people[1]].ph;if(ph==undefined)ph = 0;}catch{var ph = 0;};
+                    if(ph)
+                        path.push([people[0]-1, people[1]]);
+                    else
+                        path.push(this.Step_random(people, _this))
+                    break;
+                case 5:
+                    try{var ph = this.pheromone[people[0]+1][people[1]].ph;if(ph==undefined)ph = 0;}catch{var ph = 0;};
+                    if(ph)
+                        path.push([people[0]+1, people[1]]);
+                    else
+                        path.push(this.Step_random(people, _this))
+                    break;
+            }
         }
     }
     return path;

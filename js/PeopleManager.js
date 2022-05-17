@@ -63,7 +63,7 @@ PeopleManager.prototype.update = function(_this){
             }else if(this.form == 1){
                 this.fear = _this.ant.countfear([this.nextPosition.x-this.xMin,this.nextPosition.z-this.zMin], this.my_fear)
                 if(this.fear > 1.4)//临界值可能需要更改
-                    this.form = 2;
+                    this.form = 1;
             }else if(this.form == 2){
                 this.fear = _this.ant.countfear([this.nextPosition.x-this.xMin,this.nextPosition.z-this.zMin], this.my_fear)
                 if(this.fear <= 1.4)//临界值可能需要更改
