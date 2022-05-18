@@ -457,14 +457,11 @@ Ant.prototype.GoBySigns = function(people, _this, range = 2){
         case 2:
             outside:
             for(var y = 1; y <= range; y++)
-                for(var x = -1 * range; x <= range; x++){
+                for(var x = -1 * range; x <= range; x++)
                     if(x != 0){
                         path = this.Find_sign(people, _this, x, y);
                         if(path.length) break outside;
                     }
-
-                }
-                    
             break;
         case 7:
             outside:
@@ -602,67 +599,84 @@ Ant.prototype.Walktoward = function(people, end, _this){// 添加绕过障碍物
     var path = [];
     var ore = _this.ore;
     do{
-        try{var ph = this.pheromone[people[0]+(people[0]-end[0])/(Math.abs(people[0]-end[0]))][people[1]+(people[1]-end[1])/(Math.abs(people[1]-end[1]))].ph;if(ph==undefined)ph = 0;}catch{var ph = 0;};
-        if(ph) {
-            path.push([people[0]+(people[0]-end[0])/(Math.abs(people[0]-end[0])), people[1]+(people[1]-end[1])/(Math.abs(people[1]-end[1]))]);
-            people[0]+=(people[0]-end[0])/(Math.abs(people[0]-end[0]));
-            people[1]+=(people[1]-end[1])/(Math.abs(people[1]-end[1]));
-        }else{
-            switch(ore){
-                case 5:
-                    try{var ph = this.pheromone[people[0]+1][people[1]].ph;if(ph==undefined)ph = 0;}catch{var ph = 0;};
-                    if(ph){
-                        path.push([people[0]+1, people[1]]);
-                        people[0]+=1;
-                    }
-                    else
-                        people = end;
-                    break;
-                case 4:
-                    try{var ph = this.pheromone[people[0]-1][people[1]].ph;if(ph==undefined)ph = 0;}catch{var ph = 0;};
-                    if(ph){
-                        path.push([people[0]-1, people[1]]);
-                        people[0]-=1;
-                    }
-                    else
-                        people = end;
-                    break;
-                case 2:
-                    try{var ph = this.pheromone[people[0]][people[1]+1].ph;if(ph==undefined)ph = 0;}catch{var ph = 0;};
-                    if(ph){
-                        path.push([people[0], people[1]+1]);
-                        people[1]+=1;
-                    }
-                    else
-                        people = end;
-                    break;
-                case 7:
-                    try{var ph = this.pheromone[people[0]][people[1]-1].ph;if(ph==undefined)ph = 0;}catch{var ph = 0;};
-                    if(ph){
-                        path.push([people[0], people[1]-1]);
-                        people[1]-=1;
-                    }
-                    else
-                        people = end;
-                    break;
-                default:
-                        try{var ph = this.pheromone[people[0]+(people[0]-end[0])/(Math.abs(people[0]-end[0]))][people[1]].ph;if(ph==undefined)ph = 0;}catch{var ph = 0;};
-                        if(ph) {
-                            people[0] += (people[0]-end[0])/(Math.abs(people[0]-end[0]));
-                            path.push([people[0]+(people[0]-end[0])/(Math.abs(people[0]-end[0])), people[1]]);
+        if(people[0] - end[0] != 0 && people[1] - end[1] != 0){
+            try{var ph = this.pheromone[people[0]+(people[0]-end[0])/(Math.abs(people[0]-end[0]))][people[1]+(people[1]-end[1])/(Math.abs(people[1]-end[1]))].ph;if(ph==undefined)ph = 0;}catch{var ph = 0;};
+            if(ph) {
+                path.push([people[0]+(people[0]-end[0])/(Math.abs(people[0]-end[0])), people[1]+(people[1]-end[1])/(Math.abs(people[1]-end[1]))]);
+                people[0]+=(people[0]-end[0])/(Math.abs(people[0]-end[0]));
+                people[1]+=(people[1]-end[1])/(Math.abs(people[1]-end[1]));
+            }else{
+                switch(ore){
+                    case 5:
+                        try{var ph = this.pheromone[people[0]+1][people[1]].ph;if(ph==undefined)ph = 0;}catch{var ph = 0;};
+                        if(ph){
+                            path.push([people[0]+1, people[1]]);
+                            people[0]+=1;
                         }
-                        else {
-                            try{var ph = this.pheromone[people[0]][people[1]+(people[1]-end[1])/(Math.abs(people[1]-end[1]))].ph;if(ph==undefined)ph = 0;}catch{var ph = 0;};
+                        else
+                            people = end;
+                        break;
+                    case 4:
+                        try{var ph = this.pheromone[people[0]-1][people[1]].ph;if(ph==undefined)ph = 0;}catch{var ph = 0;};
+                        if(ph){
+                            path.push([people[0]-1, people[1]]);
+                            people[0]-=1;
+                        }
+                        else
+                            people = end;
+                        break;
+                    case 2:
+                        try{var ph = this.pheromone[people[0]][people[1]+1].ph;if(ph==undefined)ph = 0;}catch{var ph = 0;};
+                        if(ph){
+                            path.push([people[0], people[1]+1]);
+                            people[1]+=1;
+                        }
+                        else
+                            people = end;
+                        break;
+                    case 7:
+                        try{var ph = this.pheromone[people[0]][people[1]-1].ph;if(ph==undefined)ph = 0;}catch{var ph = 0;};
+                        if(ph){
+                            path.push([people[0], people[1]-1]);
+                            people[1]-=1;
+                        }
+                        else
+                            people = end;
+                        break;
+                    default:
+                            try{var ph = this.pheromone[people[0]+(people[0]-end[0])/(Math.abs(people[0]-end[0]))][people[1]].ph;if(ph==undefined)ph = 0;}catch{var ph = 0;};
                             if(ph) {
-                                people[1] += (people[1]-end[1])/(Math.abs(people[1]-end[1]));
-                                path.push([people[0], people[1]+(people[1]-end[1])/(Math.abs(people[1]-end[1]))]);
+                                people[0] += (people[0]-end[0])/(Math.abs(people[0]-end[0]));
+                                path.push([people[0]+(people[0]-end[0])/(Math.abs(people[0]-end[0])), people[1]]);
                             }
-                            else
-                                people = end;
-                        }
-                    break;    
+                            else {
+                                try{var ph = this.pheromone[people[0]][people[1]+(people[1]-end[1])/(Math.abs(people[1]-end[1]))].ph;if(ph==undefined)ph = 0;}catch{var ph = 0;};
+                                if(ph) {
+                                    people[1] += (people[1]-end[1])/(Math.abs(people[1]-end[1]));
+                                    path.push([people[0], people[1]+(people[1]-end[1])/(Math.abs(people[1]-end[1]))]);
+                                }
+                                else
+                                    people = end;
+                            }
+                        break;    
+                }
             }
+        }else if(people[0] - end[0] == 0){
+            try{var ph = this.pheromone[people[0]][people[1]+(people[1]-end[1])/(Math.abs(people[1]-end[1]))].ph;if(ph==undefined)ph = 0;}catch{var ph = 0;};
+            if(ph) {
+                path.push([people[0], people[1]+(people[1]-end[1])/(Math.abs(people[1]-end[1]))]);
+                people[1]+=(people[1]-end[1])/(Math.abs(people[1]-end[1]));
+            }else
+                people = end;
+        }else if(people[1] - end[1] == 0){
+            try{var ph = this.pheromone[people[0]+(people[0]-end[0])/(Math.abs(people[0]-end[0]))][people[1]].ph;if(ph==undefined)ph = 0;}catch{var ph = 0;};
+            if(ph) {
+                path.push([people[0]+(people[0]-end[0])/(Math.abs(people[0]-end[0])), people[1]]);
+                people[0]+=(people[0]-end[0])/(Math.abs(people[0]-end[0]));
+            }else
+                people = end;
         }
+            
     }while(people[0] != end[0] && people[1] != end[1])
 
     return path
