@@ -46,7 +46,17 @@ Ant.prototype.init_pheromone_floor1 = function(grid){//针对地下一层的信�
             if(j>80 && j <= 99 && grid.nodes[i][j].walkable)
                 //if(grid.nodes[i][j].walkable)
                 this.pheromone[j][i].ph = this.normal;
-                
+    //设置出口位置信息素
+    for(var i = 100;i <= 101;i++)
+        for(var j = 1;j <= 4;j++)
+            this.pheromone[i][j].ph = this.normal;
+    for(var i = 80;i >= 75;i--)
+        for(var j = 72;j <= 78;j++)
+            this.pheromone[i][j].ph = this.normal;
+    for(var i = 100;i <= 103;i++)
+        for(var j = 155;j <= 158;j++)
+            this.pheromone[i][j].ph = this.normal;
+
     this.PathFindeM = grid;
 }
 
@@ -85,10 +95,10 @@ Ant.prototype.init_sign = function(signs, exitPosArr){
                 }else if(signs[i][1] == 2){
                    if(signs[i][0] == 1){
                         this.pheromone[Math.round(signs[i][2])+39 -1][Math.round(signs[i][4])-112].issign = 1;
-                        this.pheromone[Math.round(signs[i][2])+39 -1][Math.round(signs[i][4])-112].sign_orientation = 2;
+                        this.pheromone[Math.round(signs[i][2])+39 -1][Math.round(signs[i][4])-112].sign_orientation = 7;
                     }else if(signs[i][0] == 2){
                         this.pheromone[Math.round(signs[i][2])+39 -1][Math.round(signs[i][4])-112].issign = 1;
-                        this.pheromone[Math.round(signs[i][2])+39 -1][Math.round(signs[i][4])-112].sign_orientation = 7;
+                        this.pheromone[Math.round(signs[i][2])+39 -1][Math.round(signs[i][4])-112].sign_orientation = 2;
                     }
                     else if(signs[i][0] == 3){
                         this.pheromone[Math.round(signs[i][2])+39 -1][Math.round(signs[i][4])-112 -1].issign = 1;
@@ -96,7 +106,7 @@ Ant.prototype.init_sign = function(signs, exitPosArr){
                     }else if(signs[i][0] == 4){
                         this.pheromone[Math.round(signs[i][2])+39 -1][Math.round(signs[i][4])-112 +1].issign = 1;
                         this.pheromone[Math.round(signs[i][2])+39 -1][Math.round(signs[i][4])-112 +1].sign_orientation = 5;
-                    }    
+                    }
                 }else if(signs[i][0] == 2 && signs[i][1] == 4){
                     this.pheromone[Math.round(signs[i][2])+39][Math.round(signs[i][4])-112 +1].issign = 1;
                     this.pheromone[Math.round(signs[i][2])+39][Math.round(signs[i][4])-112 +1].sign_orientation = 4;
@@ -458,36 +468,40 @@ Ant.prototype.GoBySigns = function(people, _this, range = 2){
             outside:
             for(var y = 1; y <= range; y++)
                 for(var x = -1 * range; x <= range; x++)
-                    if(x != 0){
-                        path = this.Find_sign(people, _this, x, y);
-                        if(path.length) break outside;
+                    {
+                        path = this.Find_sign([people[0],people[1]], _this, x, y);
+                        if(path.length)
+                            break outside;
                     }
             break;
         case 7:
             outside:
             for(var y = -1; y >= -1 * range; y--)
                 for(var x = -1 * range; x <= range; x++)
-                    if(x != 0){
-                        path = this.Find_sign(people, _this, x, y);
-                        if(path.length) break outside;
+                    {
+                        path = this.Find_sign([people[0],people[1]], _this, x, y);
+                        if(path.length)
+                            break outside;
                     }
             break;
         case 4:
             outside:
             for(var x = -1; x >= -1 * range; x--)
                 for(var y = -1 * range; y <= range; y++)
-                    if(y != 0){
-                        path = this.Find_sign(people, _this, x, y);
-                        if(path.length) break outside;
+                    {
+                        path = this.Find_sign([people[0],people[1]], _this, x, y);
+                        if(path.length)
+                            break outside;
                     }
             break;
         case 5:
             outside:
             for(var x = 1; x <= range; x++)
                 for(var y = -1 * range; y <= range; y++)
-                    if(y != 0){
-                        path = this.Find_sign(people, _this, x, y);
-                        if(path.length) break outside;
+                    {
+                        path = this.Find_sign([people[0],people[1]], _this, x, y);
+                        if(path.length)
+                            break outside;
                     }
             break;
         default:
@@ -498,19 +512,19 @@ Ant.prototype.GoBySigns = function(people, _this, range = 2){
             outside:
             while(x1 >= 0 && y1 >= 0 && path == 0){
                 for(var x = x2 - 1; x >= x1; x--){
-                    path = this.Find_sign(people, _this, x - range, y2 - range);
+                    path = this.Find_sign([people[0],people[1]], _this, x - range, y2 - range);
                     if(path.length != 0) break outside;
                 }  
                 for(var y = y2 - 1; y >= y1; y--){
-                    path = this.Find_sign(people, _this, x1 - range, y - range);
+                    path = this.Find_sign([people[0],people[1]], _this, x1 - range, y - range);
                     if(path.length != 0) break outside;
                 }
                 for(var x = x1 + 1; x <= x2; x++){
-                    path = this.Find_sign(people, _this, x - range, y1 - range);
+                    path = this.Find_sign([people[0],people[1]], _this, x - range, y1 - range);
                     if(path.length != 0) break outside;
                 }
                 for(var y = y1 + 1; y <= y2; y++){
-                    path = this.Find_sign(people, _this, x2 - range, y - range);
+                    path = this.Find_sign([people[0],people[1]], _this, x2 - range, y - range);
                     if(path.length != 0) break outside;
                 }
                 x1--;
@@ -526,18 +540,22 @@ Ant.prototype.GoBySigns = function(people, _this, range = 2){
                 try{var ph = this.pheromone[people[0]][people[1]+1].ph;if(ph==undefined)ph = 0;}catch{var ph = 0;}
                 if(ph) path.push([people[0], people[1]+1])
                 else path.push(this.Step_random(people, _this, 1));
+                break;
             case 7:
                 try{var ph = this.pheromone[people[0]][people[1]-1].ph;if(ph==undefined)ph = 0;}catch{var ph = 0;}
                 if(ph) path.push([people[0], people[1]-1])
                 else path.push(this.Step_random(people, _this, 1));
+                break;
             case 4:
                 try{var ph = this.pheromone[people[0]-1][people[1]].ph;if(ph==undefined)ph = 0;}catch{var ph = 0;}
                 if(ph) path.push([people[0]-1, people[1]])
                 else path.push(this.Step_random(people, _this, 1));
+                break;
             case 5:
                 try{var ph = this.pheromone[people[0]+1][people[1]].ph;if(ph==undefined)ph = 0;}catch{var ph = 0;}
                 if(ph) path.push([people[0]+1, people[1]])
                 else path.push(this.Step_random(people, _this, 1));
+                break;
             default:
                 path.push(this.Step_random(people, _this, 1));
                 break;
@@ -550,45 +568,74 @@ Ant.prototype.Find_sign = function(people, _this, x, y){
     var path = [];
     var end = [0, 0];
     end[0] = people[0]; end[1] = people[1]
+    if((people[0]+x == 79 && (people[1]+y == 69 || people[1]+y == 82)) || (people[0]+x == 81 && people[1]+y == 58)){
+        console.log(this.pheromone);
+    }
     try{var if_sign = this.pheromone[people[0]+x][people[1]+y].issign;if(if_sign==undefined)if_sign = 0;}catch{var if_sign = 0;}
     if(if_sign > 0){end[0] += x; end[1] += y;}
     if(if_sign == 2){
         path = this.Walktoward(people, end, _this);
     }else if(if_sign == 1){
-        try{var ore = this.pheromone[people[0]+x][people[1]+y].orientation;if(ore==undefined)ore = 0;}catch{var ore = 0;}
+        try{var ore = this.pheromone[people[0]+x][people[1]+y].sign_orientation;if(ore==undefined)ore = 0;}catch{var ore = 0;}
         if(_this.ore == ore)
             path = this.Walktoward(people, end, _this);
         else{
-            _this.ore = ore;
             switch(ore){
                 case 2:
                     try{var ph = this.pheromone[people[0]][people[1]+1].ph;if(ph==undefined)ph = 0;}catch{var ph = 0;};
                     if(ph)
                         path.push([people[0], people[1]+1]);
-                    else
-                        path.push(this.Step_random(people, _this))
                     break;
                 case 7:
                     try{var ph = this.pheromone[people[0]][people[1]-1].ph;if(ph==undefined)ph = 0;}catch{var ph = 0;};
                     if(ph)
                         path.push([people[0], people[1]-1]);
-                    else
-                        path.push(this.Step_random(people, _this))
                     break;
                 case 4:
                     try{var ph = this.pheromone[people[0]-1][people[1]].ph;if(ph==undefined)ph = 0;}catch{var ph = 0;};
                     if(ph)
                         path.push([people[0]-1, people[1]]);
-                    else
-                        path.push(this.Step_random(people, _this))
                     break;
                 case 5:
                     try{var ph = this.pheromone[people[0]+1][people[1]].ph;if(ph==undefined)ph = 0;}catch{var ph = 0;};
                     if(ph)
                         path.push([people[0]+1, people[1]]);
-                    else
-                        path.push(this.Step_random(people, _this))
                     break;
+            }
+            var lastOre = _this.ore;
+            _this.ore = ore;
+            if(path.length == 0){
+                _this.ore = lastOre;
+                switch(_this.ore){
+                    case 2:
+                        try{var ph = this.pheromone[people[0]][people[1]+1].ph;if(ph==undefined)ph = 0;}catch{var ph = 0;};
+                        if(ph)
+                            path.push([people[0], people[1]+1]);
+                        else
+                            path.push(this.Step_random(people, _this))
+                        break;
+                    case 7:
+                        try{var ph = this.pheromone[people[0]][people[1]-1].ph;if(ph==undefined)ph = 0;}catch{var ph = 0;};
+                        if(ph)
+                            path.push([people[0], people[1]-1]);
+                        else
+                            path.push(this.Step_random(people, _this))
+                        break;
+                    case 4:
+                        try{var ph = this.pheromone[people[0]-1][people[1]].ph;if(ph==undefined)ph = 0;}catch{var ph = 0;};
+                        if(ph)
+                            path.push([people[0]-1, people[1]]);
+                        else
+                            path.push(this.Step_random(people, _this))
+                        break;
+                    case 5:
+                        try{var ph = this.pheromone[people[0]+1][people[1]].ph;if(ph==undefined)ph = 0;}catch{var ph = 0;};
+                        if(ph)
+                            path.push([people[0]+1, people[1]]);
+                        else
+                            path.push(this.Step_random(people, _this))
+                        break;
+                }
             }
         }
     }
@@ -600,11 +647,11 @@ Ant.prototype.Walktoward = function(people, end, _this){// 添加绕过障碍物
     var ore = _this.ore;
     do{
         if(people[0] - end[0] != 0 && people[1] - end[1] != 0){
-            try{var ph = this.pheromone[people[0]+(people[0]-end[0])/(Math.abs(people[0]-end[0]))][people[1]+(people[1]-end[1])/(Math.abs(people[1]-end[1]))].ph;if(ph==undefined)ph = 0;}catch{var ph = 0;};
+            try{var ph = this.pheromone[people[0]+(end[0]-people[0])/(Math.abs(end[0]-people[0]))][people[1]+(end[1]-people[1])/(Math.abs(end[1]-people[1]))].ph;if(ph==undefined)ph = 0;}catch{var ph = 0;};
             if(ph) {
-                path.push([people[0]+(people[0]-end[0])/(Math.abs(people[0]-end[0])), people[1]+(people[1]-end[1])/(Math.abs(people[1]-end[1]))]);
-                people[0]+=(people[0]-end[0])/(Math.abs(people[0]-end[0]));
-                people[1]+=(people[1]-end[1])/(Math.abs(people[1]-end[1]));
+                path.push([people[0]+(end[0]-people[0])/(Math.abs(end[0]-people[0])), people[1]+(end[1]-people[1])/(Math.abs(end[1]-people[1]))]);
+                people[0]+=(end[0]-people[0])/(Math.abs(people[0]-end[0]));
+                people[1]+=(end[1]-people[1])/(Math.abs(end[1]-people[1]));
             }else{
                 switch(ore){
                     case 5:
@@ -644,16 +691,16 @@ Ant.prototype.Walktoward = function(people, end, _this){// 添加绕过障碍物
                             people = end;
                         break;
                     default:
-                            try{var ph = this.pheromone[people[0]+(people[0]-end[0])/(Math.abs(people[0]-end[0]))][people[1]].ph;if(ph==undefined)ph = 0;}catch{var ph = 0;};
+                            try{var ph = this.pheromone[people[0]+(end[0]-people[0])/(Math.abs(end[0]-people[0]))][people[1]].ph;if(ph==undefined)ph = 0;}catch{var ph = 0;};
                             if(ph) {
-                                people[0] += (people[0]-end[0])/(Math.abs(people[0]-end[0]));
-                                path.push([people[0]+(people[0]-end[0])/(Math.abs(people[0]-end[0])), people[1]]);
+                                path.push([people[0]+(end[0]-people[0])/(Math.abs(end[0]-people[0])), people[1]]);
+                                people[0] += (end[0]-people[0])/(Math.abs(end[0]-people[0]));
                             }
                             else {
-                                try{var ph = this.pheromone[people[0]][people[1]+(people[1]-end[1])/(Math.abs(people[1]-end[1]))].ph;if(ph==undefined)ph = 0;}catch{var ph = 0;};
+                                try{var ph = this.pheromone[people[0]][people[1]+(end[1]-people[1])/(Math.abs(end[1]-people[1]))].ph;if(ph==undefined)ph = 0;}catch{var ph = 0;};
                                 if(ph) {
-                                    people[1] += (people[1]-end[1])/(Math.abs(people[1]-end[1]));
-                                    path.push([people[0], people[1]+(people[1]-end[1])/(Math.abs(people[1]-end[1]))]);
+                                    path.push([people[0], people[1]+(end[1]-people[1])/(Math.abs(end[1]-people[1]))]);
+                                    people[1] += (end[1]-people[1])/(Math.abs(end[1]-people[1]));
                                 }
                                 else
                                     people = end;
@@ -662,22 +709,22 @@ Ant.prototype.Walktoward = function(people, end, _this){// 添加绕过障碍物
                 }
             }
         }else if(people[0] - end[0] == 0){
-            try{var ph = this.pheromone[people[0]][people[1]+(people[1]-end[1])/(Math.abs(people[1]-end[1]))].ph;if(ph==undefined)ph = 0;}catch{var ph = 0;};
+            try{var ph = this.pheromone[people[0]][people[1]+(end[1]-people[1])/(Math.abs(end[1]-people[1]))].ph;if(ph==undefined)ph = 0;}catch{var ph = 0;};
             if(ph) {
-                path.push([people[0], people[1]+(people[1]-end[1])/(Math.abs(people[1]-end[1]))]);
-                people[1]+=(people[1]-end[1])/(Math.abs(people[1]-end[1]));
+                path.push([people[0], people[1]+(end[1]-people[1])/(Math.abs(end[1]-people[1]))]);
+                people[1]+=(end[1]-people[1])/(Math.abs(end[1]-people[1]));
             }else
                 people = end;
         }else if(people[1] - end[1] == 0){
-            try{var ph = this.pheromone[people[0]+(people[0]-end[0])/(Math.abs(people[0]-end[0]))][people[1]].ph;if(ph==undefined)ph = 0;}catch{var ph = 0;};
+            try{var ph = this.pheromone[people[0]+(end[0]-people[0])/(Math.abs(end[0]-people[0]))][people[1]].ph;if(ph==undefined)ph = 0;}catch{var ph = 0;};
             if(ph) {
-                path.push([people[0]+(people[0]-end[0])/(Math.abs(people[0]-end[0])), people[1]]);
-                people[0]+=(people[0]-end[0])/(Math.abs(people[0]-end[0]));
+                path.push([people[0]+(end[0]-people[0])/(Math.abs(end[0]-people[0])), people[1]]);
+                people[0]+=(end[0]-people[0])/(Math.abs(end[0]-people[0]));
             }else
                 people = end;
         }
             
-    }while(people[0] != end[0] && people[1] != end[1])
+    }while(people[0] != end[0] || people[1] != end[1])
 
     return path
 }
