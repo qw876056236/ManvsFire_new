@@ -573,10 +573,16 @@ People.prototype.load = function (_this) {
                 self.groupRun.push(newMesh.scene);
                 _this.scene.add(newMesh.scene);
 
+                /*仅测试疏散模型帧率用
+                var newMesh = new THREE.Object3D();
+                var mesh = {};
+                //newMesh.position = new THREE.Vector3(0,0,0);
+                newMesh.visible = false;
+                _this.scene.add(newMesh);
+                mesh.scene = newMesh;
+                self.setPosition (mesh,self.positionPlaneMesh_1,_this);*/
                 var peoplemanager = new PeopleManager(newMesh,meshMixer);
                 peoplemanager.init(_this);
-                self.groupPM.push(peoplemanager);
-
             }
         });
 

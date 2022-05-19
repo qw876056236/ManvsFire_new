@@ -568,9 +568,6 @@ Ant.prototype.Find_sign = function(people, _this, x, y){
     var path = [];
     var end = [0, 0];
     end[0] = people[0]; end[1] = people[1]
-    if((people[0]+x == 79 && (people[1]+y == 69 || people[1]+y == 82)) || (people[0]+x == 81 && people[1]+y == 58)){
-        console.log(this.pheromone);
-    }
     try{var if_sign = this.pheromone[people[0]+x][people[1]+y].issign;if(if_sign==undefined)if_sign = 0;}catch{var if_sign = 0;}
     if(if_sign > 0){end[0] += x; end[1] += y;}
     if(if_sign == 2){
@@ -796,7 +793,7 @@ Ant.prototype.Stuck = function(_this, people){
     var count = []
     for(var j = 1; j >= -1; j--){
         for(var i = -1; i <= 1; i++){
-            if(i != 0 && j != 0){
+            if(i != 0 || j != 0){
                 try{var ph = this.pheromone[people[0]+i][people[1]+j].ph;if(ph==undefined)ph = 0;}catch{var ph = 0;};
                 try{var people_number = this.pheromone[people[0]+i][people[1]+j].people_number;if(people_number==undefined)people_number = 1;}catch{var people_number = 1;};
                 if(ph && people_number == 0){end.push([i, j]); count.push([i, j])} 
@@ -804,14 +801,16 @@ Ant.prototype.Stuck = function(_this, people){
             }     
         }
     }
-        
-    if(count.length)
-        if(_this.ore && end[_this.ore-1] != [0,0])
+
+    if(count.length){
+        if(_this.ore && (end[_this.ore-1][0] != 0 || end[_this.ore-1][1] != 0)){
             return[people[0]+end[_this.ore-1][0], people[1]+end[_this.ore-1][1]];
+        }
         else{
             var n = Math.floor(Math.random() * (count.length - 0.01));
             return [people[0]+count[n][0], people[1]+count[n][1]];
         }
+    }
     else
         return [people[0], people[1]]
 }

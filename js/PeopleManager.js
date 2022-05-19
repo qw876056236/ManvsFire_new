@@ -22,6 +22,8 @@ var PeopleManager = function(mesh,mixer){
     this.ore = 0;
     this.before = [];
     this.F = Math.random();
+    this.timeInStuckLimit = 3;
+    this.timeInStuck = 0;
 }
 
 PeopleManager.prototype.init = function(_this){
@@ -48,6 +50,8 @@ PeopleManager.prototype.update = function(_this){
         this.countMyFear(_this)
         var density = _this.ant.countDensity([this.nextPosition.x-this.xMin,this.nextPosition.z-this.zMin]);
         if(density>3.8){
+            if(this.form != 3)
+                this.timeInStuck = _this.clock.getElapsedTime();
             this.form = 3;
         }else{
             if(this.form == 0){
@@ -94,39 +98,19 @@ PeopleManager.prototype.update = function(_this){
         }
 
         if(this.isArrive(this.nextPosition)){
-            _this.ant.volatilize(this.trace,this.ph);
-            this.trace.push([this.nextPosition.x-this.xMin,this.nextPosition.z-this.zMin]);
-            if(this.trace.length > _this.ant.trace_step)
-                this.trace.shift()
-            _this.ant.pheromone[this.nextPosition.x-this.xMin][this.nextPosition.z-this.zMin].ph += this.ph;
-            _this.ant.pheromone[this.nextPosition.x-this.xMin][this.nextPosition.z-this.zMin].people_number -= 1;
-            _this.ant.pheromone[this.nextPosition.x-this.xMin][this.nextPosition.z-this.zMin].fear -= this.preFear;
-            if(this.form > 0)
-                _this.ant.pheromone[this.nextPosition.x-this.xMin][this.nextPosition.z-this.zMin].A_number -= 1;
-
             if(this.form == 0)
                 this.getNextPositionRandom(_this);
             else if(this.form == 1){
-                if(this.F>1)//临界值可能需要修改
+                if(this.F>0.8)//临界值可能需要修改
                     this.getNextPositionPath(_this);
                 else
                     this.getNextPositionBySigns(_this);
             }else if(this.form == 2)
                 this.getNextPosition(_this);
-            else if(this.form == 3)
-                this.getNextPositionStuck(_this);
-
-
-            _this.ant.pheromone[this.nextPosition.x-this.xMin][this.nextPosition.z-this.zMin].people_number += 1;
-            _this.ant.pheromone[this.nextPosition.x-this.xMin][this.nextPosition.z-this.zMin].fear += this.fear;
-            this.preFear = this.fear;
-            if(this.form > 0)
-                _this.ant.pheromone[this.nextPosition.x-this.xMin][this.nextPosition.z-this.zMin].A_number += 1;
             // 动作切换test
             // this.animationSwitch();
         }
-        //向nextPosition走去
-        if(this.form!=3)
+        if(this.form != 3 || (this.form == 3 && _this.clock.getElapsedTime() - this.timeInStuck > this.timeInStuckLimit && this.getNextPositionStuck(_this)))
             this.walkToNextPosition(_this.delta);
     }
 }
@@ -149,6 +133,7 @@ PeopleManager.prototype.isArrive = function(pos){
 }
 
 PeopleManager.prototype.getNextPosition = function(_this){
+    this.beforeGetPosition(_this);
     for(var i=this.trace.length-1,j=0;i>=0;i--,j++)
         _this.ant.pheromone[this.trace[i][0]][this.trace[i][1]].ph -= (1-j/_this.ant.trace_step)*this.ph;
     var pos = _this.ant.step(this, [this.nextPosition.x-this.xMin,this.nextPosition.z-this.zMin]);
@@ -156,15 +141,24 @@ PeopleManager.prototype.getNextPosition = function(_this){
     this.nextPosition.z = pos[1] + this.zMin;
     for(var i=this.trace.length-1,j=0;i>=0;i--,j++)
         _this.ant.pheromone[this.trace[i][0]][this.trace[i][1]].ph += (1-j/_this.ant.trace_step)*this.ph;
+    this.afterGetPosition(_this);
 }
 
 PeopleManager.prototype.getNextPositionStuck = function(_this){
+    this.beforeGetPosition(_this);
     var pos = _this.ant.Stuck(this, [this.nextPosition.x-this.xMin,this.nextPosition.z-this.zMin]);
+    if(this.nextPosition.x == pos[0]+this.xMin && this.nextPosition.z == pos[1]+this.zMin){
+        this.afterGetPosition(_this);
+        return false;
+    }
     this.nextPosition.x = pos[0] + this.xMin;
     this.nextPosition.z = pos[1] + this.zMin;
+    this.afterGetPosition(_this);
+    return true;
 }
 
 PeopleManager.prototype.getNextPositionBySigns = function(_this){
+    this.beforeGetPosition(_this);
     if(this.path.length){
         this.nextPosition.x = this.path[0][0]+this.xMin
         this.nextPosition.z = this.path[0][1]+this.zMin
@@ -178,16 +172,19 @@ PeopleManager.prototype.getNextPositionBySigns = function(_this){
         }else
             this.getNextPositionRandom(_this)
     }
-
+    this.afterGetPosition(_this);
 }
 
 PeopleManager.prototype.getNextPositionRandom = function(_this){
+    this.beforeGetPosition(_this);
     var pos = _this.ant.Step_random([this.nextPosition.x-this.xMin,this.nextPosition.z-this.zMin], this, 1);
     this.nextPosition.x = pos[0] + this.xMin;
     this.nextPosition.z = pos[1] + this.zMin;
+    this.afterGetPosition(_this);
 }
 
 PeopleManager.prototype.getNextPositionPath = function(_this){
+    this.beforeGetPosition(_this);
     if(this.path.length == 0){
         this.finder = new PF.BiAStarFinder({
             allowDiagonal: true,//允许对角线
@@ -213,6 +210,27 @@ PeopleManager.prototype.getNextPositionPath = function(_this){
         this.path.shift();
     }else
         this.getNextPositionRandom(_this)
+    this.afterGetPosition(_this);
+}
+
+PeopleManager.prototype.beforeGetPosition = function(_this){
+    _this.ant.volatilize(this.trace,this.ph);
+    this.trace.push([this.nextPosition.x-this.xMin,this.nextPosition.z-this.zMin]);
+    if(this.trace.length > _this.ant.trace_step)
+        this.trace.shift()
+    _this.ant.pheromone[this.nextPosition.x-this.xMin][this.nextPosition.z-this.zMin].ph += this.ph;
+    _this.ant.pheromone[this.nextPosition.x-this.xMin][this.nextPosition.z-this.zMin].people_number -= 1;
+    _this.ant.pheromone[this.nextPosition.x-this.xMin][this.nextPosition.z-this.zMin].fear -= this.preFear;
+    if(this.form > 0)
+        _this.ant.pheromone[this.nextPosition.x-this.xMin][this.nextPosition.z-this.zMin].A_number -= 1;
+}
+
+PeopleManager.prototype.afterGetPosition = function(_this){
+    _this.ant.pheromone[this.nextPosition.x-this.xMin][this.nextPosition.z-this.zMin].people_number += 1;
+    _this.ant.pheromone[this.nextPosition.x-this.xMin][this.nextPosition.z-this.zMin].fear += this.fear;
+    this.preFear = this.fear;
+    if(this.form > 0)
+        _this.ant.pheromone[this.nextPosition.x-this.xMin][this.nextPosition.z-this.zMin].A_number += 1;
 }
 
 PeopleManager.prototype.walkToNextPosition = function(delta){
