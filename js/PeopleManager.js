@@ -5,7 +5,8 @@ var PeopleManager = function(mesh,mixer){
     this.xMin = -39;
     this.zMin = 112;
     this.mixer = mixer;
-    this.actionState = 0;
+    this.actionState = 1;//0run 1walk 2bend 3crawl 4idle
+    this.action;
     this.path = [];
     this.finder;
     this.steps = 0;// 记录走到A*路径上的第几步
@@ -41,7 +42,7 @@ PeopleManager.prototype.countMyFear = function(_this){
     var ve = 1;//期望逃生速度,需要更改获取是老人还是其他的
     this.my_fear = u1 * (1 - v/ve) + u2 * t + u3 / d;
     this.speed = v;//todo
-    //console.log(this.speed)
+    console.log(this.speed)
 }
 
 PeopleManager.prototype.update = function(_this){
@@ -107,11 +108,11 @@ PeopleManager.prototype.update = function(_this){
                     this.getNextPositionBySigns(_this);
             }else if(this.form == 2)
                 this.getNextPosition(_this);
-            // 动作切换test
-            // this.animationSwitch();
         }
+        console.log(this.speed);
         if(this.form != 3 || (this.form == 3 && _this.clock.getElapsedTime() - this.timeInStuck > this.timeInStuckLimit && this.getNextPositionStuck(_this)))
             this.walkToNextPosition(_this.delta);
+        this.animationSwitch();
     }
 }
 
@@ -290,17 +291,28 @@ PeopleManager.prototype.frustumCulling = function(_this){
 }
 
 PeopleManager.prototype.animationSwitch = function(){
-    var i = Math.floor(Math.random()*this.mesh.animations.length);
-    var meshMixer = new THREE.AnimationMixer(this.mesh.scene);
-    var action = meshMixer.clipAction(this.mesh.animations[i]);
-    this.mixer = meshMixer;
-    this.actionState = i;
-    this.activateAction(action);
+    if(this.form == 3 && this.actionState!=4){
+        this.actionState = 4;
+        var meshMixer = new THREE.AnimationMixer(this.mesh.scene);
+        this.action = meshMixer.clipAction(this.mesh.animations[this.actionState]);
+        this.mixer = meshMixer;
+        this.activateAction(action);
+        this.action.setEffectiveTimeScale(1);
+    }else if(this.form !=3 && this.actionState!=0){
+        this.actionState = 0;
+        var meshMixer = new THREE.AnimationMixer(this.mesh.scene);
+        this.action = meshMixer.clipAction(this.mesh.animations[this.actionState]);
+        this.mixer = meshMixer;
+        this.activateAction();
+    }
+    if(this.form != 3)
+        this.action.setEffectiveTimeScale(this.speed);//值越大速度越快，默认为1，0时动画停止
 }
 
-PeopleManager.prototype.activateAction = function (action) {
+PeopleManager.prototype.activateAction = function () {
     let self = this;
-    var num = Math.floor(Math.random() * 2 + 1);
+    self.setWeight(1);
+    /*var num = Math.floor(Math.random() * 2 + 1);
     switch (num) {
         case 1:
             self.setWeight(action, 1);
@@ -308,22 +320,21 @@ PeopleManager.prototype.activateAction = function (action) {
         case 2:
             //setWeight( action, 0 );
             break;
-    }
-    action.play();
+    }*/
+    this.action.play();
 };
 
-PeopleManager.prototype.setWeight=function (action, weight) {
-    action.enabled = true;
-    var num = 0;
+PeopleManager.prototype.setWeight=function (weight) {
+    this.action.enabled = true;
+    /*var num = 0;
     while (num == 0) {
         num = Math.floor(Math.random() * 8 + 0.8);
         // num = Math.random();
-    }
+    }*/
     // v0 += num / 4;
     // vmax += num / 4;
     // fear += second / 60;
     // vt = (1 - fear) * v0 + fear * vmax;//恐慌心理导致的Agent速度变化
-    action.setEffectiveTimeScale(num / 3);//值越大速度越快，默认为1，0时动画停止
-    action.setEffectiveWeight(weight);
+    this.action.setEffectiveWeight(weight);
 }
       

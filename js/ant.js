@@ -388,8 +388,8 @@ Ant.prototype.countspeed = function(people, range = 1, speed = 1){//速度衰减
     var De = 0.54, a = 0.266;
     var n = 0;
 
-    for(var x = people[0]- range; x < people[0] + range; x++){
-        for(var y = people[1]- range; y < people[1] + range; y++){
+    for(var x = people[0]- range; x <= people[0] + range; x++){
+        for(var y = people[1]- range; y <= people[1] + range; y++){
             try{var number = this.pheromone[x][y].people_number;if(number==undefined)number = 0;}catch{var number = 0;}
             n += number;
             //console.log(number)
@@ -399,7 +399,7 @@ Ant.prototype.countspeed = function(people, range = 1, speed = 1){//速度衰减
     var D = n / (range + 1) / (range + 1);
     //console.log(D)
     if(D > 3.8)
-        speed = 0;
+        speed = 0.1;
     else if(D > 0.54)
         speed = (1 - a * D) /(1 - a * De) * speed;
 
