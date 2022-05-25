@@ -68,13 +68,15 @@ Ant.prototype.init_sign = function(signs, exitPosArr){
                 this.pheromone[Math.round(signs[i][2])+39][Math.round(signs[i][4])-112].issign = 2;
             }else if(signs[i][0] == 5){
                 //this.add_signs([Math.round(signs[i][2])+39,Math.round(signs[i][4])-112], 2)// 将指示牌信息素加入矩阵
-                this.pheromone[Math.round(signs[i][2])+39][Math.round(signs[i][4])-112].issign = 1;
+                this.pheromone[Math.round(signs[i][2])+39][Math.round(signs[i][4])-112].issign = 2;
                 if(signs[i][1] == 5)
                     this.pheromone[Math.round(signs[i][2])+39][Math.round(signs[i][4])-112].sign_orientation = 4;
                 else if(signs[i][1] == 6)
                     this.pheromone[Math.round(signs[i][2])+39][Math.round(signs[i][4])-112].sign_orientation = 5;
                 else if(signs[i][1] == 7)
                     this.pheromone[Math.round(signs[i][2])+39][Math.round(signs[i][4])-112].sign_orientation = 7;
+                else if(signs[i][1] == 8)
+                    this.pheromone[Math.round(signs[i][2])+39][Math.round(signs[i][4])-112].sign_orientation = 2;
             }else{
                 //this.add_signs([Math.round(signs[i][2])+39,Math.round(signs[i][4])-112], 3)// 将指示牌信息素加入矩阵
                 if(signs[i][1] == 1){
@@ -240,7 +242,7 @@ Ant.prototype.Random = function(ends, begin){
       };
 }
 
-Ant.prototype.get_steps = function(begin){
+Ant.prototype.get_steps = function(begin, orientation){
     try{var n1 = this.pheromone[begin[0] - 1][begin[1] + 1].ph;if(n1==undefined)n1 = 0;}catch{var n1 = 0;}
     try{var n2 = this.pheromone[begin[0]][begin[1] + 1].ph;if(n2==undefined)n2 = 0;}catch{var n2 = 0;}
     try{var n3 = this.pheromone[begin[0] + 1][begin[1] + 1].ph;if(n3==undefined)n3 = 0;}catch{var n3 = 0;}
@@ -249,7 +251,9 @@ Ant.prototype.get_steps = function(begin){
     try{var n6 = this.pheromone[begin[0] - 1][begin[1] - 1].ph;if(n6==undefined)n6 = 0;}catch{var n6 = 0;}
     try{var n7 = this.pheromone[begin[0]][begin[1] - 1].ph;if(n7==undefined)n7 = 0;}catch{var n7 = 0;}
     try{var n8 = this.pheromone[begin[0] + 1][begin[1] - 1].ph;if(n8==undefined)n8 = 0;}catch{var n8 = 0;}
-    return [n1,n2,n3,n4,n5,n6,n7,n8]
+    var ends = [n1,n2,n3,n4,n5,n6,n7,n8]
+    if(orientation) ends[8 - orientation] *= 0.2 // 身后方向信息素浓度减少80%
+    return ends
 }
 /*
 orientation为朝向，数值设置如下
@@ -269,35 +273,35 @@ orientation为朝向，数值设置如下
 移动方向由以上数字表示
 */
 Ant.prototype.get_ends = function(begin, orientation){
-    ends = this.get_steps(begin)
-    switch(orientation){
-        case 1:
-            ends[2] = 0; ends[4] = 0; ends[5] = 0; ends[6] = 0; ends[7] = 0;
-            break;
-        case 2:
-            ends[3] = 0; ends[4] = 0; ends[5] = 0; ends[6] = 0; ends[7] = 0;
-            break;
-        case 3:
-            ends[0] = 0; ends[3] = 0; ends[5] = 0; ends[6] = 0; ends[7] = 0;
-            break;
-        case 4:
-            ends[1] = 0; ends[2] = 0; ends[4] = 0; ends[6] = 0; ends[7] = 0;
-            break;
-        case 5:
-            ends[0] = 0; ends[1] = 0; ends[3] = 0; ends[5] = 0; ends[6] = 0;
-            break;
-        case 6:
-            ends[0] = 0; ends[1] = 0; ends[2] = 0; ends[4] = 0; ends[7] = 0;
-            break;
-        case 7:
-            ends[0] = 0; ends[1] = 0; ends[2] = 0; ends[3] = 0; ends[4] = 0;
-            break;
-        case 8:
-            ends[0] = 0; ends[1] = 0; ends[2] = 0; ends[3] = 0; ends[5] = 0;
-            break;
-        default:
-            break;
-    }
+    ends = this.get_steps(begin, orientation)
+    // switch(orientation){
+    //     case 1:
+    //         ends[2] = 0; ends[4] = 0; ends[5] = 0; ends[6] = 0; ends[7] = 0;
+    //         break;
+    //     case 2:
+    //         ends[3] = 0; ends[4] = 0; ends[5] = 0; ends[6] = 0; ends[7] = 0;
+    //         break;
+    //     case 3:
+    //         ends[0] = 0; ends[3] = 0; ends[5] = 0; ends[6] = 0; ends[7] = 0;
+    //         break;
+    //     case 4:
+    //         ends[1] = 0; ends[2] = 0; ends[4] = 0; ends[6] = 0; ends[7] = 0;
+    //         break;
+    //     case 5:
+    //         ends[0] = 0; ends[1] = 0; ends[3] = 0; ends[5] = 0; ends[6] = 0;
+    //         break;
+    //     case 6:
+    //         ends[0] = 0; ends[1] = 0; ends[2] = 0; ends[4] = 0; ends[7] = 0;
+    //         break;
+    //     case 7:
+    //         ends[0] = 0; ends[1] = 0; ends[2] = 0; ends[3] = 0; ends[4] = 0;
+    //         break;
+    //     case 8:
+    //         ends[0] = 0; ends[1] = 0; ends[2] = 0; ends[3] = 0; ends[5] = 0;
+    //         break;
+    //     default:
+    //         break;
+    // }
     return ends
 }
 Ant.prototype.sum = function(data){
@@ -369,12 +373,12 @@ Ant.prototype.expend = function(begin, ends, range){
     }
 }
 
-Ant.prototype.step = function(_this, begin, orientation = 0, trace = 4){//移动，是否遗留信息素（遗留几步）
-    var ends = this.expend(begin, this.get_ends(begin, orientation), 0, 0);
+Ant.prototype.step = function(_this, begin){//移动，是否遗留信息素（遗留几步）
+    var ends = this.expend(begin, this.get_ends(begin, _this.orientation), 0, 0);
     if(this.diagonal)
         var end = this.Random(ends, begin);
     else
-        var end = this.step_no(begin, orientation);//存在问题
+        var end = this.step_no(begin, _this.orientation);//存在问题
     //加入_this.orientation的设置，将人物的移动方向记录下来，计算下一步时可以进行加权
     return end;
 }
@@ -388,8 +392,8 @@ Ant.prototype.countspeed = function(people, range = 1, speed = 1){//速度衰减
     var De = 0.54, a = 0.266;
     var n = 0;
 
-    for(var x = people[0]- range; x <= people[0] + range; x++){
-        for(var y = people[1]- range; y <= people[1] + range; y++){
+    for(var x = people[0]- range; x < people[0] + range; x++){
+        for(var y = people[1]- range; y < people[1] + range; y++){
             try{var number = this.pheromone[x][y].people_number;if(number==undefined)number = 0;}catch{var number = 0;}
             n += number;
             //console.log(number)
@@ -459,7 +463,7 @@ Ant.prototype.countDensity = function(people, range = 0, a = 1){//计算密度
     return n;
 }
 
-Ant.prototype.GoBySigns = function(people, _this, range = 2){
+Ant.prototype.GoBySigns = function(people, _this, range = 5){
     var end = [0,0];
     end[0] = people[0]; end[1] = people[1];
     var path = [];
@@ -510,7 +514,7 @@ Ant.prototype.GoBySigns = function(people, _this, range = 2){
             var x2 = range + 1;
             var y2 = range + 1;
             outside:
-            while(x1 >= 0 && y1 >= 0 && path == 0){
+            while(x1 >= 0 && y1 >= 0 && path.length == 0){
                 for(var x = x2 - 1; x >= x1; x--){
                     path = this.Find_sign([people[0],people[1]], _this, x - range, y2 - range);
                     if(path.length != 0) break outside;
@@ -537,27 +541,59 @@ Ant.prototype.GoBySigns = function(people, _this, range = 2){
     if(path.length == 0){
         switch(_this.ore){
             case 2:
-                try{var ph = this.pheromone[people[0]][people[1]+1].ph;if(ph==undefined)ph = 0;}catch{var ph = 0;}
-                if(ph) path.push([people[0], people[1]+1])
-                else path.push(this.Step_random(people, _this, 1));
+                try{var ph = this.pheromone[people[0]][people[1]+1].ph;if(ph==undefined)ph = 0;}catch{var ph = 0;};
+                try{var ph1 = this.pheromone[people[0]+1][people[1]+1].ph1;if(ph==undefined)ph1 = 0;}catch{var ph1 = 0;};
+                try{var ph2 = this.pheromone[people[0]-1][people[1]+1].ph2;if(ph==undefined)ph2 = 0;}catch{var ph2 = 0;};
+                if(ph)
+                    path.push([people[0], people[1]+1]);
+                else if(ph1)
+                    path.push([people[0]+1, people[1]+1])
+                else if(ph2)
+                    path.push([people[0]-1, people[1]+1])
+                else
+                    path.push(this.Step_random(people, _this))
                 break;
             case 7:
-                try{var ph = this.pheromone[people[0]][people[1]-1].ph;if(ph==undefined)ph = 0;}catch{var ph = 0;}
-                if(ph) path.push([people[0], people[1]-1])
-                else path.push(this.Step_random(people, _this, 1));
+                try{var ph = this.pheromone[people[0]][people[1]-1].ph;if(ph==undefined)ph = 0;}catch{var ph = 0;};
+                try{var ph1 = this.pheromone[people[0]+1][people[1]-1].ph1;if(ph==undefined)ph1 = 0;}catch{var ph1 = 0;};
+                try{var ph2 = this.pheromone[people[0]-1][people[1]-1].ph2;if(ph==undefined)ph2 = 0;}catch{var ph2 = 0;};
+                if(ph)
+                    path.push([people[0], people[1]-1]);
+                else if(ph1)
+                    path.push([people[0]+1, people[1]-1])
+                else if(ph2)
+                    path.push([people[0]-1, people[1]-1])
+                else
+                    path.push(this.Step_random(people, _this))
                 break;
             case 4:
-                try{var ph = this.pheromone[people[0]-1][people[1]].ph;if(ph==undefined)ph = 0;}catch{var ph = 0;}
-                if(ph) path.push([people[0]-1, people[1]])
-                else path.push(this.Step_random(people, _this, 1));
+                try{var ph = this.pheromone[people[0]-1][people[1]].ph;if(ph==undefined)ph = 0;}catch{var ph = 0;};
+                try{var ph1 = this.pheromone[people[0]-1][people[1]+1].ph1;if(ph==undefined)ph1 = 0;}catch{var ph1 = 0;};
+                try{var ph2 = this.pheromone[people[0]-1][people[1]-1].ph2;if(ph==undefined)ph2 = 0;}catch{var ph2 = 0;};
+                if(ph)
+                    path.push([people[0]-1, people[1]]);
+                else if(ph1)
+                    path.push([people[0]-1, people[1]+1])
+                else if(ph2)
+                    path.push([people[0]-1, people[1]-1])
+                else
+                    path.push(this.Step_random(people, _this))
                 break;
             case 5:
-                try{var ph = this.pheromone[people[0]+1][people[1]].ph;if(ph==undefined)ph = 0;}catch{var ph = 0;}
-                if(ph) path.push([people[0]+1, people[1]])
-                else path.push(this.Step_random(people, _this, 1));
+                try{var ph = this.pheromone[people[0]+1][people[1]].ph;if(ph==undefined)ph = 0;}catch{var ph = 0;};
+                try{var ph1 = this.pheromone[people[0]+1][people[1]+1].ph1;if(ph==undefined)ph1 = 0;}catch{var ph1 = 0;};
+                try{var ph2 = this.pheromone[people[0]+1][people[1]-1].ph2;if(ph==undefined)ph2 = 0;}catch{var ph2 = 0;};
+                if(ph)
+                    path.push([people[0]+1, people[1]]);
+                else if(ph1)
+                    path.push([people[0]+1, people[1]+1])
+                else if(ph2)
+                    path.push([people[0]+1, people[1]-1])
+                else
+                    path.push(this.Step_random(people, _this))
                 break;
             default:
-                path.push(this.Step_random(people, _this, 1));
+                path.push(this.Step_random(people, _this))
                 break;
         }
     }
@@ -569,71 +605,33 @@ Ant.prototype.Find_sign = function(people, _this, x, y){
     var end = [0, 0];
     end[0] = people[0]; end[1] = people[1]
     try{var if_sign = this.pheromone[people[0]+x][people[1]+y].issign;if(if_sign==undefined)if_sign = 0;}catch{var if_sign = 0;}
+    try{var ore = this.pheromone[people[0]+x][people[1]+y].sign_orientation;if(ore==undefined)ore = 0;}catch{var ore = 0;}
+    if(ore) _this.ore = ore
     if(if_sign > 0){end[0] += x; end[1] += y;}
     if(if_sign == 2){
         path = this.Walktoward(people, end, _this);
     }else if(if_sign == 1){
-        try{var ore = this.pheromone[people[0]+x][people[1]+y].sign_orientation;if(ore==undefined)ore = 0;}catch{var ore = 0;}
-        if(_this.ore == ore)
-            path = this.Walktoward(people, end, _this);
-        else{
-            switch(ore){
-                case 2:
-                    try{var ph = this.pheromone[people[0]][people[1]+1].ph;if(ph==undefined)ph = 0;}catch{var ph = 0;};
-                    if(ph)
-                        path.push([people[0], people[1]+1]);
-                    break;
-                case 7:
-                    try{var ph = this.pheromone[people[0]][people[1]-1].ph;if(ph==undefined)ph = 0;}catch{var ph = 0;};
-                    if(ph)
-                        path.push([people[0], people[1]-1]);
-                    break;
-                case 4:
-                    try{var ph = this.pheromone[people[0]-1][people[1]].ph;if(ph==undefined)ph = 0;}catch{var ph = 0;};
-                    if(ph)
-                        path.push([people[0]-1, people[1]]);
-                    break;
-                case 5:
-                    try{var ph = this.pheromone[people[0]+1][people[1]].ph;if(ph==undefined)ph = 0;}catch{var ph = 0;};
-                    if(ph)
-                        path.push([people[0]+1, people[1]]);
-                    break;
-            }
-            var lastOre = _this.ore;
-            _this.ore = ore;
-            if(path.length == 0){
-                _this.ore = lastOre;
-                switch(_this.ore){
-                    case 2:
-                        try{var ph = this.pheromone[people[0]][people[1]+1].ph;if(ph==undefined)ph = 0;}catch{var ph = 0;};
-                        if(ph)
-                            path.push([people[0], people[1]+1]);
-                        else
-                            path.push(this.Step_random(people, _this))
-                        break;
-                    case 7:
-                        try{var ph = this.pheromone[people[0]][people[1]-1].ph;if(ph==undefined)ph = 0;}catch{var ph = 0;};
-                        if(ph)
-                            path.push([people[0], people[1]-1]);
-                        else
-                            path.push(this.Step_random(people, _this))
-                        break;
-                    case 4:
-                        try{var ph = this.pheromone[people[0]-1][people[1]].ph;if(ph==undefined)ph = 0;}catch{var ph = 0;};
-                        if(ph)
-                            path.push([people[0]-1, people[1]]);
-                        else
-                            path.push(this.Step_random(people, _this))
-                        break;
-                    case 5:
-                        try{var ph = this.pheromone[people[0]+1][people[1]].ph;if(ph==undefined)ph = 0;}catch{var ph = 0;};
-                        if(ph)
-                            path.push([people[0]+1, people[1]]);
-                        else
-                            path.push(this.Step_random(people, _this))
-                        break;
-                }
-            }
+        switch(ore){
+            case 2:
+                try{var ph = this.pheromone[people[0]][people[1]+1].ph;if(ph==undefined)ph = 0;}catch{var ph = 0;};
+                if(ph)
+                    path.push([people[0], people[1]+1]);
+                break;
+            case 7:
+                try{var ph = this.pheromone[people[0]][people[1]-1].ph;if(ph==undefined)ph = 0;}catch{var ph = 0;};
+                if(ph)
+                    path.push([people[0], people[1]-1]);
+                break;
+            case 4:
+                try{var ph = this.pheromone[people[0]-1][people[1]].ph;if(ph==undefined)ph = 0;}catch{var ph = 0;};
+                if(ph)
+                    path.push([people[0]-1, people[1]]);
+                break;
+            case 5:
+                try{var ph = this.pheromone[people[0]+1][people[1]].ph;if(ph==undefined)ph = 0;}catch{var ph = 0;};
+                if(ph)
+                    path.push([people[0]+1, people[1]]);
+                break;
         }
     }
     return path;
@@ -732,10 +730,9 @@ Ant.prototype.Step_random = function(begin, _this, range=1){
     var count=[];
     for(var x = -1 * range; x <= range; x++){
         for(var y = -1 * range; y <= range; y++){
-            if(x == 0 && y == 0){}
-            else{
+            if(x != 0 && y != 0){
                 try{var if_ph = this.pheromone[begin[0]+x][begin[1]+y].ph;if(if_ph==undefined)if_ph = 0;}catch{var if_ph = 0;}
-                switch(_this.ore){
+                switch(_this.orientation){
                     case 1:
                         if(x > 0 && y < 0) if_ph = 0;
                         break;
@@ -772,18 +769,45 @@ Ant.prototype.Step_random = function(begin, _this, range=1){
         var n = Math.floor(Math.random() * (count.length - 0.01));
         end[0] += count[n][0];
         end[1] += count[n][1];
-        if(count[n][0] > 0)
-            if(count[n][1] > 0) _this.ore = 3;
-            else if(count[n][1] < 0) _this.ore = 8;
-            else _this.ore = 5;
-        else if(count[n][0] < 0)
-            if(count[n][1] > 0) _this.ore = 1;
-            else if(count[n][1] < 0) _this.ore = 6;
-            else _this.ore = 4;
-        else
-            if(count[n][1] > 0) _this.ore = 2;
-            else if(count[n][1] < 0) _this.ore = 7;
-            else _this.ore = 0;
+    }else{
+        var if_ph = 0;
+        switch(_this.orientation){
+            case 1:
+                try{var if_ph = this.pheromone[begin[0]+1][begin[1]-1].ph;if(if_ph==undefined)if_ph = 0;}catch{var if_ph = 0;}
+                if(if_ph) end[0]+=1; end[1]-=1;
+                break;
+            case 2:
+                try{var if_ph = this.pheromone[begin[0]][begin[1]-1].ph;if(if_ph==undefined)if_ph = 0;}catch{var if_ph = 0;}
+                if(if_ph) end[1]-=1;
+                break;
+            case 3:
+                try{var if_ph = this.pheromone[begin[0]-1][begin[1]-1].ph;if(if_ph==undefined)if_ph = 0;}catch{var if_ph = 0;}
+                if(if_ph) end[0]-=1; end[1]-=1;
+                break;
+            case 4:
+                try{var if_ph = this.pheromone[begin[0]+1][begin[1]].ph;if(if_ph==undefined)if_ph = 0;}catch{var if_ph = 0;}
+                if(if_ph) end[0]+=1;
+                break;
+            case 5:
+                try{var if_ph = this.pheromone[begin[0]-1][begin[1]].ph;if(if_ph==undefined)if_ph = 0;}catch{var if_ph = 0;}
+                if(if_ph) end[0]-=1;
+                break;
+            case 6:
+                try{var if_ph = this.pheromone[begin[0]+1][begin[1]+1].ph;if(if_ph==undefined)if_ph = 0;}catch{var if_ph = 0;}
+                if(if_ph) end[0]+=1; end[1]+=1;
+                break;
+            case 7:
+                try{var if_ph = this.pheromone[begin[0]][begin[1]+1].ph;if(if_ph==undefined)if_ph = 0;}catch{var if_ph = 0;}
+                if(if_ph) end[1]+=1;
+                break;
+            case 8:
+                try{var if_ph = this.pheromone[begin[0]-1][begin[1]+1].ph;if(if_ph==undefined)if_ph = 0;}catch{var if_ph = 0;}
+                if(if_ph) end[0]-=1; end[1]+=1;
+                break;
+        }
+        if(if_ph == 0){
+            console.log('随机走所有方向均不可走？！！')
+        }
     }
     return end;
 }

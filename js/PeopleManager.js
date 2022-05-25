@@ -232,6 +232,32 @@ PeopleManager.prototype.afterGetPosition = function(_this){
     this.preFear = this.fear;
     if(this.form > 0)
         _this.ant.pheromone[this.nextPosition.x-this.xMin][this.nextPosition.z-this.zMin].A_number += 1;
+    var x = this.nextPosition.x-this.xMin - this.trace[this.trace.length-1][0]
+    var y = this.nextPosition.z-this.zMin - this.trace[this.trace.length-1][1]
+    if(x > 0){
+        if(y > 0)
+            this.orientation = 3;
+        else if(y < 0)
+            this.orientation = 8;
+        else
+            this.orientation = 5;
+    }else if(x < 0){
+        if(y > 0)
+            this.orientation = 1;
+        else if(y < 0)
+            this.orientation = 6;
+        else
+            this.orientation = 4;
+    }else{
+        if(y > 0)
+            this.orientation = 2;
+        else if(y < 0)
+            this.orientation = 7;
+        else{
+            this.orientation = 0;
+            console.log('原地不动！！！')
+        }
+    }
 }
 
 PeopleManager.prototype.walkToNextPosition = function(delta){
