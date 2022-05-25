@@ -88,11 +88,11 @@ Ant.prototype.init_sign = function(signs, exitPosArr){
                         this.pheromone[Math.round(signs[i][2])+39 +1][Math.round(signs[i][4])-112].sign_orientation = 7;
                     }
                     else if(signs[i][0] == 3){
-                        this.pheromone[Math.round(signs[i][2])+39 +1][Math.round(signs[i][4])-112 +1].issign = 2;
-                        this.pheromone[Math.round(signs[i][2])+39 +1][Math.round(signs[i][4])-112 +1].sign_orientation = 4;
+                        this.pheromone[Math.round(signs[i][2])+39 +2][Math.round(signs[i][4])-112 +2].issign = 2;
+                        this.pheromone[Math.round(signs[i][2])+39 +2][Math.round(signs[i][4])-112 +2].sign_orientation = 4;
                     }else if(signs[i][0] == 4){
-                        this.pheromone[Math.round(signs[i][2])+39 +1][Math.round(signs[i][4])-112 -1].issign = 2;
-                        this.pheromone[Math.round(signs[i][2])+39 +1][Math.round(signs[i][4])-112 -1].sign_orientation = 4;
+                        this.pheromone[Math.round(signs[i][2])+39 +2][Math.round(signs[i][4])-112 -2].issign = 2;
+                        this.pheromone[Math.round(signs[i][2])+39 +2][Math.round(signs[i][4])-112 -2].sign_orientation = 4;
                     }
                 }else if(signs[i][1] == 2){
                    if(signs[i][0] == 1){
@@ -103,11 +103,11 @@ Ant.prototype.init_sign = function(signs, exitPosArr){
                         this.pheromone[Math.round(signs[i][2])+39 -1][Math.round(signs[i][4])-112].sign_orientation = 2;
                     }
                     else if(signs[i][0] == 3){
-                        this.pheromone[Math.round(signs[i][2])+39 -1][Math.round(signs[i][4])-112 -1].issign = 2;
-                        this.pheromone[Math.round(signs[i][2])+39 -1][Math.round(signs[i][4])-112 -1].sign_orientation = 5;
+                        this.pheromone[Math.round(signs[i][2])+39 -2][Math.round(signs[i][4])-112 -2].issign = 2;
+                        this.pheromone[Math.round(signs[i][2])+39 -2][Math.round(signs[i][4])-112 -2].sign_orientation = 5;
                     }else if(signs[i][0] == 4){
-                        this.pheromone[Math.round(signs[i][2])+39 -1][Math.round(signs[i][4])-112 +1].issign = 2;
-                        this.pheromone[Math.round(signs[i][2])+39 -1][Math.round(signs[i][4])-112 +1].sign_orientation = 5;
+                        this.pheromone[Math.round(signs[i][2])+39 -2][Math.round(signs[i][4])-112 +2].issign = 2;
+                        this.pheromone[Math.round(signs[i][2])+39 -2][Math.round(signs[i][4])-112 +2].sign_orientation = 5;
                     }
                 }else if(signs[i][0] == 2 && signs[i][1] == 4){
                     this.pheromone[Math.round(signs[i][2])+39][Math.round(signs[i][4])-112 +1].issign = 1;
