@@ -122,6 +122,30 @@ Ant.prototype.init_sign = function(signs, exitPosArr){
             this.pheromone[Math.round(exitPosArr[i][0])+39][Math.round(exitPosArr[i][2])-112].issign = 2;
         }
     }
+    this.init_blok()
+}
+
+
+Ant.prototype.init_blok = function(){// 添加楼梯等障碍物
+    for(var x = 48; x < 55; x++){
+        for(var y = 190; y < 206; y++)
+            this.set_block([x,y])
+        for(var y = 257; y < 270; y++)
+            this.set_block([x,y])
+        for(var y = 304; y < 317; y++)
+            this.set_block([x,y])
+        for(var y = 342; y < 354; y++)
+            this.set_block([x,y])
+    }
+    for(var x = 48; x < 5; x++)
+        for(var y = 220; y < 232; y++)
+            this.set_block([x,y])
+    for(var x = 51; x < 55; x++)
+        for(var y = 232; y < 242; y++)
+            this.set_block([x,y])
+    for(var x = 48; x < 53; x++)
+        for(var y = 244; y < 248; y++)
+            this.set_block([x,y])
 }
 
 Ant.prototype.set_block = function(point){
