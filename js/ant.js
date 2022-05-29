@@ -127,24 +127,24 @@ Ant.prototype.init_sign = function(signs, exitPosArr){
 
 
 Ant.prototype.init_blok = function(){// 添加楼梯等障碍物
-    for(var x = 48; x < 55; x++){
-        for(var y = 190; y < 206; y++)
+    for(var x = 87; x < 94; x++){
+        for(var y = 78; y < 94; y++)
             this.set_block([x,y])
-        for(var y = 257; y < 270; y++)
+        for(var y = 145; y < 158; y++)
             this.set_block([x,y])
-        for(var y = 304; y < 317; y++)
+        for(var y = 192; y < 205; y++)
             this.set_block([x,y])
-        for(var y = 342; y < 354; y++)
+        for(var y = 230; y < 242; y++)
             this.set_block([x,y])
     }
-    for(var x = 48; x < 51; x++)
-        for(var y = 220; y < 232; y++)
+    for(var x = 87; x < 90; x++)
+        for(var y = 108; y < 120; y++)
             this.set_block([x,y])
-    for(var x = 51; x < 55; x++)
-        for(var y = 232; y < 242; y++)
+    for(var x = 90; x < 94; x++)
+        for(var y = 120; y < 130; y++)
             this.set_block([x,y])
-    for(var x = 48; x < 53; x++)
-        for(var y = 244; y < 248; y++)
+    for(var x = 87; x < 92; x++)
+        for(var y = 132; y < 136; y++)
             this.set_block([x,y])
 }
 
