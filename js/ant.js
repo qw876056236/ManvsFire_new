@@ -137,7 +137,7 @@ Ant.prototype.init_blok = function(){// 添加楼梯等障碍物
         for(var y = 342; y < 354; y++)
             this.set_block([x,y])
     }
-    for(var x = 48; x < 5; x++)
+    for(var x = 48; x < 51; x++)
         for(var y = 220; y < 232; y++)
             this.set_block([x,y])
     for(var x = 51; x < 55; x++)
