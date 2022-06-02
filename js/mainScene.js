@@ -20,6 +20,12 @@ var mainScene = function()
 
     this.number = 100;//人数
 
+    this.F_number = 0.2;
+
+    this.coefficient_a = 1;
+
+    this.fear_number = 1.4;
+
     this.exitPosArr = []//出口坐标数组
 
     this.camera = null;

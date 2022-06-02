@@ -261,6 +261,12 @@ Interaction.prototype.fuc3 = function (MainScene)
 
             var number=Number($('people-number').textContent);
             MainScene.number=number;
+            var number1=Number($('a-number').textContent);
+            MainScene.coefficient_a=number1;
+            var number2=Number($('fear-number').textContent);
+            MainScene.fear_number=number2;
+            var number3=Number($('F-number').textContent);
+            MainScene.F_number=number3;
 
             //音效
             // var audioLoader = new THREE.AudioLoader();

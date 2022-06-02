@@ -25,6 +25,9 @@ var PeopleManager = function(mesh,mixer){
     this.F = Math.random();
     this.timeInStuckLimit = 3;
     this.timeInStuck = 0;
+    this.coefficient_a = 1;
+    this.fear_number = 1.4;
+    this.F_number = 0.2;
 }
 
 PeopleManager.prototype.init = function(_this){
@@ -32,6 +35,9 @@ PeopleManager.prototype.init = function(_this){
     this.nextPosition.y = this.mesh.scene.position.y;
     this.nextPosition.z = Math.round(this.mesh.scene.position.z);
     _this.ant.pheromone[this.nextPosition.x-this.xMin][this.nextPosition.z-this.zMin].people_number += 1;
+    this.fear_number = _this.fear_number * (1.1 - 0.2 * Math.random());
+    this.F_number = _this.F_number * (1.1 - 0.2 * Math.random());
+    this.coefficient_a = _this.coefficient_a * (1.1 - 0.2 * Math.random());
 }
 
 PeopleManager.prototype.countMyFear = function(_this){
@@ -56,7 +62,8 @@ PeopleManager.prototype.update = function(_this){
             this.form = 3;
         }else{
             if(this.form == 0){
-                this.A = _this.ant.countA([this.nextPosition.x-this.xMin,this.nextPosition.z-this.zMin]);
+                console.log('coefficient_a: '+this.coefficient_a)
+                this.A = _this.ant.countA([this.nextPosition.x-this.xMin,this.nextPosition.z-this.zMin], 2, this.coefficient_a);
                 if(this.A >= 1){//临界值需要改，同时在Ant的countA里面改
                     this.form = 1;
                     this.path.length = 0;
@@ -67,15 +74,15 @@ PeopleManager.prototype.update = function(_this){
                 }
             }else if(this.form == 1){
                 this.fear = _this.ant.countfear([this.nextPosition.x-this.xMin,this.nextPosition.z-this.zMin], this.my_fear)
-                if(this.fear > 1.4)//临界值可能需要更改
+                if(this.fear > this.fear_number)//临界值可能需要更改
                     this.form = 1;
             }else if(this.form == 2){
                 this.fear = _this.ant.countfear([this.nextPosition.x-this.xMin,this.nextPosition.z-this.zMin], this.my_fear)
-                if(this.fear <= 1.4)//临界值可能需要更改
+                if(this.fear <= this.fear_number)//临界值可能需要更改
                     this.form = 1;
             }else if(this.form == 3){
                 this.fear = _this.ant.countfear([this.nextPosition.x-this.xMin,this.nextPosition.z-this.zMin], this.my_fear)
-                if(this.fear <= 1.4)
+                if(this.fear <= this.fear_number)
                     this.form = 1;
                 else
                     this.form = 2;
@@ -102,7 +109,7 @@ PeopleManager.prototype.update = function(_this){
             if(this.form == 0)
                 this.getNextPositionRandom(_this);
             else if(this.form == 1){
-                if(this.F>0.8)//临界值可能需要修改
+                if(this.F > 1- this.F_number)//临界值可能需要修改
                     this.getNextPositionPath(_this);
                 else
                     this.getNextPositionBySigns(_this);
